@@ -13,8 +13,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { type Category, getCategories } from '@/lib/mock-data/categories'
+import { getUnifiedCategories } from '@/lib/data/unified'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
+
+export const dynamic = 'force-dynamic'
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -24,6 +26,16 @@ const categoryIcons: Record<string, React.ReactNode> = {
   Lightning: <Lightning size={24} weight="fill" className="text-amber-800" />,
   Person: <Person size={24} weight="fill" className="text-amber-800" />,
   Leaf: <Leaf size={24} weight="fill" className="text-amber-800" />,
+}
+
+// Map DB category slugs to icon names
+const slugToIcon: Record<string, string> = {
+  neurotoxins: 'Syringe',
+  fillers: 'Drop',
+  'facials-lasers': 'Sparkle',
+  wellness: 'Leaf',
+  consultations: 'Person',
+  other: 'Lightning',
 }
 
 // Static metadata for SEO
@@ -45,8 +57,13 @@ export const metadata: Metadata = {
 }
 
 // Category card component
-function CategoryCard({ category }: { category: Category }) {
-  const icon = categoryIcons[category.icon] || (
+function CategoryCard({
+  category,
+}: {
+  category: { slug: string; label: string; count: number }
+}) {
+  const iconName = slugToIcon[category.slug] || 'Lightning'
+  const icon = categoryIcons[iconName] || (
     <Tag size={24} weight="fill" className="text-amber-800" />
   )
 
@@ -62,7 +79,7 @@ function CategoryCard({ category }: { category: Category }) {
           </div>
           <div>
             <h3 className="font-semibold text-lg text-[#451a03] group-hover:text-amber-800 transition-colors">
-              {category.name}
+              {category.label}
             </h3>
           </div>
         </div>
@@ -73,34 +90,31 @@ function CategoryCard({ category }: { category: Category }) {
         />
       </div>
 
-      {/* Description */}
-      <p className="mt-3 text-sm text-[#78350f] line-clamp-2">
-        {category.description}
-      </p>
-
       {/* Stats */}
       <div className="mt-4 pt-4 border-t border-[#d4c4b0] flex items-center gap-4 text-sm">
         <div className="flex items-center gap-1.5 text-[#78350f]">
           <Tag size={16} weight="light" className="text-amber-800" />
-          <span>{category.dealCount} deals</span>
+          <span>{category.count} deals</span>
         </div>
         <div className="flex items-center gap-1.5 text-[#78350f]">
           <Storefront size={16} weight="light" className="text-amber-800" />
-          <span>{Math.ceil(category.dealCount / 2)} providers</span>
+          <span>{Math.ceil(category.count / 2)} providers</span>
         </div>
       </div>
     </Link>
   )
 }
 
-export default function TreatmentsPage() {
-  const categories = getCategories().filter((c) => c.isActive)
+export default async function TreatmentsPage() {
+  const categories = await getUnifiedCategories()
 
   // Build breadcrumb items
   const breadcrumbItems = [
     { name: 'Home', url: SITE_CONFIG.url },
     { name: 'Treatments', url: buildCanonicalUrl('/treatments') },
   ]
+
+  const totalDeals = categories.reduce((sum, c) => sum + c.count, 0)
 
   return (
     <>
@@ -138,7 +152,7 @@ export default function TreatmentsPage() {
                 <div className="flex items-center gap-2">
                   <Tag size={20} weight="light" className="text-amber-800" />
                   <span className="font-semibold text-[#451a03]">
-                    {categories.reduce((sum, c) => sum + c.dealCount, 0)}
+                    {totalDeals}
                   </span>
                   <span className="text-[#78350f]">Total Deals</span>
                 </div>
@@ -165,7 +179,7 @@ export default function TreatmentsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {categories.map((category) => (
-                <CategoryCard key={category.id} category={category} />
+                <CategoryCard key={category.slug} category={category} />
               ))}
             </div>
           </section>

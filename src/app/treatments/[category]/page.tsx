@@ -17,13 +17,14 @@ import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Faq } from '@/components/ui/faq'
 import { type RelatedLink, RelatedLinks } from '@/components/ui/relatedLinks'
 import {
-  getAllCategorySlugs,
-  getCategoryWithStats,
-} from '@/lib/mock-data/categories'
-import { getDealsForCategory, toAnonymousDeal } from '@/lib/mock-data/deals'
-import { getStates } from '@/lib/mock-data/states'
+  getDealsByDbCategorySlug,
+  getUnifiedCategories,
+  getUnifiedCities,
+} from '@/lib/data/unified'
 import { getCategoryFaqs } from '@/lib/seo/faq-content'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
+
+export const dynamic = 'force-dynamic'
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -35,10 +36,14 @@ const categoryIcons: Record<string, React.ReactNode> = {
   Leaf: <Leaf size={24} weight="fill" className="text-amber-800" />,
 }
 
-// Generate static params for all categories
-export async function generateStaticParams() {
-  const slugs = getAllCategorySlugs()
-  return slugs.map((category) => ({ category }))
+// Map DB category slugs to icon names
+const slugToIcon: Record<string, string> = {
+  neurotoxins: 'Syringe',
+  fillers: 'Drop',
+  'facials-lasers': 'Sparkle',
+  wellness: 'Leaf',
+  consultations: 'Person',
+  other: 'Lightning',
 }
 
 // Generate metadata for SEO
@@ -50,7 +55,8 @@ export async function generateMetadata({
   params,
 }: MetadataProps): Promise<Metadata> {
   const { category: categorySlug } = await params
-  const category = getCategoryWithStats(categorySlug)
+  const categories = await getUnifiedCategories()
+  const category = categories.find((c) => c.slug === categorySlug)
 
   if (!category) {
     return {
@@ -59,8 +65,8 @@ export async function generateMetadata({
     }
   }
 
-  const title = `${category.name} Deals & Discounts | CostFinders`
-  const description = `Compare ${category.dealCount} ${category.name.toLowerCase()} deals from ${category.businessCount} verified providers. ${category.description}`
+  const title = `${category.label} Deals & Discounts | CostFinders`
+  const description = `Compare ${category.count} ${category.label.toLowerCase()} deals from verified providers. Find the best prices on ${category.label.toLowerCase()} treatments.`
 
   return {
     title,
@@ -85,37 +91,41 @@ interface CategoryPageProps {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params
-  const category = getCategoryWithStats(categorySlug)
+  const categories = await getUnifiedCategories()
+  const category = categories.find((c) => c.slug === categorySlug)
 
   if (!category) {
     notFound()
   }
 
-  const deals = getDealsForCategory(categorySlug).map(toAnonymousDeal)
-  const CategoryIcon = categoryIcons[category.icon] || (
+  const deals = await getDealsByDbCategorySlug(categorySlug)
+  const iconName = slugToIcon[categorySlug] || 'Lightning'
+  const CategoryIcon = categoryIcons[iconName] || (
     <Tag size={24} weight="fill" className="text-amber-800" />
   )
 
-  // Build state links for related locations section
-  const states = getStates()
-  const stateLinks: RelatedLink[] = states.map((s) => ({
-    label: `${category.name} in ${s.name}`,
-    href: `/${s.slug}`,
-    description: `Browse ${category.name.toLowerCase()} deals in ${s.name}`,
+  // Build city links for related locations section
+  const cities = await getUnifiedCities()
+  const cityLinks: RelatedLink[] = cities.slice(0, 8).map((c) => ({
+    label: `${category.label} in ${c.name}`,
+    href: `/deals/${c.slug}`,
+    description: `Browse ${category.label.toLowerCase()} deals in ${c.name}`,
   }))
 
   // Get FAQ content for this category
-  const faqItems = getCategoryFaqs(category.name)
+  const faqItems = getCategoryFaqs(category.label)
 
   // Build breadcrumb items
   const breadcrumbItems = [
     { name: 'Home', url: SITE_CONFIG.url },
     { name: 'Treatments', url: buildCanonicalUrl('/treatments') },
     {
-      name: category.name,
+      name: category.label,
       url: buildCanonicalUrl(`/treatments/${category.slug}`),
     },
   ]
+
+  const businessCount = Math.ceil(deals.length / 2)
 
   return (
     <>
@@ -132,7 +142,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               items={[
                 { label: 'Home', href: '/' },
                 { label: 'Treatments', href: '/treatments' },
-                { label: category.name },
+                { label: category.label },
               ]}
             />
 
@@ -143,14 +153,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   {CategoryIcon}
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
-                  {category.name} Deals
+                  {category.label} Deals
                 </h1>
               </div>
 
               <p className="text-[#78350f] max-w-2xl mb-6">
-                {category.description}. Compare prices from verified medspa
-                providers and find the best deals on{' '}
-                {category.name.toLowerCase()} treatments near you.
+                Compare prices from verified medspa providers and find the best
+                deals on {category.label.toLowerCase()} treatments near you.
               </p>
 
               {/* Stats Row */}
@@ -169,7 +178,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     className="text-amber-800"
                   />
                   <span className="font-semibold text-[#451a03]">
-                    {category.businessCount}
+                    {businessCount}
                   </span>
                   <span className="text-[#78350f]">Verified Providers</span>
                 </div>
@@ -180,7 +189,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           {/* Deals Grid */}
           <section>
             <h2 className="text-xl font-semibold text-[#451a03] mb-6">
-              Available {category.name} Deals
+              Available {category.label} Deals
             </h2>
 
             {deals.length > 0 ? (
@@ -198,11 +207,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   className="mx-auto text-[#92400e] mb-4"
                 />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
-                  No {category.name} Deals Available Yet
+                  No {category.label} Deals Available Yet
                 </h3>
                 <p className="text-[#78350f] max-w-md mx-auto mb-6">
                   We&apos;re working to bring you the best{' '}
-                  {category.name.toLowerCase()} deals. Check back soon for new
+                  {category.label.toLowerCase()} deals. Check back soon for new
                   offers from verified providers.
                 </p>
                 <Link
@@ -219,8 +228,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           {/* Browse by Location */}
           <section className="mt-12">
             <RelatedLinks
-              title={`Find ${category.name} by Location`}
-              links={stateLinks}
+              title={`Find ${category.label} by Location`}
+              links={cityLinks}
             />
           </section>
 

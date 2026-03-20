@@ -5,24 +5,32 @@ import { DealDetailPage } from '@/components/features/deals/dealDetailPage'
 import { DealsRedirect } from '@/components/features/deals/dealsRedirect'
 import { TreatmentCityPage } from '@/components/features/deals/treatmentCityPage'
 import {
-  getActiveDeals,
-  getAllActiveCitySlugs,
-  getAllTreatmentCityCombos,
-  getAnonymousDealById,
-  getBusinessCountForCitySlug,
-  getCategoryBySlug,
-  getCityBySlug,
+  getBusinessCountForCity,
   getDealById,
   getDealCountForCitySlug,
   getDealCountForTreatmentAndCity,
   getMinPriceForCitySlug,
   getMinPriceForTreatmentAndCity,
-} from '@/lib/mock-data'
+  getTreatmentLabel,
+  getUnifiedCities,
+} from '@/lib/data/unified'
 import {
   generateCityDealsMetadata,
   generateTreatmentCityMetadata,
 } from '@/lib/seo/metadata'
 import type { TreatmentCategory } from '@/types/deal'
+
+export const dynamic = 'force-dynamic'
+
+// Valid treatment slugs for route matching
+const VALID_TREATMENTS: Set<string> = new Set([
+  'botox',
+  'fillers',
+  'facials',
+  'laser',
+  'body',
+  'skincare',
+])
 
 interface DealsPageProps {
   params: Promise<{ slugs?: string[] }>
@@ -42,7 +50,7 @@ type RouteType =
   | { type: 'deal'; dealId: string }
   | { type: 'not-found' }
 
-function resolveRoute(slugs?: string[]): RouteType {
+async function resolveRoute(slugs?: string[]): Promise<RouteType> {
   // No slugs = redirect to detected city
   if (!slugs || slugs.length === 0) {
     return { type: 'redirect' }
@@ -53,13 +61,14 @@ function resolveRoute(slugs?: string[]): RouteType {
     const slug = slugs[0]
 
     // Check if it's a city
-    const city = getCityBySlug(slug)
+    const cities = await getUnifiedCities()
+    const city = cities.find((c) => c.slug === slug)
     if (city) {
       return { type: 'city', citySlug: slug, cityName: city.name }
     }
 
-    // Check if it's a deal ID (deal IDs start with "deal-")
-    const deal = getAnonymousDealById(slug)
+    // Check if it's a deal ID (numeric IDs from Supabase)
+    const deal = await getDealById(slug)
     if (deal) {
       return { type: 'deal', dealId: slug }
     }
@@ -72,16 +81,17 @@ function resolveRoute(slugs?: string[]): RouteType {
   if (slugs.length === 2) {
     const [first, second] = slugs
 
-    // Check if first is a treatment category
-    const category = getCategoryBySlug(first as TreatmentCategory)
-    if (category) {
+    // Check if first is a valid treatment category slug
+    if (VALID_TREATMENTS.has(first)) {
+      const treatmentSlug = first as TreatmentCategory
       // Check if second is a city
-      const city = getCityBySlug(second)
+      const cities = await getUnifiedCities()
+      const city = cities.find((c) => c.slug === second)
       if (city) {
         return {
           type: 'treatment-city',
-          treatmentSlug: category.slug,
-          treatmentName: category.name,
+          treatmentSlug,
+          treatmentName: getTreatmentLabel(treatmentSlug),
           citySlug: second,
           cityName: city.name,
         }
@@ -96,57 +106,34 @@ function resolveRoute(slugs?: string[]): RouteType {
   return { type: 'not-found' }
 }
 
-// Generate static params for all routes
-export async function generateStaticParams() {
-  const cities = getAllActiveCitySlugs()
-  const treatmentCityCombos = getAllTreatmentCityCombos()
-  const deals = getActiveDeals()
-
-  const params: Array<{ slugs: string[] }> = [
-    // Empty slugs for redirect page (handled client-side)
-    // { slugs: [] }, // Optional catch-all handles this
-
-    // City pages: /deals/houston
-    ...cities.map((city) => ({ slugs: [city] })),
-
-    // Treatment+city pages: /deals/botox/houston
-    ...treatmentCityCombos.map((combo) => ({
-      slugs: [combo.treatment, combo.city],
-    })),
-
-    // Deal detail pages: /deals/deal-123
-    ...deals.map((deal) => ({ slugs: [deal.id] })),
-  ]
-
-  return params
-}
-
 // Generate metadata dynamically based on route
 export async function generateMetadata({
   params,
 }: DealsPageProps): Promise<Metadata> {
   const { slugs } = await params
-  const route = resolveRoute(slugs)
+  const route = await resolveRoute(slugs)
 
   switch (route.type) {
     case 'city': {
-      const dealCount = getDealCountForCitySlug(route.citySlug)
-      const businessCount = getBusinessCountForCitySlug(route.citySlug)
-      const minPrice = getMinPriceForCitySlug(route.citySlug)
+      const dealCount = await getDealCountForCitySlug(route.citySlug)
+      const cityName = route.citySlug.replace(/-/g, ' ')
+      const businessCount = await getBusinessCountForCity(cityName)
+      const minPrice = await getMinPriceForCitySlug(route.citySlug)
       return generateCityDealsMetadata(route.cityName, route.citySlug, {
         dealCount,
         businessCount,
-        minPrice,
+        minPrice: minPrice ?? undefined,
       })
     }
 
     case 'treatment-city': {
-      const dealCount = getDealCountForTreatmentAndCity(
+      const dealCount = await getDealCountForTreatmentAndCity(
         route.treatmentSlug,
         route.citySlug,
       )
-      const businessCount = getBusinessCountForCitySlug(route.citySlug)
-      const minPrice = getMinPriceForTreatmentAndCity(
+      const cityName = route.citySlug.replace(/-/g, ' ')
+      const businessCount = await getBusinessCountForCity(cityName)
+      const minPrice = await getMinPriceForTreatmentAndCity(
         route.treatmentSlug,
         route.citySlug,
       )
@@ -155,12 +142,12 @@ export async function generateMetadata({
         route.treatmentSlug,
         route.cityName,
         route.citySlug,
-        { dealCount, businessCount, minPrice },
+        { dealCount, businessCount, minPrice: minPrice ?? undefined },
       )
     }
 
     case 'deal': {
-      const deal = getAnonymousDealById(route.dealId)
+      const deal = await getDealById(route.dealId)
       if (deal) {
         return {
           title: `${deal.title} | CostFinders`,
@@ -181,7 +168,7 @@ export async function generateMetadata({
 
 export default async function DealsRoutingPage({ params }: DealsPageProps) {
   const { slugs } = await params
-  const route = resolveRoute(slugs)
+  const route = await resolveRoute(slugs)
 
   switch (route.type) {
     case 'redirect':
@@ -203,10 +190,15 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
       )
 
     case 'deal': {
-      const deal = getAnonymousDealById(route.dealId)
-      const fullDeal = getDealById(route.dealId)
-      if (!deal || !fullDeal) {
+      const deal = await getDealById(route.dealId)
+      if (!deal) {
         notFound()
+      }
+      // Construct a Deal-compatible object for DealSidebar
+      // The unified layer returns AnonymousDeal shape; add businessId for Deal type
+      const fullDeal = {
+        ...deal,
+        businessId: route.dealId, // Supabase offer ID as reference
       }
       return <DealDetailPage deal={deal} fullDeal={fullDeal} />
     }

@@ -5,12 +5,11 @@ import { NeighborhoodCard } from '@/components/features/neighborhoodCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import {
-  getAllCitiesWithState,
-  getCityBySlug,
-  getCityStats,
-  getNeighborhoodsForCity,
-  slugifyNeighborhood,
-} from '@/lib/mock-data/cities'
+  getBusinessCountForCity,
+  getCityOfferCount,
+  getUnifiedCities,
+} from '@/lib/data/unified'
+import { getNeighborhoodsForCity, slugifyNeighborhood } from '@/lib/mock-data/cities'
 import { getStateBySlug } from '@/lib/mock-data/states'
 import {
   buildCanonicalUrl,
@@ -20,11 +19,20 @@ import {
 
 // Generate static params for all supported cities
 export async function generateStaticParams() {
-  const citiesWithState = getAllCitiesWithState()
-  return citiesWithState.map(({ stateSlug, citySlug }) => ({
-    state: stateSlug,
-    city: citySlug,
-  }))
+  const allCities = await getUnifiedCities()
+  const { getStates } = await import('@/lib/mock-data/states')
+  const states = getStates()
+
+  const params: { state: string; city: string }[] = []
+
+  for (const city of allCities) {
+    const state = states.find((s) => s.code === city.stateCode)
+    if (state) {
+      params.push({ state: state.slug, city: city.slug })
+    }
+  }
+
+  return params
 }
 
 // Generate metadata for SEO
@@ -37,17 +45,29 @@ export async function generateMetadata({
 }: MetadataProps): Promise<Metadata> {
   const { state: stateSlug, city: citySlug } = await params
   const state = getStateBySlug(stateSlug)
-  const city = getCityBySlug(stateSlug, citySlug)
 
-  if (!state || !city) {
+  if (!state) {
     return {
       title: 'City Not Found | CostFinders',
       description: 'The requested city page could not be found.',
     }
   }
 
-  const stats = getCityStats(city.id)
-  return generateLocationMetadata(city.name, state.name, stats.dealCount)
+  // Find city in real data
+  const allCities = await getUnifiedCities()
+  const city = allCities.find(
+    (c) => c.slug === citySlug && c.stateCode === state.code,
+  )
+
+  if (!city) {
+    return {
+      title: 'City Not Found | CostFinders',
+      description: 'The requested city page could not be found.',
+    }
+  }
+
+  const dealCount = await getCityOfferCount(city.name)
+  return generateLocationMetadata(city.name, state.name, dealCount)
 }
 
 // Page props with Next.js 15 async params
@@ -58,14 +78,32 @@ interface CityPageProps {
 export default async function CityPage({ params }: CityPageProps) {
   const { state: stateSlug, city: citySlug } = await params
   const state = getStateBySlug(stateSlug)
-  const city = getCityBySlug(stateSlug, citySlug)
 
-  if (!state || !city) {
+  if (!state) {
     notFound()
   }
 
-  const neighborhoods = getNeighborhoodsForCity(city.id)
-  const stats = getCityStats(city.id)
+  // Find city in real data
+  const allCities = await getUnifiedCities()
+  const city = allCities.find(
+    (c) => c.slug === citySlug && c.stateCode === state.code,
+  )
+
+  if (!city) {
+    notFound()
+  }
+
+  // Get real counts from Supabase
+  const [businessCount, dealCount] = await Promise.all([
+    getBusinessCountForCity(city.name),
+    getCityOfferCount(city.name),
+  ])
+
+  // Keep mock neighborhoods since they don't exist in Supabase
+  // Use a synthetic city ID to look up mock neighborhoods
+  const mockCityId = `city-${city.slug}`
+  const neighborhoods = getNeighborhoodsForCity(mockCityId)
+  const neighborhoodCount = neighborhoods.length
 
   // Build breadcrumb items
   const breadcrumbItems = [
@@ -106,12 +144,8 @@ export default async function CityPage({ params }: CityPageProps) {
               <p className="text-[#78350f] max-w-2xl mb-6">
                 Discover the best medspa deals and aesthetic treatments in{' '}
                 {city.name}, {state.name}. Compare prices on Botox, fillers,
-                laser treatments, and more from verified providers across{' '}
-                {stats.neighborhoodCount}{' '}
-                {stats.neighborhoodCount === 1
-                  ? 'neighborhood'
-                  : 'neighborhoods'}
-                .
+                laser treatments, and more from {businessCount} verified
+                providers.
               </p>
 
               {/* Stats Row */}
@@ -119,7 +153,7 @@ export default async function CityPage({ params }: CityPageProps) {
                 <div className="flex items-center gap-2">
                   <Tag size={20} weight="light" className="text-amber-800" />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.dealCount}
+                    {dealCount}
                   </span>
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
@@ -130,59 +164,69 @@ export default async function CityPage({ params }: CityPageProps) {
                     className="text-amber-800"
                   />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.businessCount}
+                    {businessCount}
                   </span>
                   <span className="text-[#78350f]">Verified Providers</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin size={20} weight="light" className="text-amber-800" />
-                  <span className="font-semibold text-[#451a03]">
-                    {stats.neighborhoodCount}
-                  </span>
-                  <span className="text-[#78350f]">
-                    {stats.neighborhoodCount === 1
-                      ? 'Neighborhood'
-                      : 'Neighborhoods'}
-                  </span>
-                </div>
+                {neighborhoodCount > 0 && (
+                  <div className="flex items-center gap-2">
+                    <MapPin
+                      size={20}
+                      weight="light"
+                      className="text-amber-800"
+                    />
+                    <span className="font-semibold text-[#451a03]">
+                      {neighborhoodCount}
+                    </span>
+                    <span className="text-[#78350f]">
+                      {neighborhoodCount === 1
+                        ? 'Neighborhood'
+                        : 'Neighborhoods'}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </section>
 
           {/* Neighborhoods Grid */}
-          <section>
-            <h2 className="text-xl font-semibold text-[#451a03] mb-6">
-              Browse by Neighborhood
-            </h2>
+          {neighborhoods.length > 0 && (
+            <section>
+              <h2 className="text-xl font-semibold text-[#451a03] mb-6">
+                Browse by Neighborhood
+              </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {neighborhoods.map((neighborhood) => {
-                const neighborhoodSlug = slugifyNeighborhood(neighborhood.name)
-                // Mock data: distribute deals/businesses across neighborhoods
-                const neighborhoodDealCount = Math.ceil(
-                  stats.dealCount / Math.max(stats.neighborhoodCount, 1),
-                )
-                const neighborhoodBusinessCount = Math.ceil(
-                  stats.businessCount / Math.max(stats.neighborhoodCount, 1),
-                )
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {neighborhoods.map((neighborhood) => {
+                  const neighborhoodSlug = slugifyNeighborhood(neighborhood.name)
+                  // Distribute real counts across neighborhoods
+                  const neighborhoodDealCount = Math.ceil(
+                    dealCount / Math.max(neighborhoodCount, 1),
+                  )
+                  const neighborhoodBusinessCount = Math.ceil(
+                    businessCount / Math.max(neighborhoodCount, 1),
+                  )
 
-                return (
-                  <NeighborhoodCard
-                    key={neighborhood.id}
-                    name={neighborhood.name}
-                    slug={neighborhoodSlug}
-                    citySlug={citySlug}
-                    stateSlug={state.slug}
-                    cityName={city.name}
-                    dealCount={neighborhoodDealCount}
-                    businessCount={neighborhoodBusinessCount}
-                  />
-                )
-              })}
-            </div>
+                  return (
+                    <NeighborhoodCard
+                      key={neighborhood.id}
+                      name={neighborhood.name}
+                      slug={neighborhoodSlug}
+                      citySlug={citySlug}
+                      stateSlug={state.slug}
+                      cityName={city.name}
+                      dealCount={neighborhoodDealCount}
+                      businessCount={neighborhoodBusinessCount}
+                    />
+                  )
+                })}
+              </div>
+            </section>
+          )}
 
-            {/* Empty State */}
-            {neighborhoods.length === 0 && (
+          {/* Empty State (no neighborhoods) */}
+          {neighborhoods.length === 0 && (
+            <section>
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
                 <MapPin
                   size={48}
@@ -197,8 +241,8 @@ export default async function CityPage({ params }: CityPageProps) {
                   soon. Check back later for new locations.
                 </p>
               </div>
-            )}
-          </section>
+            </section>
+          )}
         </div>
       </main>
     </>

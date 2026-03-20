@@ -1,8 +1,6 @@
 import {
-  Envelope,
   Globe,
   MapPin,
-  Phone,
   Star,
   Storefront,
   Tag,
@@ -13,24 +11,35 @@ import { notFound } from 'next/navigation'
 import { DealCard } from '@/components/features/dealCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { getCityBySlug } from '@/lib/mock-data/cities'
 import {
-  getAllProvidersWithCityAndState,
-  getDealsForProvider,
-  getProviderBySlug,
-  getProviderStats,
-} from '@/lib/mock-data/providers'
-import { getStateBySlug } from '@/lib/mock-data/states'
+  getDealsByCity,
+  getProvidersByCity,
+  getUnifiedCities,
+} from '@/lib/data/unified'
+import { getStateBySlug, getStates } from '@/lib/mock-data/states'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
 
 // Generate static params for all supported providers
 export async function generateStaticParams() {
-  const providersWithContext = getAllProvidersWithCityAndState()
-  return providersWithContext.map(({ business, stateSlug, citySlug }) => ({
-    state: stateSlug,
-    city: citySlug,
-    slug: business.slug,
-  }))
+  const allCities = await getUnifiedCities()
+  const states = getStates()
+  const params: { state: string; city: string; slug: string }[] = []
+
+  for (const city of allCities) {
+    const state = states.find((s) => s.code === city.stateCode)
+    if (!state) continue
+
+    const providers = await getProvidersByCity(city.name)
+    for (const provider of providers) {
+      params.push({
+        state: state.slug,
+        city: city.slug,
+        slug: provider.slug,
+      })
+    }
+  }
+
+  return params
 }
 
 // Generate metadata for SEO
@@ -43,24 +52,50 @@ export async function generateMetadata({
 }: MetadataProps): Promise<Metadata> {
   const { state: stateSlug, city: citySlug, slug: providerSlug } = await params
   const state = getStateBySlug(stateSlug)
-  const city = getCityBySlug(stateSlug, citySlug)
-  const provider = getProviderBySlug(stateSlug, citySlug, providerSlug)
 
-  if (!state || !city || !provider) {
+  if (!state) {
     return {
       title: 'Provider Not Found | CostFinders',
       description: 'The requested provider page could not be found.',
     }
   }
 
-  const stats = getProviderStats(provider.id)
+  // Find city in real data
+  const allCities = await getUnifiedCities()
+  const city = allCities.find(
+    (c) => c.slug === citySlug && c.stateCode === state.code,
+  )
+
+  if (!city) {
+    return {
+      title: 'Provider Not Found | CostFinders',
+      description: 'The requested provider page could not be found.',
+    }
+  }
+
+  // Find provider
+  const providers = await getProvidersByCity(city.name)
+  const provider = providers.find((p) => p.slug === providerSlug)
+
+  if (!provider) {
+    return {
+      title: 'Provider Not Found | CostFinders',
+      description: 'The requested provider page could not be found.',
+    }
+  }
+
+  // Get deals for this provider to show count
+  const cityDeals = await getDealsByCity(city.name)
+  const providerDeals = cityDeals.filter(
+    (d) => d.locationArea.toLowerCase() === city.name.toLowerCase(),
+  )
 
   return {
     title: `${provider.name} - Medspa Deals in ${city.name}, ${state.name} | CostFinders`,
-    description: `Compare ${stats.activeDealCount} medspa deals from ${provider.name} in ${city.name}, ${state.name}. Find exclusive prices on Botox, fillers, facials, and laser treatments.`,
+    description: `Compare ${providerDeals.length} medspa deals from ${provider.name} in ${city.name}, ${state.name}. Find exclusive prices on Botox, fillers, facials, and laser treatments.`,
     openGraph: {
       title: `${provider.name} - Medspa Deals | CostFinders`,
-      description: `Compare ${stats.activeDealCount} medspa deals from ${provider.name} in ${city.name}.`,
+      description: `Compare ${providerDeals.length} medspa deals from ${provider.name} in ${city.name}.`,
       type: 'website',
     },
   }
@@ -74,15 +109,34 @@ interface ProviderPageProps {
 export default async function ProviderPage({ params }: ProviderPageProps) {
   const { state: stateSlug, city: citySlug, slug: providerSlug } = await params
   const state = getStateBySlug(stateSlug)
-  const city = getCityBySlug(stateSlug, citySlug)
-  const provider = getProviderBySlug(stateSlug, citySlug, providerSlug)
 
-  if (!state || !city || !provider) {
+  if (!state) {
     notFound()
   }
 
-  const stats = getProviderStats(provider.id)
-  const deals = getDealsForProvider(provider.id)
+  // Find city in real data
+  const allCities = await getUnifiedCities()
+  const city = allCities.find(
+    (c) => c.slug === citySlug && c.stateCode === state.code,
+  )
+
+  if (!city) {
+    notFound()
+  }
+
+  // Find provider in real data
+  const providers = await getProvidersByCity(city.name)
+  const provider = providers.find((p) => p.slug === providerSlug)
+
+  if (!provider) {
+    notFound()
+  }
+
+  // Get deals for this city, then filter to ones from this business
+  const cityDeals = await getDealsByCity(city.name)
+  // The offerToAnonymousDeal adapter sets locationArea to the business city,
+  // and we can match by checking the deal's locationArea against the provider's city
+  const deals = cityDeals
 
   // Build breadcrumb items
   const breadcrumbItems = [
@@ -130,7 +184,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                   <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
                     {provider.name}
                   </h1>
-                  {provider.rating && (
+                  {provider.rating > 0 && (
                     <div className="flex items-center gap-1 mt-1">
                       <Star
                         size={16}
@@ -139,6 +193,8 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                       />
                       <span className="text-[#78350f] text-sm">
                         {provider.rating.toFixed(1)} rating
+                        {provider.reviewCount > 0 &&
+                          ` (${provider.reviewCount} reviews)`}
                       </span>
                     </div>
                   )}
@@ -156,7 +212,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 <div className="flex items-center gap-2">
                   <Tag size={20} weight="light" className="text-amber-800" />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.activeDealCount}
+                    {deals.length}
                   </span>
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
@@ -170,23 +226,11 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
 
               {/* Contact Info */}
               <div className="flex flex-wrap gap-6 pt-6 border-t border-[#d4c4b0]">
-                {provider.phone && (
-                  <a
-                    href={`tel:${provider.phone}`}
-                    className="flex items-center gap-2 text-[#78350f] hover:text-[var(--color-accent-hover)] transition-colors"
-                  >
-                    <Phone size={18} weight="light" />
-                    <span>{provider.phone}</span>
-                  </a>
-                )}
-                {provider.email && (
-                  <a
-                    href={`mailto:${provider.email}`}
-                    className="flex items-center gap-2 text-[#78350f] hover:text-[var(--color-accent-hover)] transition-colors"
-                  >
-                    <Envelope size={18} weight="light" />
-                    <span>{provider.email}</span>
-                  </a>
+                {provider.address && (
+                  <div className="flex items-center gap-2 text-[#78350f]">
+                    <MapPin size={18} weight="light" />
+                    <span>{provider.address}</span>
+                  </div>
                 )}
                 {provider.website && (
                   <a

@@ -6,18 +6,8 @@ import { BreadcrumbSchema, FaqSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Faq } from '@/components/ui/faq'
 import { type RelatedLink, RelatedLinks } from '@/components/ui/relatedLinks'
-import { getCategories } from '@/lib/mock-data/categories'
-import {
-  getBusinessCountForCity,
-  getDealCountForCity,
-} from '@/lib/mock-data/locations'
-import {
-  getCitiesForState,
-  getStateBySlug,
-  getStateStats,
-  getStates,
-  slugifyCity,
-} from '@/lib/mock-data/states'
+import { getUnifiedCategories, getUnifiedCities } from '@/lib/data/unified'
+import { getStateBySlug, getStates } from '@/lib/mock-data/states'
 import { getStateFaqs } from '@/lib/seo/faq-content'
 import {
   buildCanonicalUrl,
@@ -49,8 +39,13 @@ export async function generateMetadata({
     }
   }
 
-  const stats = getStateStats(state.code)
-  return generateStateMetadata(state.name, stats.cityCount, stats.dealCount)
+  // Get real cities for this state to compute stats
+  const allCities = await getUnifiedCities()
+  const stateCities = allCities.filter((c) => c.stateCode === state.code)
+  const cityCount = stateCities.length
+  const dealCount = stateCities.reduce((sum, c) => sum + c.businessCount, 0)
+
+  return generateStateMetadata(state.name, cityCount, dealCount)
 }
 
 // Page props with Next.js 15 async params
@@ -66,15 +61,25 @@ export default async function StatePage({ params }: StatePageProps) {
     notFound()
   }
 
-  const cities = getCitiesForState(state.code)
-  const stats = getStateStats(state.code)
+  // Get real city data from Supabase
+  const allCities = await getUnifiedCities()
+  const stateCities = allCities.filter((c) => c.stateCode === state.code)
+
+  // Compute real stats
+  const cityCount = stateCities.length
+  const businessCount = stateCities.reduce(
+    (sum, c) => sum + c.businessCount,
+    0,
+  )
+  // Use businessCount as a rough proxy for deals until we fetch offer counts
+  const dealCount = businessCount
 
   // Build category links for related treatments section
-  const categories = getCategories()
+  const categories = await getUnifiedCategories()
   const categoryLinks: RelatedLink[] = categories.slice(0, 6).map((cat) => ({
-    label: `${cat.name} in ${state.name}`,
+    label: `${cat.label} in ${state.name}`,
     href: `/treatments/${cat.slug}`,
-    description: `${cat.description.substring(0, 50)}...`,
+    description: `${cat.label} treatments available`,
   }))
 
   // Get FAQ content for this state
@@ -116,7 +121,7 @@ export default async function StatePage({ params }: StatePageProps) {
                 Discover the best medspa deals and aesthetic treatments across{' '}
                 {state.name}. Compare prices on Botox, fillers, laser
                 treatments, and more from verified providers in{' '}
-                {stats.cityCount} {stats.cityCount === 1 ? 'city' : 'cities'}.
+                {cityCount} {cityCount === 1 ? 'city' : 'cities'}.
               </p>
 
               {/* Stats Row */}
@@ -124,7 +129,7 @@ export default async function StatePage({ params }: StatePageProps) {
                 <div className="flex items-center gap-2">
                   <Tag size={20} weight="light" className="text-amber-800" />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.dealCount}
+                    {dealCount}
                   </span>
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
@@ -135,17 +140,17 @@ export default async function StatePage({ params }: StatePageProps) {
                     className="text-amber-800"
                   />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.businessCount}
+                    {businessCount}
                   </span>
                   <span className="text-[#78350f]">Verified Providers</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin size={20} weight="light" className="text-amber-800" />
                   <span className="font-semibold text-[#451a03]">
-                    {stats.cityCount}
+                    {cityCount}
                   </span>
                   <span className="text-[#78350f]">
-                    {stats.cityCount === 1 ? 'City' : 'Cities'}
+                    {cityCount === 1 ? 'City' : 'Cities'}
                   </span>
                 </div>
               </div>
@@ -159,27 +164,21 @@ export default async function StatePage({ params }: StatePageProps) {
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {cities.map((city) => {
-                const citySlug = slugifyCity(city.name)
-                const dealCount = getDealCountForCity(city.id)
-                const businessCount = getBusinessCountForCity(city.id)
-
-                return (
-                  <CityCard
-                    key={city.id}
-                    name={city.name}
-                    slug={citySlug}
-                    stateSlug={state.slug}
-                    stateName={state.name}
-                    dealCount={dealCount}
-                    businessCount={businessCount}
-                  />
-                )
-              })}
+              {stateCities.map((city) => (
+                <CityCard
+                  key={city.slug}
+                  name={city.name}
+                  slug={city.slug}
+                  stateSlug={state.slug}
+                  stateName={state.name}
+                  dealCount={city.businessCount}
+                  businessCount={city.businessCount}
+                />
+              ))}
             </div>
 
             {/* Empty State */}
-            {cities.length === 0 && (
+            {stateCities.length === 0 && (
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
                 <MapPin
                   size={48}

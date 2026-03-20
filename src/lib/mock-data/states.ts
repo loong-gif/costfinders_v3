@@ -12,11 +12,12 @@ export interface StateInfo {
 }
 
 // Supported states for SEO landing pages
+// Updated to match real Supabase data (cities from CITY_STATE_MAP in adapters.ts)
 export const SUPPORTED_STATES: StateInfo[] = [
+  { name: 'Arizona', slug: 'arizona', code: 'AZ' },
   { name: 'California', slug: 'california', code: 'CA' },
-  { name: 'Texas', slug: 'texas', code: 'TX' },
-  { name: 'New York', slug: 'new-york', code: 'NY' },
-  { name: 'Florida', slug: 'florida', code: 'FL' },
+  { name: 'Colorado', slug: 'colorado', code: 'CO' },
+  { name: 'Oklahoma', slug: 'oklahoma', code: 'OK' },
 ]
 
 /**
