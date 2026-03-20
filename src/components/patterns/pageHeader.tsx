@@ -49,14 +49,14 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
           {breadcrumbs.map((crumb, index) => (
             <div key={crumb.href} className="flex items-center gap-1.5">
               {index > 0 && (
-                <CaretRight size={14} weight="bold" className="text-stone-500" />
+                <CaretRight size={14} weight="bold" className="text-[#92400e]" />
               )}
               {crumb.isCurrentPage ? (
-                <span className="text-stone-100 font-medium">{crumb.label}</span>
+                <span className="text-[#451a03] font-medium">{crumb.label}</span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="text-stone-400 hover:text-stone-100 transition-colors"
+                  className="text-[#78350f] hover:text-[#451a03] transition-colors"
                 >
                   {crumb.label}
                 </Link>
@@ -72,13 +72,13 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
           <button
             type="button"
             onClick={handleBack}
-            className="p-2 -ml-2 rounded-xl text-stone-400 hover:text-stone-100 hover:bg-stone-800/50 transition-all"
+            className="p-2 -ml-2 rounded-xl text-[#78350f] hover:text-[#451a03] hover:bg-[#d4c4b0]/30 transition-all"
             aria-label="Go back"
           >
             <ArrowLeft size={20} weight="light" />
           </button>
         )}
-        <h1 className="text-2xl font-bold text-stone-100">{pageTitle}</h1>
+        <h1 className="text-2xl font-bold text-[#451a03]">{pageTitle}</h1>
       </div>
     </div>
   )

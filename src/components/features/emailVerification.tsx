@@ -63,21 +63,21 @@ export function EmailVerification({
       <div className="text-center space-y-6">
         {/* Icon */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
             <EnvelopeSimple
               size={32}
               weight="light"
-              className="text-amber-400"
+              className="text-amber-800"
             />
           </div>
         </div>
 
         {/* Heading */}
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-stone-100">
+          <h3 className="text-lg font-semibold text-[#451a03]">
             Enter verification code
           </h3>
-          <p className="text-sm text-stone-400">
+          <p className="text-sm text-[#78350f]">
             Enter the 6-digit code sent to {email}
           </p>
         </div>
@@ -114,16 +114,16 @@ export function EmailVerification({
         {/* Resend */}
         <div className="space-y-2">
           {resendMessage ? (
-            <p className="text-sm text-emerald-400 bg-emerald-400/10 px-3 py-2 rounded-lg">
+            <p className="text-sm text-emerald-600 bg-emerald-600/10 px-3 py-2 rounded-lg">
               Code sent!
             </p>
           ) : (
-            <p className="text-sm text-stone-400">
+            <p className="text-sm text-[#78350f]">
               Didn&apos;t receive the code?{' '}
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
+                className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
               >
                 Resend
               </button>
@@ -135,7 +135,7 @@ export function EmailVerification({
         <button
           type="button"
           onClick={() => setShowCodeEntry(false)}
-          className="text-sm text-stone-500 hover:text-stone-400 transition-colors"
+          className="text-sm text-[#92400e] hover:text-[#78350f] transition-colors"
         >
           Back to email screen
         </button>
@@ -147,23 +147,23 @@ export function EmailVerification({
     <div className="text-center space-y-6">
       {/* Icon */}
       <div className="flex justify-center">
-        <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
           <EnvelopeSimple
             size={32}
             weight="light"
-            className="text-amber-400"
+            className="text-amber-800"
           />
         </div>
       </div>
 
       {/* Heading */}
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-stone-100">
+        <h3 className="text-lg font-semibold text-[#451a03]">
           Check your email
         </h3>
-        <p className="text-sm text-stone-400">
+        <p className="text-sm text-[#78350f]">
           We sent a verification link to{' '}
-          <span className="font-medium text-stone-100">{email}</span>
+          <span className="font-medium text-[#451a03]">{email}</span>
         </p>
       </div>
 
@@ -174,18 +174,18 @@ export function EmailVerification({
 
       {/* Success Message */}
       {resendMessage && (
-        <p className="text-sm text-emerald-400 bg-emerald-400/10 px-3 py-2 rounded-lg">
+        <p className="text-sm text-emerald-600 bg-emerald-600/10 px-3 py-2 rounded-lg">
           Check your email!
         </p>
       )}
 
       {/* Resend */}
-      <p className="text-sm text-stone-400">
+      <p className="text-sm text-[#78350f]">
         Didn&apos;t receive the email?{' '}
         <button
           type="button"
           onClick={handleResend}
-          className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
+          className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
         >
           Resend
         </button>
@@ -195,7 +195,7 @@ export function EmailVerification({
       <button
         type="button"
         onClick={() => setShowCodeEntry(true)}
-        className="text-sm text-stone-500 hover:text-stone-400 transition-colors"
+        className="text-sm text-[#92400e] hover:text-[#78350f] transition-colors"
       >
         Or enter verification code manually
       </button>

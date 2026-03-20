@@ -159,17 +159,17 @@ export default function CreateBusinessPage() {
   // Render auth view
   if (pageView === 'auth') {
     return (
-      <main className="min-h-screen bg-stone-950 pt-20">
+      <main className="min-h-screen bg-[#e8ddd0] pt-20">
         <div className="max-w-md mx-auto px-4 sm:px-6 py-12">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/20 mb-6">
-              <Plus size={32} weight="light" className="text-amber-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-800/8 border border-amber-800/15 mb-6">
+              <Plus size={32} weight="light" className="text-amber-800" />
             </div>
-            <h1 className="text-2xl font-bold text-stone-100 mb-2">
+            <h1 className="text-2xl font-bold text-[#451a03] mb-2">
               List Your Business
             </h1>
-            <p className="text-stone-400">
+            <p className="text-[#78350f]">
               {authView === 'signUp'
                 ? 'Create an account to list your medspa on CostFinders'
                 : 'Sign in to your business account'}
@@ -238,7 +238,7 @@ export default function CreateBusinessPage() {
               )}
 
               {state.error && (
-                <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">
+                <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg">
                   {state.error}
                 </p>
               )}
@@ -256,14 +256,14 @@ export default function CreateBusinessPage() {
             </form>
 
             {/* Switch auth view */}
-            <p className="text-center text-sm text-stone-400 mt-6">
+            <p className="text-center text-sm text-[#78350f] mt-6">
               {authView === 'signUp' ? (
                 <>
                   Already have a business account?{' '}
                   <button
                     type="button"
                     onClick={() => setAuthView('signIn')}
-                    className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
+                    className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
                   >
                     Sign in
                   </button>
@@ -274,7 +274,7 @@ export default function CreateBusinessPage() {
                   <button
                     type="button"
                     onClick={() => setAuthView('signUp')}
-                    className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
+                    className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
                   >
                     Create one
                   </button>
@@ -284,11 +284,11 @@ export default function CreateBusinessPage() {
           </Card>
 
           {/* Back link */}
-          <p className="text-center text-sm text-stone-500 mt-6">
+          <p className="text-center text-sm text-[#92400e] mt-6">
             <button
               type="button"
               onClick={() => router.back()}
-              className="hover:text-stone-400 transition-colors"
+              className="hover:text-[#78350f] transition-colors"
             >
               ← Back to business options
             </button>
@@ -301,23 +301,23 @@ export default function CreateBusinessPage() {
   // Render success view
   if (pageView === 'success' && createdBusiness) {
     return (
-      <main className="min-h-screen bg-stone-950 pt-20">
+      <main className="min-h-screen bg-[#e8ddd0] pt-20">
         <div className="max-w-md mx-auto px-4 sm:px-6 py-12">
           <div className="text-center space-y-6">
             {/* Success icon */}
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-emerald-400/20 flex items-center justify-center">
-                <CheckCircle size={48} weight="fill" className="text-emerald-400" />
+                <CheckCircle size={48} weight="fill" className="text-emerald-600" />
               </div>
             </div>
 
             {/* Success message */}
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-stone-100">
+              <h1 className="text-2xl font-bold text-[#451a03]">
                 Your business has been created!
               </h1>
-              <p className="text-stone-400">
-                <span className="font-medium text-stone-100">
+              <p className="text-[#78350f]">
+                <span className="font-medium text-[#451a03]">
                   {createdBusiness.name}
                 </span>{' '}
                 is now listed on CostFinders
@@ -327,17 +327,17 @@ export default function CreateBusinessPage() {
             {/* Business details card */}
             <Card className="p-6 text-left">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                  <Storefront size={24} weight="light" className="text-amber-400" />
+                <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                  <Storefront size={24} weight="light" className="text-amber-800" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-stone-100">
+                  <h3 className="font-semibold text-[#451a03]">
                     {createdBusiness.name}
                   </h3>
-                  <p className="text-sm text-stone-400">
+                  <p className="text-sm text-[#78350f]">
                     {createdBusiness.city}, {createdBusiness.state}
                   </p>
-                  <p className="text-sm text-stone-500">
+                  <p className="text-sm text-[#92400e]">
                     {createdBusiness.email}
                   </p>
                 </div>
@@ -345,8 +345,8 @@ export default function CreateBusinessPage() {
             </Card>
 
             {/* Info note */}
-            <div className="p-4 rounded-xl bg-amber-400/5 border border-amber-400/20">
-              <p className="text-sm text-stone-400">
+            <div className="p-4 rounded-xl bg-amber-800/5 border border-amber-800/15">
+              <p className="text-sm text-[#78350f]">
                 Your listing will go live after a brief review. You&apos;ll have full
                 access to manage your profile and create deals.
               </p>
@@ -365,17 +365,17 @@ export default function CreateBusinessPage() {
 
   // Render form view (authenticated)
   return (
-    <main className="min-h-screen bg-stone-950 pt-20">
+    <main className="min-h-screen bg-[#e8ddd0] pt-20">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/20 mb-6">
-            <Plus size={32} weight="light" className="text-amber-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-800/8 border border-amber-800/15 mb-6">
+            <Plus size={32} weight="light" className="text-amber-800" />
           </div>
-          <h1 className="text-2xl font-bold text-stone-100 mb-2">
+          <h1 className="text-2xl font-bold text-[#451a03] mb-2">
             List Your Business
           </h1>
-          <p className="text-stone-400">
+          <p className="text-[#78350f]">
             Fill in the details below to create your medspa listing
           </p>
         </div>
@@ -388,11 +388,11 @@ export default function CreateBusinessPage() {
         />
 
         {/* Back link */}
-        <p className="text-center text-sm text-stone-500 mt-6">
+        <p className="text-center text-sm text-[#92400e] mt-6">
           <button
             type="button"
             onClick={() => router.back()}
-            className="hover:text-stone-400 transition-colors"
+            className="hover:text-[#78350f] transition-colors"
           >
             ← Back to business options
           </button>

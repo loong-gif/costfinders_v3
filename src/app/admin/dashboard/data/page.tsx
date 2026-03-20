@@ -136,13 +136,13 @@ function formatRelativeTime(dateString: string): string {
 function getStatusIcon(status: string) {
   switch (status) {
     case 'success':
-      return <CheckCircle size={16} weight="fill" className="text-emerald-400" />
+      return <CheckCircle size={16} weight="fill" className="text-emerald-600" />
     case 'warning':
-      return <Warning size={16} weight="fill" className="text-amber-400" />
+      return <Warning size={16} weight="fill" className="text-amber-800" />
     case 'failed':
-      return <XCircle size={16} weight="fill" className="text-red-400" />
+      return <XCircle size={16} weight="fill" className="text-red-600" />
     default:
-      return <Clock size={16} weight="fill" className="text-stone-500" />
+      return <Clock size={16} weight="fill" className="text-[#92400e]" />
   }
 }
 
@@ -201,39 +201,39 @@ export default function DataManagementPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-stone-100">Data Management</h1>
-        <p className="text-stone-400 mt-1">
+        <h1 className="text-2xl font-bold text-[#451a03]">Data Management</h1>
+        <p className="text-[#78350f] mt-1">
           Export, import, and manage platform data
         </p>
       </div>
 
       {/* Export Tools Section */}
       <div>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4">Export Tools</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Export Tools</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Export Deals Card */}
           <Card variant="glass" padding="lg" className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-                <FileArrowDown size={20} weight="fill" className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+                <FileArrowDown size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="font-semibold text-stone-100">Export Deals</h3>
-                <p className="text-sm text-stone-400">Download all deals as CSV</p>
+                <h3 className="font-semibold text-[#451a03]">Export Deals</h3>
+                <p className="text-sm text-[#78350f]">Download all deals as CSV</p>
               </div>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-stone-400 mb-1 block">Format</label>
+                <label className="text-sm text-[#78350f] mb-1 block">Format</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setDealsFormat('csv')}
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       dealsFormat === 'csv'
-                        ? 'bg-amber-400 text-white'
-                        : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                        ? 'bg-amber-800 text-white'
+                        : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                     }`}
                   >
                     CSV
@@ -243,8 +243,8 @@ export default function DataManagementPage() {
                     onClick={() => setDealsFormat('json')}
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       dealsFormat === 'json'
-                        ? 'bg-amber-400 text-white'
-                        : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                        ? 'bg-amber-800 text-white'
+                        : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                     }`}
                   >
                     JSON
@@ -253,15 +253,15 @@ export default function DataManagementPage() {
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 mb-1 block">Date Range</label>
+                <label className="text-sm text-[#78350f] mb-1 block">Date Range</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setDealsDateRange('30days')}
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       dealsDateRange === '30days'
-                        ? 'bg-amber-400 text-white'
-                        : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                        ? 'bg-amber-800 text-white'
+                        : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                     }`}
                   >
                     Last 30 days
@@ -271,8 +271,8 @@ export default function DataManagementPage() {
                     onClick={() => setDealsDateRange('all')}
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       dealsDateRange === 'all'
-                        ? 'bg-amber-400 text-white'
-                        : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                        ? 'bg-amber-800 text-white'
+                        : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                     }`}
                   >
                     All time
@@ -293,12 +293,12 @@ export default function DataManagementPage() {
           {/* Export Businesses Card */}
           <Card variant="glass" padding="lg" className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-                <Buildings size={20} weight="fill" className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+                <Buildings size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="font-semibold text-stone-100">Export Businesses</h3>
-                <p className="text-sm text-stone-400">Download business directory</p>
+                <h3 className="font-semibold text-[#451a03]">Export Businesses</h3>
+                <p className="text-sm text-[#78350f]">Download business directory</p>
               </div>
             </div>
 
@@ -308,9 +308,9 @@ export default function DataManagementPage() {
                   type="checkbox"
                   checked={includeInactive}
                   onChange={(e) => setIncludeInactive(e.target.checked)}
-                  className="w-4 h-4 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400 focus:ring-offset-0"
+                  className="w-4 h-4 rounded border-[#d4c4b0] bg-[#f2ebe2] text-amber-800 focus:ring-amber-800 focus:ring-offset-0"
                 />
-                <span className="text-sm text-stone-400">Include inactive businesses</span>
+                <span className="text-sm text-[#78350f]">Include inactive businesses</span>
               </label>
             </div>
 
@@ -326,22 +326,22 @@ export default function DataManagementPage() {
           {/* Export Users Card */}
           <Card variant="glass" padding="lg" className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-                <Users size={20} weight="fill" className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+                <Users size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="font-semibold text-stone-100">Export Users</h3>
-                <p className="text-sm text-stone-400">Download consumer data</p>
+                <h3 className="font-semibold text-[#451a03]">Export Users</h3>
+                <p className="text-sm text-[#78350f]">Download consumer data</p>
               </div>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-stone-400 mb-1 block">Filter</label>
+                <label className="text-sm text-[#78350f] mb-1 block">Filter</label>
                 <select
                   value={userFilter}
                   onChange={(e) => setUserFilter(e.target.value as UserFilter)}
-                  className="w-full px-3 py-2 bg-stone-900 border border-stone-800 rounded-lg text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                  className="w-full px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-lg text-[#451a03] text-sm focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                 >
                   <option value="all">All Users</option>
                   <option value="verified">Verified Only</option>
@@ -362,9 +362,9 @@ export default function DataManagementPage() {
 
       {/* Bulk Actions Section */}
       <div>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4">Bulk Actions</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Bulk Actions</h2>
         <Card variant="glass" padding="lg">
-          <p className="text-stone-400 mb-4">
+          <p className="text-[#78350f] mb-4">
             Perform operations on multiple records at once
           </p>
 
@@ -416,8 +416,8 @@ export default function DataManagementPage() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold text-stone-100">Admin Activity Log</h2>
-            <p className="text-sm text-stone-400">Last 50 actions</p>
+            <h2 className="text-lg font-semibold text-[#451a03]">Admin Activity Log</h2>
+            <p className="text-sm text-[#78350f]">Last 50 actions</p>
           </div>
         </div>
 
@@ -435,8 +435,8 @@ export default function DataManagementPage() {
               onClick={() => setActivityFilter(tab.id as ActivityFilter)}
               className={`px-4 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
                 activityFilter === tab.id
-                  ? 'bg-amber-400 text-white'
-                  : 'bg-stone-900 text-stone-400 hover:bg-stone-800 hover:text-stone-100'
+                  ? 'bg-amber-800 text-white'
+                  : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee] hover:text-[#451a03]'
               }`}
             >
               {tab.label}
@@ -450,40 +450,40 @@ export default function DataManagementPage() {
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full min-w-[600px]">
               <thead>
-                <tr className="border-b border-stone-800">
-                  <th className="text-left p-4 text-sm font-semibold text-stone-400">
+                <tr className="border-b border-[#d4c4b0]">
+                  <th className="text-left p-4 text-sm font-semibold text-[#78350f]">
                     Timestamp
                   </th>
-                  <th className="text-left p-4 text-sm font-semibold text-stone-400">
+                  <th className="text-left p-4 text-sm font-semibold text-[#78350f]">
                     Admin
                   </th>
-                  <th className="text-left p-4 text-sm font-semibold text-stone-400">
+                  <th className="text-left p-4 text-sm font-semibold text-[#78350f]">
                     Action
                   </th>
-                  <th className="text-left p-4 text-sm font-semibold text-stone-400">
+                  <th className="text-left p-4 text-sm font-semibold text-[#78350f]">
                     Details
                   </th>
-                  <th className="text-left p-4 text-sm font-semibold text-stone-400">
+                  <th className="text-left p-4 text-sm font-semibold text-[#78350f]">
                     Status
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-800">
+              <tbody className="divide-y divide-[#d4c4b0]">
                 {filteredActivities.map((activity) => (
                   <tr
                     key={activity.id}
-                    className="hover:bg-stone-800 transition-colors"
+                    className="hover:bg-[#faf5ee] transition-colors"
                   >
-                    <td className="p-4 text-sm text-stone-500 whitespace-nowrap">
+                    <td className="p-4 text-sm text-[#92400e] whitespace-nowrap">
                       {formatRelativeTime(activity.timestamp)}
                     </td>
-                    <td className="p-4 text-sm text-stone-100">
+                    <td className="p-4 text-sm text-[#451a03]">
                       {activity.admin}
                     </td>
-                    <td className="p-4 text-sm text-stone-100 font-medium">
+                    <td className="p-4 text-sm text-[#451a03] font-medium">
                       {activity.action}
                     </td>
-                    <td className="p-4 text-sm text-stone-400">
+                    <td className="p-4 text-sm text-[#78350f]">
                       {activity.details}
                     </td>
                     <td className="p-4">
@@ -501,12 +501,12 @@ export default function DataManagementPage() {
           </div>
 
           {/* Mobile Card View */}
-          <div className="sm:hidden divide-y divide-stone-800">
+          <div className="sm:hidden divide-y divide-[#d4c4b0]">
             {filteredActivities.map((activity) => (
               <div key={activity.id} className="p-4">
                 {/* Header: Timestamp + Status */}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-stone-500">
+                  <span className="text-xs text-[#92400e]">
                     {formatRelativeTime(activity.timestamp)}
                   </span>
                   <Badge variant={getStatusBadgeVariant(activity.status)} size="sm">
@@ -517,10 +517,10 @@ export default function DataManagementPage() {
                   </Badge>
                 </div>
                 {/* Action + Admin */}
-                <p className="text-sm font-medium text-stone-100">{activity.action}</p>
-                <p className="text-xs text-stone-400 mt-0.5">by {activity.admin}</p>
+                <p className="text-sm font-medium text-[#451a03]">{activity.action}</p>
+                <p className="text-xs text-[#78350f] mt-0.5">by {activity.admin}</p>
                 {/* Details */}
-                <p className="text-sm text-stone-400 mt-2 pt-2 border-t border-stone-800">
+                <p className="text-sm text-[#78350f] mt-2 pt-2 border-t border-[#d4c4b0]">
                   {activity.details}
                 </p>
               </div>

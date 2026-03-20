@@ -85,8 +85,8 @@ export default function PricingHubPage() {
     <div className="space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-stone-100">Pricing</h1>
-        <p className="text-stone-400 mt-1">Manage your plan, lead costs, and billing</p>
+        <h1 className="text-2xl font-bold text-[#451a03]">Pricing</h1>
+        <p className="text-[#78350f] mt-1">Manage your plan, lead costs, and billing</p>
       </div>
 
       {/* Section 1: Current Plan Overview */}
@@ -116,8 +116,8 @@ export default function PricingHubPage() {
       {/* Usage Chart */}
       <Card variant="glass" padding="lg">
         <div className="flex items-center gap-2 mb-6">
-          <ChartBar size={20} weight="fill" className="text-amber-400" />
-          <h2 className="text-lg font-semibold text-stone-100">Lead usage history</h2>
+          <ChartBar size={20} weight="fill" className="text-amber-800" />
+          <h2 className="text-lg font-semibold text-[#451a03]">Lead usage history</h2>
         </div>
 
         <div className="flex items-end gap-2 h-32">
@@ -125,7 +125,7 @@ export default function PricingHubPage() {
             <div key={month.month} className="flex-1 flex flex-col items-center gap-2">
               <div className="w-full flex flex-col items-center justify-end h-24">
                 <div
-                  className="w-full max-w-[40px] bg-amber-400/80 rounded-t-lg transition-all duration-300"
+                  className="w-full max-w-[40px] bg-amber-800/80 rounded-t-lg transition-all duration-300"
                   style={{
                     height: `${(month.used / maxUsage) * 100}%`,
                     minHeight: month.used > 0 ? '8px' : '0px',
@@ -133,8 +133,8 @@ export default function PricingHubPage() {
                 />
               </div>
               <div className="text-center">
-                <p className="text-xs font-medium text-stone-100">{month.used}</p>
-                <p className="text-xs text-stone-500">{month.month}</p>
+                <p className="text-xs font-medium text-[#451a03]">{month.used}</p>
+                <p className="text-xs text-[#92400e]">{month.month}</p>
               </div>
             </div>
           ))}
@@ -151,7 +151,7 @@ export default function PricingHubPage() {
 
       {/* Section 5: Billing & Payment (for paid tier or expandable for free) */}
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-stone-100">Billing & payment</h2>
+        <h2 className="text-xl font-bold text-[#451a03]">Billing & payment</h2>
 
         {currentTier === 'paid' ? (
           <>
@@ -159,27 +159,27 @@ export default function PricingHubPage() {
             <Card variant="glass" padding="lg">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
-                  <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                     Current plan
                   </p>
-                  <p className="text-lg font-semibold text-stone-100">Professional</p>
-                  <p className="text-sm text-stone-400">$99/month</p>
+                  <p className="text-lg font-semibold text-[#451a03]">Professional</p>
+                  <p className="text-sm text-[#78350f]">$99/month</p>
                 </div>
                 <div>
-                  <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                     Next billing date
                   </p>
-                  <p className="text-lg font-semibold text-stone-100">Feb 15, 2025</p>
-                  <p className="text-sm text-stone-400">Auto-renewal enabled</p>
+                  <p className="text-lg font-semibold text-[#451a03]">Feb 15, 2025</p>
+                  <p className="text-sm text-[#78350f]">Auto-renewal enabled</p>
                 </div>
                 <div>
-                  <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                     Payment method
                   </p>
-                  <p className="text-lg font-semibold text-stone-100">
+                  <p className="text-lg font-semibold text-[#451a03]">
                     Visa ****4242
                   </p>
-                  <p className="text-sm text-stone-400">Expires 12/27</p>
+                  <p className="text-sm text-[#78350f]">Expires 12/27</p>
                 </div>
               </div>
             </Card>
@@ -200,13 +200,13 @@ export default function PricingHubPage() {
           </>
         ) : (
           <Card variant="glass" padding="lg">
-            <p className="text-stone-400">
+            <p className="text-[#78350f]">
               You&apos;re on the Free plan. Upgrade to Professional to access billing features and subscription management.
             </p>
             <button
               type="button"
               onClick={handleUpgrade}
-              className="mt-4 py-2.5 px-6 bg-amber-400 hover:bg-amber-500 text-white rounded-xl text-sm font-semibold transition-colors"
+              className="mt-4 py-2.5 px-6 bg-amber-800 hover:bg-amber-500 text-white rounded-xl text-sm font-semibold transition-colors"
             >
               Upgrade to Professional
             </button>

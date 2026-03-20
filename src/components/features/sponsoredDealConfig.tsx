@@ -55,34 +55,34 @@ export function SponsoredDealConfig({
     <div className="space-y-6">
       {/* Deal Preview Card */}
       <div>
-        <h3 className="text-sm font-medium text-stone-400 mb-3">
+        <h3 className="text-sm font-medium text-[#78350f] mb-3">
           Deal Preview
         </h3>
         <Card variant="glass" padding="md" className="relative">
           <div className="flex items-start gap-4">
             {/* Deal Icon */}
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-              <Tag size={24} weight="fill" className="text-amber-400" />
+            <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+              <Tag size={24} weight="fill" className="text-amber-800" />
             </div>
 
             {/* Deal Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2">
-                <h4 className="font-semibold text-stone-100 truncate">
+                <h4 className="font-semibold text-[#451a03] truncate">
                   {deal.title}
                 </h4>
                 <Badge variant="brand" size="sm" className="flex-shrink-0">
                   Sponsored
                 </Badge>
               </div>
-              <p className="text-sm text-stone-400 mt-1 line-clamp-2">
+              <p className="text-sm text-[#78350f] mt-1 line-clamp-2">
                 {deal.description}
               </p>
               <div className="flex items-center gap-4 mt-2 text-sm">
-                <span className="text-amber-400 font-medium">
+                <span className="text-amber-800 font-medium">
                   ${deal.dealPrice} {deal.unit}
                 </span>
-                <span className="flex items-center gap-1 text-stone-500">
+                <span className="flex items-center gap-1 text-[#92400e]">
                   <Eye size={14} weight="fill" />
                   {deal.viewCount.toLocaleString()} views
                 </span>
@@ -92,7 +92,7 @@ export function SponsoredDealConfig({
 
           {/* Sponsored indicator preview */}
           <div className="absolute -top-2 -right-2">
-            <div className="bg-amber-400 text-white text-xs px-2 py-1 rounded-full shadow-lg flex items-center gap-1">
+            <div className="bg-amber-800 text-white text-xs px-2 py-1 rounded-full shadow-lg flex items-center gap-1">
               <Rocket size={12} weight="fill" />
               Boosted
             </div>
@@ -103,13 +103,13 @@ export function SponsoredDealConfig({
       {/* Boost Options */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-stone-400">
+          <h3 className="text-sm font-medium text-[#78350f]">
             Select Boost Package
           </h3>
           <div className="relative">
             <button
               type="button"
-              className="text-stone-500 hover:text-stone-400 transition-colors"
+              className="text-[#92400e] hover:text-[#78350f] transition-colors"
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
               aria-label="Learn about sponsored placements"
@@ -117,8 +117,8 @@ export function SponsoredDealConfig({
               <Info size={18} weight="light" />
             </button>
             {showTooltip && (
-              <div className="absolute right-0 top-full mt-2 w-64 p-3 bg-stone-900 border border-stone-800 rounded-xl shadow-lg text-xs text-stone-400 z-10">
-                <p className="font-medium text-stone-100 mb-1">
+              <div className="absolute right-0 top-full mt-2 w-64 p-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl shadow-lg text-xs text-[#78350f] z-10">
+                <p className="font-medium text-[#451a03] mb-1">
                   Sponsored Placements
                 </p>
                 <p>
@@ -146,16 +146,16 @@ export function SponsoredDealConfig({
 
       {/* Estimated Reach Calculator */}
       {selectedBoost && (
-        <Card variant="glass" padding="md" className="bg-amber-400/5">
+        <Card variant="glass" padding="md" className="bg-amber-800/5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-              <TrendUp size={20} weight="fill" className="text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+              <TrendUp size={20} weight="fill" className="text-amber-800" />
             </div>
             <div>
-              <p className="text-sm font-medium text-stone-100">
+              <p className="text-sm font-medium text-[#451a03]">
                 Estimated Reach
               </p>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-[#92400e]">
                 Based on your current performance
               </p>
             </div>
@@ -163,22 +163,22 @@ export function SponsoredDealConfig({
 
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-stone-100">
+              <p className="text-2xl font-bold text-[#451a03]">
                 {estimatedReach.toLocaleString()}
               </p>
-              <p className="text-xs text-stone-500">Est. Impressions</p>
+              <p className="text-xs text-[#92400e]">Est. Impressions</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-amber-400">
+              <p className="text-2xl font-bold text-amber-800">
                 {selectedBoost.impressionMultiplier}x
               </p>
-              <p className="text-xs text-stone-500">Visibility Boost</p>
+              <p className="text-xs text-[#92400e]">Visibility Boost</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-stone-100">
+              <p className="text-2xl font-bold text-[#451a03]">
                 {selectedBoost.duration}
               </p>
-              <p className="text-xs text-stone-500">Days Active</p>
+              <p className="text-xs text-[#92400e]">Days Active</p>
             </div>
           </div>
         </Card>
@@ -189,14 +189,14 @@ export function SponsoredDealConfig({
         <Card variant="outline" padding="md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-stone-400">Total Cost</p>
-              <p className="text-2xl font-bold text-stone-100">
+              <p className="text-sm text-[#78350f]">Total Cost</p>
+              <p className="text-2xl font-bold text-[#451a03]">
                 ${selectedBoost.price}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-stone-400">Package</p>
-              <p className="font-medium text-stone-100">
+              <p className="text-sm text-[#78350f]">Package</p>
+              <p className="font-medium text-[#451a03]">
                 {selectedBoost.name}
               </p>
             </div>
@@ -252,15 +252,15 @@ function BoostOptionCard({
         w-full text-left p-4 rounded-xl border transition-all
         ${
           isSelected
-            ? 'border-amber-400 bg-amber-400/5 ring-2 ring-amber-400/20'
-            : 'border-stone-800 bg-stone-900 hover:border-stone-700'
+            ? 'border-amber-800 bg-amber-800/5 ring-2 ring-amber-800/15'
+            : 'border-[#d4c4b0] bg-[#f2ebe2] hover:border-[#c4b09a]'
         }
       `}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h4 className="font-semibold text-stone-100">{option.name}</h4>
+            <h4 className="font-semibold text-[#451a03]">{option.name}</h4>
             {option.hasFeaturedBadge && (
               <Badge variant="brand" size="sm">
                 <Star size={10} weight="fill" className="mr-1" />
@@ -268,10 +268,10 @@ function BoostOptionCard({
               </Badge>
             )}
           </div>
-          <p className="text-sm text-stone-400 mt-1">
+          <p className="text-sm text-[#78350f] mt-1">
             {option.description}
           </p>
-          <div className="flex items-center gap-4 mt-2 text-xs text-stone-500">
+          <div className="flex items-center gap-4 mt-2 text-xs text-[#92400e]">
             <span className="flex items-center gap-1">
               <TrendUp size={12} weight="fill" className="text-green-400" />
               {option.impressionMultiplier}x impressions
@@ -284,13 +284,13 @@ function BoostOptionCard({
         </div>
 
         <div className="flex flex-col items-end gap-2">
-          <p className="text-xl font-bold text-stone-100">${option.price}</p>
-          <p className="text-xs text-stone-500">{option.duration} days</p>
+          <p className="text-xl font-bold text-[#451a03]">${option.price}</p>
+          <p className="text-xs text-[#92400e]">{option.duration} days</p>
           {isSelected && (
             <CheckCircle
               size={20}
               weight="fill"
-              className="text-amber-400"
+              className="text-amber-800"
             />
           )}
         </div>

@@ -70,15 +70,15 @@ export default function IntegrationsPage() {
       <div>
         <Link
           href="/business/dashboard/settings"
-          className="inline-flex items-center gap-1 text-sm text-stone-400 hover:text-stone-100 transition-colors mb-4"
+          className="inline-flex items-center gap-1 text-sm text-[#78350f] hover:text-[#451a03] transition-colors mb-4"
         >
           <ArrowLeft size={16} weight="light" />
           Back to Settings
         </Link>
-        <h1 className="text-2xl font-bold text-stone-100">
+        <h1 className="text-2xl font-bold text-[#451a03]">
           Scheduling Integrations
         </h1>
-        <p className="text-stone-400 mt-1">
+        <p className="text-[#78350f] mt-1">
           Connect your scheduling software to automatically sync appointments from
           claimed deals.
         </p>
@@ -92,19 +92,19 @@ export default function IntegrationsPage() {
             <Card key={integration.id} className="p-5">
               <div className="flex flex-col h-full">
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-stone-800 border border-stone-800 flex items-center justify-center">
-                    <Icon size={24} weight="light" className="text-stone-400" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#faf5ee] border border-[#d4c4b0] flex items-center justify-center">
+                    <Icon size={24} weight="light" className="text-[#78350f]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-stone-100">
+                      <h3 className="font-semibold text-[#451a03]">
                         {integration.name}
                       </h3>
-                      <span className="px-2 py-0.5 text-xs font-medium bg-amber-400/10 text-amber-400 rounded-full">
+                      <span className="px-2 py-0.5 text-xs font-medium bg-amber-800/8 text-amber-800 rounded-full">
                         Coming Soon
                       </span>
                     </div>
-                    <p className="text-sm text-stone-400 mt-1">
+                    <p className="text-sm text-[#78350f] mt-1">
                       {integration.description}
                     </p>
                   </div>
@@ -129,15 +129,15 @@ export default function IntegrationsPage() {
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
-              <EnvelopeSimple size={24} weight="light" className="text-amber-400" />
+            <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
+              <EnvelopeSimple size={24} weight="light" className="text-amber-800" />
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-stone-100">
+            <h3 className="font-semibold text-[#451a03]">
               Get notified when integrations launch
             </h3>
-            <p className="text-sm text-stone-400 mt-0.5">
+            <p className="text-sm text-[#78350f] mt-0.5">
               Be the first to know when we add support for your favorite scheduling
               tools.
             </p>

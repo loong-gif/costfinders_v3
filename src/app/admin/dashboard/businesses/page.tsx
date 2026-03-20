@@ -41,18 +41,18 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
     <Card variant="glass" padding="md" className="flex items-center gap-4">
       <div
         className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-          highlight ? 'bg-amber-400/10' : 'bg-amber-400/10'
+          highlight ? 'bg-amber-800/8' : 'bg-amber-800/8'
         }`}
       >
         <Icon
           size={24}
           weight="fill"
-          className={highlight ? 'text-amber-400' : 'text-amber-400'}
+          className={highlight ? 'text-amber-800' : 'text-amber-800'}
         />
       </div>
       <div>
-        <p className="text-2xl font-bold text-stone-100">{value}</p>
-        <p className="text-sm text-stone-400">{label}</p>
+        <p className="text-2xl font-bold text-[#451a03]">{value}</p>
+        <p className="text-sm text-[#78350f]">{label}</p>
       </div>
     </Card>
   )
@@ -179,13 +179,13 @@ export default function BusinessesManagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-stone-100">Business Management</h1>
-        <p className="text-stone-400 mt-1">Manage business profiles</p>
+        <h1 className="text-2xl font-bold text-[#451a03]">Business Management</h1>
+        <p className="text-[#78350f] mt-1">Manage business profiles</p>
       </div>
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -210,11 +210,11 @@ export default function BusinessesManagementPage() {
       {stats.unclaimedWithDeals > 0 && (
         <Card variant="glass" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-              <Tag size={20} weight="fill" className="text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+              <Tag size={20} weight="fill" className="text-amber-800" />
             </div>
-            <p className="text-sm text-stone-400">
-              <span className="text-stone-100 font-medium">
+            <p className="text-sm text-[#78350f]">
+              <span className="text-[#451a03] font-medium">
                 {stats.unclaimedWithDeals} unclaimed businesses
               </span>{' '}
               have {stats.unclaimedDealsTotal} total deals waiting to be claimed
@@ -227,14 +227,14 @@ export default function BusinessesManagementPage() {
       <div className="relative">
         <MagnifyingGlass
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
         />
         <input
           type="text"
           placeholder="Search by name or city..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+          className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
         />
       </div>
 
@@ -251,7 +251,7 @@ export default function BusinessesManagementPage() {
             {tab.label}
             <span
               className={`px-1.5 py-0.5 text-xs rounded-full ${
-                activeFilter === tab.value ? 'bg-stone-800' : 'bg-stone-900'
+                activeFilter === tab.value ? 'bg-[#faf5ee]' : 'bg-[#f2ebe2]'
               }`}
             >
               {tabCounts[tab.value]}
@@ -268,7 +268,7 @@ export default function BusinessesManagementPage() {
       />
 
       {/* Pagination placeholder */}
-      <div className="text-sm text-stone-500 text-center">
+      <div className="text-sm text-[#92400e] text-center">
         Showing {filteredBusinesses.length} of {businesses.length} businesses
       </div>
     </div>

@@ -64,14 +64,14 @@ export function PricingTierCard({
       padding="none"
       className={`
         relative overflow-hidden transition-all duration-300
-        ${highlighted ? 'ring-2 ring-amber-400 shadow-lg' : ''}
+        ${highlighted ? 'ring-2 ring-amber-800 shadow-lg' : ''}
         ${isCurrentTier ? 'opacity-90' : ''}
       `}
     >
       {/* Highlighted/Recommended Badge */}
       {highlighted && !isCurrentTier && (
         <div className="absolute top-0 right-0">
-          <div className="bg-amber-400 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1">
+          <div className="bg-amber-800 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1">
             <Star size={12} weight="fill" />
             Recommended
           </div>
@@ -82,20 +82,20 @@ export function PricingTierCard({
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-xl font-bold text-stone-100">{details.name}</h3>
+            <h3 className="text-xl font-bold text-[#451a03]">{details.name}</h3>
             {isCurrentTier && (
               <Badge variant="success" size="sm">
                 Current Plan
               </Badge>
             )}
           </div>
-          <p className="text-sm text-stone-400">{details.description}</p>
+          <p className="text-sm text-[#78350f]">{details.description}</p>
         </div>
 
         {/* Price */}
         <div className="mb-6">
-          <span className="text-4xl font-bold text-stone-100">{details.price}</span>
-          <span className="text-stone-400">{details.period}</span>
+          <span className="text-4xl font-bold text-[#451a03]">{details.price}</span>
+          <span className="text-[#78350f]">{details.period}</span>
         </div>
 
         {/* Features */}
@@ -105,9 +105,9 @@ export function PricingTierCard({
               <Check
                 size={18}
                 weight="bold"
-                className={`flex-shrink-0 mt-0.5 ${highlighted ? 'text-amber-400' : 'text-emerald-400'}`}
+                className={`flex-shrink-0 mt-0.5 ${highlighted ? 'text-amber-800' : 'text-emerald-600'}`}
               />
-              <span className="text-sm text-stone-400">{feature}</span>
+              <span className="text-sm text-[#78350f]">{feature}</span>
             </li>
           ))}
         </ul>
@@ -121,10 +121,10 @@ export function PricingTierCard({
             w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200
             ${
               isCurrentTier
-                ? 'bg-stone-900 border border-stone-800 text-stone-500 cursor-not-allowed'
+                ? 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#92400e] cursor-not-allowed'
                 : highlighted
-                  ? 'bg-amber-400 hover:bg-amber-500 text-white shadow-lg hover:shadow-xl'
-                  : 'bg-stone-800 border border-stone-800 text-stone-100 hover:border-amber-400'
+                  ? 'bg-amber-800 hover:bg-amber-500 text-white shadow-lg hover:shadow-xl'
+                  : 'bg-[#faf5ee] border border-[#d4c4b0] text-[#451a03] hover:border-amber-800'
             }
           `}
         >

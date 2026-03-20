@@ -60,13 +60,13 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
       <div className="flex items-start justify-between">
         <div
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-            highlight ? 'bg-amber-400/10' : 'bg-amber-400/10'
+            highlight ? 'bg-amber-800/8' : 'bg-amber-800/8'
           }`}
         >
           <Icon
             size={24}
             weight="fill"
-            className={highlight ? 'text-amber-400' : 'text-amber-400'}
+            className={highlight ? 'text-amber-800' : 'text-amber-800'}
           />
         </div>
         {highlight && (
@@ -76,8 +76,8 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
         )}
       </div>
       <div>
-        <p className="text-3xl font-bold text-stone-100">{value}</p>
-        <p className="text-sm text-stone-400 mt-1">{label}</p>
+        <p className="text-3xl font-bold text-[#451a03]">{value}</p>
+        <p className="text-sm text-[#78350f] mt-1">{label}</p>
       </div>
     </Card>
   )
@@ -164,17 +164,17 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-2xl font-bold text-stone-100">
+        <h1 className="text-2xl font-bold text-[#451a03]">
           Welcome back, {admin?.firstName || 'Admin'}
         </h1>
-        <p className="text-stone-400 mt-1">
+        <p className="text-[#78350f] mt-1">
           Here&apos;s an overview of the platform activity
         </p>
       </div>
 
       {/* Platform Overview Metrics */}
       <div>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4">Platform Overview</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Platform Overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map((metric) => (
             <MetricCard
@@ -191,7 +191,7 @@ export default function AdminDashboardPage() {
       {/* Moderation Queue Preview */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-stone-100">Pending Review</h2>
+          <h2 className="text-lg font-semibold text-[#451a03]">Pending Review</h2>
           <Link href="/admin/dashboard/deals">
             <Button variant="ghost" size="sm" className="gap-1">
               View All <ArrowRight size={16} />
@@ -199,23 +199,23 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
         <Card variant="glass" padding="none">
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-[#d4c4b0]">
             {pendingModerationDeals.map((deal) => (
               <div
                 key={deal.id}
-                className="flex items-center justify-between p-4 hover:bg-stone-800 transition-colors"
+                className="flex items-center justify-between p-4 hover:bg-[#faf5ee] transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
-                    <FileText size={20} weight="fill" className="text-amber-400" />
+                  <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+                    <FileText size={20} weight="fill" className="text-amber-800" />
                   </div>
                   <div>
-                    <p className="font-medium text-stone-100">{deal.title}</p>
-                    <p className="text-sm text-stone-400">{deal.businessName}</p>
+                    <p className="font-medium text-[#451a03]">{deal.title}</p>
+                    <p className="text-sm text-[#78350f]">{deal.businessName}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-stone-500">
+                  <span className="text-sm text-[#92400e]">
                     {formatRelativeTime(deal.submittedAt)}
                   </span>
                   <Link href="/admin/dashboard/deals">
@@ -232,18 +232,18 @@ export default function AdminDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action) => (
             <Link key={action.href} href={action.href}>
               <Card variant="glass" padding="md" hover className="group h-full">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
-                    <action.icon size={20} weight="fill" className="text-amber-400" />
+                  <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
+                    <action.icon size={20} weight="fill" className="text-amber-800" />
                   </div>
                   <div>
-                    <p className="font-medium text-stone-100">{action.title}</p>
-                    <p className="text-sm text-stone-400">{action.description}</p>
+                    <p className="font-medium text-[#451a03]">{action.title}</p>
+                    <p className="text-sm text-[#78350f]">{action.description}</p>
                   </div>
                 </div>
               </Card>

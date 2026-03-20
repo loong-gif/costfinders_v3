@@ -144,7 +144,7 @@ export default function CategoriesManagementPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -152,28 +152,28 @@ export default function CategoriesManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">{stats.total}</p>
-          <p className="text-sm text-stone-400">Total Categories</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.total}</p>
+          <p className="text-sm text-[#78350f]">Total Categories</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">{stats.active}</p>
-          <p className="text-sm text-stone-400">Active</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.active}</p>
+          <p className="text-sm text-[#78350f]">Active</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">{stats.totalDeals}</p>
-          <p className="text-sm text-stone-400">Total Deals</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.totalDeals}</p>
+          <p className="text-sm text-[#78350f]">Total Deals</p>
         </Card>
       </div>
 
       {/* Add New Form */}
       {isAddingNew && (
         <Card variant="glass" padding="lg">
-          <h3 className="text-lg font-semibold text-stone-100 mb-4">
+          <h3 className="text-lg font-semibold text-[#451a03] mb-4">
             Add New Category
           </h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Name
               </label>
               <input
@@ -183,11 +183,11 @@ export default function CategoriesManagementPage() {
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="Category name"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Description
               </label>
               <input
@@ -200,11 +200,11 @@ export default function CategoriesManagementPage() {
                   }))
                 }
                 placeholder="Category description"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Icon
               </label>
               <div className="flex flex-wrap gap-2">
@@ -219,8 +219,8 @@ export default function CategoriesManagementPage() {
                       }
                       className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
                         formData.icon === iconName
-                          ? 'bg-amber-400 text-white'
-                          : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                          ? 'bg-amber-800 text-white'
+                          : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                       }`}
                     >
                       <Icon size={20} weight="light" />
@@ -258,7 +258,7 @@ export default function CategoriesManagementPage() {
                     onChange={(e) =>
                       setFormData((prev) => ({ ...prev, name: e.target.value }))
                     }
-                    className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                    className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                   />
                   <input
                     type="text"
@@ -269,7 +269,7 @@ export default function CategoriesManagementPage() {
                         description: e.target.value,
                       }))
                     }
-                    className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                    className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                   />
                   <div className="flex flex-wrap gap-2">
                     {availableIcons.map((iconName) => {
@@ -283,8 +283,8 @@ export default function CategoriesManagementPage() {
                           }
                           className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                             formData.icon === iconName
-                              ? 'bg-amber-400 text-white'
-                              : 'bg-stone-900 text-stone-400 hover:bg-stone-800'
+                              ? 'bg-amber-800 text-white'
+                              : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
                           }`}
                         >
                           <IconOption size={16} weight="light" />
@@ -307,7 +307,7 @@ export default function CategoriesManagementPage() {
                 /* View Mode */
                 <div className="flex items-start gap-4">
                   {/* Drag Handle (visual only) */}
-                  <div className="flex-shrink-0 text-stone-500 cursor-grab">
+                  <div className="flex-shrink-0 text-[#92400e] cursor-grab">
                     <DotsSixVertical size={20} weight="bold" />
                   </div>
 
@@ -315,8 +315,8 @@ export default function CategoriesManagementPage() {
                   <div
                     className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
                       category.isActive
-                        ? 'bg-amber-400/10'
-                        : 'bg-stone-900 opacity-50'
+                        ? 'bg-amber-800/8'
+                        : 'bg-[#f2ebe2] opacity-50'
                     }`}
                   >
                     <Icon
@@ -324,8 +324,8 @@ export default function CategoriesManagementPage() {
                       weight="light"
                       className={
                         category.isActive
-                          ? 'text-amber-400'
-                          : 'text-stone-500'
+                          ? 'text-amber-800'
+                          : 'text-[#92400e]'
                       }
                     />
                   </div>
@@ -336,8 +336,8 @@ export default function CategoriesManagementPage() {
                       <h3
                         className={`font-semibold ${
                           category.isActive
-                            ? 'text-stone-100'
-                            : 'text-stone-500'
+                            ? 'text-[#451a03]'
+                            : 'text-[#92400e]'
                         }`}
                       >
                         {category.name}
@@ -351,13 +351,13 @@ export default function CategoriesManagementPage() {
                     <p
                       className={`text-sm mt-0.5 ${
                         category.isActive
-                          ? 'text-stone-400'
-                          : 'text-stone-500'
+                          ? 'text-[#78350f]'
+                          : 'text-[#92400e]'
                       }`}
                     >
                       {category.description}
                     </p>
-                    <p className="text-xs text-stone-500 mt-1">
+                    <p className="text-xs text-[#92400e] mt-1">
                       {category.dealCount} deals
                     </p>
                   </div>
@@ -367,7 +367,7 @@ export default function CategoriesManagementPage() {
                     <button
                       type="button"
                       onClick={() => handleStartEdit(category)}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:bg-stone-800 transition-colors"
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-[#78350f] hover:bg-[#faf5ee] transition-colors"
                     >
                       <PencilSimple size={18} />
                     </button>
@@ -375,7 +375,7 @@ export default function CategoriesManagementPage() {
                       type="button"
                       onClick={() => handleToggleStatus(category.id)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        category.isActive ? 'bg-amber-400' : 'bg-stone-900'
+                        category.isActive ? 'bg-amber-800' : 'bg-[#f2ebe2]'
                       }`}
                     >
                       <span

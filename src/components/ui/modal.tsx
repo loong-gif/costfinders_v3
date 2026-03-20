@@ -71,7 +71,7 @@ export function Modal({
     <div className={`fixed inset-0 z-50 ${variant.container}`}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#451a03]/40 backdrop-blur-sm"
         onClick={onClose}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') onClose()
@@ -85,8 +85,8 @@ export function Modal({
       <div
         className={`
           relative w-full ${mobileVariant === 'default' ? sizes[size] : `md:${sizes[size]}`}
-          bg-stone-900
-          border border-stone-800
+          bg-[#f2ebe2]
+          border border-[#d4c4b0]
           ${mobileVariant === 'default' ? 'rounded-2xl' : ''} shadow-elevated
           ${variant.modal}
           ${variant.animation}
@@ -96,11 +96,11 @@ export function Modal({
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800">
-            <h2 className="text-lg font-semibold text-stone-100">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[#d4c4b0]">
+            <h2 className="text-lg font-semibold text-[#451a03]">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
+              className="p-1 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />
@@ -113,7 +113,7 @@ export function Modal({
           {!title && (
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
+              className="absolute top-4 right-4 p-1 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />

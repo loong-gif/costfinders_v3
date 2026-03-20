@@ -42,7 +42,7 @@ export function PriceRangeFilter({
 
   return (
     <fieldset className="space-y-2">
-      <legend className="text-sm font-medium text-stone-400">
+      <legend className="text-sm font-medium text-[#78350f]">
         Price Range
       </legend>
       <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
             aria-hidden="true"
           />
           <input
@@ -63,10 +63,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5
-              bg-stone-900
-              border border-stone-800 rounded-xl
-              text-stone-100 placeholder:text-stone-500
-              focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
+              bg-[#f2ebe2]
+              border border-[#d4c4b0] rounded-xl
+              text-[#451a03] placeholder:text-[#92400e]
+              focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none
@@ -75,7 +75,7 @@ export function PriceRangeFilter({
           />
         </div>
 
-        <span className="text-stone-500" aria-hidden="true">
+        <span className="text-[#92400e]" aria-hidden="true">
           —
         </span>
 
@@ -84,7 +84,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
             aria-hidden="true"
           />
           <input
@@ -96,10 +96,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5
-              bg-stone-900
-              border border-stone-800 rounded-xl
-              text-stone-100 placeholder:text-stone-500
-              focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
+              bg-[#f2ebe2]
+              border border-[#d4c4b0] rounded-xl
+              text-[#451a03] placeholder:text-[#92400e]
+              focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none

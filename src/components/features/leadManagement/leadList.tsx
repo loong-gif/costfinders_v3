@@ -125,23 +125,23 @@ export function LeadList({ businessId }: LeadListProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-stone-100">Leads</h1>
-          <p className="text-stone-400 mt-1">
+          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
+          <p className="text-[#78350f] mt-1">
             Manage customer inquiries and bookings
           </p>
         </div>
         <div className="flex items-center gap-3">
           {/* Credits Indicator */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-stone-900 border border-stone-800 rounded-xl">
-            <Coins size={18} weight="fill" className={credits.available < 5 ? 'text-amber-400' : 'text-amber-400'} />
-            <span className="text-sm font-medium text-stone-100">
+          <div className="flex items-center gap-2 px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl">
+            <Coins size={18} weight="fill" className={credits.available < 5 ? 'text-amber-800' : 'text-amber-800'} />
+            <span className="text-sm font-medium text-[#451a03]">
               {credits.available} Credits
             </span>
           </div>
           {/* View Pricing Link */}
           <Link
             href="/business/dashboard/leads/pricing"
-            className="flex items-center gap-2 px-3 py-2 bg-stone-900 border border-stone-800 rounded-xl text-sm font-medium text-stone-400 hover:text-stone-100 hover:border-stone-800-hover transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-sm font-medium text-[#78350f] hover:text-[#451a03] hover:border-[#d4c4b0]-hover transition-colors"
           >
             <CurrencyDollar size={18} weight="light" />
             <span>View Pricing</span>
@@ -162,8 +162,8 @@ export function LeadList({ businessId }: LeadListProps) {
                   px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2
                   ${
                     activeTab === tab.id
-                      ? 'bg-amber-400 text-white'
-                      : 'bg-stone-900 text-stone-400 hover:text-stone-100 hover:bg-stone-800'
+                      ? 'bg-amber-800 text-white'
+                      : 'bg-[#f2ebe2] text-[#78350f] hover:text-[#451a03] hover:bg-[#faf5ee]'
                   }
                 `}
                 type="button"
@@ -174,8 +174,8 @@ export function LeadList({ businessId }: LeadListProps) {
                     px-1.5 py-0.5 rounded-md text-xs font-medium
                     ${
                       activeTab === tab.id
-                        ? 'bg-stone-800'
-                        : 'bg-stone-800'
+                        ? 'bg-[#faf5ee]'
+                        : 'bg-[#faf5ee]'
                     }
                   `}
                 >
@@ -191,7 +191,7 @@ export function LeadList({ businessId }: LeadListProps) {
               <MagnifyingGlass
                 size={20}
                 weight="light"
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
               />
               <Input
                 type="text"
@@ -209,11 +209,11 @@ export function LeadList({ businessId }: LeadListProps) {
       {filteredClaims.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
-            <Envelope size={48} weight="light" className="mx-auto text-stone-500 mb-4" />
-            <h3 className="text-lg font-medium text-stone-100 mb-2">
+            <Envelope size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+            <h3 className="text-lg font-medium text-[#451a03] mb-2">
               {searchQuery ? 'No leads found' : 'No leads yet'}
             </h3>
-            <p className="text-stone-400 max-w-sm mx-auto">
+            <p className="text-[#78350f] max-w-sm mx-auto">
               {searchQuery
                 ? 'Try adjusting your search query'
                 : activeTab === 'all'
@@ -235,22 +235,22 @@ export function LeadList({ businessId }: LeadListProps) {
                 <Card
                   variant="glass"
                   padding="lg"
-                  className="hover:border-stone-800-hover transition-colors cursor-pointer"
+                  className="hover:border-[#d4c4b0]-hover transition-colors cursor-pointer"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     {/* Customer & Deal Info */}
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                          <Users size={20} weight="fill" className="text-amber-400" />
+                        <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                          <Users size={20} weight="fill" className="text-amber-800" />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-stone-100">
+                          <p className="font-medium text-[#451a03]">
                             {getCustomerDisplay(claim.consumerId)}
                           </p>
                           {deal && (
-                            <div className="flex items-center gap-1.5 text-sm text-stone-400">
-                              <Tag size={14} weight="fill" className="text-stone-500 flex-shrink-0" />
+                            <div className="flex items-center gap-1.5 text-sm text-[#78350f]">
+                              <Tag size={14} weight="fill" className="text-[#92400e] flex-shrink-0" />
                               <span className="truncate">{deal.title}</span>
                             </div>
                           )}
@@ -259,16 +259,16 @@ export function LeadList({ businessId }: LeadListProps) {
 
                       {/* Preferred Date/Time */}
                       {(claim.preferredDate || claim.preferredTime) && (
-                        <div className="flex items-center gap-4 text-sm text-stone-400 ml-13">
+                        <div className="flex items-center gap-4 text-sm text-[#78350f] ml-13">
                           {claim.preferredDate && (
                             <div className="flex items-center gap-1.5">
-                              <Calendar size={14} weight="regular" className="text-stone-500" />
+                              <Calendar size={14} weight="regular" className="text-[#92400e]" />
                               <span>Requested: {formatDate(claim.preferredDate)}</span>
                             </div>
                           )}
                           {claim.preferredTime && (
                             <div className="flex items-center gap-1.5">
-                              <Clock size={14} weight="regular" className="text-stone-500" />
+                              <Clock size={14} weight="regular" className="text-[#92400e]" />
                               <span>{claim.preferredTime}</span>
                             </div>
                           )}
@@ -279,7 +279,7 @@ export function LeadList({ businessId }: LeadListProps) {
                     {/* Status & Created Date */}
                     <div className="flex items-center gap-4 sm:flex-col sm:items-end sm:gap-2">
                       <ClaimStatusBadge status={claim.status} size="md" />
-                      <p className="text-sm text-stone-500">
+                      <p className="text-sm text-[#92400e]">
                         {formatRelativeTime(claim.createdAt)}
                       </p>
                     </div>

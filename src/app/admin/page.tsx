@@ -39,7 +39,7 @@ function AdminLoginContent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-8 w-8 text-amber-400" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
               cx="12"
@@ -55,7 +55,7 @@ function AdminLoginContent() {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
             />
           </svg>
-          <p className="text-stone-400">Loading...</p>
+          <p className="text-[#78350f]">Loading...</p>
         </div>
       </div>
     )
@@ -70,16 +70,16 @@ function AdminLoginContent() {
     <div className="min-h-screen flex items-center justify-center px-4 pt-20">
       <div className="w-full max-w-md">
         {/* Login Card */}
-        <div className="bg-stone-900 border border-stone-800 rounded-2xl p-8">
+        <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-400/20 mb-4">
-              <ShieldCheck size={32} weight="fill" className="text-amber-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-800/15 mb-4">
+              <ShieldCheck size={32} weight="fill" className="text-amber-800" />
             </div>
-            <h1 className="text-2xl font-bold text-stone-100">
+            <h1 className="text-2xl font-bold text-[#451a03]">
               Admin Portal
             </h1>
-            <p className="text-stone-400 mt-2">
+            <p className="text-[#78350f] mt-2">
               Sign in to access the admin dashboard
             </p>
           </div>
@@ -110,8 +110,8 @@ function AdminLoginContent() {
           </form>
 
           {/* Help Text */}
-          <div className="mt-6 pt-6 border-t border-stone-800">
-            <p className="text-xs text-stone-500 text-center">
+          <div className="mt-6 pt-6 border-t border-[#d4c4b0]">
+            <p className="text-xs text-[#92400e] text-center">
               For demo purposes, use: admin@costfinders.com, moderator@costfinders.com, or support@costfinders.com
             </p>
           </div>

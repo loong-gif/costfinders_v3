@@ -104,8 +104,8 @@ export default function DealModerationPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-stone-100">Deal Moderation</h1>
-          <p className="text-stone-400 mt-1">
+          <h1 className="text-2xl font-bold text-[#451a03]">Deal Moderation</h1>
+          <p className="text-[#78350f] mt-1">
             Review and moderate submitted deals
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function DealModerationPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -124,14 +124,14 @@ export default function DealModerationPage() {
         <div className="relative flex-1">
           <MagnifyingGlass
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
           />
           <input
             type="text"
             placeholder="Search deals..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+            className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
           />
         </div>
       </div>
@@ -150,8 +150,8 @@ export default function DealModerationPage() {
             <span
               className={`px-1.5 py-0.5 text-xs rounded-full ${
                 activeFilter === tab.value
-                  ? 'bg-stone-800'
-                  : 'bg-stone-900'
+                  ? 'bg-[#faf5ee]'
+                  : 'bg-[#f2ebe2]'
               }`}
             >
               {statusCounts[tab.value]}
@@ -175,13 +175,13 @@ export default function DealModerationPage() {
         </div>
       ) : (
         <Card variant="glass" padding="lg" className="text-center py-12">
-          <div className="w-16 h-16 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-4">
-            <Tag size={32} weight="light" className="text-amber-400" />
+          <div className="w-16 h-16 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-4">
+            <Tag size={32} weight="light" className="text-amber-800" />
           </div>
-          <h3 className="text-lg font-semibold text-stone-100 mb-2">
+          <h3 className="text-lg font-semibold text-[#451a03] mb-2">
             No deals found
           </h3>
-          <p className="text-stone-400">
+          <p className="text-[#78350f]">
             {searchQuery
               ? 'Try adjusting your search terms'
               : activeFilter === 'pending_review'

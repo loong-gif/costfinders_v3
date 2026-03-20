@@ -19,44 +19,44 @@ export function PricingBreakdown({ deal }: PricingBreakdownProps) {
       {/* Main Pricing */}
       <div className="space-y-3">
         <div className="flex items-baseline gap-3">
-          <span className="text-3xl sm:text-4xl font-bold text-amber-400 font-mono">
+          <span className="text-3xl sm:text-4xl font-bold text-amber-800 font-mono">
             ${deal.dealPrice}
           </span>
-          <span className="text-stone-400">{deal.unit}</span>
+          <span className="text-[#78350f]">{deal.unit}</span>
         </div>
 
         <div className="flex items-center gap-3">
           <Badge variant="brand" size="md">
             {deal.discountPercent}% OFF
           </Badge>
-          <span className="text-stone-500 line-through">
+          <span className="text-[#92400e] line-through">
             ${deal.originalPrice}
           </span>
-          <span className="text-emerald-400">Save ${savings}</span>
+          <span className="text-emerald-600">Save ${savings}</span>
         </div>
       </div>
 
       {/* Unit Range */}
       {hasUnitRange && (
-        <div className="border-t border-stone-800 pt-4 mt-4 space-y-3">
-          <div className="flex items-center gap-2 text-sm font-medium text-stone-400">
+        <div className="border-t border-[#d4c4b0] pt-4 mt-4 space-y-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-[#78350f]">
             <Calculator size={18} weight="regular" />
             <span>Unit Requirements</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             {deal.minUnits && (
-              <div className="bg-stone-800 rounded-lg p-3">
-                <p className="text-xs text-stone-500">Minimum</p>
-                <p className="text-lg font-semibold text-stone-100">
+              <div className="bg-[#faf5ee] rounded-lg p-3">
+                <p className="text-xs text-[#92400e]">Minimum</p>
+                <p className="text-lg font-semibold text-[#451a03]">
                   {deal.minUnits} units
                 </p>
               </div>
             )}
             {deal.maxUnits && (
-              <div className="bg-stone-800 rounded-lg p-3">
-                <p className="text-xs text-stone-500">Maximum</p>
-                <p className="text-lg font-semibold text-stone-100">
+              <div className="bg-[#faf5ee] rounded-lg p-3">
+                <p className="text-xs text-[#92400e]">Maximum</p>
+                <p className="text-lg font-semibold text-[#451a03]">
                   {deal.maxUnits} units
                 </p>
               </div>
@@ -67,26 +67,26 @@ export function PricingBreakdown({ deal }: PricingBreakdownProps) {
 
       {/* Example Calculation */}
       {hasUnitRange && (
-        <div className="border-t border-stone-800 pt-4 mt-4 space-y-2">
-          <p className="text-sm font-medium text-stone-400">
+        <div className="border-t border-[#d4c4b0] pt-4 mt-4 space-y-2">
+          <p className="text-sm font-medium text-[#78350f]">
             Example: {exampleUnits} units
           </p>
           <div className="space-y-1">
             <div className="flex justify-between text-sm">
-              <span className="text-stone-500">Regular price</span>
-              <span className="text-stone-500 line-through">
+              <span className="text-[#92400e]">Regular price</span>
+              <span className="text-[#92400e] line-through">
                 ${(deal.originalPrice * exampleUnits).toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-stone-400">Deal price</span>
-              <span className="text-stone-100 font-medium">
+              <span className="text-[#78350f]">Deal price</span>
+              <span className="text-[#451a03] font-medium">
                 ${exampleTotal.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-emerald-400">You save</span>
-              <span className="text-emerald-400 font-medium">
+              <span className="text-emerald-600">You save</span>
+              <span className="text-emerald-600 font-medium">
                 ${exampleSavings.toLocaleString()}
               </span>
             </div>
@@ -95,8 +95,8 @@ export function PricingBreakdown({ deal }: PricingBreakdownProps) {
       )}
 
       {/* Validity */}
-      <div className="border-t border-stone-800 pt-4 mt-4">
-        <p className="text-sm text-stone-500">
+      <div className="border-t border-[#d4c4b0] pt-4 mt-4">
+        <p className="text-sm text-[#92400e]">
           Valid: {new Date(deal.validFrom).toLocaleDateString()} —{' '}
           {new Date(deal.validUntil).toLocaleDateString()}
         </p>

@@ -116,7 +116,7 @@ export default function SponsoredDealsPage() {
   if (!businessId) {
     return (
       <div className="text-center py-12">
-        <p className="text-stone-400">No business linked to your account.</p>
+        <p className="text-[#78350f]">No business linked to your account.</p>
       </div>
     )
   }
@@ -127,18 +127,18 @@ export default function SponsoredDealsPage() {
       <div>
         <Link
           href="/business/dashboard/deals"
-          className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-100 transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-sm text-[#78350f] hover:text-[#451a03] transition-colors mb-4"
         >
           <ArrowLeft size={16} weight="light" />
           Back to Deals
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-stone-100 flex items-center gap-2">
-              <Rocket size={28} weight="fill" className="text-amber-400" />
+            <h1 className="text-2xl font-bold text-[#451a03] flex items-center gap-2">
+              <Rocket size={28} weight="fill" className="text-amber-800" />
               Sponsored Deals
             </h1>
-            <p className="text-stone-400 mt-1">
+            <p className="text-[#78350f] mt-1">
               Boost your deals to reach more customers and increase visibility
             </p>
           </div>
@@ -147,8 +147,8 @@ export default function SponsoredDealsPage() {
 
       {/* Section 1: Active Boosts */}
       <section>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4 flex items-center gap-2">
-          <Lightning size={20} weight="fill" className="text-amber-400" />
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4 flex items-center gap-2">
+          <Lightning size={20} weight="fill" className="text-amber-800" />
           Active Boosts
           {activeBoostsWithDeals.length > 0 && (
             <Badge variant="brand" size="sm">
@@ -163,12 +163,12 @@ export default function SponsoredDealsPage() {
               <Rocket
                 size={48}
                 weight="light"
-                className="mx-auto text-stone-500 mb-4"
+                className="mx-auto text-[#92400e] mb-4"
               />
-              <h3 className="text-lg font-medium text-stone-100 mb-2">
+              <h3 className="text-lg font-medium text-[#451a03] mb-2">
                 No Active Boosts
               </h3>
-              <p className="text-stone-400 mb-4">
+              <p className="text-[#78350f] mb-4">
                 Start boosting your deals to increase visibility and attract more
                 customers.
               </p>
@@ -191,11 +191,11 @@ export default function SponsoredDealsPage() {
 
       {/* Section 2: Available Deals for Sponsorship */}
       <section>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4 flex items-center gap-2">
-          <Tag size={20} weight="fill" className="text-stone-500" />
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4 flex items-center gap-2">
+          <Tag size={20} weight="fill" className="text-[#92400e]" />
           Available Deals
           {eligibleDeals.length > 0 && (
-            <span className="text-sm font-normal text-stone-400">
+            <span className="text-sm font-normal text-[#78350f]">
               ({eligibleDeals.length} eligible)
             </span>
           )}
@@ -207,33 +207,33 @@ export default function SponsoredDealsPage() {
               <Tag
                 size={48}
                 weight="light"
-                className="mx-auto text-stone-500 mb-4"
+                className="mx-auto text-[#92400e] mb-4"
               />
-              <h3 className="text-lg font-medium text-stone-100 mb-2">
+              <h3 className="text-lg font-medium text-[#451a03] mb-2">
                 No Eligible Deals
               </h3>
-              <p className="text-stone-400">
+              <p className="text-[#78350f]">
                 All your active deals are already boosted or pending approval.
               </p>
             </div>
           </Card>
         ) : (
           <Card variant="glass" padding="none" className="overflow-hidden">
-            <div className="divide-y divide-stone-800">
+            <div className="divide-y divide-[#d4c4b0]">
               {eligibleDeals.map((deal) => (
                 <div
                   key={deal.id}
-                  className="flex items-center justify-between gap-4 p-4 hover:bg-stone-800/50 transition-colors"
+                  className="flex items-center justify-between gap-4 p-4 hover:bg-[#d4c4b0]/30 transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                      <Tag size={20} weight="fill" className="text-amber-400" />
+                    <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                      <Tag size={20} weight="fill" className="text-amber-800" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-medium text-stone-100 truncate">
+                      <p className="font-medium text-[#451a03] truncate">
                         {deal.title}
                       </p>
-                      <div className="flex items-center gap-3 text-sm text-stone-400">
+                      <div className="flex items-center gap-3 text-sm text-[#78350f]">
                         <Badge variant="default" size="sm">
                           {categoryLabels[deal.category]}
                         </Badge>
@@ -258,8 +258,8 @@ export default function SponsoredDealsPage() {
 
       {/* Section 3: Boost History */}
       <section>
-        <h2 className="text-lg font-semibold text-stone-100 mb-4 flex items-center gap-2">
-          <Calendar size={20} weight="fill" className="text-stone-500" />
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4 flex items-center gap-2">
+          <Calendar size={20} weight="fill" className="text-[#92400e]" />
           Boost History
         </h2>
 
@@ -269,12 +269,12 @@ export default function SponsoredDealsPage() {
               <Calendar
                 size={48}
                 weight="light"
-                className="mx-auto text-stone-500 mb-4"
+                className="mx-auto text-[#92400e] mb-4"
               />
-              <h3 className="text-lg font-medium text-stone-100 mb-2">
+              <h3 className="text-lg font-medium text-[#451a03] mb-2">
                 No Boost History
               </h3>
-              <p className="text-stone-400">
+              <p className="text-[#78350f]">
                 Your completed boosts will appear here.
               </p>
             </div>
@@ -285,28 +285,28 @@ export default function SponsoredDealsPage() {
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-stone-800">
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                  <tr className="border-b border-[#d4c4b0]">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Deal
                     </th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Boost Type
                     </th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Duration
                     </th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Impressions
                     </th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Cost
                     </th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
                       Status
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-800">
+                <tbody className="divide-y divide-[#d4c4b0]">
                   {boostHistoryData.map((history) => (
                     <BoostHistoryRow key={history.id} history={history} />
                   ))}
@@ -315,7 +315,7 @@ export default function SponsoredDealsPage() {
             </div>
 
             {/* Mobile Card View */}
-            <div className="sm:hidden divide-y divide-stone-800">
+            <div className="sm:hidden divide-y divide-[#d4c4b0]">
               {boostHistoryData.map((history) => {
                 const startDate = new Date(history.startDate).toLocaleDateString()
                 const endDate = new Date(history.endDate).toLocaleDateString()
@@ -324,7 +324,7 @@ export default function SponsoredDealsPage() {
                     {/* Header: Deal Title + Status */}
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="min-w-0">
-                        <p className="font-medium text-stone-100 truncate">
+                        <p className="font-medium text-[#451a03] truncate">
                           {history.dealTitle}
                         </p>
                         <Badge variant="default" size="sm" className="mt-1">
@@ -346,17 +346,17 @@ export default function SponsoredDealsPage() {
                     </div>
 
                     {/* Middle: Duration */}
-                    <p className="text-sm text-stone-400 mb-3">
+                    <p className="text-sm text-[#78350f] mb-3">
                       {startDate} - {endDate}
                     </p>
 
                     {/* Footer: Impressions + Cost */}
-                    <div className="flex items-center justify-between pt-3 border-t border-stone-800">
-                      <span className="flex items-center gap-1 text-sm text-stone-400">
+                    <div className="flex items-center justify-between pt-3 border-t border-[#d4c4b0]">
+                      <span className="flex items-center gap-1 text-sm text-[#78350f]">
                         <Eye size={14} weight="fill" />
                         {history.impressionsDelivered.toLocaleString()} impressions
                       </span>
-                      <span className="flex items-center gap-1 text-sm text-stone-100 font-medium">
+                      <span className="flex items-center gap-1 text-sm text-[#451a03] font-medium">
                         <CurrencyDollar size={14} weight="fill" />
                         {history.totalCost}
                       </span>
@@ -402,7 +402,7 @@ export default function SponsoredDealsPage() {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-stone-400">
+          <p className="text-[#78350f]">
             Are you sure you want to end this boost early? This action cannot be
             undone and no refund will be issued.
           </p>
@@ -445,19 +445,19 @@ function ActiveBoostCard({ boost, deal, option, onCancel }: ActiveBoostCardProps
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         {/* Deal Info */}
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-            <Rocket size={24} weight="fill" className="text-amber-400" />
+          <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+            <Rocket size={24} weight="fill" className="text-amber-800" />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="font-semibold text-stone-100 truncate">
+              <p className="font-semibold text-[#451a03] truncate">
                 {deal.title}
               </p>
               <Badge variant="brand" size="sm">
                 {option.name}
               </Badge>
             </div>
-            <div className="flex items-center gap-4 text-sm text-stone-400 mt-1">
+            <div className="flex items-center gap-4 text-sm text-[#78350f] mt-1">
               <span className="flex items-center gap-1">
                 <Clock size={14} weight="fill" />
                 {daysRemaining} days left
@@ -478,13 +478,13 @@ function ActiveBoostCard({ boost, deal, option, onCancel }: ActiveBoostCardProps
         <div className="flex items-center gap-4">
           {/* Progress Bar */}
           <div className="w-32 hidden sm:block">
-            <div className="h-2 bg-stone-900 rounded-full overflow-hidden">
+            <div className="h-2 bg-[#f2ebe2] rounded-full overflow-hidden">
               <div
-                className="h-full bg-amber-400 rounded-full transition-all"
+                className="h-full bg-amber-800 rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-xs text-stone-500 mt-1 text-center">
+            <p className="text-xs text-[#92400e] mt-1 text-center">
               {Math.round(progress)}% complete
             </p>
           </div>
@@ -509,26 +509,26 @@ function BoostHistoryRow({ history }: BoostHistoryRowProps) {
   const endDate = new Date(history.endDate).toLocaleDateString()
 
   return (
-    <tr className="hover:bg-stone-800/50 transition-colors">
+    <tr className="hover:bg-[#d4c4b0]/30 transition-colors">
       <td className="px-4 py-3">
-        <p className="font-medium text-stone-100">{history.dealTitle}</p>
+        <p className="font-medium text-[#451a03]">{history.dealTitle}</p>
       </td>
       <td className="px-4 py-3">
         <Badge variant="default" size="sm">
           {history.boostName}
         </Badge>
       </td>
-      <td className="px-4 py-3 text-sm text-stone-400">
+      <td className="px-4 py-3 text-sm text-[#78350f]">
         {startDate} - {endDate}
       </td>
       <td className="px-4 py-3">
-        <span className="flex items-center gap-1 text-sm text-stone-400">
+        <span className="flex items-center gap-1 text-sm text-[#78350f]">
           <Eye size={14} weight="fill" />
           {history.impressionsDelivered.toLocaleString()}
         </span>
       </td>
       <td className="px-4 py-3">
-        <span className="flex items-center gap-1 text-sm text-stone-100 font-medium">
+        <span className="flex items-center gap-1 text-sm text-[#451a03] font-medium">
           <CurrencyDollar size={14} weight="fill" />
           {history.totalCost}
         </span>

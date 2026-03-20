@@ -8,9 +8,9 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variants = {
-  glass: 'bg-stone-900 border border-stone-800 rounded-[10px]',
-  solid: 'bg-stone-900 border border-stone-800 shadow-md',
-  outline: 'bg-transparent border border-stone-800',
+  glass: 'bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]',
+  solid: 'bg-[#f2ebe2] border border-[#d4c4b0] shadow-md',
+  outline: 'bg-transparent border border-[#d4c4b0]',
 }
 
 const paddings = {
@@ -34,7 +34,7 @@ export function Card({
         rounded-2xl
         ${variants[variant]}
         ${paddings[padding]}
-        ${hover ? 'transition-all duration-200 hover:border-stone-700 hover:shadow-elevated cursor-pointer' : ''}
+        ${hover ? 'transition-all duration-200 hover:border-[#c4b09a] hover:shadow-elevated cursor-pointer' : ''}
         ${className}
       `}
       {...props}
@@ -62,7 +62,7 @@ export function CardTitle({
   className?: string
 }) {
   return (
-    <h3 className={`text-lg font-semibold text-stone-100 ${className}`}>
+    <h3 className={`text-lg font-semibold text-[#451a03] ${className}`}>
       {children}
     </h3>
   )
@@ -76,7 +76,7 @@ export function CardDescription({
   className?: string
 }) {
   return (
-    <p className={`text-sm text-stone-400 mt-1 ${className}`}>
+    <p className={`text-sm text-[#78350f] mt-1 ${className}`}>
       {children}
     </p>
   )
@@ -100,7 +100,7 @@ export function CardFooter({
   className?: string
 }) {
   return (
-    <div className={`mt-4 pt-4 border-t border-stone-800 ${className}`}>
+    <div className={`mt-4 pt-4 border-t border-[#d4c4b0] ${className}`}>
       {children}
     </div>
   )

@@ -48,7 +48,7 @@ export function BottomSheet({
     <div className="fixed inset-0 z-50">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+        className="absolute inset-0 bg-[#451a03]/40 backdrop-blur-sm animate-in fade-in duration-200"
         onClick={onClose}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') onClose()
@@ -63,8 +63,8 @@ export function BottomSheet({
         className={`
           fixed bottom-0 left-0 right-0 z-50
           ${heights[height]}
-          bg-stone-900
-          border-t border-stone-800
+          bg-[#f2ebe2]
+          border-t border-[#d4c4b0]
           rounded-t-2xl shadow-elevated
           animate-in slide-in-from-bottom duration-200
           flex flex-col
@@ -81,11 +81,11 @@ export function BottomSheet({
 
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800 shrink-0">
-            <h2 className="text-lg font-semibold text-stone-100">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[#d4c4b0] shrink-0">
+            <h2 className="text-lg font-semibold text-[#451a03]">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
+              className="p-1 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />
@@ -98,7 +98,7 @@ export function BottomSheet({
           {!title && (
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
+              className="absolute top-4 right-4 p-1 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />

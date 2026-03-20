@@ -247,10 +247,10 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
           <ArrowLeft size={20} weight="light" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-stone-100">
+          <h1 className="text-2xl font-bold text-[#451a03]">
             {mode === 'create' ? 'Create New Deal' : 'Edit Deal'}
           </h1>
-          <p className="text-stone-400 mt-1">
+          <p className="text-[#78350f] mt-1">
             {mode === 'create'
               ? 'Add a new special offer for your customers'
               : 'Update your deal details'}
@@ -262,7 +262,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
             Basic Information
           </h2>
           <div className="space-y-4">
@@ -278,7 +278,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
             <div className="w-full">
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-stone-400 mb-1.5"
+                className="block text-sm font-medium text-[#78350f] mb-1.5"
               >
                 Description
               </label>
@@ -291,28 +291,28 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 rows={3}
                 className={`
                   w-full px-4 py-2.5
-                  bg-stone-900
+                  bg-[#f2ebe2]
                   border rounded-xl
-                  text-stone-100 placeholder:text-stone-500
+                  text-[#451a03] placeholder:text-[#92400e]
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-800/40
                   resize-none
                   ${
                     errors.description
                       ? 'border-red-500/50 focus:border-red-500'
-                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
+                      : 'border-[#d4c4b0] hover:border-[#c4b09a] focus:border-amber-800/40'
                   }
                 `}
               />
               {errors.description && (
-                <p className="mt-1.5 text-xs text-red-400">{errors.description}</p>
+                <p className="mt-1.5 text-xs text-red-600">{errors.description}</p>
               )}
             </div>
 
             <div className="w-full">
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-stone-400 mb-1.5"
+                className="block text-sm font-medium text-[#78350f] mb-1.5"
               >
                 Category
               </label>
@@ -323,12 +323,12 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 onChange={handleChange}
                 className="
                   w-full px-4 py-2.5
-                  bg-stone-900
-                  border border-stone-800 hover:border-stone-700
+                  bg-[#f2ebe2]
+                  border border-[#d4c4b0] hover:border-[#c4b09a]
                   rounded-xl
-                  text-stone-100
+                  text-[#451a03]
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-800/40 focus:border-amber-800/40
                 "
               >
                 {categories.map((cat) => (
@@ -343,7 +343,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Pricing */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">Pricing</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Pricing</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Original Price"
@@ -405,8 +405,8 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
           {/* Discount Preview */}
           {formData.originalPrice && formData.dealPrice && (
-            <div className="mt-4 p-3 bg-amber-400/10 rounded-xl">
-              <p className="text-sm text-amber-400">
+            <div className="mt-4 p-3 bg-amber-800/8 rounded-xl">
+              <p className="text-sm text-amber-800">
                 <Sparkle size={16} weight="fill" className="inline mr-1" />
                 {Math.round(
                   ((Number.parseFloat(formData.originalPrice) -
@@ -422,7 +422,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Validity */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">Validity Period</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Validity Period</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Valid From"
@@ -446,14 +446,14 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Terms and Image */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
             Additional Details
           </h2>
           <div className="space-y-4">
             <div className="w-full">
               <label
                 htmlFor="termsAndConditions"
-                className="block text-sm font-medium text-stone-400 mb-1.5"
+                className="block text-sm font-medium text-[#78350f] mb-1.5"
               >
                 Terms & Conditions
               </label>
@@ -466,21 +466,21 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 rows={3}
                 className={`
                   w-full px-4 py-2.5
-                  bg-stone-900
+                  bg-[#f2ebe2]
                   border rounded-xl
-                  text-stone-100 placeholder:text-stone-500
+                  text-[#451a03] placeholder:text-[#92400e]
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-800/40
                   resize-none
                   ${
                     errors.termsAndConditions
                       ? 'border-red-500/50 focus:border-red-500'
-                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
+                      : 'border-[#d4c4b0] hover:border-[#c4b09a] focus:border-amber-800/40'
                   }
                 `}
               />
               {errors.termsAndConditions && (
-                <p className="mt-1.5 text-xs text-red-400">{errors.termsAndConditions}</p>
+                <p className="mt-1.5 text-xs text-red-600">{errors.termsAndConditions}</p>
               )}
             </div>
 
@@ -498,7 +498,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Settings */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">Settings</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Settings</h2>
           <div className="space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -506,11 +506,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 name="isActive"
                 checked={formData.isActive}
                 onChange={handleChange}
-                className="w-5 h-5 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400/50"
+                className="w-5 h-5 rounded border-[#d4c4b0] bg-[#f2ebe2] text-amber-800 focus:ring-amber-800/40"
               />
               <div>
-                <p className="font-medium text-stone-100">Active</p>
-                <p className="text-sm text-stone-400">
+                <p className="font-medium text-[#451a03]">Active</p>
+                <p className="text-sm text-[#78350f]">
                   Deal will be visible to customers when active
                 </p>
               </div>
@@ -522,11 +522,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 name="isFeatured"
                 checked={formData.isFeatured}
                 onChange={handleChange}
-                className="w-5 h-5 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400/50"
+                className="w-5 h-5 rounded border-[#d4c4b0] bg-[#f2ebe2] text-amber-800 focus:ring-amber-800/40"
               />
               <div>
-                <p className="font-medium text-stone-100">Featured</p>
-                <p className="text-sm text-stone-400">
+                <p className="font-medium text-[#451a03]">Featured</p>
+                <p className="text-sm text-[#78350f]">
                   Featured deals appear at the top of search results
                 </p>
               </div>
@@ -545,7 +545,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {submitStatus === 'error' && (
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-            <p className="text-red-400">
+            <p className="text-red-600">
               Failed to {mode === 'create' ? 'create' : 'update'} deal. Please try again.
             </p>
           </div>

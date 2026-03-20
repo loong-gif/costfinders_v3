@@ -10,7 +10,7 @@ export default function BusinessProfilePage() {
   if (!businessId) {
     return (
       <div className="text-center py-12">
-        <p className="text-stone-400">No business linked to this account.</p>
+        <p className="text-[#78350f]">No business linked to this account.</p>
       </div>
     )
   }

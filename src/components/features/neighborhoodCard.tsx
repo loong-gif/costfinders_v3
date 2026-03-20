@@ -27,35 +27,35 @@ export function NeighborhoodCard({
   return (
     <Link
       href={`/${stateSlug}/${citySlug}/${slug}`}
-      className="group bg-stone-900 border border-stone-800 rounded-xl p-5 shadow-md transition-all duration-200 hover:border-stone-700 hover:shadow-lg"
+      className="group bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl p-5 shadow-md transition-all duration-200 hover:border-[#c4b09a] hover:shadow-lg"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
-            <MapPin size={20} weight="light" className="text-amber-400" />
+          <div className="w-10 h-10 rounded-lg bg-amber-800/8 flex items-center justify-center">
+            <MapPin size={20} weight="light" className="text-amber-800" />
           </div>
           <div>
-            <h3 className="font-semibold text-lg text-stone-100 group-hover:text-amber-400 transition-colors">
+            <h3 className="font-semibold text-lg text-[#451a03] group-hover:text-amber-800 transition-colors">
               {name}
             </h3>
-            <p className="text-sm text-stone-500">{cityName}</p>
+            <p className="text-sm text-[#92400e]">{cityName}</p>
           </div>
         </div>
         <ArrowRight
           size={20}
           weight="light"
-          className="text-stone-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all"
+          className="text-[#92400e] group-hover:text-amber-800 group-hover:translate-x-1 transition-all"
         />
       </div>
 
       {/* Stats */}
-      <div className="mt-4 pt-4 border-t border-stone-800 flex items-center gap-4 text-sm">
-        <div className="flex items-center gap-1.5 text-stone-400">
-          <Tag size={16} weight="light" className="text-amber-400" />
+      <div className="mt-4 pt-4 border-t border-[#d4c4b0] flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1.5 text-[#78350f]">
+          <Tag size={16} weight="light" className="text-amber-800" />
           <span>{dealCount} deals</span>
         </div>
-        <div className="flex items-center gap-1.5 text-stone-400">
-          <Storefront size={16} weight="light" className="text-amber-400" />
+        <div className="flex items-center gap-1.5 text-[#78350f]">
+          <Storefront size={16} weight="light" className="text-amber-800" />
           <span>{businessCount} providers</span>
         </div>
       </div>

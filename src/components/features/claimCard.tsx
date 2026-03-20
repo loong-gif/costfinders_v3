@@ -50,8 +50,8 @@ export function ClaimCard({ claim }: ClaimCardProps) {
       <Card variant="glass" padding="md">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-stone-400 text-sm">Deal no longer available</p>
-            <p className="text-stone-500 text-xs mt-1">
+            <p className="text-[#78350f] text-sm">Deal no longer available</p>
+            <p className="text-[#92400e] text-xs mt-1">
               Claimed {formatRelativeTime(claim.createdAt)}
             </p>
           </div>
@@ -62,21 +62,21 @@ export function ClaimCard({ claim }: ClaimCardProps) {
   }
 
   return (
-    <Card variant="glass" padding="lg" className="hover:border-stone-700 transition-colors">
+    <Card variant="glass" padding="lg" className="hover:border-[#c4b09a] transition-colors">
       <div className="space-y-4">
         {/* Header: Deal title + Status */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <Link
               href={`/deals/${deal.id}`}
-              className="text-lg font-semibold text-stone-100 hover:text-amber-400 transition-colors line-clamp-2"
+              className="text-lg font-semibold text-[#451a03] hover:text-amber-800 transition-colors line-clamp-2"
             >
               {deal.title}
             </Link>
             {business && (
               <div className="flex items-center gap-1.5 mt-1">
-                <MapPin size={14} weight="fill" className="text-stone-500 shrink-0" />
-                <span className="text-sm text-stone-400">{business.name}</span>
+                <MapPin size={14} weight="fill" className="text-[#92400e] shrink-0" />
+                <span className="text-sm text-[#78350f]">{business.name}</span>
               </div>
             )}
           </div>
@@ -87,14 +87,14 @@ export function ClaimCard({ claim }: ClaimCardProps) {
         {(claim.preferredDate || claim.preferredTime) && (
           <div className="flex items-center gap-4 text-sm">
             {claim.preferredDate && (
-              <div className="flex items-center gap-1.5 text-stone-400">
-                <Calendar size={16} weight="regular" className="text-stone-500" />
+              <div className="flex items-center gap-1.5 text-[#78350f]">
+                <Calendar size={16} weight="regular" className="text-[#92400e]" />
                 <span>Requested: {formatDate(claim.preferredDate)}</span>
               </div>
             )}
             {claim.preferredTime && (
-              <div className="flex items-center gap-1.5 text-stone-400">
-                <Clock size={16} weight="regular" className="text-stone-500" />
+              <div className="flex items-center gap-1.5 text-[#78350f]">
+                <Clock size={16} weight="regular" className="text-[#92400e]" />
                 <span>{claim.preferredTime}</span>
               </div>
             )}
@@ -103,14 +103,14 @@ export function ClaimCard({ claim }: ClaimCardProps) {
 
         {/* Booked Date/Time (if booked or completed) */}
         {claim.bookedDate && (claim.status === 'booked' || claim.status === 'completed') && (
-          <div className="flex items-center gap-2 p-3 bg-emerald-400/10 rounded-xl">
-            <CheckCircle size={18} weight="fill" className="text-emerald-400 shrink-0" />
+          <div className="flex items-center gap-2 p-3 bg-emerald-600/10 rounded-xl">
+            <CheckCircle size={18} weight="fill" className="text-emerald-600 shrink-0" />
             <div className="text-sm">
-              <span className="text-emerald-400 font-medium">
+              <span className="text-emerald-600 font-medium">
                 {claim.status === 'completed' ? 'Completed' : 'Booked'}: {formatDate(claim.bookedDate)}
               </span>
               {claim.bookedTime && (
-                <span className="text-emerald-400/80"> at {claim.bookedTime}</span>
+                <span className="text-emerald-600/80"> at {claim.bookedTime}</span>
               )}
             </div>
           </div>
@@ -118,20 +118,20 @@ export function ClaimCard({ claim }: ClaimCardProps) {
 
         {/* Business Response */}
         {claim.businessResponse && (
-          <div className="p-3 bg-stone-800 rounded-xl">
+          <div className="p-3 bg-[#faf5ee] rounded-xl">
             <div className="flex items-start gap-2">
-              <ChatCircle size={16} weight="fill" className="text-stone-500 mt-0.5 shrink-0" />
+              <ChatCircle size={16} weight="fill" className="text-[#92400e] mt-0.5 shrink-0" />
               <div>
-                <p className="text-xs text-stone-500 mb-1">Business Response</p>
-                <p className="text-sm text-stone-400">{claim.businessResponse}</p>
+                <p className="text-xs text-[#92400e] mb-1">Business Response</p>
+                <p className="text-sm text-[#78350f]">{claim.businessResponse}</p>
               </div>
             </div>
           </div>
         )}
 
         {/* Footer: Created date */}
-        <div className="pt-2 border-t border-stone-800">
-          <p className="text-xs text-stone-500">
+        <div className="pt-2 border-t border-[#d4c4b0]">
+          <p className="text-xs text-[#92400e]">
             Claimed {formatRelativeTime(claim.createdAt)}
           </p>
         </div>

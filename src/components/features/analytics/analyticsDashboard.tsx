@@ -36,21 +36,21 @@ function MetricCard({
   return (
     <Card variant="glass" padding="lg">
       <div className="flex items-start justify-between mb-4">
-        <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
           {icon}
         </div>
         <Tooltip content={tooltip}>
           <button
             type="button"
-            className="p-1.5 rounded-lg hover:bg-stone-800 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[#faf5ee] transition-colors"
           >
-            <Info size={16} weight="regular" className="text-stone-500" />
+            <Info size={16} weight="regular" className="text-[#92400e]" />
           </button>
         </Tooltip>
       </div>
       <div>
-        <p className="text-sm text-stone-400 mb-1">{title}</p>
-        <p className="text-2xl font-bold text-stone-100">{value}</p>
+        <p className="text-sm text-[#78350f] mb-1">{title}</p>
+        <p className="text-2xl font-bold text-[#451a03]">{value}</p>
         {change && (
           <div className="flex items-center gap-1 mt-2">
             {changeType === 'positive' ? (
@@ -64,7 +64,7 @@ function MetricCard({
                   ? 'text-success'
                   : changeType === 'negative'
                     ? 'text-error'
-                    : 'text-stone-500'
+                    : 'text-[#92400e]'
               }`}
             >
               {change}
@@ -138,19 +138,19 @@ function DealPerformanceTable() {
     <Card variant="glass" padding="lg">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-stone-100">
+          <h3 className="text-lg font-semibold text-[#451a03]">
             Deal Performance
           </h3>
-          <p className="text-sm text-stone-500 mt-1">
+          <p className="text-sm text-[#92400e] mt-1">
             How your deals are performing
           </p>
         </div>
         <Tooltip content="Performance data based on the last 30 days">
           <button
             type="button"
-            className="p-1.5 rounded-lg hover:bg-stone-800 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[#faf5ee] transition-colors"
           >
-            <Info size={16} weight="regular" className="text-stone-500" />
+            <Info size={16} weight="regular" className="text-[#92400e]" />
           </button>
         </Tooltip>
       </div>
@@ -159,25 +159,25 @@ function DealPerformanceTable() {
       <div className="hidden sm:block overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-stone-800">
-              <th className="text-left pb-3 text-sm font-medium text-stone-400">
+            <tr className="border-b border-[#d4c4b0]">
+              <th className="text-left pb-3 text-sm font-medium text-[#78350f]">
                 Deal
               </th>
-              <th className="text-right pb-3 text-sm font-medium text-stone-400">
+              <th className="text-right pb-3 text-sm font-medium text-[#78350f]">
                 Views
               </th>
-              <th className="text-right pb-3 text-sm font-medium text-stone-400">
+              <th className="text-right pb-3 text-sm font-medium text-[#78350f]">
                 Claims
               </th>
-              <th className="text-right pb-3 text-sm font-medium text-stone-400">
+              <th className="text-right pb-3 text-sm font-medium text-[#78350f]">
                 Conv. %
               </th>
-              <th className="text-right pb-3 text-sm font-medium text-stone-400">
+              <th className="text-right pb-3 text-sm font-medium text-[#78350f]">
                 Status
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-stone-800">
+          <tbody className="divide-y divide-[#d4c4b0]">
             {dealPerformanceData.map((deal) => (
               <tr key={deal.id} className="group">
                 <td className="py-3">
@@ -189,18 +189,18 @@ function DealPerformanceTable() {
                         className="text-yellow-500"
                       />
                     )}
-                    <span className="text-sm text-stone-100 truncate max-w-[200px]">
+                    <span className="text-sm text-[#451a03] truncate max-w-[200px]">
                       {deal.title}
                     </span>
                   </div>
                 </td>
                 <td className="py-3 text-right">
-                  <span className="text-sm text-stone-400">
+                  <span className="text-sm text-[#78350f]">
                     {deal.views.toLocaleString()}
                   </span>
                 </td>
                 <td className="py-3 text-right">
-                  <span className="text-sm text-stone-400">
+                  <span className="text-sm text-[#78350f]">
                     {deal.claims}
                   </span>
                 </td>
@@ -210,8 +210,8 @@ function DealPerformanceTable() {
                       deal.conversionRate >= 4
                         ? 'text-success'
                         : deal.conversionRate >= 3
-                          ? 'text-stone-100'
-                          : 'text-stone-500'
+                          ? 'text-[#451a03]'
+                          : 'text-[#92400e]'
                     }`}
                   >
                     {deal.conversionRate}%
@@ -242,14 +242,14 @@ function DealPerformanceTable() {
         {dealPerformanceData.map((deal) => (
           <div
             key={deal.id}
-            className="p-4 bg-stone-900 rounded-xl border border-stone-800"
+            className="p-4 bg-[#f2ebe2] rounded-xl border border-[#d4c4b0]"
           >
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-2 min-w-0">
                 {deal.id === topDeal.id && (
                   <Crown size={16} weight="fill" className="text-yellow-500 flex-shrink-0" />
                 )}
-                <span className="text-sm font-medium text-stone-100 truncate">
+                <span className="text-sm font-medium text-[#451a03] truncate">
                   {deal.title}
                 </span>
               </div>
@@ -267,13 +267,13 @@ function DealPerformanceTable() {
                 {deal.status.charAt(0).toUpperCase() + deal.status.slice(1)}
               </Badge>
             </div>
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-800">
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#d4c4b0]">
               <div className="flex items-center gap-4 text-sm">
-                <div className="text-stone-400">
-                  <span className="text-stone-500">Views:</span> {deal.views.toLocaleString()}
+                <div className="text-[#78350f]">
+                  <span className="text-[#92400e]">Views:</span> {deal.views.toLocaleString()}
                 </div>
-                <div className="text-stone-400">
-                  <span className="text-stone-500">Claims:</span> {deal.claims}
+                <div className="text-[#78350f]">
+                  <span className="text-[#92400e]">Claims:</span> {deal.claims}
                 </div>
               </div>
               <span
@@ -281,8 +281,8 @@ function DealPerformanceTable() {
                   deal.conversionRate >= 4
                     ? 'text-success'
                     : deal.conversionRate >= 3
-                      ? 'text-stone-100'
-                      : 'text-stone-500'
+                      ? 'text-[#451a03]'
+                      : 'text-[#92400e]'
                 }`}
               >
                 {deal.conversionRate}%
@@ -303,7 +303,7 @@ function TrendsSection() {
       type: 'positive' as const,
     },
     {
-      icon: <ChartLineUp size={18} weight="fill" className="text-amber-400" />,
+      icon: <ChartLineUp size={18} weight="fill" className="text-amber-800" />,
       text: 'Botox deals receive 40% of all claims',
       type: 'info' as const,
     },
@@ -323,19 +323,19 @@ function TrendsSection() {
     <Card variant="glass" padding="lg">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-stone-100">
+          <h3 className="text-lg font-semibold text-[#451a03]">
             Insights & Trends
           </h3>
-          <p className="text-sm text-stone-500 mt-1">
+          <p className="text-sm text-[#92400e] mt-1">
             Key patterns in your performance
           </p>
         </div>
         <Tooltip content="Insights based on the last 30 days of activity">
           <button
             type="button"
-            className="p-1.5 rounded-lg hover:bg-stone-800 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[#faf5ee] transition-colors"
           >
-            <Info size={16} weight="regular" className="text-stone-500" />
+            <Info size={16} weight="regular" className="text-[#92400e]" />
           </button>
         </Tooltip>
       </div>
@@ -347,12 +347,12 @@ function TrendsSection() {
               // biome-ignore lint/suspicious/noArrayIndexKey: static list
               index
             }`}
-            className="flex items-center gap-3 p-3 bg-stone-900 rounded-xl"
+            className="flex items-center gap-3 p-3 bg-[#f2ebe2] rounded-xl"
           >
-            <div className="w-8 h-8 rounded-lg bg-stone-800 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-[#faf5ee] flex items-center justify-center flex-shrink-0">
               {trend.icon}
             </div>
-            <p className="text-sm text-stone-100">{trend.text}</p>
+            <p className="text-sm text-[#451a03]">{trend.text}</p>
           </div>
         ))}
       </div>
@@ -367,7 +367,7 @@ export function AnalyticsDashboard() {
       value: '1,234',
       change: '+12% vs last month',
       changeType: 'positive' as const,
-      icon: <Eye size={24} weight="fill" className="text-amber-400" />,
+      icon: <Eye size={24} weight="fill" className="text-amber-800" />,
       tooltip: 'Total number of times your deals were viewed this month',
     },
     {
@@ -376,7 +376,7 @@ export function AnalyticsDashboard() {
       change: '+8% vs last month',
       changeType: 'positive' as const,
       icon: (
-        <HandGrabbing size={24} weight="fill" className="text-amber-400" />
+        <HandGrabbing size={24} weight="fill" className="text-amber-800" />
       ),
       tooltip: 'Number of customers who claimed your deals this month',
     },
@@ -386,7 +386,7 @@ export function AnalyticsDashboard() {
       change: '-0.2% vs last month',
       changeType: 'negative' as const,
       icon: (
-        <ChartLineUp size={24} weight="fill" className="text-amber-400" />
+        <ChartLineUp size={24} weight="fill" className="text-amber-800" />
       ),
       tooltip: 'Percentage of viewers who claimed a deal',
     },
@@ -396,7 +396,7 @@ export function AnalyticsDashboard() {
       change: '+$1,200 vs last month',
       changeType: 'positive' as const,
       icon: (
-        <CurrencyDollar size={24} weight="fill" className="text-amber-400" />
+        <CurrencyDollar size={24} weight="fill" className="text-amber-800" />
       ),
       tooltip: 'Sum of deal prices for all claimed deals this month',
     },

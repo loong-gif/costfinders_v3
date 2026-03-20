@@ -40,15 +40,15 @@ export function SaveButton({ dealId, size = 'sm', className = '' }: SaveButtonPr
         ${buttonSize}
         flex items-center justify-center
         rounded-full
-        bg-stone-900/80
-        border border-stone-800
+        bg-[#f2ebe2]/80
+        border border-[#d4c4b0]
         transition-all duration-200
         ${
           isAuthenticated
-            ? 'hover:bg-stone-900 hover:scale-110 active:scale-95 cursor-pointer'
+            ? 'hover:bg-[#f2ebe2] hover:scale-110 active:scale-95 cursor-pointer'
             : 'cursor-not-allowed opacity-60'
         }
-        ${saved ? 'text-red-500' : 'text-stone-400 hover:text-stone-100'}
+        ${saved ? 'text-red-500' : 'text-[#78350f] hover:text-[#451a03]'}
         ${className}
       `}
       aria-label={saved ? 'Remove from favorites' : 'Add to favorites'}

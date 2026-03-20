@@ -9,7 +9,7 @@ export function CityGrid({ cities }: CityGridProps) {
   return (
     <section className="py-12">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-stone-100">
+        <h2 className="text-xl font-semibold text-[#451a03]">
           Browse by city
         </h2>
       </div>
@@ -19,20 +19,20 @@ export function CityGrid({ cities }: CityGridProps) {
           <Link
             key={item.city}
             href={`/deals?city=${encodeURIComponent(item.city)}`}
-            className="group flex items-center gap-3 bg-stone-900 border border-stone-800 rounded-[10px] px-4 py-3 hover:border-stone-700 transition-all duration-200 cursor-pointer"
+            className="group flex items-center gap-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] px-4 py-3 hover:border-[#c4b09a] transition-all duration-200 cursor-pointer"
           >
-            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-stone-800 group-hover:bg-amber-400/10 transition-colors shrink-0">
+            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[#faf5ee] group-hover:bg-amber-800/8 transition-colors shrink-0">
               <MapPin
                 size={16}
                 weight="bold"
-                className="text-stone-400 group-hover:text-amber-400 transition-colors"
+                className="text-[#78350f] group-hover:text-amber-800 transition-colors"
               />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-stone-200 group-hover:text-stone-100 truncate">
+              <p className="text-sm font-medium text-[#5c2d0a] group-hover:text-[#451a03] truncate">
                 {item.city}
               </p>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-[#92400e]">
                 {item.count} {item.count === 1 ? 'provider' : 'providers'}
               </p>
             </div>

@@ -72,33 +72,33 @@ export function CityPicker({
         className={`
           w-full flex items-center justify-between gap-2
           px-4 py-2.5
-          bg-stone-900
-          border border-stone-800 rounded-xl
+          bg-[#f2ebe2]
+          border border-[#d4c4b0] rounded-xl
           text-left
           transition-all duration-200
-          hover:border-stone-700
-          focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
-          ${isOpen ? 'border-amber-400/50 ring-1 ring-amber-400/20' : ''}
+          hover:border-[#c4b09a]
+          focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15
+          ${isOpen ? 'border-amber-800/40 ring-1 ring-amber-800/15' : ''}
         `}
       >
         <div className="flex items-center gap-2 min-w-0">
           <MapPin
             size={18}
             weight={selectedCity ? 'fill' : 'regular'}
-            className="text-amber-400 flex-shrink-0"
+            className="text-amber-800 flex-shrink-0"
           />
           {selectedCity ? (
-            <span className="text-stone-100 truncate">
+            <span className="text-[#451a03] truncate">
               {selectedCity.name}, {selectedCity.stateCode}
             </span>
           ) : (
-            <span className="text-stone-500">{placeholder}</span>
+            <span className="text-[#92400e]">{placeholder}</span>
           )}
         </div>
         <CaretDown
           size={16}
           weight="bold"
-          className={`text-stone-500 flex-shrink-0 transition-transform duration-200 ${
+          className={`text-[#92400e] flex-shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -109,19 +109,19 @@ export function CityPicker({
         <div
           className={`
             absolute z-50 w-full mt-2
-            bg-stone-900
-            border border-stone-800 rounded-xl
+            bg-[#f2ebe2]
+            border border-[#d4c4b0] rounded-xl
             shadow-elevated
             overflow-hidden
             animate-in fade-in slide-in-from-top-2 duration-200
           `}
         >
           {/* Search Input */}
-          <div className="p-2 border-b border-stone-800">
+          <div className="p-2 border-b border-[#d4c4b0]">
             <div className="relative">
               <MagnifyingGlass
                 size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
               />
               <input
                 ref={searchInputRef}
@@ -131,10 +131,10 @@ export function CityPicker({
                 placeholder="Search cities..."
                 className={`
                   w-full pl-9 pr-4 py-2
-                  bg-stone-900
-                  border border-stone-800 rounded-lg
-                  text-sm text-stone-100 placeholder:text-stone-500
-                  focus:outline-none focus:border-amber-400/50
+                  bg-[#f2ebe2]
+                  border border-[#d4c4b0] rounded-lg
+                  text-sm text-[#451a03] placeholder:text-[#92400e]
+                  focus:outline-none focus:border-amber-800/40
                 `}
               />
             </div>
@@ -143,7 +143,7 @@ export function CityPicker({
           {/* City List */}
           <div className="max-h-64 overflow-y-auto">
             {filteredCities.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-stone-500 text-center">
+              <div className="px-4 py-3 text-sm text-[#92400e] text-center">
                 No cities found
               </div>
             ) : (
@@ -159,8 +159,8 @@ export function CityPicker({
                     transition-colors duration-150
                     ${
                       selectedCity?.id === city.id
-                        ? 'bg-amber-400/10 text-amber-400'
-                        : 'text-stone-100 hover:bg-stone-800'
+                        ? 'bg-amber-800/8 text-amber-800'
+                        : 'text-[#451a03] hover:bg-[#faf5ee]'
                     }
                   `}
                 >

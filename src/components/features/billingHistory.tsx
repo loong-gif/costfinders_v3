@@ -47,11 +47,11 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
     return (
       <Card variant="glass" padding="lg">
         <div className="text-center py-8">
-          <div className="w-12 h-12 rounded-xl bg-stone-900 flex items-center justify-center mx-auto mb-3">
-            <Receipt size={24} weight="light" className="text-stone-500" />
+          <div className="w-12 h-12 rounded-xl bg-[#f2ebe2] flex items-center justify-center mx-auto mb-3">
+            <Receipt size={24} weight="light" className="text-[#92400e]" />
           </div>
-          <h3 className="font-medium text-stone-100 mb-1">No billing history</h3>
-          <p className="text-sm text-stone-400">
+          <h3 className="font-medium text-[#451a03] mb-1">No billing history</h3>
+          <p className="text-sm text-[#78350f]">
             Your invoices will appear here once you have an active subscription.
           </p>
         </div>
@@ -62,41 +62,41 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
   return (
     <Card variant="glass" padding="lg">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-stone-100">Billing History</h3>
+        <h3 className="text-lg font-semibold text-[#451a03]">Billing History</h3>
       </div>
 
       {/* Desktop Table View */}
       <div className="hidden sm:block overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-stone-800">
-              <th className="text-left text-xs font-medium text-stone-500 uppercase tracking-wide py-3">
+            <tr className="border-b border-[#d4c4b0]">
+              <th className="text-left text-xs font-medium text-[#92400e] uppercase tracking-wide py-3">
                 Date
               </th>
-              <th className="text-left text-xs font-medium text-stone-500 uppercase tracking-wide py-3">
+              <th className="text-left text-xs font-medium text-[#92400e] uppercase tracking-wide py-3">
                 Description
               </th>
-              <th className="text-left text-xs font-medium text-stone-500 uppercase tracking-wide py-3">
+              <th className="text-left text-xs font-medium text-[#92400e] uppercase tracking-wide py-3">
                 Amount
               </th>
-              <th className="text-left text-xs font-medium text-stone-500 uppercase tracking-wide py-3">
+              <th className="text-left text-xs font-medium text-[#92400e] uppercase tracking-wide py-3">
                 Status
               </th>
-              <th className="text-right text-xs font-medium text-stone-500 uppercase tracking-wide py-3">
+              <th className="text-right text-xs font-medium text-[#92400e] uppercase tracking-wide py-3">
                 Invoice
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-stone-800">
+          <tbody className="divide-y divide-[#d4c4b0]">
             {invoices.map((invoice) => (
               <tr key={invoice.id}>
-                <td className="py-3 text-sm text-stone-100">
+                <td className="py-3 text-sm text-[#451a03]">
                   {formatDate(invoice.date)}
                 </td>
-                <td className="py-3 text-sm text-stone-400">
+                <td className="py-3 text-sm text-[#78350f]">
                   {invoice.description}
                 </td>
-                <td className="py-3 text-sm text-stone-100 font-medium">
+                <td className="py-3 text-sm text-[#451a03] font-medium">
                   ${invoice.amount.toFixed(2)}
                 </td>
                 <td className="py-3">
@@ -126,14 +126,14 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
         {invoices.map((invoice) => (
           <div
             key={invoice.id}
-            className="p-4 bg-stone-900 rounded-xl border border-stone-800"
+            className="p-4 bg-[#f2ebe2] rounded-xl border border-[#d4c4b0]"
           >
             <div className="flex items-start justify-between mb-2">
               <div>
-                <p className="text-sm font-medium text-stone-100">
+                <p className="text-sm font-medium text-[#451a03]">
                   {invoice.description}
                 </p>
-                <p className="text-xs text-stone-500 mt-0.5">
+                <p className="text-xs text-[#92400e] mt-0.5">
                   {formatDate(invoice.date)}
                 </p>
               </div>
@@ -141,8 +141,8 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
                 {getStatusLabel(invoice.status)}
               </Badge>
             </div>
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-800">
-              <span className="text-lg font-semibold text-stone-100">
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#d4c4b0]">
+              <span className="text-lg font-semibold text-[#451a03]">
                 ${invoice.amount.toFixed(2)}
               </span>
               <Button
@@ -162,10 +162,10 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
       {/* Failed Payment Notice */}
       {invoices.some((inv) => inv.status === 'failed') && (
         <div className="mt-4 p-3 bg-red-400/10 rounded-xl border border-red-400/20 flex items-start gap-3">
-          <Warning size={18} weight="fill" className="text-red-400 flex-shrink-0 mt-0.5" />
+          <Warning size={18} weight="fill" className="text-red-600 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-medium text-red-400">Payment failed</p>
-            <p className="text-xs text-stone-400 mt-0.5">
+            <p className="text-sm font-medium text-red-600">Payment failed</p>
+            <p className="text-xs text-[#78350f] mt-0.5">
               One or more payments failed. Please update your payment method to avoid service interruption.
             </p>
           </div>

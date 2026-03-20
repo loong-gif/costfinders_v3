@@ -79,15 +79,15 @@ export default function ClaimsPage() {
   if (claimsState.isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-32 bg-stone-800 rounded-lg animate-pulse" />
+        <div className="h-8 w-32 bg-[#faf5ee] rounded-lg animate-pulse" />
         <div className="flex gap-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-10 w-20 bg-stone-800 rounded-xl animate-pulse" />
+            <div key={i} className="h-10 w-20 bg-[#faf5ee] rounded-xl animate-pulse" />
           ))}
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 bg-stone-800 rounded-2xl animate-pulse" />
+            <div key={i} className="h-40 bg-[#faf5ee] rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -111,15 +111,15 @@ export default function ClaimsPage() {
                 px-4 py-2 rounded-xl text-sm font-medium transition-all
                 ${
                   isActive
-                    ? 'bg-amber-400 text-white'
-                    : 'bg-stone-900 border border-stone-800 text-stone-400 hover:text-stone-100 hover:border-stone-700'
+                    ? 'bg-amber-800 text-white'
+                    : 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#78350f] hover:text-[#451a03] hover:border-[#c4b09a]'
                 }
               `}
             >
               {tab.label}
               <span
                 className={`ml-2 px-1.5 py-0.5 rounded-full text-xs ${
-                  isActive ? 'bg-white/20' : 'bg-stone-800'
+                  isActive ? 'bg-white/20' : 'bg-[#faf5ee]'
                 }`}
               >
                 {count}
@@ -138,13 +138,13 @@ export default function ClaimsPage() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-20 h-20 rounded-full bg-stone-800 flex items-center justify-center mb-6">
-            <ClipboardText size={40} weight="light" className="text-stone-500" />
+          <div className="w-20 h-20 rounded-full bg-[#faf5ee] flex items-center justify-center mb-6">
+            <ClipboardText size={40} weight="light" className="text-[#92400e]" />
           </div>
-          <h2 className="text-xl font-semibold text-stone-100 mb-2">
+          <h2 className="text-xl font-semibold text-[#451a03] mb-2">
             {activeTab === 'all' ? 'No claims yet' : `No ${activeTab} claims`}
           </h2>
-          <p className="text-stone-400 mb-6 max-w-sm">
+          <p className="text-[#78350f] mb-6 max-w-sm">
             {activeTab === 'all'
               ? 'Find a deal you love and claim it to get started.'
               : `You don't have any ${activeTab} claims at the moment.`}

@@ -105,17 +105,17 @@ export default async function StatePage({ params }: StatePageProps) {
             />
 
             {/* Hero Content */}
-            <div className="bg-stone-900 border border-stone-800 rounded-[10px] p-8 shadow-md">
+            <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-8 shadow-md">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
-                  <MapPin size={24} weight="fill" className="text-amber-400" />
+                <div className="w-12 h-12 rounded-xl bg-amber-800/15 flex items-center justify-center">
+                  <MapPin size={24} weight="fill" className="text-amber-800" />
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-stone-100">
+                <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
                   Medspa Deals in {state.name}
                 </h1>
               </div>
 
-              <p className="text-stone-400 max-w-2xl mb-6">
+              <p className="text-[#78350f] max-w-2xl mb-6">
                 Discover the best medspa deals and aesthetic treatments across{' '}
                 {state.name}. Compare prices on Botox, fillers, laser treatments, and
                 more from verified providers in {stats.cityCount}{' '}
@@ -125,25 +125,25 @@ export default async function StatePage({ params }: StatePageProps) {
               {/* Stats Row */}
               <div className="flex flex-wrap gap-6">
                 <div className="flex items-center gap-2">
-                  <Tag size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Tag size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {stats.dealCount}
                   </span>
-                  <span className="text-stone-400">Active Deals</span>
+                  <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {stats.businessCount}
                   </span>
-                  <span className="text-stone-400">Verified Providers</span>
+                  <span className="text-[#78350f]">Verified Providers</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MapPin size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <MapPin size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {stats.cityCount}
                   </span>
-                  <span className="text-stone-400">
+                  <span className="text-[#78350f]">
                     {stats.cityCount === 1 ? 'City' : 'Cities'}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export default async function StatePage({ params }: StatePageProps) {
 
           {/* Cities Grid */}
           <section>
-            <h2 className="text-xl font-semibold text-stone-100 mb-6">
+            <h2 className="text-xl font-semibold text-[#451a03] mb-6">
               Browse by City
             </h2>
 
@@ -179,12 +179,12 @@ export default async function StatePage({ params }: StatePageProps) {
 
             {/* Empty State */}
             {cities.length === 0 && (
-              <div className="text-center py-12 bg-stone-900 border border-stone-800 rounded-[10px]">
-                <MapPin size={48} weight="light" className="mx-auto text-stone-500 mb-4" />
-                <h3 className="text-lg font-medium text-stone-100 mb-2">
+              <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
+                <MapPin size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No Cities Available Yet
                 </h3>
-                <p className="text-stone-400 max-w-md mx-auto">
+                <p className="text-[#78350f] max-w-md mx-auto">
                   We&apos;re expanding to more cities in {state.name} soon. Check back
                   later for new locations.
                 </p>

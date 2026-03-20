@@ -18,12 +18,12 @@ import { getCategories, type Category } from '@/lib/mock-data/categories'
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
-  Syringe: <Syringe size={24} weight="fill" className="text-amber-400" />,
-  Drop: <Drop size={24} weight="fill" className="text-amber-400" />,
-  Sparkle: <Sparkle size={24} weight="fill" className="text-amber-400" />,
-  Lightning: <Lightning size={24} weight="fill" className="text-amber-400" />,
-  Person: <Person size={24} weight="fill" className="text-amber-400" />,
-  Leaf: <Leaf size={24} weight="fill" className="text-amber-400" />,
+  Syringe: <Syringe size={24} weight="fill" className="text-amber-800" />,
+  Drop: <Drop size={24} weight="fill" className="text-amber-800" />,
+  Sparkle: <Sparkle size={24} weight="fill" className="text-amber-800" />,
+  Lightning: <Lightning size={24} weight="fill" className="text-amber-800" />,
+  Person: <Person size={24} weight="fill" className="text-amber-800" />,
+  Leaf: <Leaf size={24} weight="fill" className="text-amber-800" />,
 }
 
 // Static metadata for SEO
@@ -47,21 +47,21 @@ export const metadata: Metadata = {
 // Category card component
 function CategoryCard({ category }: { category: Category }) {
   const icon = categoryIcons[category.icon] || (
-    <Tag size={24} weight="fill" className="text-amber-400" />
+    <Tag size={24} weight="fill" className="text-amber-800" />
   )
 
   return (
     <Link
       href={`/treatments/${category.slug}`}
-      className="group bg-stone-900 border border-stone-800 rounded-xl p-5 shadow-md transition-all duration-200 hover:border-stone-700 hover:shadow-lg"
+      className="group bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl p-5 shadow-md transition-all duration-200 hover:border-[#c4b09a] hover:shadow-lg"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-amber-800/8 flex items-center justify-center">
             {icon}
           </div>
           <div>
-            <h3 className="font-semibold text-lg text-stone-100 group-hover:text-amber-400 transition-colors">
+            <h3 className="font-semibold text-lg text-[#451a03] group-hover:text-amber-800 transition-colors">
               {category.name}
             </h3>
           </div>
@@ -69,23 +69,23 @@ function CategoryCard({ category }: { category: Category }) {
         <ArrowRight
           size={20}
           weight="light"
-          className="text-stone-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all"
+          className="text-[#92400e] group-hover:text-amber-800 group-hover:translate-x-1 transition-all"
         />
       </div>
 
       {/* Description */}
-      <p className="mt-3 text-sm text-stone-400 line-clamp-2">
+      <p className="mt-3 text-sm text-[#78350f] line-clamp-2">
         {category.description}
       </p>
 
       {/* Stats */}
-      <div className="mt-4 pt-4 border-t border-stone-800 flex items-center gap-4 text-sm">
-        <div className="flex items-center gap-1.5 text-stone-400">
-          <Tag size={16} weight="light" className="text-amber-400" />
+      <div className="mt-4 pt-4 border-t border-[#d4c4b0] flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1.5 text-[#78350f]">
+          <Tag size={16} weight="light" className="text-amber-800" />
           <span>{category.dealCount} deals</span>
         </div>
-        <div className="flex items-center gap-1.5 text-stone-400">
-          <Storefront size={16} weight="light" className="text-amber-400" />
+        <div className="flex items-center gap-1.5 text-[#78350f]">
+          <Storefront size={16} weight="light" className="text-amber-800" />
           <span>{Math.ceil(category.dealCount / 2)} providers</span>
         </div>
       </div>
@@ -117,17 +117,17 @@ export default function TreatmentsPage() {
             />
 
             {/* Hero Content */}
-            <div className="bg-stone-900 border border-stone-800 rounded-[10px] p-8 shadow-md">
+            <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-8 shadow-md">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
-                  <Sparkle size={24} weight="fill" className="text-amber-400" />
+                <div className="w-12 h-12 rounded-xl bg-amber-800/15 flex items-center justify-center">
+                  <Sparkle size={24} weight="fill" className="text-amber-800" />
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-stone-100">
+                <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
                   Browse Treatments
                 </h1>
               </div>
 
-              <p className="text-stone-400 max-w-2xl mb-6">
+              <p className="text-[#78350f] max-w-2xl mb-6">
                 Explore our curated categories of aesthetic treatments. Compare prices
                 from verified medspa providers and find the best deals near you.
               </p>
@@ -135,18 +135,18 @@ export default function TreatmentsPage() {
               {/* Stats Row */}
               <div className="flex flex-wrap gap-6">
                 <div className="flex items-center gap-2">
-                  <Tag size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Tag size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {categories.reduce((sum, c) => sum + c.dealCount, 0)}
                   </span>
-                  <span className="text-stone-400">Total Deals</span>
+                  <span className="text-[#78350f]">Total Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {categories.length}
                   </span>
-                  <span className="text-stone-400">Treatment Categories</span>
+                  <span className="text-[#78350f]">Treatment Categories</span>
                 </div>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function TreatmentsPage() {
 
           {/* Categories Grid */}
           <section>
-            <h2 className="text-xl font-semibold text-stone-100 mb-6">
+            <h2 className="text-xl font-semibold text-[#451a03] mb-6">
               Treatment Categories
             </h2>
 
@@ -167,16 +167,16 @@ export default function TreatmentsPage() {
 
           {/* Browse All Deals CTA */}
           <section className="mt-12">
-            <div className="bg-stone-900 border border-stone-800 rounded-[10px] p-6 shadow-md text-center">
-              <h3 className="text-lg font-semibold text-stone-100 mb-2">
+            <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-6 shadow-md text-center">
+              <h3 className="text-lg font-semibold text-[#451a03] mb-2">
                 Looking for something specific?
               </h3>
-              <p className="text-stone-400 mb-4">
+              <p className="text-[#78350f] mb-4">
                 Browse all available deals and filter by location, price, and more.
               </p>
               <Link
                 href="/deals"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 text-stone-950 font-semibold rounded-xl hover:bg-amber-300 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800 text-white font-semibold rounded-xl hover:bg-amber-700 transition-colors"
               >
                 <Tag size={20} weight="light" />
                 Browse All Deals
@@ -185,10 +185,10 @@ export default function TreatmentsPage() {
           </section>
 
           {/* Back Navigation */}
-          <div className="mt-8 pt-6 border-t border-stone-800">
+          <div className="mt-8 pt-6 border-t border-[#d4c4b0]">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-stone-400 hover:text-stone-100 transition-colors"
+              className="inline-flex items-center gap-2 text-[#78350f] hover:text-[#451a03] transition-colors"
             >
               <ArrowRight size={18} weight="light" className="rotate-180" />
               Back to home

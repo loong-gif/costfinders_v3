@@ -26,12 +26,12 @@ import {
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
-  Syringe: <Syringe size={24} weight="fill" className="text-amber-400" />,
-  Drop: <Drop size={24} weight="fill" className="text-amber-400" />,
-  Sparkle: <Sparkle size={24} weight="fill" className="text-amber-400" />,
-  Lightning: <Lightning size={24} weight="fill" className="text-amber-400" />,
-  Person: <Person size={24} weight="fill" className="text-amber-400" />,
-  Leaf: <Leaf size={24} weight="fill" className="text-amber-400" />,
+  Syringe: <Syringe size={24} weight="fill" className="text-amber-800" />,
+  Drop: <Drop size={24} weight="fill" className="text-amber-800" />,
+  Sparkle: <Sparkle size={24} weight="fill" className="text-amber-800" />,
+  Lightning: <Lightning size={24} weight="fill" className="text-amber-800" />,
+  Person: <Person size={24} weight="fill" className="text-amber-800" />,
+  Leaf: <Leaf size={24} weight="fill" className="text-amber-800" />,
 }
 
 // Generate static params for all categories
@@ -92,7 +92,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const deals = getDealsForCategory(categorySlug).map(toAnonymousDeal)
   const CategoryIcon = categoryIcons[category.icon] || (
-    <Tag size={24} weight="fill" className="text-amber-400" />
+    <Tag size={24} weight="fill" className="text-amber-800" />
   )
 
   // Build state links for related locations section
@@ -136,17 +136,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             />
 
             {/* Hero Content */}
-            <div className="bg-stone-900 border border-stone-800 rounded-[10px] p-8 shadow-md">
+            <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-8 shadow-md">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-amber-800/15 flex items-center justify-center">
                   {CategoryIcon}
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-stone-100">
+                <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
                   {category.name} Deals
                 </h1>
               </div>
 
-              <p className="text-stone-400 max-w-2xl mb-6">
+              <p className="text-[#78350f] max-w-2xl mb-6">
                 {category.description}. Compare prices from verified medspa
                 providers and find the best deals on {category.name.toLowerCase()}{' '}
                 treatments near you.
@@ -155,18 +155,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {/* Stats Row */}
               <div className="flex flex-wrap gap-6">
                 <div className="flex items-center gap-2">
-                  <Tag size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Tag size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {deals.length}
                   </span>
-                  <span className="text-stone-400">Active Deals</span>
+                  <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-400" />
-                  <span className="font-semibold text-stone-100">
+                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <span className="font-semibold text-[#451a03]">
                     {category.businessCount}
                   </span>
-                  <span className="text-stone-400">Verified Providers</span>
+                  <span className="text-[#78350f]">Verified Providers</span>
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
           {/* Deals Grid */}
           <section>
-            <h2 className="text-xl font-semibold text-stone-100 mb-6">
+            <h2 className="text-xl font-semibold text-[#451a03] mb-6">
               Available {category.name} Deals
             </h2>
 
@@ -186,18 +186,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </div>
             ) : (
               /* Empty State */
-              <div className="text-center py-12 bg-stone-900 border border-stone-800 rounded-[10px]">
-                <Tag size={48} weight="light" className="mx-auto text-stone-500 mb-4" />
-                <h3 className="text-lg font-medium text-stone-100 mb-2">
+              <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
+                <Tag size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No {category.name} Deals Available Yet
                 </h3>
-                <p className="text-stone-400 max-w-md mx-auto mb-6">
+                <p className="text-[#78350f] max-w-md mx-auto mb-6">
                   We&apos;re working to bring you the best {category.name.toLowerCase()}{' '}
                   deals. Check back soon for new offers from verified providers.
                 </p>
                 <Link
                   href="/deals"
-                  className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-amber-800 hover:text-amber-300 transition-colors font-medium"
                 >
                   <Tag size={18} weight="light" />
                   Browse all deals
@@ -220,10 +220,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </section>
 
           {/* Back Navigation */}
-          <div className="mt-8 pt-6 border-t border-stone-800">
+          <div className="mt-8 pt-6 border-t border-[#d4c4b0]">
             <Link
               href="/deals"
-              className="inline-flex items-center gap-2 text-stone-400 hover:text-stone-100 transition-colors"
+              className="inline-flex items-center gap-2 text-[#78350f] hover:text-[#451a03] transition-colors"
             >
               <Tag size={18} weight="light" />
               Back to all deals

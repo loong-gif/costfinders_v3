@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /* ============================================
-   CostFinders v2 — Bold & Warm Design System
-   Stone-based dark theme + Amber accents
+   CostFinders v2 — Warm Sand Design System
+   Beige/sand backgrounds + deep amber accents
+   Spa lobby warmth for the beauty industry
    ============================================ */
 
 :root {
@@ -10,47 +11,47 @@
   --font-sans: var(--font-sora), var(--font-manrope), system-ui, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', monospace;
 
-  /* Backgrounds — Stone warm neutrals */
-  --color-bg-base: #0c0a09;
-  --color-bg-surface: #1c1917;
-  --color-bg-elevated: #292524;
-  --color-bg-overlay: rgba(12, 10, 9, 0.8);
+  /* Backgrounds — Warm Sand */
+  --color-bg-base: #e8ddd0;
+  --color-bg-surface: #f2ebe2;
+  --color-bg-elevated: #faf5ee;
+  --color-bg-overlay: rgba(69, 26, 3, 0.4);
 
-  /* Accent — Amber */
-  --color-accent: #fbbf24;
-  --color-accent-hover: #fcd34d;
-  --color-accent-muted: rgba(251, 191, 36, 0.15);
-  --color-accent-text: #0c0a09;
+  /* Accent — Deep Amber Brown */
+  --color-accent: #92400e;
+  --color-accent-hover: #b45309;
+  --color-accent-muted: rgba(146, 64, 14, 0.08);
+  --color-accent-text: #ffffff;
 
-  /* Text */
-  --color-text-primary: #f5f5f4;
-  --color-text-secondary: #a8a29e;
-  --color-text-muted: #78716c;
-  --color-text-inverse: #0c0a09;
+  /* Text — Dark Browns */
+  --color-text-primary: #451a03;
+  --color-text-secondary: #78350f;
+  --color-text-muted: #92400e;
+  --color-text-inverse: #ffffff;
 
   /* Semantic */
-  --color-savings: #34d399;
-  --color-savings-bg: rgba(52, 211, 153, 0.15);
-  --color-error: #f87171;
-  --color-error-bg: rgba(248, 113, 113, 0.15);
-  --color-warning: #fb923c;
-  --color-warning-bg: rgba(251, 146, 60, 0.15);
-  --color-info: #60a5fa;
-  --color-info-bg: rgba(96, 165, 250, 0.15);
-  --color-success: #34d399;
-  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-savings: #059669;
+  --color-savings-bg: rgba(5, 150, 105, 0.1);
+  --color-error: #dc2626;
+  --color-error-bg: rgba(220, 38, 38, 0.1);
+  --color-warning: #ea580c;
+  --color-warning-bg: rgba(234, 88, 12, 0.1);
+  --color-info: #2563eb;
+  --color-info-bg: rgba(37, 99, 235, 0.1);
+  --color-success: #059669;
+  --color-success-bg: rgba(5, 150, 105, 0.1);
 
   /* Borders */
-  --color-border-default: #292524;
-  --color-border-hover: #44403c;
-  --color-border-accent: rgba(251, 191, 36, 0.3);
+  --color-border-default: #d4c4b0;
+  --color-border-hover: #c4b09a;
+  --color-border-accent: rgba(146, 64, 14, 0.3);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(251, 191, 36, 0.15);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(251, 191, 36, 0.2);
+  /* Shadows — Soft for light theme */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 16px rgba(146, 64, 14, 0.1);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(146, 64, 14, 0.15);
 
   /* Radius */
   --radius-sm: 6px;
@@ -66,54 +67,54 @@
 
 @theme inline {
   /* Backgrounds */
-  --color-bg-base: #0c0a09;
-  --color-bg-surface: #1c1917;
-  --color-bg-elevated: #292524;
+  --color-bg-base: #e8ddd0;
+  --color-bg-surface: #f2ebe2;
+  --color-bg-elevated: #faf5ee;
 
   /* Accent */
-  --color-accent: #fbbf24;
-  --color-accent-hover: #fcd34d;
-  --color-accent-muted: rgba(251, 191, 36, 0.15);
+  --color-accent: #92400e;
+  --color-accent-hover: #b45309;
+  --color-accent-muted: rgba(146, 64, 14, 0.08);
 
   /* Text */
-  --color-text-primary: #f5f5f4;
-  --color-text-secondary: #a8a29e;
-  --color-text-muted: #78716c;
+  --color-text-primary: #451a03;
+  --color-text-secondary: #78350f;
+  --color-text-muted: #92400e;
 
   /* Semantic */
-  --color-savings: #34d399;
-  --color-savings-bg: rgba(52, 211, 153, 0.15);
-  --color-error: #f87171;
-  --color-error-bg: rgba(248, 113, 113, 0.15);
-  --color-warning: #fb923c;
-  --color-warning-bg: rgba(251, 146, 60, 0.15);
-  --color-info: #60a5fa;
-  --color-info-bg: rgba(96, 165, 250, 0.15);
-  --color-success: #34d399;
-  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-savings: #059669;
+  --color-savings-bg: rgba(5, 150, 105, 0.1);
+  --color-error: #dc2626;
+  --color-error-bg: rgba(220, 38, 38, 0.1);
+  --color-warning: #ea580c;
+  --color-warning-bg: rgba(234, 88, 12, 0.1);
+  --color-info: #2563eb;
+  --color-info-bg: rgba(37, 99, 235, 0.1);
+  --color-success: #059669;
+  --color-success-bg: rgba(5, 150, 105, 0.1);
 
   /* Borders */
-  --color-border-default: #292524;
-  --color-border-hover: #44403c;
-  --color-border-accent: rgba(251, 191, 36, 0.3);
+  --color-border-default: #d4c4b0;
+  --color-border-hover: #c4b09a;
+  --color-border-accent: rgba(146, 64, 14, 0.3);
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(251, 191, 36, 0.15);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(251, 191, 36, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 16px rgba(146, 64, 14, 0.1);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(146, 64, 14, 0.15);
 
-  /* Legacy compat for existing components during migration */
-  --color-brand-primary: #fbbf24;
-  --color-brand-secondary: #fcd34d;
-  --color-glass-bg: rgba(28, 25, 23, 0.8);
-  --color-glass-border: #292524;
-  --color-glass-bg-hover: rgba(41, 37, 36, 0.8);
-  --color-glass-border-hover: #44403c;
-  --color-bg-primary: #0c0a09;
-  --color-bg-secondary: #1c1917;
-  --color-bg-tertiary: #292524;
+  /* Legacy compat */
+  --color-brand-primary: #92400e;
+  --color-brand-secondary: #b45309;
+  --color-glass-bg: #f2ebe2;
+  --color-glass-border: #d4c4b0;
+  --color-glass-bg-hover: #faf5ee;
+  --color-glass-border-hover: #c4b09a;
+  --color-bg-primary: #e8ddd0;
+  --color-bg-secondary: #f2ebe2;
+  --color-bg-tertiary: #faf5ee;
 
   --font-sans: var(--font-sora), var(--font-manrope), system-ui, sans-serif;
 }

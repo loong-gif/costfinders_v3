@@ -50,8 +50,8 @@ export function FilterPanel({
             transition-all duration-200
             ${
               isExpanded
-                ? 'bg-amber-400 text-stone-950'
-                : 'bg-stone-900 border border-stone-800 text-stone-400 hover:text-stone-100 hover:border-stone-700'
+                ? 'bg-amber-800 text-white'
+                : 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#78350f] hover:text-[#451a03] hover:border-[#c4b09a]'
             }
           `}
           aria-expanded={isExpanded}
@@ -63,7 +63,7 @@ export function FilterPanel({
               className={`
               inline-flex items-center justify-center
               w-5 h-5 text-xs font-bold rounded-full
-              ${isExpanded ? 'bg-white/20 text-stone-950' : 'bg-amber-400 text-stone-950'}
+              ${isExpanded ? 'bg-white/20 text-white' : 'bg-amber-800 text-white'}
             `}
             >
               {activeFilterCount}
@@ -79,7 +79,7 @@ export function FilterPanel({
               onClick={onReset}
               className="
                 inline-flex items-center gap-1.5 px-3 py-2
-                text-sm text-stone-400 hover:text-stone-100
+                text-sm text-[#78350f] hover:text-[#451a03]
                 transition-colors duration-200
               "
             >
@@ -93,7 +93,7 @@ export function FilterPanel({
 
       {/* Expandable Content */}
       {isExpanded && (
-        <div className="p-4 bg-stone-900 border border-stone-800 rounded-xl space-y-4">
+        <div className="p-4 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl space-y-4">
           <PriceRangeFilter
             minPrice={filters.minPrice}
             maxPrice={filters.maxPrice}

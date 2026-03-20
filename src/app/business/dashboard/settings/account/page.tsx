@@ -84,11 +84,11 @@ export default function AccountSettingsPage() {
     <div className="space-y-6">
       {/* Upgrade Success Message */}
       {showUpgradeSuccess && (
-        <div className="flex items-center gap-3 p-4 bg-emerald-400/10 rounded-xl border border-emerald-400/20">
-          <CheckCircle size={20} weight="fill" className="text-emerald-400 flex-shrink-0" />
+        <div className="flex items-center gap-3 p-4 bg-emerald-600/10 rounded-xl border border-emerald-400/20">
+          <CheckCircle size={20} weight="fill" className="text-emerald-600 flex-shrink-0" />
           <div>
-            <p className="text-sm font-medium text-emerald-400">Subscription activated!</p>
-            <p className="text-xs text-stone-400 mt-0.5">
+            <p className="text-sm font-medium text-emerald-600">Subscription activated!</p>
+            <p className="text-xs text-[#78350f] mt-0.5">
               You now have access to all Professional features.
             </p>
           </div>
@@ -99,23 +99,23 @@ export default function AccountSettingsPage() {
       <Card variant="glass" padding="lg">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-amber-400/10 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-xl bg-amber-800/8 flex items-center justify-center">
               <Crown
                 size={28}
                 weight={currentTier === 'paid' ? 'fill' : 'light'}
-                className="text-amber-400"
+                className="text-amber-800"
               />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-stone-100">
+                <h2 className="text-lg font-semibold text-[#451a03]">
                   {currentTier === 'paid' ? 'Professional plan' : 'Free plan'}
                 </h2>
                 <Badge variant={currentTier === 'paid' ? 'brand' : 'default'} size="sm">
                   {currentTier === 'paid' ? 'Active' : 'Current'}
                 </Badge>
               </div>
-              <p className="text-sm text-stone-400 mt-0.5">
+              <p className="text-sm text-[#78350f] mt-0.5">
                 {currentTier === 'paid'
                   ? 'You have access to all premium features'
                   : 'Upgrade to unlock premium features'}
@@ -124,7 +124,7 @@ export default function AccountSettingsPage() {
           </div>
           <Link
             href="/business/dashboard/pricing"
-            className="flex items-center gap-2 py-2.5 px-4 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded-xl text-sm font-medium text-stone-100 transition-colors"
+            className="flex items-center gap-2 py-2.5 px-4 bg-[#f2ebe2] hover:bg-[#faf5ee] border border-[#d4c4b0] rounded-xl text-sm font-medium text-[#451a03] transition-colors"
           >
             View pricing & plans
             <ArrowRight size={16} weight="bold" />
@@ -134,34 +134,34 @@ export default function AccountSettingsPage() {
 
       {/* Billing Section */}
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-stone-100">Billing</h2>
+        <h2 className="text-xl font-bold text-[#451a03]">Billing</h2>
 
         {/* Billing Summary for paid users */}
         {currentTier === 'paid' && (
           <Card variant="glass" padding="lg">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
-                <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                   Current plan
                 </p>
-                <p className="text-lg font-semibold text-stone-100">Professional</p>
-                <p className="text-sm text-stone-400">$99/month</p>
+                <p className="text-lg font-semibold text-[#451a03]">Professional</p>
+                <p className="text-sm text-[#78350f]">$99/month</p>
               </div>
               <div>
-                <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                   Next billing date
                 </p>
-                <p className="text-lg font-semibold text-stone-100">Feb 15, 2025</p>
-                <p className="text-sm text-stone-400">Auto-renewal enabled</p>
+                <p className="text-lg font-semibold text-[#451a03]">Feb 15, 2025</p>
+                <p className="text-sm text-[#78350f]">Auto-renewal enabled</p>
               </div>
               <div>
-                <p className="text-xs text-stone-500 uppercase tracking-wide mb-1">
+                <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                   Payment method
                 </p>
-                <p className="text-lg font-semibold text-stone-100">
+                <p className="text-lg font-semibold text-[#451a03]">
                   Visa ****4242
                 </p>
-                <p className="text-sm text-stone-400">Expires 12/27</p>
+                <p className="text-sm text-[#78350f]">Expires 12/27</p>
               </div>
             </div>
           </Card>
@@ -171,14 +171,14 @@ export default function AccountSettingsPage() {
         {currentTier !== 'paid' && (
           <Card variant="glass" padding="lg">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                <Warning size={20} weight="fill" className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                <Warning size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="font-medium text-stone-100 mb-1">
+                <h3 className="font-medium text-[#451a03] mb-1">
                   No active subscription
                 </h3>
-                <p className="text-sm text-stone-400 mb-4">
+                <p className="text-sm text-[#78350f] mb-4">
                   Upgrade to Professional to access billing features and unlock premium features.
                 </p>
                 <Button
@@ -209,16 +209,16 @@ export default function AccountSettingsPage() {
         {/* Cancel Subscription (only for paid users) */}
         {currentTier === 'paid' && (
           <Card variant="glass" padding="lg">
-            <h3 className="text-lg font-semibold text-stone-100 mb-2">
+            <h3 className="text-lg font-semibold text-[#451a03] mb-2">
               Cancel subscription
             </h3>
-            <p className="text-sm text-stone-400 mb-4">
+            <p className="text-sm text-[#78350f] mb-4">
               If you cancel, your Professional features will remain active until your current billing period ends.
               You can resubscribe at any time.
             </p>
             <Button
               variant="ghost"
-              className="text-red-400 hover:text-red-400/80 hover:bg-red-400/10"
+              className="text-red-600 hover:text-red-600/80 hover:bg-red-400/10"
               onClick={() => setShowCancelModal(true)}
             >
               Cancel subscription
@@ -235,20 +235,20 @@ export default function AccountSettingsPage() {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-stone-400">
+          <p className="text-[#78350f]">
             Are you sure you want to cancel your Professional subscription?
           </p>
-          <ul className="text-sm text-stone-400 space-y-2">
+          <ul className="text-sm text-[#78350f] space-y-2">
             <li className="flex items-start gap-2">
-              <span className="text-stone-500">-</span>
+              <span className="text-[#92400e]">-</span>
               <span>You&apos;ll lose access to premium features at the end of your billing period</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-stone-500">-</span>
+              <span className="text-[#92400e]">-</span>
               <span>Your deals will remain active but won&apos;t have priority placement</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-stone-500">-</span>
+              <span className="text-[#92400e]">-</span>
               <span>You can resubscribe anytime to restore features</span>
             </li>
           </ul>

@@ -39,10 +39,10 @@ export default async function Home() {
         <section className="py-12">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-semibold text-stone-100">
+              <h2 className="text-xl font-semibold text-[#451a03]">
                 Trending deals
               </h2>
-              <p className="text-sm text-stone-500 mt-1">
+              <p className="text-sm text-[#92400e] mt-1">
                 Best savings right now
               </p>
             </div>

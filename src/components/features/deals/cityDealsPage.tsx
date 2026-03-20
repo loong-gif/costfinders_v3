@@ -96,19 +96,19 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-stone-100">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#451a03]">
             Medspa Deals in {cityName}
           </h1>
-          <p className="mt-2 text-stone-400 max-w-2xl">
+          <p className="mt-2 text-[#78350f] max-w-2xl">
             Compare {dealCount} medspa deals from {businessCount} verified
             providers in {cityName}. Find the best prices on Botox, fillers, and
             more.
           </p>
 
           {/* Stats Row */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-stone-400">
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#78350f]">
             <div className="flex items-center gap-1.5">
-              <MapPin size={16} weight="fill" className="text-amber-400" />
+              <MapPin size={16} weight="fill" className="text-amber-800" />
               <span>{cityName}</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -116,7 +116,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
               <span>{dealCount} active deals</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Buildings size={16} weight="fill" className="text-blue-400" />
+              <Buildings size={16} weight="fill" className="text-blue-600" />
               <span>{businessCount} providers</span>
             </div>
           </div>
@@ -150,7 +150,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
 
         {/* Treatment Links Section */}
         <section className="mt-12">
-          <h2 className="text-lg font-semibold text-stone-100 mb-4">
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
             Popular Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -163,16 +163,16 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
                 <Card
                   variant="glass"
                   padding="md"
-                  className="bg-stone-900 border-stone-800 hover:bg-stone-800 transition-colors"
+                  className="bg-[#f2ebe2] border-[#d4c4b0] hover:bg-[#faf5ee] transition-colors"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-stone-100 group-hover:text-amber-400 transition-colors">
+                    <span className="text-sm font-medium text-[#451a03] group-hover:text-amber-800 transition-colors">
                       {category.name}
                     </span>
                     <CaretRight
                       size={14}
                       weight="bold"
-                      className="text-stone-500 group-hover:text-amber-400 transition-colors"
+                      className="text-[#92400e] group-hover:text-amber-800 transition-colors"
                     />
                   </div>
                 </Card>
@@ -184,7 +184,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
         {/* Other Cities Section */}
         {otherCities.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-lg font-semibold text-stone-100 mb-4">
+            <h2 className="text-lg font-semibold text-[#451a03] mb-4">
               Deals in Other Cities
             </h2>
             <div className="flex flex-wrap gap-3">
@@ -192,7 +192,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
                 <Link
                   key={city.slug}
                   href={`/deals/${city.slug}`}
-                  className="px-4 py-2 rounded-full bg-stone-900 border border-stone-800 text-sm text-stone-400 hover:bg-stone-800 hover:text-stone-100 transition-colors"
+                  className="px-4 py-2 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] text-sm text-[#78350f] hover:bg-[#faf5ee] hover:text-[#451a03] transition-colors"
                 >
                   {city.name}
                 </Link>

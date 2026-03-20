@@ -32,8 +32,8 @@ type FilterOption = 'all' | TreatmentCategory
 const categoryColors: Record<TreatmentCategory, string> = {
   botox: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
   fillers: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-  facials: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  laser: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  facials: 'bg-amber-500/10 text-amber-800 border-amber-500/20',
+  laser: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
   body: 'bg-green-500/10 text-green-400 border-green-500/20',
   skincare: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
 }
@@ -182,10 +182,10 @@ export default function TreatmentsManagementPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-stone-100">
+            <h1 className="text-2xl font-bold text-[#451a03]">
               Treatment Types
             </h1>
-            <p className="text-stone-400 mt-1">
+            <p className="text-[#78350f] mt-1">
               Manage treatment types across categories
             </p>
           </div>
@@ -203,7 +203,7 @@ export default function TreatmentsManagementPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -211,32 +211,32 @@ export default function TreatmentsManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">{stats.total}</p>
-          <p className="text-sm text-stone-400">Total Treatments</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.total}</p>
+          <p className="text-sm text-[#78350f]">Total Treatments</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">{stats.active}</p>
-          <p className="text-sm text-stone-400">Active</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.active}</p>
+          <p className="text-sm text-[#78350f]">Active</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">
+          <p className="text-2xl font-bold text-[#451a03]">
             {Object.keys(stats.byCategory).filter(
               (k) => stats.byCategory[k as TreatmentCategory] > 0
             ).length}
           </p>
-          <p className="text-sm text-stone-400">Categories Used</p>
+          <p className="text-sm text-[#78350f]">Categories Used</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-stone-100">
+          <p className="text-2xl font-bold text-[#451a03]">
             {filteredTreatments.length}
           </p>
-          <p className="text-sm text-stone-400">Showing</p>
+          <p className="text-sm text-[#78350f]">Showing</p>
         </Card>
       </div>
 
       {/* Bulk Actions Hint */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-stone-400 flex items-center gap-2">
-        <FirstAidKit size={18} className="text-amber-400" />
+      <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-3 text-sm text-[#78350f] flex items-center gap-2">
+        <FirstAidKit size={18} className="text-amber-800" />
         <span>Select multiple treatments to activate/deactivate in bulk</span>
         <Badge variant="info" size="sm">
           Coming Soon
@@ -249,14 +249,14 @@ export default function TreatmentsManagementPage() {
         <div className="relative flex-1">
           <MagnifyingGlass
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
           />
           <input
             type="text"
             placeholder="Search treatments..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+            className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
           />
         </div>
       </div>
@@ -272,7 +272,7 @@ export default function TreatmentsManagementPage() {
           All
           <span
             className={`px-1.5 py-0.5 text-xs rounded-full ${
-              activeFilter === 'all' ? 'bg-stone-800' : 'bg-stone-900'
+              activeFilter === 'all' ? 'bg-[#faf5ee]' : 'bg-[#f2ebe2]'
             }`}
           >
             {stats.total}
@@ -293,7 +293,7 @@ export default function TreatmentsManagementPage() {
                 {category.name}
                 <span
                   className={`px-1.5 py-0.5 text-xs rounded-full ${
-                    activeFilter === category.slug ? 'bg-stone-800' : 'bg-stone-900'
+                    activeFilter === category.slug ? 'bg-[#faf5ee]' : 'bg-[#f2ebe2]'
                   }`}
                 >
                   {count}
@@ -307,20 +307,20 @@ export default function TreatmentsManagementPage() {
       {isAddingNew && (
         <Card variant="glass" padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-stone-100">
+            <h3 className="text-lg font-semibold text-[#451a03]">
               Add New Treatment
             </h3>
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="text-stone-500 hover:text-stone-400"
+              className="text-[#92400e] hover:text-[#78350f]"
             >
               <X size={20} />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Name
               </label>
               <input
@@ -330,11 +330,11 @@ export default function TreatmentsManagementPage() {
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="Treatment name"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Category
               </label>
               <select
@@ -345,7 +345,7 @@ export default function TreatmentsManagementPage() {
                     categoryId: e.target.value as TreatmentCategory,
                   }))
                 }
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.slug}>
@@ -355,7 +355,7 @@ export default function TreatmentsManagementPage() {
               </select>
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Description
               </label>
               <input
@@ -368,11 +368,11 @@ export default function TreatmentsManagementPage() {
                   }))
                 }
                 placeholder="Brief description"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Average Price ($)
               </label>
               <input
@@ -386,11 +386,11 @@ export default function TreatmentsManagementPage() {
                 }
                 placeholder="0"
                 min="0"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">
+              <label className="block text-sm font-medium text-[#78350f] mb-1">
                 Popularity Score (1-100)
               </label>
               <input
@@ -405,7 +405,7 @@ export default function TreatmentsManagementPage() {
                 placeholder="50"
                 min="1"
                 max="100"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
           </div>
@@ -437,7 +437,7 @@ export default function TreatmentsManagementPage() {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, name: e.target.value }))
                       }
-                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                      className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                     />
                     <input
                       type="text"
@@ -449,7 +449,7 @@ export default function TreatmentsManagementPage() {
                         }))
                       }
                       placeholder="Description"
-                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                      className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                     />
                     <div className="flex gap-2">
                       <Button variant="primary" size="sm" onClick={handleSaveEdit}>
@@ -471,8 +471,8 @@ export default function TreatmentsManagementPage() {
                           <h3
                             className={`font-semibold truncate ${
                               treatment.isActive
-                                ? 'text-stone-100'
-                                : 'text-stone-500'
+                                ? 'text-[#451a03]'
+                                : 'text-[#92400e]'
                             }`}
                           >
                             {treatment.name}
@@ -495,7 +495,7 @@ export default function TreatmentsManagementPage() {
                       <button
                         type="button"
                         onClick={() => handleStartEdit(treatment)}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:bg-stone-800 transition-colors"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-[#78350f] hover:bg-[#faf5ee] transition-colors"
                       >
                         <PencilSimple size={18} />
                       </button>
@@ -504,19 +504,19 @@ export default function TreatmentsManagementPage() {
                     <p
                       className={`text-sm line-clamp-2 ${
                         treatment.isActive
-                          ? 'text-stone-400'
-                          : 'text-stone-500'
+                          ? 'text-[#78350f]'
+                          : 'text-[#92400e]'
                       }`}
                     >
                       {treatment.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-stone-800">
+                    <div className="flex items-center justify-between pt-2 border-t border-[#d4c4b0]">
                       <div className="flex items-center gap-4 text-sm">
-                        <span className="text-stone-100 font-semibold">
+                        <span className="text-[#451a03] font-semibold">
                           {formatPrice(treatment.averagePrice)}
                         </span>
-                        <span className="flex items-center gap-1 text-stone-500">
+                        <span className="flex items-center gap-1 text-[#92400e]">
                           <TrendUp size={14} />
                           {treatment.popularity}
                         </span>
@@ -525,7 +525,7 @@ export default function TreatmentsManagementPage() {
                         type="button"
                         onClick={() => handleToggleStatus(treatment.id)}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          treatment.isActive ? 'bg-amber-400' : 'bg-stone-900'
+                          treatment.isActive ? 'bg-amber-800' : 'bg-[#f2ebe2]'
                         }`}
                       >
                         <span
@@ -543,13 +543,13 @@ export default function TreatmentsManagementPage() {
         </div>
       ) : (
         <Card variant="glass" padding="lg" className="text-center py-12">
-          <div className="w-16 h-16 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-4">
-            <FirstAidKit size={32} weight="light" className="text-amber-400" />
+          <div className="w-16 h-16 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-4">
+            <FirstAidKit size={32} weight="light" className="text-amber-800" />
           </div>
-          <h3 className="text-lg font-semibold text-stone-100 mb-2">
+          <h3 className="text-lg font-semibold text-[#451a03] mb-2">
             No treatments found
           </h3>
-          <p className="text-stone-400">
+          <p className="text-[#78350f]">
             {searchQuery
               ? 'Try adjusting your search terms'
               : activeFilter !== 'all'

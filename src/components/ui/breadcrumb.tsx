@@ -20,7 +20,7 @@ interface BreadcrumbProps {
 export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
   return (
     <nav
-      className={`mb-6 text-sm text-stone-500 ${className}`}
+      className={`mb-6 text-sm text-[#92400e] ${className}`}
       aria-label="Breadcrumb"
     >
       <ol className="flex items-center gap-2 flex-wrap">
@@ -30,17 +30,17 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
           return (
             <li key={item.label} className="flex items-center gap-2">
               {index > 0 && (
-                <CaretRight size={12} weight="bold" className="text-stone-500" />
+                <CaretRight size={12} weight="bold" className="text-[#92400e]" />
               )}
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="hover:text-stone-100 transition-colors"
+                  className="hover:text-[#451a03] transition-colors"
                 >
                   {item.label}
                 </Link>
               ) : (
-                <span className={isLast ? 'text-stone-100' : ''}>
+                <span className={isLast ? 'text-[#451a03]' : ''}>
                   {item.label}
                 </span>
               )}

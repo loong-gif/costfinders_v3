@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
   if (!businessId) {
     return (
       <div className="text-center py-12">
-        <p className="text-stone-400">No business linked to your account.</p>
+        <p className="text-[#78350f]">No business linked to your account.</p>
       </div>
     )
   }

@@ -42,8 +42,8 @@ export function CategoryFilter({ selected, onChange }: CategoryFilterProps) {
               transition-all duration-200
               ${
                 isSelected
-                  ? 'bg-amber-400 text-white shadow-md'
-                  : 'bg-stone-900 border border-stone-800 text-stone-400 hover:text-stone-100 hover:border-stone-700'
+                  ? 'bg-amber-800 text-white shadow-md'
+                  : 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#78350f] hover:text-[#451a03] hover:border-[#c4b09a]'
               }
             `}
             aria-pressed={isSelected}
