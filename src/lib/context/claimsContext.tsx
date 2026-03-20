@@ -8,11 +8,14 @@ import {
   useMemo,
   useState,
 } from 'react'
+import type { ClaimRow } from '@/lib/actions/claims'
+import { createClaimAction, getClaimsAction } from '@/lib/actions/claims'
 import type { Claim, ClaimStatus } from '@/types/claim'
 import { useAuth } from './authContext'
 
-const STORAGE_KEY = 'costfinders_claims'
-const CLAIM_EXPIRY_DAYS = 7
+// ---------------------------------------------------------------------------
+// Types (public interface — do not change)
+// ---------------------------------------------------------------------------
 
 interface ClaimsState {
   claims: Claim[]
@@ -27,7 +30,7 @@ interface ClaimsContextValue {
     preferredDate?: string,
     preferredTime?: string,
     notes?: string,
-  ) => Claim
+  ) => Promise<Claim>
   getClaim: (claimId: string) => Claim | undefined
   getClaimByDealId: (dealId: string) => Claim | undefined
   getClaimsByStatus: (status: ClaimStatus) => Claim[]
@@ -35,21 +38,34 @@ interface ClaimsContextValue {
 
 const ClaimsContext = createContext<ClaimsContextValue | null>(null)
 
-function loadStoredClaims(): Claim[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (!stored) return []
-    return JSON.parse(stored) as Claim[]
-  } catch {
-    return []
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Map a Supabase claims row (snake_case, numeric IDs) to the Claim type. */
+function claimRowToClaim(row: ClaimRow): Claim {
+  return {
+    id: row.id,
+    dealId: String(row.deal_id),
+    businessId: String(row.business_id),
+    consumerId: row.consumer_id,
+    status: row.status,
+    preferredDate: row.preferred_date ?? undefined,
+    preferredTime: row.preferred_time ?? undefined,
+    notes: row.notes ?? undefined,
+    businessResponse: row.business_response ?? undefined,
+    respondedAt: row.responded_at ?? undefined,
+    bookedDate: row.booked_date ?? undefined,
+    bookedTime: row.booked_time ?? undefined,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    expiresAt: row.expires_at,
   }
 }
 
-function saveClaimsToStorage(claims: Claim[]) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(claims))
-}
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
 
 export function ClaimsProvider({ children }: { children: React.ReactNode }) {
   const { state: authState } = useAuth()
@@ -58,37 +74,72 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     isLoading: true,
   })
 
-  // Load claims on mount and filter to current user
+  // Fetch claims from Supabase when the user changes
   useEffect(() => {
-    const allClaims = loadStoredClaims()
-    const userClaims = authState.user
-      ? allClaims.filter((c) => c.consumerId === authState.user?.id)
-      : []
-    setState({
-      claims: userClaims,
-      isLoading: false,
-    })
+    if (!authState.user) {
+      setState({ claims: [], isLoading: false })
+      return
+    }
+
+    let cancelled = false
+
+    async function fetchClaims() {
+      setState((prev) => ({ ...prev, isLoading: true }))
+
+      const result = await getClaimsAction()
+
+      if (cancelled) return
+
+      if (result.success && result.claims) {
+        setState({
+          claims: result.claims.map(claimRowToClaim),
+          isLoading: false,
+        })
+      } else {
+        setState({ claims: [], isLoading: false })
+      }
+    }
+
+    fetchClaims()
+
+    return () => {
+      cancelled = true
+    }
   }, [authState.user])
 
+  // -------------------------------------------------------------------
+  // createClaim — calls server action, adds to local state on success
+  // -------------------------------------------------------------------
   const createClaim = useCallback(
-    (
+    async (
       dealId: string,
       businessId: string,
       preferredDate?: string,
       preferredTime?: string,
       notes?: string,
-    ): Claim => {
+    ): Promise<Claim> => {
       if (!authState.user) {
         throw new Error('Must be authenticated to create a claim')
       }
 
-      const now = new Date()
-      const expiresAt = new Date(
-        now.getTime() + CLAIM_EXPIRY_DAYS * 24 * 60 * 60 * 1000,
+      const result = await createClaimAction(
+        Number(dealId),
+        Number(businessId),
+        preferredDate,
+        preferredTime,
+        notes,
       )
 
+      if (!result.success || !result.claimId) {
+        throw new Error(result.error ?? 'Failed to create claim')
+      }
+
+      // Build the Claim object from what we know + the returned ID
+      const now = new Date()
+      const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+
       const newClaim: Claim = {
-        id: `claim-${Date.now()}`,
+        id: result.claimId,
         dealId,
         businessId,
         consumerId: authState.user.id,
@@ -101,23 +152,19 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
         expiresAt: expiresAt.toISOString(),
       }
 
-      // Update state
-      setState((prev) => {
-        const updatedClaims = [...prev.claims, newClaim]
-        // Save all claims (including from other users) plus the new one
-        const allClaims = loadStoredClaims()
-        saveClaimsToStorage([...allClaims, newClaim])
-        return {
-          ...prev,
-          claims: updatedClaims,
-        }
-      })
+      setState((prev) => ({
+        ...prev,
+        claims: [newClaim, ...prev.claims],
+      }))
 
       return newClaim
     },
     [authState.user],
   )
 
+  // -------------------------------------------------------------------
+  // Read helpers — filter from local state
+  // -------------------------------------------------------------------
   const getClaim = useCallback(
     (claimId: string): Claim | undefined => {
       return state.claims.find((c) => c.id === claimId)
@@ -139,6 +186,9 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     [state.claims],
   )
 
+  // -------------------------------------------------------------------
+  // Context value
+  // -------------------------------------------------------------------
   const value = useMemo<ClaimsContextValue>(
     () => ({
       state,

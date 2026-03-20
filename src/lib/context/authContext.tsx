@@ -6,14 +6,27 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
-import { consumers } from '@/lib/mock-data/consumers'
+import { signInAction, signOutAction, signUpAction } from '@/lib/actions/auth'
+import type { Profile } from '@/lib/actions/profile'
+import {
+  getProfileAction,
+  updateAlertPrefsAction,
+  updateProfileAction,
+} from '@/lib/actions/profile'
+import {
+  getSavedDealsAction,
+  saveDealAction,
+  unsaveDealAction,
+} from '@/lib/actions/saved-deals'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { Consumer, VerificationStatus } from '@/types/consumer'
 
-const STORAGE_KEY = 'costfinders_auth'
-const SAVED_DEALS_KEY = 'costfinders_saved_deals'
-const MOCK_NETWORK_DELAY_MS = 500
+// ---------------------------------------------------------------------------
+// Types (public interface — do not change)
+// ---------------------------------------------------------------------------
 
 interface AuthState {
   user: Consumer | null
@@ -52,386 +65,335 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
-function getInitialState(): AuthState {
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Map a Supabase profile row + auth email to the Consumer shape. */
+function profileToConsumer(
+  authId: string,
+  email: string,
+  emailConfirmedAt: string | null | undefined,
+  profile: Profile,
+): Consumer {
   return {
+    id: authId,
+    email,
+    phone: profile.phone ?? undefined,
+    firstName: profile.first_name ?? undefined,
+    lastName: profile.last_name ?? undefined,
+    avatarUrl: profile.avatar_url ?? undefined,
+    verificationStatus: profile.verification_status as VerificationStatus,
+    emailVerifiedAt: emailConfirmedAt ?? undefined,
+    phoneVerifiedAt: profile.phone_verified_at ?? undefined,
+    status: profile.status as 'active' | 'suspended',
+    locationCity: profile.location_city ?? undefined,
+    locationState: profile.location_state ?? undefined,
+    alertsEmail: profile.alerts_email,
+    alertsSms: profile.alerts_sms,
+    favoriteCategories: profile.favorite_categories ?? [],
+    createdAt: profile.created_at,
+    updatedAt: profile.updated_at,
+    lastLoginAt: profile.last_login_at ?? undefined,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [state, setState] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
     isLoading: true,
     error: null,
-  }
-}
-
-function loadStoredUser(): string | null {
-  if (typeof window === 'undefined') return null
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (!stored) return null
-    const data = JSON.parse(stored) as { userId: string }
-    return data.userId
-  } catch {
-    return null
-  }
-}
-
-function saveUserId(userId: string) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ userId }))
-}
-
-function clearStoredAuth() {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(STORAGE_KEY)
-}
-
-function loadSavedDeals(): string[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const stored = localStorage.getItem(SAVED_DEALS_KEY)
-    if (!stored) return []
-    return JSON.parse(stored) as string[]
-  } catch {
-    return []
-  }
-}
-
-function saveSavedDeals(deals: string[]) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(SAVED_DEALS_KEY, JSON.stringify(deals))
-}
-
-// Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
-const dynamicUsers: Consumer[] = []
-
-function findUserByEmail(email: string): Consumer | undefined {
-  const normalizedEmail = email.toLowerCase()
-  return (
-    consumers.find((c) => c.email.toLowerCase() === normalizedEmail) ||
-    dynamicUsers.find((c) => c.email.toLowerCase() === normalizedEmail)
-  )
-}
-
-function findUserById(userId: string): Consumer | undefined {
-  return (
-    consumers.find((c) => c.id === userId) ||
-    dynamicUsers.find((c) => c.id === userId)
-  )
-}
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AuthState>(getInitialState)
+  })
   const [savedDeals, setSavedDeals] = useState<string[]>([])
 
-  // Load stored user on mount
-  useEffect(() => {
-    const userId = loadStoredUser()
-    if (userId) {
-      const user = findUserById(userId)
-      if (user) {
-        setState({
-          user,
-          isAuthenticated: true,
-          isLoading: false,
-          error: null,
-        })
-        // Load saved deals for authenticated user
-        setSavedDeals(loadSavedDeals())
-        return
-      }
+  // Supabase browser client — stable across renders
+  const supabaseRef = useRef(createSupabaseBrowserClient())
+
+  // -------------------------------------------------------------------
+  // Fetch profile + saved deals for an authenticated user
+  // -------------------------------------------------------------------
+  const hydrateUser = useCallback(async () => {
+    const supabase = supabaseRef.current
+
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser()
+
+    if (!authUser?.email) {
+      setState({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      setSavedDeals([])
+      return
     }
-    setState((prev) => ({ ...prev, isLoading: false }))
+
+    // Fetch profile from server action
+    const profileResult = await getProfileAction()
+
+    if (!profileResult.success || !profileResult.profile) {
+      // User exists in auth but has no profile row yet (e.g. trigger hasn't fired)
+      setState({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
+    const consumer = profileToConsumer(
+      authUser.id,
+      authUser.email,
+      authUser.email_confirmed_at,
+      profileResult.profile,
+    )
+
+    setState({
+      user: consumer,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    })
+
+    // Fetch saved deals
+    const dealsResult = await getSavedDealsAction()
+    if (dealsResult.success && dealsResult.deals) {
+      setSavedDeals(dealsResult.deals.map((d) => String(d.deal_id)))
+    }
   }, [])
 
+  // -------------------------------------------------------------------
+  // On mount: check for existing session + subscribe to auth changes
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    // Initial hydration
+    hydrateUser()
+
+    // Listen for auth state changes (sign in, sign out, token refresh)
+    const supabase = supabaseRef.current
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (
+        event === 'SIGNED_IN' ||
+        event === 'TOKEN_REFRESHED' ||
+        event === 'SIGNED_OUT'
+      ) {
+        hydrateUser()
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [hydrateUser])
+
+  // -------------------------------------------------------------------
+  // signUp — calls server action, sets state to show email verification needed
+  // -------------------------------------------------------------------
   const signUp = useCallback(
     async (
       email: string,
-      _password: string,
+      password: string,
       firstName?: string,
       lastName?: string,
     ): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
+      const result = await signUpAction(email, password, firstName, lastName)
 
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
+      if (!result.success) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'Please enter a valid email address',
+          error: result.error ?? 'Sign up failed',
         }))
-        throw new Error('Please enter a valid email address')
+        throw new Error(result.error ?? 'Sign up failed')
       }
 
-      // Check if email already exists
-      const existingUser = findUserByEmail(email)
-      if (existingUser) {
+      // If email verification is needed, don't sign in yet
+      if (result.needsEmailVerification) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'An account with this email already exists',
+          error: null,
         }))
-        throw new Error('An account with this email already exists')
+        return
       }
 
-      // Create new mock user
-      const now = new Date().toISOString()
-      const newUser: Consumer = {
-        id: `user-${Date.now()}`,
-        email: email.toLowerCase(),
-        firstName: firstName || undefined,
-        lastName: lastName || undefined,
-        verificationStatus: 'unverified',
-        status: 'active',
-        alertsEmail: false,
-        alertsSms: false,
-        favoriteCategories: [],
-        createdAt: now,
-        updatedAt: now,
-        lastLoginAt: now,
-      }
-
-      // Add to dynamic users
-      dynamicUsers.push(newUser)
-
-      // Update state and persist
-      setState({
-        user: newUser,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      })
-
-      saveUserId(newUser.id)
+      // If auto-confirmed, hydrate user
+      await hydrateUser()
     },
-    [],
+    [hydrateUser],
   )
 
+  // -------------------------------------------------------------------
+  // signIn — calls server action, then hydrates user from session
+  // -------------------------------------------------------------------
   const signIn = useCallback(
-    async (email: string, _password: string): Promise<void> => {
+    async (email: string, password: string): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
+      const result = await signInAction(email, password)
 
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
+      if (!result.success) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'Please enter a valid email address',
+          error: result.error ?? 'Sign in failed',
         }))
-        throw new Error('Please enter a valid email address')
+        throw new Error(result.error ?? 'Sign in failed')
       }
 
-      // Find user by email (mock auth - no password check)
-      const user = findUserByEmail(email)
-      if (!user) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: 'No account found with this email',
-        }))
-        throw new Error('No account found with this email')
-      }
+      // The onAuthStateChange listener will fire and hydrate the user,
+      // but we also call hydrateUser explicitly for immediate feedback.
+      await hydrateUser()
+    },
+    [hydrateUser],
+  )
 
-      // Update last login
-      const updatedUser: Consumer = {
-        ...user,
-        lastLoginAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-
-      // Update in dynamic users if needed
-      const dynamicIndex = dynamicUsers.findIndex((u) => u.id === user.id)
-      if (dynamicIndex !== -1) {
-        dynamicUsers[dynamicIndex] = updatedUser
-      }
-
+  // -------------------------------------------------------------------
+  // signOut — calls server action, clears state
+  // -------------------------------------------------------------------
+  const signOut = useCallback(() => {
+    signOutAction().then(() => {
       setState({
-        user: updatedUser,
-        isAuthenticated: true,
+        user: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
       })
+      setSavedDeals([])
+    })
+  }, [])
 
-      saveUserId(updatedUser.id)
+  // -------------------------------------------------------------------
+  // updateVerificationStatus — no-op (DB triggers handle this)
+  // Kept for interface compatibility; refetches profile if called.
+  // -------------------------------------------------------------------
+  const updateVerificationStatus = useCallback(
+    (_status: VerificationStatus) => {
+      // Re-fetch profile to pick up any trigger-driven status changes
+      hydrateUser()
     },
-    [],
+    [hydrateUser],
   )
 
-  const signOut = useCallback(() => {
-    setState({
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
-    })
-    clearStoredAuth()
+  // -------------------------------------------------------------------
+  // verifyPhone — no-op for now (Twilio deferred)
+  // -------------------------------------------------------------------
+  const verifyPhone = useCallback((_phone: string) => {
+    // No-op: phone verification via Twilio is deferred
   }, [])
 
-  const updateVerificationStatus = useCallback((status: VerificationStatus) => {
-    setState((prev) => {
-      if (!prev.user) return prev
+  // -------------------------------------------------------------------
+  // updateProfile — calls server action, updates local state
+  // -------------------------------------------------------------------
+  const updateProfile = useCallback(
+    (updates: ProfileUpdates) => {
+      if (!state.user) return
 
-      const now = new Date().toISOString()
-      const updatedUser: Consumer = {
-        ...prev.user,
-        verificationStatus: status,
-        updatedAt: now,
-        ...(status === 'email_verified' || status === 'fully_verified'
-          ? { emailVerifiedAt: now }
-          : {}),
-        ...(status === 'phone_verified' || status === 'fully_verified'
-          ? { phoneVerifiedAt: now }
-          : {}),
-      }
-
-      // Update in dynamic users if needed
-      const dynamicIndex = dynamicUsers.findIndex(
-        (u) => u.id === updatedUser.id,
-      )
-      if (dynamicIndex !== -1) {
-        dynamicUsers[dynamicIndex] = updatedUser
-      }
-
-      return {
-        ...prev,
-        user: updatedUser,
-      }
-    })
-  }, [])
-
-  const verifyPhone = useCallback((phone: string) => {
-    setState((prev) => {
-      if (!prev.user) return prev
-
-      const now = new Date().toISOString()
-
-      // Determine new verification status based on current status
-      let newStatus: VerificationStatus
-      if (prev.user.verificationStatus === 'email_verified') {
-        newStatus = 'fully_verified'
-      } else if (prev.user.verificationStatus === 'unverified') {
-        newStatus = 'phone_verified'
-      } else {
-        // Already fully_verified or phone_verified, keep as is
-        newStatus = prev.user.verificationStatus
-      }
-
-      const updatedUser: Consumer = {
-        ...prev.user,
-        phone,
-        phoneVerifiedAt: now,
-        verificationStatus: newStatus,
-        updatedAt: now,
-      }
-
-      // Update in dynamic users if needed
-      const dynamicIndex = dynamicUsers.findIndex(
-        (u) => u.id === updatedUser.id,
-      )
-      if (dynamicIndex !== -1) {
-        dynamicUsers[dynamicIndex] = updatedUser
-      }
-
-      // Persist to localStorage (userId is already stored, user data is in state)
-      saveUserId(updatedUser.id)
-
-      return {
-        ...prev,
-        user: updatedUser,
-      }
-    })
-  }, [])
-
-  const updateProfile = useCallback((updates: ProfileUpdates) => {
-    setState((prev) => {
-      if (!prev.user) return prev
-
-      const now = new Date().toISOString()
-
-      // Only allow specific fields to be updated
-      const allowedUpdates: Partial<Consumer> = {}
+      // Map camelCase → snake_case for the server action
+      const payload: Record<string, string> = {}
       if (updates.firstName !== undefined)
-        allowedUpdates.firstName = updates.firstName
-      if (updates.lastName !== undefined)
-        allowedUpdates.lastName = updates.lastName
-      if (updates.phone !== undefined) allowedUpdates.phone = updates.phone
+        payload.first_name = updates.firstName
+      if (updates.lastName !== undefined) payload.last_name = updates.lastName
+      if (updates.phone !== undefined) payload.phone = updates.phone
       if (updates.locationCity !== undefined)
-        allowedUpdates.locationCity = updates.locationCity
+        payload.location_city = updates.locationCity
       if (updates.locationState !== undefined)
-        allowedUpdates.locationState = updates.locationState
+        payload.location_state = updates.locationState
 
-      const updatedUser: Consumer = {
-        ...prev.user,
-        ...allowedUpdates,
-        updatedAt: now,
-      }
-
-      // Update in dynamic users if needed
-      const dynamicIndex = dynamicUsers.findIndex(
-        (u) => u.id === updatedUser.id,
-      )
-      if (dynamicIndex !== -1) {
-        dynamicUsers[dynamicIndex] = updatedUser
-      }
-
-      return {
-        ...prev,
-        user: updatedUser,
-      }
-    })
-  }, [])
-
-  const updateAlertPreferences = useCallback(
-    (alertsEmail: boolean, alertsSms: boolean) => {
+      // Optimistic local update
       setState((prev) => {
         if (!prev.user) return prev
-
-        const now = new Date().toISOString()
-
-        const updatedUser: Consumer = {
-          ...prev.user,
-          alertsEmail,
-          alertsSms,
-          updatedAt: now,
-        }
-
-        // Update in dynamic users if needed
-        const dynamicIndex = dynamicUsers.findIndex(
-          (u) => u.id === updatedUser.id,
-        )
-        if (dynamicIndex !== -1) {
-          dynamicUsers[dynamicIndex] = updatedUser
-        }
-
         return {
           ...prev,
-          user: updatedUser,
+          user: {
+            ...prev.user,
+            ...updates,
+            updatedAt: new Date().toISOString(),
+          },
+        }
+      })
+
+      // Fire server action (no await needed since interface is void)
+      updateProfileAction(payload).then((result) => {
+        if (!result.success) {
+          // Revert on failure by re-fetching
+          hydrateUser()
         }
       })
     },
-    [],
+    [state.user, hydrateUser],
   )
 
+  // -------------------------------------------------------------------
+  // updateAlertPreferences — calls server action
+  // -------------------------------------------------------------------
+  const updateAlertPreferences = useCallback(
+    (alertsEmail: boolean, alertsSms: boolean) => {
+      if (!state.user) return
+
+      // Optimistic local update
+      setState((prev) => {
+        if (!prev.user) return prev
+        return {
+          ...prev,
+          user: {
+            ...prev.user,
+            alertsEmail,
+            alertsSms,
+            updatedAt: new Date().toISOString(),
+          },
+        }
+      })
+
+      updateAlertPrefsAction(alertsEmail, alertsSms).then((result) => {
+        if (!result.success) {
+          hydrateUser()
+        }
+      })
+    },
+    [state.user, hydrateUser],
+  )
+
+  // -------------------------------------------------------------------
+  // Saved deals
+  // -------------------------------------------------------------------
   const saveDeal = useCallback((dealId: string) => {
+    // Optimistic update
     setSavedDeals((prev) => {
       if (prev.includes(dealId)) return prev
-      const updated = [...prev, dealId]
-      saveSavedDeals(updated)
-      return updated
+      return [...prev, dealId]
+    })
+
+    // Fire server action — deal_id is bigint in DB
+    saveDealAction(Number(dealId)).then((result) => {
+      if (!result.success) {
+        // Revert on failure
+        setSavedDeals((prev) => prev.filter((id) => id !== dealId))
+      }
     })
   }, [])
 
   const unsaveDeal = useCallback((dealId: string) => {
-    setSavedDeals((prev) => {
-      const updated = prev.filter((id) => id !== dealId)
-      saveSavedDeals(updated)
-      return updated
+    // Optimistic update
+    setSavedDeals((prev) => prev.filter((id) => id !== dealId))
+
+    unsaveDealAction(Number(dealId)).then((result) => {
+      if (!result.success) {
+        // Revert on failure
+        setSavedDeals((prev) => [...prev, dealId])
+      }
     })
   }, [])
 
@@ -440,6 +402,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [savedDeals],
   )
 
+  // -------------------------------------------------------------------
+  // Context value
+  // -------------------------------------------------------------------
   const value = useMemo<AuthContextValue>(
     () => ({
       state,
