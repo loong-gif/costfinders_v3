@@ -12,7 +12,7 @@ import {
   Coins,
   CurrencyDollar,
 } from '@phosphor-icons/react'
-import type { Claim, ClaimStatus } from '@/types'
+import type { Claim, ClaimStatus } from '@/types/claim'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'

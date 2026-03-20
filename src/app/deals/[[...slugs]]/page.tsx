@@ -21,7 +21,7 @@ import {
   generateCityDealsMetadata,
   generateTreatmentCityMetadata,
 } from '@/lib/seo/metadata'
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 import { DealsRedirect } from '@/components/features/deals/dealsRedirect'
 import { CityDealsPage } from '@/components/features/deals/cityDealsPage'
 import { TreatmentCityPage } from '@/components/features/deals/treatmentCityPage'

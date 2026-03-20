@@ -13,7 +13,7 @@ import {
   ArrowDown,
   CurrencyDollar,
 } from '@phosphor-icons/react'
-import type { Business, BusinessStatus, BusinessTier } from '@/types'
+import type { Business, BusinessStatus, BusinessTier } from '@/types/business'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'

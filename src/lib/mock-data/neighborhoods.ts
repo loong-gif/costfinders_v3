@@ -1,5 +1,5 @@
-import type { LocationArea } from '@/types'
-import type { AnonymousDeal } from '@/types'
+import type { LocationArea } from '@/types/location'
+import type { AnonymousDeal } from '@/types/deal'
 import {
   getAreaById,
   getAreasForCity,

@@ -35,15 +35,3 @@ export interface Business {
   createdAt: string
   updatedAt: string
 }
-
-// Revealed after consumer verification
-export interface RevealedBusiness {
-  id: string
-  name: string
-  address: string
-  city: string
-  state: string
-  phone: string
-  website?: string
-  logoUrl?: string
-}

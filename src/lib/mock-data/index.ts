@@ -112,7 +112,7 @@ export {
 // SEO Static Params Generation
 import { getAllActiveCitySlugs } from './locations'
 import { getCategories } from './categories'
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 
 /**
  * Get all treatment+city combinations for static params generation

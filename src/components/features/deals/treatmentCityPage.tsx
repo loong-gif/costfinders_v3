@@ -20,7 +20,7 @@ import {
   sortDeals,
 } from '@/lib/mock-data'
 import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 
 interface TreatmentCityPageProps {
   treatmentSlug: TreatmentCategory

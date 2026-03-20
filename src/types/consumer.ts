@@ -30,10 +30,3 @@ export interface Consumer {
   updatedAt: string
   lastLoginAt?: string
 }
-
-export interface ConsumerPreferences {
-  alertsEmail: boolean
-  alertsSms: boolean
-  favoriteCategories: string[]
-  savedDeals: string[] // deal IDs
-}

@@ -7,7 +7,7 @@ import { getDealById } from '@/lib/mock-data/deals'
 import { DealForm } from '@/components/features/dealManagement/dealForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import type { Deal } from '@/types'
+import type { Deal } from '@/types/deal'
 
 export default function EditDealPage() {
   const router = useRouter()

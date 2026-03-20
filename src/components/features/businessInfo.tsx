@@ -13,7 +13,8 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ClaimDealModal } from '@/components/features/claimDealModal'
 import { useClaims } from '@/lib/context/claimsContext'
-import type { Business, Deal } from '@/types'
+import type { Business } from '@/types/business'
+import type { Deal } from '@/types/deal'
 
 interface BusinessInfoProps {
   business: Business

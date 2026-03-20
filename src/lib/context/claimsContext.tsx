@@ -9,9 +9,10 @@ import {
   useState,
 } from 'react'
 import { useAuth } from './authContext'
-import type { Claim, ClaimStatus } from '@/types'
+import type { Claim, ClaimStatus } from '@/types/claim'
 
 const STORAGE_KEY = 'costfinders_claims'
+const CLAIM_EXPIRY_DAYS = 7
 
 interface ClaimsState {
   claims: Claim[]
@@ -82,7 +83,7 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
       }
 
       const now = new Date()
-      const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
+      const expiresAt = new Date(now.getTime() + CLAIM_EXPIRY_DAYS * 24 * 60 * 60 * 1000)
 
       const newClaim: Claim = {
         id: `claim-${Date.now()}`,

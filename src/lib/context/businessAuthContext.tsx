@@ -8,14 +8,11 @@ import {
   useMemo,
   useState,
 } from 'react'
-import type {
-  BusinessClaimStatus,
-  BusinessOwner,
-  BusinessVerificationStatus,
-} from '@/types'
+import type { BusinessOwner, BusinessClaimStatus, BusinessVerificationStatus } from '@/types/businessOwner'
 import { businessOwners } from '@/lib/mock-data/businessOwners'
 
 const STORAGE_KEY = 'costfinders_business_auth'
+const MOCK_NETWORK_DELAY_MS = 500
 
 interface BusinessAuthState {
   owner: BusinessOwner | null
@@ -73,7 +70,7 @@ function clearStoredAuth() {
   localStorage.removeItem(STORAGE_KEY)
 }
 
-// Track dynamically created business owners (mock sign-ups during session)
+// Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
 let dynamicOwners: BusinessOwner[] = []
 
 function findOwnerByEmail(email: string): BusinessOwner | undefined {
@@ -126,7 +123,7 @@ export function BusinessAuthProvider({
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -184,7 +181,7 @@ export function BusinessAuthProvider({
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

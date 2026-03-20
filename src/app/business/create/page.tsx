@@ -14,7 +14,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { createBusiness } from '@/lib/mock-data/businesses'
-import type { Business } from '@/types'
+import type { Business } from '@/types/business'
 
 type PageView = 'auth' | 'form' | 'success'
 type AuthView = 'signUp' | 'signIn'

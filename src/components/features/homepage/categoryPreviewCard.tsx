@@ -8,7 +8,7 @@ import {
   Sparkle,
   Syringe,
 } from '@phosphor-icons/react'
-import type { AnonymousDeal } from '@/types'
+import type { AnonymousDeal } from '@/types/deal'
 import type { Category } from '@/lib/mock-data/categories'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'

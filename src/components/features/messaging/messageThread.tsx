@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { PaperPlaneRight, ChatCircle } from '@phosphor-icons/react'
-import type { Message } from '@/types'
+import type { Message } from '@/types/message'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { getMessagesForClaim, sendMessage } from '@/lib/mock-data'

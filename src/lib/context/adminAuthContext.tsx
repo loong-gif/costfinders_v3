@@ -8,10 +8,11 @@ import {
   useMemo,
   useState,
 } from 'react'
-import type { Admin } from '@/types'
+import type { Admin } from '@/types/admin'
 import { admins } from '@/lib/mock-data'
 
 const STORAGE_KEY = 'costfinders_admin_id'
+const MOCK_NETWORK_DELAY_MS = 500
 
 interface AdminAuthState {
   admin: Admin | null
@@ -97,7 +98,7 @@ export function AdminAuthProvider({
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

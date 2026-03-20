@@ -1,13 +1,7 @@
-import type {
-  AnonymousDeal,
-  Business,
-  City,
-  Claim,
-  ClaimStatus,
-  Deal,
-  LocationArea,
-  TreatmentCategory,
-} from '@/types'
+import type { Business } from '@/types/business'
+import type { Claim, ClaimStatus } from '@/types/claim'
+import type { AnonymousDeal, Deal, TreatmentCategory } from '@/types/deal'
+import type { City, LocationArea } from '@/types/location'
 import { businesses } from './businesses'
 import { claims, consumers } from './consumers'
 import { deals, toAnonymousDeal } from './deals'

@@ -8,7 +8,7 @@ import {
   Tag,
   CheckCircle,
 } from '@phosphor-icons/react'
-import type { BusinessStatus, BusinessTier } from '@/types'
+import type { BusinessStatus, BusinessTier } from '@/types/business'
 import {
   getAllBusinesses,
   updateBusinessStatus,

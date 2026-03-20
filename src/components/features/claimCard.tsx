@@ -11,7 +11,7 @@ import {
 import { Card } from '@/components/ui/card'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
 import { getAnonymousDealById, getBusinessById } from '@/lib/mock-data'
-import type { Claim } from '@/types'
+import type { Claim } from '@/types/claim'
 
 interface ClaimCardProps {
   claim: Claim

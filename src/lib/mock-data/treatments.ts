@@ -1,4 +1,4 @@
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 
 export interface Treatment {
   id: string

@@ -1,4 +1,4 @@
-import type { City, LocationArea } from '@/types'
+import type { City, LocationArea } from '@/types/location'
 import {
   getCities,
   getCityById,

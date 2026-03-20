@@ -16,7 +16,7 @@ import {
   PhoneCall,
   CalendarCheck,
 } from '@phosphor-icons/react'
-import type { Claim, ClaimStatus } from '@/types'
+import type { Claim, ClaimStatus } from '@/types/claim'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

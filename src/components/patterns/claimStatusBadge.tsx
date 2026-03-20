@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import type { ClaimStatus } from '@/types'
+import type { ClaimStatus } from '@/types/claim'
 
 interface ClaimStatusBadgeProps {
   status: ClaimStatus

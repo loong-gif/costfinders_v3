@@ -1,4 +1,4 @@
-import type { City, LocationArea } from '@/types'
+import type { City, LocationArea } from '@/types/location'
 
 // Mutable cities array for CRUD operations
 let citiesData: City[] = [

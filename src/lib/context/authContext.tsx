@@ -9,10 +9,11 @@ import {
   useState,
 } from 'react'
 import { consumers } from '@/lib/mock-data/consumers'
-import type { Consumer, VerificationStatus } from '@/types'
+import type { Consumer, VerificationStatus } from '@/types/consumer'
 
 const STORAGE_KEY = 'costfinders_auth'
 const SAVED_DEALS_KEY = 'costfinders_saved_deals'
+const MOCK_NETWORK_DELAY_MS = 500
 
 interface AuthState {
   user: Consumer | null
@@ -99,7 +100,7 @@ function saveSavedDeals(deals: string[]) {
   localStorage.setItem(SAVED_DEALS_KEY, JSON.stringify(deals))
 }
 
-// Track dynamically created users (mock sign-ups during session)
+// Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
 let dynamicUsers: Consumer[] = []
 
 function findUserByEmail(email: string): Consumer | undefined {
@@ -151,7 +152,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -213,7 +214,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

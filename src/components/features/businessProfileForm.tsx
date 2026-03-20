@@ -5,7 +5,7 @@ import { CheckCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import type { Business } from '@/types'
+import type { Business } from '@/types/business'
 import { getBusinessById, updateBusiness } from '@/lib/mock-data/businesses'
 
 // US States for dropdown

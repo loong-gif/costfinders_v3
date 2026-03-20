@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { BlurredImage } from '@/components/patterns/blurredImage'
 import { PricingBreakdown } from '@/components/features/pricingBreakdown'
 import { DealSidebar } from '@/components/features/dealSidebar'
-import type { AnonymousDeal, Deal, TreatmentCategory } from '@/types'
+import type { AnonymousDeal, Deal, TreatmentCategory } from '@/types/deal'
 
 const categoryLabels: Record<TreatmentCategory, string> = {
   botox: 'Botox',

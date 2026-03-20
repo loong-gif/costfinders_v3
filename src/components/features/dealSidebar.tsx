@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/context/authContext'
 import { getBusinessForDeal } from '@/lib/mock-data'
 import { ClaimCTA } from '@/components/features/claimCTA'
 import { BusinessInfo } from '@/components/features/businessInfo'
-import type { Deal } from '@/types'
+import type { Deal } from '@/types/deal'
 
 interface DealSidebarProps {
   deal: Deal

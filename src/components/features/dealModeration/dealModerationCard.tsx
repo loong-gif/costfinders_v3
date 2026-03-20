@@ -9,7 +9,7 @@ import {
   Tag,
   CalendarBlank,
 } from '@phosphor-icons/react'
-import type { Deal, ModerationStatus } from '@/types'
+import type { Deal, ModerationStatus } from '@/types/deal'
 import { getBusinessById } from '@/lib/mock-data/businesses'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

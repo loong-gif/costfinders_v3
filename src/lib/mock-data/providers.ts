@@ -1,4 +1,4 @@
-import type { Business } from '@/types'
+import type { Business } from '@/types/business'
 import type { AnonymousDeal } from '@/types/deal'
 import { businesses, getBusinessById } from './businesses'
 import { getStateBySlug, slugifyCity, SUPPORTED_STATES } from './states'

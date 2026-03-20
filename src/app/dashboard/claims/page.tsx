@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useClaims } from '@/lib/context/claimsContext'
 import { useAuth } from '@/lib/context/authContext'
 import { getClaimsByConsumer } from '@/lib/mock-data'
-import type { Claim, ClaimStatus } from '@/types'
+import type { Claim, ClaimStatus } from '@/types/claim'
 
 type FilterTab = 'all' | 'active' | 'completed' | 'cancelled'
 

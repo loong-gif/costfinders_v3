@@ -7,7 +7,7 @@ import {
   MapPin,
 } from '@phosphor-icons/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { City } from '@/types'
+import type { City } from '@/types/location'
 
 interface CityPickerProps {
   cities: City[]

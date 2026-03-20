@@ -1,4 +1,5 @@
-import type { Message, Claim } from '@/types'
+import type { Claim } from '@/types/claim'
+import type { Message } from '@/types/message'
 import { getClaimsForBusiness } from './consumers'
 import { getDealById } from './deals'
 

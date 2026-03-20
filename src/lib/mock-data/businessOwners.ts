@@ -1,4 +1,4 @@
-import type { BusinessOwner } from '@/types'
+import type { BusinessOwner } from '@/types/businessOwner'
 
 /**
  * Pre-seeded business owner accounts for testing

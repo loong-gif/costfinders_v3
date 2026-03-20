@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, FloppyDisk, Sparkle } from '@phosphor-icons/react'
-import type { Deal, TreatmentCategory } from '@/types'
+import type { Deal, TreatmentCategory } from '@/types/deal'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

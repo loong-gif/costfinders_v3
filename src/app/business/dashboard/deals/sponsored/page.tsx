@@ -34,7 +34,7 @@ import {
   type ActiveBoost,
   type BoostHistory,
 } from '@/lib/mock-data/sponsorship'
-import type { Deal, TreatmentCategory } from '@/types'
+import type { Deal, TreatmentCategory } from '@/types/deal'
 
 const categoryLabels: Record<TreatmentCategory, string> = {
   botox: 'Botox',

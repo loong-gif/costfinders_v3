@@ -1,5 +1,5 @@
 import { Calculator } from '@phosphor-icons/react/dist/ssr'
-import type { AnonymousDeal } from '@/types'
+import type { AnonymousDeal } from '@/types/deal'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 

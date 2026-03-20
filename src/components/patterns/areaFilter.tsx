@@ -2,7 +2,7 @@
 
 import { CaretDown, Check, X } from '@phosphor-icons/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { LocationArea } from '@/types'
+import type { LocationArea } from '@/types/location'
 
 interface AreaFilterProps {
   areas: LocationArea[]

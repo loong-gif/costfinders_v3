@@ -123,15 +123,15 @@ Plans:
 Plans:
 - [x] 36-01: Bottom Sheet Component
 
-#### Phase 37: Modal Mobile Optimization
+#### Phase 37: Modal Mobile Optimization (Partial)
 
 **Goal**: Full-screen and bottom-anchored modals on mobile
 **Depends on**: Phase 36
 **Research**: Unlikely (internal patterns)
-**Plans**: TBD
+**Plans**: 1/? complete
 
 Plans:
-- [ ] 37-01: TBD
+- [x] 37-01: Add mobileVariant prop to Modal + apply to form-heavy modals
 
 #### Phase 38: Touch Gesture Foundation
 
@@ -217,8 +217,8 @@ Phases execute in numeric order: 1 → ... → 33 → 34 → 35 → 36 → 37 �
 | 33. Performance & CWV | v1.3 | 1/1 | Complete | 2026-01-14 |
 | 34. Mobile Form Optimization | v1.4 | 1/1 | Complete | 2026-01-14 |
 | 35. Mobile Table Alternatives | v1.4 | 6/6 | Complete | 2026-01-14 |
-| 36. Bottom Sheet Component | v1.4 | 0/? | Not started | - |
-| 37. Modal Mobile Optimization | v1.4 | 0/? | Not started | - |
+| 36. Bottom Sheet Component | v1.4 | 1/1 | Complete | 2026-01-14 |
+| 37. Modal Mobile Optimization | v1.4 | 1/? | Partial | 2026-01-14 |
 | 38. Touch Gesture Foundation | v1.4 | 0/? | Not started | - |
 | 39. Mobile Navigation Enhancements | v1.4 | 0/? | Not started | - |
 | 40. Touch Target & Spacing Audit | v1.4 | 0/? | Not started | - |

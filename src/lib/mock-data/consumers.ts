@@ -1,4 +1,5 @@
-import type { Claim, ClaimStatus, Consumer, ConsumerStatus } from '@/types'
+import type { Claim, ClaimStatus } from '@/types/claim'
+import type { Consumer, ConsumerStatus } from '@/types/consumer'
 import { getDealsForBusiness } from './deals'
 
 export const consumers: Consumer[] = [

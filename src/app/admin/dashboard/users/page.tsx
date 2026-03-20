@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { MagnifyingGlass, Users, CheckCircle, Clock, Prohibit } from '@phosphor-icons/react'
-import type { ConsumerStatus, VerificationStatus } from '@/types'
+import type { ConsumerStatus, VerificationStatus } from '@/types/consumer'
 import {
   getAllConsumers,
   updateConsumerStatus,

@@ -1,7 +1,7 @@
 'use client'
 
 import { Drop, Sparkle, Sun, Syringe } from '@phosphor-icons/react'
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 
 interface CategoryFilterProps {
   selected: TreatmentCategory | 'all'

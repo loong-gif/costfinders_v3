@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { businesses } from '@/lib/mock-data/businesses'
-import type { Business, BusinessTier } from '@/types'
+import type { Business, BusinessTier } from '@/types/business'
 
 interface BusinessSearchModalProps {
   isOpen: boolean

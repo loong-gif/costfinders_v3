@@ -1,4 +1,4 @@
-import type { AnonymousDeal, Deal, ModerationStatus } from '@/types'
+import type { AnonymousDeal, Deal, ModerationStatus } from '@/types/deal'
 import { businesses } from './businesses'
 
 export const deals: Deal[] = [

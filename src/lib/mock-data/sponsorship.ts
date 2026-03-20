@@ -1,4 +1,4 @@
-import type { Deal } from '@/types'
+import type { Deal } from '@/types/deal'
 
 export interface BoostOption {
   id: string

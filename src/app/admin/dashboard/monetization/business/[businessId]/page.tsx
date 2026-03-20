@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { BusinessBillingOverride } from '@/components/features/admin/businessBillingOverride'
 import { getBusinessById } from '@/lib/mock-data/businesses'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'
-import type { BusinessTier } from '@/types'
+import type { BusinessTier } from '@/types/business'
 
 interface PageProps {
   params: Promise<{ businessId: string }>

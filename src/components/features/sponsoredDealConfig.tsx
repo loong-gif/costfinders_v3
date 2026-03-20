@@ -10,7 +10,7 @@ import {
   CheckCircle,
   Tag,
 } from '@phosphor-icons/react'
-import type { Deal } from '@/types'
+import type { Deal } from '@/types/deal'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

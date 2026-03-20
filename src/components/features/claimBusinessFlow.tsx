@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import type { Business } from '@/types'
+import type { Business } from '@/types/business'
 
 type ClaimStep = 'confirm' | 'auth' | 'verify' | 'success'
 type AuthView = 'signUp' | 'signIn'

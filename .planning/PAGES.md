@@ -2,7 +2,7 @@
 
 > Complete list of all pages organized by user type.
 > Mock auth - no password validation (any password works).
-> Last updated: 2026-01-14
+> Last updated: 2026-03-19
 
 ---
 
@@ -77,6 +77,7 @@
 | `/business/dashboard/messages` | Messages - communication thread with consumers |
 | `/business/dashboard/profile` | Business profile - edit public-facing business information |
 | `/business/dashboard/analytics` | Analytics - performance metrics, charts, insights |
+| `/business/dashboard/pricing` | Pricing overview - lead credit pricing display |
 | `/business/dashboard/settings` | Settings hub - navigation to account and integrations |
 | `/business/dashboard/settings/account` | Account settings - business account preferences |
 | `/business/dashboard/settings/account/checkout` | Checkout/billing - payment methods, subscriptions |
@@ -121,11 +122,25 @@
 | User Type | Page Count |
 |-----------|------------|
 | Consumer (Public + Dashboard) | 9 |
-| Business | 16 |
+| Business | 17 |
 | Admin | 13 |
-| **Total** | **38 pages** |
+| SEO / Location | 6 (dynamic) |
+| **Total** | **45 pages** |
 
-> Note: SEO pages generate 42+ static variations (6 cities + 36 treatment+city combos)
+> Note: SEO pages generate 42+ static variations via `generateStaticParams`
+
+---
+
+## SEO / Location Pages (v1.3)
+
+| Route | Description |
+|-------|-------------|
+| `/[state]` | State landing - lists cities with deals in that state |
+| `/[state]/[city]` | City landing - deals in city, neighborhood links, local SEO |
+| `/[state]/[city]/[neighborhood]` | Neighborhood - deals in specific area, local providers |
+| `/[state]/[city]/provider/[slug]` | Provider detail - individual business/provider page |
+| `/treatments` | All treatments - browse by treatment category |
+| `/treatments/[category]` | Treatment category - deals for specific treatment type |
 
 ---
 
@@ -134,8 +149,17 @@
 ```
 src/app/
 ├── page.tsx                          # /
+├── [state]/
+│   ├── page.tsx                      # /[state]
+│   └── [city]/
+│       ├── page.tsx                  # /[state]/[city]
+│       ├── [neighborhood]/page.tsx   # /[state]/[city]/[neighborhood]
+│       └── provider/[slug]/page.tsx  # /[state]/[city]/provider/[slug]
 ├── deals/
 │   └── [[...slugs]]/page.tsx         # /deals, /deals/[city], /deals/[treatment]/[city], /deals/[id]
+├── treatments/
+│   ├── page.tsx                      # /treatments
+│   └── [category]/page.tsx           # /treatments/[category]
 ├── dashboard/
 │   ├── page.tsx                      # /dashboard
 │   ├── favorites/page.tsx            # /dashboard/favorites
@@ -159,6 +183,7 @@ src/app/
 │       ├── messages/page.tsx         # /business/dashboard/messages
 │       ├── profile/page.tsx          # /business/dashboard/profile
 │       ├── analytics/page.tsx        # /business/dashboard/analytics
+│       ├── pricing/page.tsx          # /business/dashboard/pricing
 │       └── settings/
 │           ├── page.tsx              # /business/dashboard/settings
 │           ├── account/

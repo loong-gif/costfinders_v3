@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { MagnifyingGlass, Funnel, Tag } from '@phosphor-icons/react'
-import type { ModerationStatus } from '@/types'
+import type { ModerationStatus } from '@/types/deal'
 import { getAllDeals, updateDealModeration } from '@/lib/mock-data/deals'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'

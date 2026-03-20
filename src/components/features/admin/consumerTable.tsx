@@ -8,7 +8,7 @@ import {
   CheckCircle,
   User,
 } from '@phosphor-icons/react'
-import type { Consumer, ConsumerStatus, VerificationStatus } from '@/types'
+import type { Consumer, ConsumerStatus, VerificationStatus } from '@/types/consumer'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { getClaimsCountForConsumer } from '@/lib/mock-data/consumers'

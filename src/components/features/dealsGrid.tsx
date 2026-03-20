@@ -2,7 +2,7 @@
 
 import { List, MagnifyingGlass, SquaresFour } from '@phosphor-icons/react'
 import { useState } from 'react'
-import type { AnonymousDeal } from '@/types'
+import type { AnonymousDeal } from '@/types/deal'
 import { DealCard } from './dealCard'
 import { DealCardSkeleton } from './dealCardSkeleton'
 

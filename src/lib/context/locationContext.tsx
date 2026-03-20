@@ -16,7 +16,7 @@ import {
   getAreasForCity,
   getCityById,
 } from '@/lib/mock-data'
-import type { City, LocationArea, LocationState } from '@/types'
+import type { City, LocationArea, LocationState } from '@/types/location'
 
 const STORAGE_KEY = 'costfinders_location'
 

@@ -1,4 +1,4 @@
-import type { Business, BusinessStatus, BusinessTier } from '@/types'
+import type { Business, BusinessStatus, BusinessTier } from '@/types/business'
 
 // Track dynamically claimed businesses (changes during session)
 let dynamicBusinesses: Business[] = []

@@ -22,7 +22,7 @@ import {
   sortDeals,
 } from '@/lib/mock-data'
 import { getCityDealsFaqs } from '@/lib/seo/faq-content'
-import type { TreatmentCategory } from '@/types'
+import type { TreatmentCategory } from '@/types/deal'
 
 interface CityDealsPageProps {
   citySlug: string

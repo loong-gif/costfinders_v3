@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { BusinessSearchModal } from '@/components/features/businessSearchModal'
 import { Button } from '@/components/ui/button'
-import type { Business } from '@/types'
+import type { Business } from '@/types/business'
 
 const valueProps = [
   {

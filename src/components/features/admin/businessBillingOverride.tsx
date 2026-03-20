@@ -10,7 +10,7 @@ import {
   Plus,
   User,
 } from '@phosphor-icons/react'
-import type { Business, BusinessTier } from '@/types'
+import type { Business, BusinessTier } from '@/types/business'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'

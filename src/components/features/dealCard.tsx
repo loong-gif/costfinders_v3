@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { BlurredImage } from '@/components/patterns/blurredImage'
 import { SaveButton } from '@/components/patterns/saveButton'
-import type { AnonymousDeal, TreatmentCategory } from '@/types'
+import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface DealCardProps {
   deal: AnonymousDeal
