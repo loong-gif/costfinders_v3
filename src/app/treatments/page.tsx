@@ -1,20 +1,20 @@
 import {
   ArrowRight,
-  Sparkle,
-  Tag,
-  Storefront,
-  Syringe,
   Drop,
+  Leaf,
   Lightning,
   Person,
-  Leaf,
+  Sparkle,
+  Storefront,
+  Syringe,
+  Tag,
 } from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { type Category, getCategories } from '@/lib/mock-data/categories'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
-import { getCategories, type Category } from '@/lib/mock-data/categories'
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -128,8 +128,9 @@ export default function TreatmentsPage() {
               </div>
 
               <p className="text-[#78350f] max-w-2xl mb-6">
-                Explore our curated categories of aesthetic treatments. Compare prices
-                from verified medspa providers and find the best deals near you.
+                Explore our curated categories of aesthetic treatments. Compare
+                prices from verified medspa providers and find the best deals
+                near you.
               </p>
 
               {/* Stats Row */}
@@ -142,7 +143,11 @@ export default function TreatmentsPage() {
                   <span className="text-[#78350f]">Total Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={20}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                   <span className="font-semibold text-[#451a03]">
                     {categories.length}
                   </span>
@@ -172,7 +177,8 @@ export default function TreatmentsPage() {
                 Looking for something specific?
               </h3>
               <p className="text-[#78350f] mb-4">
-                Browse all available deals and filter by location, price, and more.
+                Browse all available deals and filter by location, price, and
+                more.
               </p>
               <Link
                 href="/deals"

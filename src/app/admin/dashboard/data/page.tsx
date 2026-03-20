@@ -1,22 +1,21 @@
 'use client'
 
-import { useState } from 'react'
 import {
-  FileArrowDown,
-  Buildings,
-  Users,
-  Database,
   Archive,
-  Trash,
   Bell,
+  Buildings,
   CheckCircle,
+  Clock,
+  FileArrowDown,
+  Trash,
+  Users,
   Warning,
   XCircle,
-  Clock,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 
 // Mock counts for bulk actions
 const mockCounts = {
@@ -136,7 +135,9 @@ function formatRelativeTime(dateString: string): string {
 function getStatusIcon(status: string) {
   switch (status) {
     case 'success':
-      return <CheckCircle size={16} weight="fill" className="text-emerald-600" />
+      return (
+        <CheckCircle size={16} weight="fill" className="text-emerald-600" />
+      )
     case 'warning':
       return <Warning size={16} weight="fill" className="text-amber-800" />
     case 'failed':
@@ -146,7 +147,9 @@ function getStatusIcon(status: string) {
   }
 }
 
-function getStatusBadgeVariant(status: string): 'success' | 'warning' | 'error' | 'default' {
+function getStatusBadgeVariant(
+  status: string,
+): 'success' | 'warning' | 'error' | 'default' {
   switch (status) {
     case 'success':
       return 'success'
@@ -159,7 +162,10 @@ function getStatusBadgeVariant(status: string): 'success' | 'warning' | 'error' 
   }
 }
 
-function filterActivities(activities: typeof mockActivityLog, filter: ActivityFilter) {
+function filterActivities(
+  activities: typeof mockActivityLog,
+  filter: ActivityFilter,
+) {
   if (filter === 'all') return activities
   if (filter === 'exports') {
     return activities.filter((a) => a.action.toLowerCase().includes('export'))
@@ -170,7 +176,7 @@ function filterActivities(activities: typeof mockActivityLog, filter: ActivityFi
         a.action.toLowerCase().includes('approved') ||
         a.action.toLowerCase().includes('rejected') ||
         a.action.toLowerCase().includes('suspended') ||
-        a.action.toLowerCase().includes('archived')
+        a.action.toLowerCase().includes('archived'),
     )
   }
   if (filter === 'user-actions') {
@@ -178,7 +184,7 @@ function filterActivities(activities: typeof mockActivityLog, filter: ActivityFi
       (a) =>
         a.action.toLowerCase().includes('user') ||
         a.action.toLowerCase().includes('tier') ||
-        a.action.toLowerCase().includes('business')
+        a.action.toLowerCase().includes('business'),
     )
   }
   return activities
@@ -192,7 +198,6 @@ export default function DataManagementPage() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all')
 
   const handleExport = (type: string) => {
-    console.log(`Export started: ${type}`)
   }
 
   const filteredActivities = filterActivities(mockActivityLog, activityFilter)
@@ -209,23 +214,33 @@ export default function DataManagementPage() {
 
       {/* Export Tools Section */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Export Tools</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Export Tools
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Export Deals Card */}
           <Card variant="glass" padding="lg" className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
-                <FileArrowDown size={20} weight="fill" className="text-amber-800" />
+                <FileArrowDown
+                  size={20}
+                  weight="fill"
+                  className="text-amber-800"
+                />
               </div>
               <div>
                 <h3 className="font-semibold text-[#451a03]">Export Deals</h3>
-                <p className="text-sm text-[#78350f]">Download all deals as CSV</p>
+                <p className="text-sm text-[#78350f]">
+                  Download all deals as CSV
+                </p>
               </div>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-[#78350f] mb-1 block">Format</label>
+                <label className="text-sm text-[#78350f] mb-1 block">
+                  Format
+                </label>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -253,7 +268,9 @@ export default function DataManagementPage() {
               </div>
 
               <div>
-                <label className="text-sm text-[#78350f] mb-1 block">Date Range</label>
+                <label className="text-sm text-[#78350f] mb-1 block">
+                  Date Range
+                </label>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -284,7 +301,9 @@ export default function DataManagementPage() {
             <Button
               variant="primary"
               className="w-full"
-              onClick={() => handleExport(`deals-${dealsFormat}-${dealsDateRange}`)}
+              onClick={() =>
+                handleExport(`deals-${dealsFormat}-${dealsDateRange}`)
+              }
             >
               Export Deals
             </Button>
@@ -297,8 +316,12 @@ export default function DataManagementPage() {
                 <Buildings size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="font-semibold text-[#451a03]">Export Businesses</h3>
-                <p className="text-sm text-[#78350f]">Download business directory</p>
+                <h3 className="font-semibold text-[#451a03]">
+                  Export Businesses
+                </h3>
+                <p className="text-sm text-[#78350f]">
+                  Download business directory
+                </p>
               </div>
             </div>
 
@@ -310,14 +333,18 @@ export default function DataManagementPage() {
                   onChange={(e) => setIncludeInactive(e.target.checked)}
                   className="w-4 h-4 rounded border-[#d4c4b0] bg-[#f2ebe2] text-amber-800 focus:ring-amber-800 focus:ring-offset-0"
                 />
-                <span className="text-sm text-[#78350f]">Include inactive businesses</span>
+                <span className="text-sm text-[#78350f]">
+                  Include inactive businesses
+                </span>
               </label>
             </div>
 
             <Button
               variant="primary"
               className="w-full mt-auto"
-              onClick={() => handleExport(`businesses-${includeInactive ? 'all' : 'active'}`)}
+              onClick={() =>
+                handleExport(`businesses-${includeInactive ? 'all' : 'active'}`)
+              }
             >
               Export Businesses
             </Button>
@@ -337,7 +364,9 @@ export default function DataManagementPage() {
 
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-[#78350f] mb-1 block">Filter</label>
+                <label className="text-sm text-[#78350f] mb-1 block">
+                  Filter
+                </label>
                 <select
                   value={userFilter}
                   onChange={(e) => setUserFilter(e.target.value as UserFilter)}
@@ -362,7 +391,9 @@ export default function DataManagementPage() {
 
       {/* Bulk Actions Section */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Bulk Actions</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Bulk Actions
+        </h2>
         <Card variant="glass" padding="lg">
           <p className="text-[#78350f] mb-4">
             Perform operations on multiple records at once
@@ -416,7 +447,9 @@ export default function DataManagementPage() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold text-[#451a03]">Admin Activity Log</h2>
+            <h2 className="text-lg font-semibold text-[#451a03]">
+              Admin Activity Log
+            </h2>
             <p className="text-sm text-[#78350f]">Last 50 actions</p>
           </div>
         </div>
@@ -487,10 +520,14 @@ export default function DataManagementPage() {
                       {activity.details}
                     </td>
                     <td className="p-4">
-                      <Badge variant={getStatusBadgeVariant(activity.status)} size="sm">
+                      <Badge
+                        variant={getStatusBadgeVariant(activity.status)}
+                        size="sm"
+                      >
                         <span className="flex items-center gap-1.5">
                           {getStatusIcon(activity.status)}
-                          {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                          {activity.status.charAt(0).toUpperCase() +
+                            activity.status.slice(1)}
                         </span>
                       </Badge>
                     </td>
@@ -509,16 +546,24 @@ export default function DataManagementPage() {
                   <span className="text-xs text-[#92400e]">
                     {formatRelativeTime(activity.timestamp)}
                   </span>
-                  <Badge variant={getStatusBadgeVariant(activity.status)} size="sm">
+                  <Badge
+                    variant={getStatusBadgeVariant(activity.status)}
+                    size="sm"
+                  >
                     <span className="flex items-center gap-1.5">
                       {getStatusIcon(activity.status)}
-                      {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                      {activity.status.charAt(0).toUpperCase() +
+                        activity.status.slice(1)}
                     </span>
                   </Badge>
                 </div>
                 {/* Action + Admin */}
-                <p className="text-sm font-medium text-[#451a03]">{activity.action}</p>
-                <p className="text-xs text-[#78350f] mt-0.5">by {activity.admin}</p>
+                <p className="text-sm font-medium text-[#451a03]">
+                  {activity.action}
+                </p>
+                <p className="text-xs text-[#78350f] mt-0.5">
+                  by {activity.admin}
+                </p>
                 {/* Details */}
                 <p className="text-sm text-[#78350f] mt-2 pt-2 border-t border-[#d4c4b0]">
                   {activity.details}

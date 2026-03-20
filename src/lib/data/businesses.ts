@@ -20,9 +20,7 @@ export async function getBusinesses(city?: string): Promise<Business[]> {
   return (data ?? []) as Business[]
 }
 
-export async function getBusinessById(
-  id: number,
-): Promise<Business | null> {
+export async function getBusinessById(id: number): Promise<Business | null> {
   const { data, error } = await supabase
     .from(TABLE)
     .select('*')
@@ -81,9 +79,7 @@ export async function getBusinessCategories(): Promise<
     .sort((a, b) => b.count - a.count)
 }
 
-export async function searchBusinesses(
-  query: string,
-): Promise<Business[]> {
+export async function searchBusinesses(query: string): Promise<Business[]> {
   const { data, error } = await supabase
     .from(TABLE)
     .select(

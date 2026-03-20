@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 export const SITE_CONFIG = {
   name: 'CostFinders',
   url: 'https://www.costfinders.ai',
-  description: 'Find and compare medspa deals, treatments, and pricing near you. Discover the best aesthetic treatment prices from verified providers.',
+  description:
+    'Find and compare medspa deals, treatments, and pricing near you. Discover the best aesthetic treatment prices from verified providers.',
   social: {
     twitter: '@costfinders',
     instagram: '@costfinders',
@@ -31,7 +32,7 @@ export function buildCanonicalUrl(path: string): string {
 export function generateLocationMetadata(
   city: string,
   state: string,
-  dealCount: number
+  dealCount: number,
 ): Metadata {
   const title = `Medspa Deals in ${city}, ${state}`
   const description = `Discover ${dealCount} medspa deals and aesthetic treatment prices in ${city}, ${state}. Compare Botox, fillers, laser treatments, and more from verified providers.`
@@ -70,7 +71,7 @@ export function generateLocationMetadata(
 export function generateStateMetadata(
   state: string,
   cityCount: number,
-  dealCount: number
+  dealCount: number,
 ): Metadata {
   const title = `Medspa Deals in ${state}`
   const description = `Browse ${dealCount} medspa deals across ${cityCount} cities in ${state}. Find the best prices on Botox, fillers, and aesthetic treatments.`
@@ -111,7 +112,7 @@ export function generateNeighborhoodMetadata(
   neighborhood: string,
   city: string,
   state: string,
-  stats: { dealCount: number; businessCount: number }
+  stats: { dealCount: number; businessCount: number },
 ): Metadata {
   const title = `${neighborhood} Medspa Deals in ${city}, ${state} | Compare ${stats.dealCount} Offers`
   const description = `Compare ${stats.dealCount} medspa deals from ${stats.businessCount} verified providers in ${neighborhood}, ${city}. Save up to 50% on Botox, fillers, and aesthetic treatments. Book today!`
@@ -155,10 +156,11 @@ export function generateProviderMetadata(
   provider: string,
   city: string,
   state: string,
-  stats: { dealCount: number; services?: string[] }
+  stats: { dealCount: number; services?: string[] },
 ): Metadata {
   const title = `${provider} - Medspa Deals in ${city}, ${state}`
-  const servicesText = stats.services?.slice(0, 3).join(', ') || 'aesthetic treatments'
+  const servicesText =
+    stats.services?.slice(0, 3).join(', ') || 'aesthetic treatments'
   const description = `Explore ${stats.dealCount} exclusive deals from ${provider} in ${city}, ${state}. Save on ${servicesText} and more. Compare prices and book today!`
   const stateSlug = state.toLowerCase().replace(/\s+/g, '-')
   const citySlug = city.toLowerCase().replace(/\s+/g, '-')
@@ -196,7 +198,7 @@ export function generateProviderMetadata(
  */
 export function generateCategoryMetadata(
   category: string,
-  stats: { dealCount: number; businessCount: number; minPrice?: number }
+  stats: { dealCount: number; businessCount: number; minPrice?: number },
 ): Metadata {
   const priceText = stats.minPrice ? ` from $${stats.minPrice}` : ''
   const title = `${category} Treatments: ${stats.dealCount} Deals${priceText} | CostFinders`
@@ -240,7 +242,7 @@ export function generateCategoryMetadata(
 export function generateCityDealsMetadata(
   cityName: string,
   citySlug: string,
-  stats: { dealCount: number; businessCount: number; minPrice?: number }
+  stats: { dealCount: number; businessCount: number; minPrice?: number },
 ): Metadata {
   const priceText = stats.minPrice ? ` from $${stats.minPrice}` : ''
   const title = `Medspa Deals in ${cityName} | ${stats.dealCount} Offers${priceText} | CostFinders`
@@ -294,7 +296,7 @@ export function generateTreatmentCityMetadata(
   treatmentSlug: string,
   cityName: string,
   citySlug: string,
-  stats: { dealCount: number; businessCount: number; minPrice?: number }
+  stats: { dealCount: number; businessCount: number; minPrice?: number },
 ): Metadata {
   const priceText = stats.minPrice ? ` from $${stats.minPrice}` : ''
   const title = `${treatmentName} in ${cityName}${priceText} | ${stats.dealCount} Deals | CostFinders`

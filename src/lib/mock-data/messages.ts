@@ -72,7 +72,7 @@ const initialMessages: Message[] = [
     senderId: 'biz-5',
     senderType: 'business',
     content:
-      "Hi Mike! Thanks for reaching out. We have openings on the 18th. What time works best for you - morning or afternoon?",
+      'Hi Mike! Thanks for reaching out. We have openings on the 18th. What time works best for you - morning or afternoon?',
     createdAt: '2024-03-16T11:00:00Z',
   },
 
@@ -92,7 +92,7 @@ const initialMessages: Message[] = [
     senderId: 'biz-4',
     senderType: 'business',
     content:
-      "Hello! We have March 20th at 2 PM available. Does that work for you?",
+      'Hello! We have March 20th at 2 PM available. Does that work for you?',
     createdAt: '2024-03-15T16:30:00Z',
     readAt: '2024-03-15T17:00:00Z',
   },
@@ -136,7 +136,7 @@ export function getMessagesForClaim(claimId: string): Message[] {
     .filter((m) => m.claimId === claimId)
     .sort(
       (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     )
 }
 
@@ -147,7 +147,7 @@ export function sendMessage(
   claimId: string,
   content: string,
   senderType: 'business' | 'consumer',
-  senderId: string
+  senderId: string,
 ): Message {
   const messages = getDynamicMessages()
   const newMessage: Message = {
@@ -176,7 +176,7 @@ export function getLastMessageForClaim(claimId: string): Message | undefined {
  */
 export function getUnreadCountForClaim(claimId: string): number {
   return getDynamicMessages().filter(
-    (m) => m.claimId === claimId && m.senderType === 'consumer' && !m.readAt
+    (m) => m.claimId === claimId && m.senderType === 'consumer' && !m.readAt,
   ).length
 }
 
@@ -185,7 +185,7 @@ export function getUnreadCountForClaim(claimId: string): number {
  */
 export function markMessagesAsRead(
   claimId: string,
-  readerType: 'business' | 'consumer'
+  readerType: 'business' | 'consumer',
 ): void {
   const messages = getDynamicMessages()
   const oppositeType = readerType === 'business' ? 'consumer' : 'business'
@@ -223,7 +223,7 @@ export interface ConversationSummary {
  * Get all conversations for a business (claims that have messages)
  */
 export function getConversationsForBusiness(
-  businessId: string
+  businessId: string,
 ): ConversationSummary[] {
   const businessClaims = getClaimsForBusiness(businessId)
   const claimIdsWithMessages = getClaimIdsWithMessages()
@@ -249,6 +249,6 @@ export function getConversationsForBusiness(
   return conversations.sort(
     (a, b) =>
       new Date(b.lastMessage.createdAt).getTime() -
-      new Date(a.lastMessage.createdAt).getTime()
+      new Date(a.lastMessage.createdAt).getTime(),
   )
 }

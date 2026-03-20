@@ -1,12 +1,12 @@
-import { getFeaturedOffers, getOfferCategories } from '@/lib/data/offers'
-import { getBusinessCities } from '@/lib/data/businesses'
-import { getCategoryLabel, getCategorySlug } from '@/lib/data/categories'
-import { HeroSection } from '@/components/features/homepage/heroSection'
-import { OfferCard } from '@/components/features/offerCard'
+import { BusinessCtaSection } from '@/components/features/homepage/businessCtaSection'
 import { CategoryGrid } from '@/components/features/homepage/categoryGrid'
 import { CityGrid } from '@/components/features/homepage/cityGrid'
+import { HeroSection } from '@/components/features/homepage/heroSection'
 import { ValuePropsSection } from '@/components/features/homepage/valuePropsSection'
-import { BusinessCtaSection } from '@/components/features/homepage/businessCtaSection'
+import { OfferCard } from '@/components/features/offerCard'
+import { getBusinessCities } from '@/lib/data/businesses'
+import { getCategoryLabel, getCategorySlug } from '@/lib/data/categories'
+import { getFeaturedOffers, getOfferCategories } from '@/lib/data/offers'
 
 export const dynamic = 'force-dynamic'
 

@@ -2,11 +2,11 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { getDealById } from '@/lib/mock-data/deals'
 import { DealForm } from '@/components/features/dealManagement/dealForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+import { getDealById } from '@/lib/mock-data/deals'
 import type { Deal } from '@/types/deal'
 
 export default function EditDealPage() {
@@ -30,7 +30,10 @@ export default function EditDealPage() {
     return (
       <div className="text-center py-12">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
+          <svg
+            className="animate-spin h-8 w-8 text-amber-800"
+            viewBox="0 0 24 24"
+          >
             <circle
               className="opacity-25"
               cx="12"

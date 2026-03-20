@@ -1,10 +1,10 @@
 import type {
-  WithContext,
-  WebSite,
-  Organization,
   BreadcrumbList,
-  ListItem,
   FAQPage,
+  ListItem,
+  Organization,
+  WebSite,
+  WithContext,
 } from 'schema-dts'
 
 import { SITE_CONFIG } from './metadata'
@@ -62,7 +62,7 @@ export function buildOrganizationSchema(): WithContext<Organization> {
  * @returns JSON-LD BreadcrumbList object
  */
 export function buildBreadcrumbSchema(
-  items: Array<{ name: string; url: string }>
+  items: Array<{ name: string; url: string }>,
 ): WithContext<BreadcrumbList> {
   const itemListElement: ListItem[] = items.map((item, index) => ({
     '@type': 'ListItem',
@@ -132,7 +132,7 @@ export function buildLocalBusinessSchema(provider: {
  * @returns JSON-LD FAQPage object
  */
 export function buildFaqSchema(
-  items: Array<{ question: string; answer: string }>
+  items: Array<{ question: string; answer: string }>,
 ): WithContext<FAQPage> {
   return {
     '@context': 'https://schema.org',
@@ -165,7 +165,7 @@ export function buildDealsListSchema(
     dealPrice: number
     locationArea: string
   }>,
-  cityName: string
+  cityName: string,
 ) {
   return {
     '@context': 'https://schema.org',
@@ -211,7 +211,7 @@ export function buildTreatmentServiceSchema(
     dealCount: number
     minPrice?: number
     maxPrice?: number
-  }
+  },
 ) {
   return {
     '@context': 'https://schema.org',
@@ -223,15 +223,16 @@ export function buildTreatmentServiceSchema(
       '@type': 'City',
       name: cityName,
     },
-    ...(stats.minPrice && stats.maxPrice && {
-      offers: {
-        '@type': 'AggregateOffer',
-        lowPrice: stats.minPrice,
-        highPrice: stats.maxPrice,
-        priceCurrency: 'USD',
-        offerCount: stats.dealCount,
-      },
-    }),
+    ...(stats.minPrice &&
+      stats.maxPrice && {
+        offers: {
+          '@type': 'AggregateOffer',
+          lowPrice: stats.minPrice,
+          highPrice: stats.maxPrice,
+          priceCurrency: 'USD',
+          offerCount: stats.dealCount,
+        },
+      }),
     provider: {
       '@type': 'HealthAndBeautyBusiness',
       address: {

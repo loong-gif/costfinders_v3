@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { CheckCircle } from '@phosphor-icons/react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import type { Business } from '@/types/business'
 import { getBusinessById, updateBusiness } from '@/lib/mock-data/businesses'
+import type { Business } from '@/types/business'
 
 // US States for dropdown
 const US_STATES = [
@@ -103,7 +103,9 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
   }, [businessId])
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -201,7 +203,10 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
+        <svg
+          className="animate-spin h-8 w-8 text-amber-800"
+          viewBox="0 0 24 24"
+        >
           <circle
             className="opacity-25"
             cx="12"
@@ -295,7 +300,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
                 alt="Logo preview"
                 className="h-12 w-12 object-cover rounded-lg border border-[#d4c4b0]"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none'
+                  ;(e.target as HTMLImageElement).style.display = 'none'
                 }}
               />
             </div>
@@ -318,7 +323,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
                 alt="Cover preview"
                 className="h-32 w-full object-cover rounded-lg border border-[#d4c4b0]"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none'
+                  ;(e.target as HTMLImageElement).style.display = 'none'
                 }}
               />
             </div>

@@ -26,7 +26,7 @@ export function searchBusinessesByName(query: string): Business[] {
   if (!normalizedQuery) return []
 
   return getDynamicBusinesses().filter((b) =>
-    b.name.toLowerCase().includes(normalizedQuery)
+    b.name.toLowerCase().includes(normalizedQuery),
   )
 }
 
@@ -44,8 +44,16 @@ export function getUnclaimedBusinesses(): Business[] {
 export function createBusiness(
   data: Omit<
     Business,
-    'id' | 'slug' | 'createdAt' | 'updatedAt' | 'rating' | 'reviewCount' | 'isVerified' | 'tier' | 'status'
-  >
+    | 'id'
+    | 'slug'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'rating'
+    | 'reviewCount'
+    | 'isVerified'
+    | 'tier'
+    | 'status'
+  >,
 ): Business {
   const now = new Date().toISOString()
   const slug = data.name
@@ -76,7 +84,10 @@ export function createBusiness(
  * Claim a business for an owner
  * Updates tier, claimedBy, claimedAt, and isVerified
  */
-export function claimBusiness(businessId: string, ownerId: string): Business | null {
+export function claimBusiness(
+  businessId: string,
+  ownerId: string,
+): Business | null {
   const businesses = getDynamicBusinesses()
   const index = businesses.findIndex((b) => b.id === businessId)
 
@@ -103,7 +114,22 @@ export function claimBusiness(businessId: string, ownerId: string): Business | n
  */
 export function updateBusiness(
   businessId: string,
-  updates: Partial<Omit<Business, 'id' | 'slug' | 'createdAt' | 'tier' | 'status' | 'rating' | 'reviewCount' | 'isVerified' | 'verifiedAt' | 'claimedBy' | 'claimedAt'>>
+  updates: Partial<
+    Omit<
+      Business,
+      | 'id'
+      | 'slug'
+      | 'createdAt'
+      | 'tier'
+      | 'status'
+      | 'rating'
+      | 'reviewCount'
+      | 'isVerified'
+      | 'verifiedAt'
+      | 'claimedBy'
+      | 'claimedAt'
+    >
+  >,
 ): Business | null {
   const businesses = getDynamicBusinesses()
   const index = businesses.findIndex((b) => b.id === businessId)
@@ -294,7 +320,7 @@ export function getAllBusinesses(): Business[] {
  */
 export function updateBusinessStatus(
   businessId: string,
-  status: BusinessStatus
+  status: BusinessStatus,
 ): Business | null {
   const businesses = getDynamicBusinesses()
   const index = businesses.findIndex((b) => b.id === businessId)
@@ -317,7 +343,7 @@ export function updateBusinessStatus(
  */
 export function updateBusinessTier(
   businessId: string,
-  tier: BusinessTier
+  tier: BusinessTier,
 ): Business | null {
   const businesses = getDynamicBusinesses()
   const index = businesses.findIndex((b) => b.id === businessId)

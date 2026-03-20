@@ -1,15 +1,21 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
-import { MagnifyingGlass, Users, CheckCircle, Clock, Prohibit } from '@phosphor-icons/react'
-import type { ConsumerStatus, VerificationStatus } from '@/types/consumer'
+import {
+  CheckCircle,
+  Clock,
+  MagnifyingGlass,
+  Prohibit,
+  Users,
+} from '@phosphor-icons/react'
+import { useCallback, useMemo, useState } from 'react'
+import { ConsumerTable } from '@/components/features/admin/consumerTable'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   getAllConsumers,
   updateConsumerStatus,
 } from '@/lib/mock-data/consumers'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { ConsumerTable } from '@/components/features/admin/consumerTable'
+import type { ConsumerStatus, VerificationStatus } from '@/types/consumer'
 
 type FilterTab = 'all' | 'verified' | 'unverified' | 'suspended'
 
@@ -21,7 +27,11 @@ const filterTabs: { value: FilterTab; label: string }[] = [
 ]
 
 interface MetricCardProps {
-  icon: React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>
+  icon: React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
   value: string | number
   label: string
   highlight?: boolean
@@ -50,7 +60,11 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
 }
 
 function isVerified(status: VerificationStatus): boolean {
-  return status === 'fully_verified' || status === 'email_verified' || status === 'phone_verified'
+  return (
+    status === 'fully_verified' ||
+    status === 'email_verified' ||
+    status === 'phone_verified'
+  )
 }
 
 export default function UsersManagementPage() {
@@ -73,12 +87,12 @@ export default function UsersManagementPage() {
     switch (activeFilter) {
       case 'verified':
         filtered = filtered.filter(
-          (c) => isVerified(c.verificationStatus) && c.status === 'active'
+          (c) => isVerified(c.verificationStatus) && c.status === 'active',
         )
         break
       case 'unverified':
         filtered = filtered.filter(
-          (c) => c.verificationStatus === 'unverified' && c.status === 'active'
+          (c) => c.verificationStatus === 'unverified' && c.status === 'active',
         )
         break
       case 'suspended':
@@ -93,14 +107,15 @@ export default function UsersManagementPage() {
       filtered = filtered.filter(
         (c) =>
           c.email.toLowerCase().includes(query) ||
-          (c.firstName && c.firstName.toLowerCase().includes(query)) ||
-          (c.lastName && c.lastName.toLowerCase().includes(query))
+          c.firstName?.toLowerCase().includes(query) ||
+          c.lastName?.toLowerCase().includes(query),
       )
     }
 
     // Sort by createdAt descending (newest first)
     return filtered.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
   }, [consumers, activeFilter, searchQuery])
 
@@ -109,10 +124,10 @@ export default function UsersManagementPage() {
     return {
       all: consumers.length,
       verified: consumers.filter(
-        (c) => isVerified(c.verificationStatus) && c.status === 'active'
+        (c) => isVerified(c.verificationStatus) && c.status === 'active',
       ).length,
       unverified: consumers.filter(
-        (c) => c.verificationStatus === 'unverified' && c.status === 'active'
+        (c) => c.verificationStatus === 'unverified' && c.status === 'active',
       ).length,
       suspended: consumers.filter((c) => c.status === 'suspended').length,
     }
@@ -121,7 +136,9 @@ export default function UsersManagementPage() {
   // Calculate stats
   const stats = useMemo(() => {
     const total = consumers.length
-    const verified = consumers.filter((c) => isVerified(c.verificationStatus)).length
+    const verified = consumers.filter((c) =>
+      isVerified(c.verificationStatus),
+    ).length
     // Mock "new this week" - in real app would filter by date
     const newThisWeek = consumers.filter((c) => {
       const createdDate = new Date(c.createdAt)
@@ -145,11 +162,11 @@ export default function UsersManagementPage() {
         showFeedback(
           status === 'suspended'
             ? `${name} has been suspended`
-            : `${name} has been activated`
+            : `${name} has been activated`,
         )
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   return (
@@ -170,7 +187,11 @@ export default function UsersManagementPage() {
       {/* Stats Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard icon={Users} value={stats.total} label="Total Users" />
-        <MetricCard icon={CheckCircle} value={stats.verified} label="Verified Users" />
+        <MetricCard
+          icon={CheckCircle}
+          value={stats.verified}
+          label="Verified Users"
+        />
         <MetricCard
           icon={Clock}
           value={stats.newThisWeek}
@@ -218,7 +239,10 @@ export default function UsersManagementPage() {
       </div>
 
       {/* Consumer Table */}
-      <ConsumerTable consumers={filteredConsumers} onStatusChange={handleStatusChange} />
+      <ConsumerTable
+        consumers={filteredConsumers}
+        onStatusChange={handleStatusChange}
+      />
 
       {/* Pagination placeholder */}
       <div className="text-sm text-[#92400e] text-center">

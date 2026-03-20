@@ -8,8 +8,12 @@ import {
   useMemo,
   useState,
 } from 'react'
-import type { BusinessOwner, BusinessClaimStatus, BusinessVerificationStatus } from '@/types/businessOwner'
 import { businessOwners } from '@/lib/mock-data/businessOwners'
+import type {
+  BusinessClaimStatus,
+  BusinessOwner,
+  BusinessVerificationStatus,
+} from '@/types/businessOwner'
 
 const STORAGE_KEY = 'costfinders_business_auth'
 const MOCK_NETWORK_DELAY_MS = 500
@@ -71,7 +75,7 @@ function clearStoredAuth() {
 }
 
 // Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
-let dynamicOwners: BusinessOwner[] = []
+const dynamicOwners: BusinessOwner[] = []
 
 function findOwnerByEmail(email: string): BusinessOwner | undefined {
   const normalizedEmail = email.toLowerCase()
@@ -92,7 +96,9 @@ function findOwnerById(ownerId: string): BusinessOwner | undefined {
 
 export function BusinessAuthProvider({
   children,
-}: { children: React.ReactNode }) {
+}: {
+  children: React.ReactNode
+}) {
   const [state, setState] = useState<BusinessAuthState>(getInitialState)
 
   // Load stored owner on mount
@@ -116,7 +122,7 @@ export function BusinessAuthProvider({
   const signUp = useCallback(
     async (
       email: string,
-      password: string,
+      _password: string,
       firstName?: string,
       lastName?: string,
     ): Promise<void> => {
@@ -177,7 +183,7 @@ export function BusinessAuthProvider({
   )
 
   const signIn = useCallback(
-    async (email: string, password: string): Promise<void> => {
+    async (email: string, _password: string): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay

@@ -1,6 +1,6 @@
 import {
-  getCities,
   getBusinessCountForCity,
+  getCities,
   getDealCountForCity,
 } from './locations'
 
@@ -41,7 +41,7 @@ export function getStateBySlug(slug: string): StateInfo | undefined {
 export function getCitiesForState(stateCode: string) {
   const cities = getCities()
   return cities.filter(
-    (city) => city.stateCode === stateCode && city.isActive === true
+    (city) => city.stateCode === stateCode && city.isActive === true,
   )
 }
 
@@ -55,11 +55,11 @@ export function getStateStats(stateCode: string) {
   const cityCount = cities.length
   const dealCount = cities.reduce(
     (sum, city) => sum + getDealCountForCity(city.id),
-    0
+    0,
   )
   const businessCount = cities.reduce(
     (sum, city) => sum + getBusinessCountForCity(city.id),
-    0
+    0,
   )
 
   return { cityCount, dealCount, businessCount }

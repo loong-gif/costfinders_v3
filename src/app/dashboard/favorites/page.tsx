@@ -1,13 +1,13 @@
 'use client'
 
-import Link from 'next/link'
 import { Heart, MagnifyingGlass } from '@phosphor-icons/react'
-import { useAuth } from '@/lib/context/authContext'
-import { getAnonymousDealById } from '@/lib/mock-data'
-import { DealCard } from '@/components/features/dealCard'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
+import { DealCard } from '@/components/features/dealCard'
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/lib/context/authContext'
+import { getAnonymousDealById } from '@/lib/mock-data'
 
 export default function FavoritesPage() {
   const router = useRouter()
@@ -33,8 +33,8 @@ export default function FavoritesPage() {
             No saved deals yet
           </h2>
           <p className="text-[#78350f] mb-6 max-w-md">
-            Browse deals and tap the heart icon to save them for later.
-            Your favorites will appear here.
+            Browse deals and tap the heart icon to save them for later. Your
+            favorites will appear here.
           </p>
           <Button onClick={() => router.push('/deals')}>
             <MagnifyingGlass size={20} weight="light" className="mr-2" />

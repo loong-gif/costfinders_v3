@@ -8,8 +8,8 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { useAuth } from './authContext'
 import type { Claim, ClaimStatus } from '@/types/claim'
+import { useAuth } from './authContext'
 
 const STORAGE_KEY = 'costfinders_claims'
 const CLAIM_EXPIRY_DAYS = 7
@@ -83,7 +83,9 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
       }
 
       const now = new Date()
-      const expiresAt = new Date(now.getTime() + CLAIM_EXPIRY_DAYS * 24 * 60 * 60 * 1000)
+      const expiresAt = new Date(
+        now.getTime() + CLAIM_EXPIRY_DAYS * 24 * 60 * 60 * 1000,
+      )
 
       const newClaim: Claim = {
         id: `claim-${Date.now()}`,

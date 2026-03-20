@@ -84,12 +84,14 @@ export function getCategoryById(id: string): Category | undefined {
   return categories.find((cat) => cat.id === id)
 }
 
-export function getCategoryBySlug(slug: TreatmentCategory): Category | undefined {
+export function getCategoryBySlug(
+  slug: TreatmentCategory,
+): Category | undefined {
   return categories.find((cat) => cat.slug === slug)
 }
 
 export function createCategory(
-  data: Omit<Category, 'id' | 'dealCount' | 'sortOrder'>
+  data: Omit<Category, 'id' | 'dealCount' | 'sortOrder'>,
 ): Category {
   const newCategory: Category = {
     ...data,
@@ -103,7 +105,7 @@ export function createCategory(
 
 export function updateCategory(
   id: string,
-  data: Partial<Omit<Category, 'id'>>
+  data: Partial<Omit<Category, 'id'>>,
 ): Category | undefined {
   const index = categories.findIndex((cat) => cat.id === id)
   if (index === -1) return undefined
@@ -149,7 +151,9 @@ export function getAllCategorySlugs(): string[] {
 /**
  * Get category with computed stats (deal count, business count)
  */
-export function getCategoryWithStats(slug: string): (Category & { businessCount: number }) | undefined {
+export function getCategoryWithStats(
+  slug: string,
+): (Category & { businessCount: number }) | undefined {
   const category = categories.find((c) => c.slug === slug && c.isActive)
   if (!category) return undefined
 
@@ -165,11 +169,16 @@ export function getCategoryWithStats(slug: string): (Category & { businessCount:
  * Get all category-state combinations for sitemap
  * Returns array of {categorySlug, stateSlug} for future /treatments/[category]/[state] pages
  */
-export function getCategoryStateComboSlugs(): Array<{ categorySlug: string; stateSlug: string }> {
+export function getCategoryStateComboSlugs(): Array<{
+  categorySlug: string
+  stateSlug: string
+}> {
   // Import supported states - avoid circular dependency by importing inline
   const supportedStates = ['california', 'texas', 'new-york', 'florida']
 
-  const activeCategorySlugs = categories.filter((c) => c.isActive).map((c) => c.slug)
+  const activeCategorySlugs = categories
+    .filter((c) => c.isActive)
+    .map((c) => c.slug)
   const combos: Array<{ categorySlug: string; stateSlug: string }> = []
 
   for (const categorySlug of activeCategorySlugs) {

@@ -1,12 +1,11 @@
 import type { City, LocationArea } from '@/types/location'
 import {
-  getCities,
-  getCityById,
   getAreasForCity,
-  getDealCountForCity,
   getBusinessCountForCity,
+  getCities,
+  getDealCountForCity,
 } from './locations'
-import { getStateBySlug, slugifyCity, SUPPORTED_STATES } from './states'
+import { getStateBySlug, SUPPORTED_STATES, slugifyCity } from './states'
 
 /**
  * Get a city by state slug and city slug
@@ -16,7 +15,7 @@ import { getStateBySlug, slugifyCity, SUPPORTED_STATES } from './states'
  */
 export function getCityBySlug(
   stateSlug: string,
-  citySlug: string
+  citySlug: string,
 ): City | undefined {
   const state = getStateBySlug(stateSlug)
   if (!state) return undefined
@@ -26,7 +25,7 @@ export function getCityBySlug(
     (city) =>
       city.stateCode === state.code &&
       city.isActive &&
-      slugifyCity(city.name) === citySlug
+      slugifyCity(city.name) === citySlug,
   )
 }
 
@@ -90,7 +89,7 @@ export function getAllCitiesWithState(): Array<{
 
   for (const state of SUPPORTED_STATES) {
     const stateCities = allCities.filter(
-      (city) => city.stateCode === state.code && city.isActive
+      (city) => city.stateCode === state.code && city.isActive,
     )
 
     for (const city of stateCities) {

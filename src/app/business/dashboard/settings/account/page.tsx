@@ -1,18 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { ArrowRight, CheckCircle, Crown, Warning } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { Crown, CheckCircle, CreditCard, ArrowRight, Warning } from '@phosphor-icons/react'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { getBusinessById } from '@/lib/mock-data/businesses'
-import { getInvoices, getPaymentMethods } from '@/lib/mock-data/billing'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Modal } from '@/components/ui/modal'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { BillingHistory } from '@/components/features/billingHistory'
 import { PaymentMethods } from '@/components/features/paymentMethods'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Modal } from '@/components/ui/modal'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+import { getInvoices, getPaymentMethods } from '@/lib/mock-data/billing'
+import { getBusinessById } from '@/lib/mock-data/businesses'
 
 export default function AccountSettingsPage() {
   const router = useRouter()
@@ -60,24 +60,20 @@ export default function AccountSettingsPage() {
   }
 
   const handleDownloadInvoice = (invoiceId: string) => {
-    // Mock download - in real app would fetch actual PDF
-    console.log('Downloading invoice:', invoiceId)
     alert(`Invoice ${invoiceId} would be downloaded in production`)
   }
 
   const handleAddPaymentMethod = () => {
     // In real app, would open Stripe modal or redirect
-    alert('In production, this would open a secure payment form to add a new card')
+    alert(
+      'In production, this would open a secure payment form to add a new card',
+    )
   }
 
   const handleRemovePaymentMethod = (id: string) => {
-    // Mock removal - in real app would call API
-    console.log('Removing payment method:', id)
   }
 
   const handleSetDefaultPaymentMethod = (id: string) => {
-    // Mock set default - in real app would call API
-    console.log('Setting default payment method:', id)
   }
 
   return (
@@ -85,9 +81,15 @@ export default function AccountSettingsPage() {
       {/* Upgrade Success Message */}
       {showUpgradeSuccess && (
         <div className="flex items-center gap-3 p-4 bg-emerald-600/10 rounded-xl border border-emerald-400/20">
-          <CheckCircle size={20} weight="fill" className="text-emerald-600 flex-shrink-0" />
+          <CheckCircle
+            size={20}
+            weight="fill"
+            className="text-emerald-600 flex-shrink-0"
+          />
           <div>
-            <p className="text-sm font-medium text-emerald-600">Subscription activated!</p>
+            <p className="text-sm font-medium text-emerald-600">
+              Subscription activated!
+            </p>
             <p className="text-xs text-[#78350f] mt-0.5">
               You now have access to all Professional features.
             </p>
@@ -111,7 +113,10 @@ export default function AccountSettingsPage() {
                 <h2 className="text-lg font-semibold text-[#451a03]">
                   {currentTier === 'paid' ? 'Professional plan' : 'Free plan'}
                 </h2>
-                <Badge variant={currentTier === 'paid' ? 'brand' : 'default'} size="sm">
+                <Badge
+                  variant={currentTier === 'paid' ? 'brand' : 'default'}
+                  size="sm"
+                >
                   {currentTier === 'paid' ? 'Active' : 'Current'}
                 </Badge>
               </div>
@@ -144,14 +149,18 @@ export default function AccountSettingsPage() {
                 <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                   Current plan
                 </p>
-                <p className="text-lg font-semibold text-[#451a03]">Professional</p>
+                <p className="text-lg font-semibold text-[#451a03]">
+                  Professional
+                </p>
                 <p className="text-sm text-[#78350f]">$99/month</p>
               </div>
               <div>
                 <p className="text-xs text-[#92400e] uppercase tracking-wide mb-1">
                   Next billing date
                 </p>
-                <p className="text-lg font-semibold text-[#451a03]">Feb 15, 2025</p>
+                <p className="text-lg font-semibold text-[#451a03]">
+                  Feb 15, 2025
+                </p>
                 <p className="text-sm text-[#78350f]">Auto-renewal enabled</p>
               </div>
               <div>
@@ -179,11 +188,14 @@ export default function AccountSettingsPage() {
                   No active subscription
                 </h3>
                 <p className="text-sm text-[#78350f] mb-4">
-                  Upgrade to Professional to access billing features and unlock premium features.
+                  Upgrade to Professional to access billing features and unlock
+                  premium features.
                 </p>
                 <Button
                   variant="primary"
-                  onClick={() => router.push('/business/dashboard/settings/account/checkout')}
+                  onClick={() =>
+                    router.push('/business/dashboard/settings/account/checkout')
+                  }
                 >
                   Upgrade to Professional
                 </Button>
@@ -213,8 +225,8 @@ export default function AccountSettingsPage() {
               Cancel subscription
             </h3>
             <p className="text-sm text-[#78350f] mb-4">
-              If you cancel, your Professional features will remain active until your current billing period ends.
-              You can resubscribe at any time.
+              If you cancel, your Professional features will remain active until
+              your current billing period ends. You can resubscribe at any time.
             </p>
             <Button
               variant="ghost"
@@ -241,11 +253,17 @@ export default function AccountSettingsPage() {
           <ul className="text-sm text-[#78350f] space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-[#92400e]">-</span>
-              <span>You&apos;ll lose access to premium features at the end of your billing period</span>
+              <span>
+                You&apos;ll lose access to premium features at the end of your
+                billing period
+              </span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#92400e]">-</span>
-              <span>Your deals will remain active but won&apos;t have priority placement</span>
+              <span>
+                Your deals will remain active but won&apos;t have priority
+                placement
+              </span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#92400e]">-</span>

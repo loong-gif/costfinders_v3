@@ -1,25 +1,23 @@
 export {
-  getBusinesses,
   getBusinessById,
-  getBusinessCities,
   getBusinessCategories,
+  getBusinessCities,
+  getBusinesses,
   searchBusinesses,
 } from './businesses'
-
-export {
-  getOffers,
-  getOfferById,
-  getOffersWithBusinesses,
-  getOfferCategories,
-  getOffersByBusiness,
-  getFeaturedOffers,
-  type OfferFilters,
-} from './offers'
-
 export {
   CATEGORY_MAP,
+  type CategoryMapping,
   getCategoryLabel,
   getCategorySlug,
   getDbCategoryFromSlug,
-  type CategoryMapping,
 } from './categories'
+export {
+  getFeaturedOffers,
+  getOfferById,
+  getOfferCategories,
+  getOffers,
+  getOffersByBusiness,
+  getOffersWithBusinesses,
+  type OfferFilters,
+} from './offers'

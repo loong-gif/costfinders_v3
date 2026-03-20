@@ -1,11 +1,17 @@
 import type { MetadataRoute } from 'next'
-import { getStates } from '@/lib/mock-data/states'
+import {
+  getAllActiveCitySlugs,
+  getAllTreatmentCityCombos,
+} from '@/lib/mock-data'
+import {
+  getAllCategorySlugs,
+  getCategoryStateComboSlugs,
+} from '@/lib/mock-data/categories'
 import { getAllCitiesWithState } from '@/lib/mock-data/cities'
+import { getAllDealIds } from '@/lib/mock-data/deals'
 import { getAllNeighborhoodsWithCityAndState } from '@/lib/mock-data/neighborhoods'
 import { getAllProvidersWithCityAndState } from '@/lib/mock-data/providers'
-import { getAllCategorySlugs, getCategoryStateComboSlugs } from '@/lib/mock-data/categories'
-import { getAllDealIds } from '@/lib/mock-data/deals'
-import { getAllActiveCitySlugs, getAllTreatmentCityCombos } from '@/lib/mock-data'
+import { getStates } from '@/lib/mock-data/states'
 
 /**
  * Sitemap Configuration
@@ -40,7 +46,8 @@ const SITEMAP_CONFIG = {
 } as const
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.costfinders.ai'
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://www.costfinders.ai'
 
   // ═══════════════════════════════════════════════════════════════════
   // Section 1: Static Pages
@@ -84,7 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
       changeFrequency: 'weekly',
       priority: 0.7,
-    })
+    }),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -98,7 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
       changeFrequency: 'weekly',
       priority: 0.6,
-    })
+    }),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -112,7 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
       changeFrequency: 'weekly',
       priority: 0.5,
-    })
+    }),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -133,12 +140,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Note: Uses actual deal.updatedAt for accurate lastModified
   // ═══════════════════════════════════════════════════════════════════
   const dealData = getAllDealIds()
-  const dealPages: MetadataRoute.Sitemap = dealData.map(({ id, updatedAt }) => ({
-    url: `${baseUrl}/deals/${id}`,
-    lastModified: new Date(updatedAt),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-  }))
+  const dealPages: MetadataRoute.Sitemap = dealData.map(
+    ({ id, updatedAt }) => ({
+      url: `${baseUrl}/deals/${id}`,
+      lastModified: new Date(updatedAt),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    }),
+  )
 
   // ═══════════════════════════════════════════════════════════════════
   // Section 8: Category-State Combination Pages
@@ -153,7 +162,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
       changeFrequency: 'weekly',
       priority: 0.65,
-    })
+    }),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -183,7 +192,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
       changeFrequency: 'daily',
       priority: 0.75,
-    })
+    }),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -191,22 +200,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Total: ~131 URLs (well under 50,000 limit)
   // ═══════════════════════════════════════════════════════════════════
   const allUrls = [
-    ...staticPages,          // 2 URLs
-    ...statePages,           // 4 URLs
-    ...cityPages,            // ~11 URLs
-    ...neighborhoodPages,    // ~24 URLs
-    ...providerPages,        // ~6 URLs
-    ...categoryPages,        // 6 URLs
-    ...dealPages,            // ~12 URLs
-    ...categoryStatePages,   // 24 URLs
-    ...cityDealsPages,       // 6 URLs
-    ...treatmentCityPages,   // 36 URLs
+    ...staticPages, // 2 URLs
+    ...statePages, // 4 URLs
+    ...cityPages, // ~11 URLs
+    ...neighborhoodPages, // ~24 URLs
+    ...providerPages, // ~6 URLs
+    ...categoryPages, // 6 URLs
+    ...dealPages, // ~12 URLs
+    ...categoryStatePages, // 24 URLs
+    ...cityDealsPages, // 6 URLs
+    ...treatmentCityPages, // 36 URLs
   ]
-
-  // Log URL count in development for monitoring
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[Sitemap] Total URLs: ${allUrls.length}`)
-  }
 
   return allUrls
 }

@@ -104,7 +104,7 @@ export function SignInForm({
         <button
           type="button"
           onClick={handleForgotPassword}
-          className="text-sm text-amber-800 hover:text-amber-300 transition-colors"
+          className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
         >
           Forgot password?
         </button>
@@ -139,7 +139,7 @@ export function SignInForm({
           <button
             type="button"
             onClick={onSwitchToSignUp}
-            className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+            className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
           >
             Sign up
           </button>

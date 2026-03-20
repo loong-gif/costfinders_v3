@@ -15,7 +15,7 @@ Project-specific additions to global stack (Next.js 16 + React + TS + Tailwind):
   - `master_business_info` (354 businesses) → business profiles
   - `promo_offer_master` (347 offers) → deals/promotions
   - See `docs/DATABASE.md` for full schema
-- **Design System**: Bold & Warm (see `design-system/costfinders-v2/MASTER.md`)
+- **Design System**: Warm Sand (see `design-system/costfinders-v2/MASTER.md`)
 
 ---
 
@@ -181,7 +181,7 @@ npm run check     # Lint + format
 
 | Override | Reason |
 |----------|--------|
-| Glassmorphic design | Medium-dark theme with glass effects, strategic whitespace, grounded shadows |
+| Warm Sand design | Light beige theme with deep amber accents, spa-lobby warmth, strategic whitespace |
 | Mock data only | UI-only build; backend team handles Supabase integration separately |
 | Role-based views | Single app serves consumer, business, and admin experiences |
 | Anonymous until committed | Business details hidden until user creates account + verifies |

@@ -123,7 +123,7 @@ export function EmailVerification({
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
               >
                 Resend
               </button>
@@ -148,11 +148,7 @@ export function EmailVerification({
       {/* Icon */}
       <div className="flex justify-center">
         <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
-          <EnvelopeSimple
-            size={32}
-            weight="light"
-            className="text-amber-800"
-          />
+          <EnvelopeSimple size={32} weight="light" className="text-amber-800" />
         </div>
       </div>
 
@@ -185,7 +181,7 @@ export function EmailVerification({
         <button
           type="button"
           onClick={handleResend}
-          className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+          className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
         >
           Resend
         </button>

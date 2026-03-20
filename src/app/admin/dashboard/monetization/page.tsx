@@ -1,51 +1,66 @@
 'use client'
 
-import { useState } from 'react'
 import {
-  CurrencyDollar,
   ChartLine,
-  CreditCard,
-  Tag,
   CheckCircle,
-  X,
+  CreditCard,
+  CurrencyDollar,
   FloppyDisk,
   Rocket,
+  X,
 } from '@phosphor-icons/react'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
-  getPlatformSettings,
-  updateTierPricing,
-  updateLeadPricing,
-  updateSponsorshipPricing,
-  updatePlatformFees,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
   calculateEffectivePrice,
+  getPlatformSettings,
+  updateLeadPricing,
+  updatePlatformFees,
+  updateSponsorshipPricing,
+  updateTierPricing,
 } from '@/lib/mock-data/platformSettings'
 
 export default function MonetizationSettingsPage() {
   const initialSettings = getPlatformSettings()
 
   // Tier pricing state
-  const [paidTierPrice, setPaidTierPrice] = useState(initialSettings.tierPricing.paid)
+  const [paidTierPrice, setPaidTierPrice] = useState(
+    initialSettings.tierPricing.paid,
+  )
 
   // Lead pricing state
-  const [freeLeadPrice, setFreeLeadPrice] = useState(initialSettings.leadPricingByTier.free)
-  const [paidLeadPrice, setPaidLeadPrice] = useState(initialSettings.leadPricingByTier.paid)
+  const [freeLeadPrice, setFreeLeadPrice] = useState(
+    initialSettings.leadPricingByTier.free,
+  )
+  const [paidLeadPrice, setPaidLeadPrice] = useState(
+    initialSettings.leadPricingByTier.paid,
+  )
 
   // Sponsorship pricing state
-  const [sevenDayPrice, setSevenDayPrice] = useState(initialSettings.sponsorshipPricing.sevenDay)
-  const [fourteenDayPrice, setFourteenDayPrice] = useState(
-    initialSettings.sponsorshipPricing.fourteenDay
+  const [sevenDayPrice, setSevenDayPrice] = useState(
+    initialSettings.sponsorshipPricing.sevenDay,
   )
-  const [thirtyDayPrice, setThirtyDayPrice] = useState(initialSettings.sponsorshipPricing.thirtyDay)
+  const [fourteenDayPrice, setFourteenDayPrice] = useState(
+    initialSettings.sponsorshipPricing.fourteenDay,
+  )
+  const [thirtyDayPrice, setThirtyDayPrice] = useState(
+    initialSettings.sponsorshipPricing.thirtyDay,
+  )
 
   // Platform fees state
   const [transactionFee, setTransactionFee] = useState(
-    initialSettings.platformFees.transactionFee * 100
+    initialSettings.platformFees.transactionFee * 100,
   )
-  const [platformFee, setPlatformFee] = useState(initialSettings.platformFees.platformFee * 100)
+  const [platformFee, setPlatformFee] = useState(
+    initialSettings.platformFees.platformFee * 100,
+  )
 
   // Save states
   const [savingSection, setSavingSection] = useState<string | null>(null)
@@ -86,7 +101,7 @@ export default function MonetizationSettingsPage() {
 
   // Calculate example for fees
   const examplePrice = 100
-  const feeCalculation = calculateEffectivePrice(examplePrice)
+  const _feeCalculation = calculateEffectivePrice(examplePrice)
 
   return (
     <div className="space-y-8">
@@ -96,11 +111,17 @@ export default function MonetizationSettingsPage() {
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
-                <CreditCard size={20} weight="fill" className="text-amber-800" />
+                <CreditCard
+                  size={20}
+                  weight="fill"
+                  className="text-amber-800"
+                />
               </div>
               <div>
                 <CardTitle>Subscription Tiers</CardTitle>
-                <CardDescription>Monthly subscription pricing for business accounts</CardDescription>
+                <CardDescription>
+                  Monthly subscription pricing for business accounts
+                </CardDescription>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -140,8 +161,15 @@ export default function MonetizationSettingsPage() {
               {initialSettings.tierFeatures
                 .filter((f) => f.freeIncluded)
                 .map((feature) => (
-                  <div key={feature.id} className="flex items-center gap-2 text-sm">
-                    <CheckCircle size={16} weight="fill" className="text-emerald-600" />
+                  <div
+                    key={feature.id}
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <CheckCircle
+                      size={16}
+                      weight="fill"
+                      className="text-emerald-600"
+                    />
                     <span className="text-[#78350f]">{feature.name}</span>
                   </div>
                 ))}
@@ -149,7 +177,10 @@ export default function MonetizationSettingsPage() {
                 .filter((f) => !f.freeIncluded)
                 .slice(0, 3)
                 .map((feature) => (
-                  <div key={feature.id} className="flex items-center gap-2 text-sm">
+                  <div
+                    key={feature.id}
+                    className="flex items-center gap-2 text-sm"
+                  >
                     <X size={16} weight="bold" className="text-[#92400e]" />
                     <span className="text-[#92400e]">{feature.name}</span>
                   </div>
@@ -162,7 +193,9 @@ export default function MonetizationSettingsPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h4 className="font-semibold text-[#451a03]">Paid Tier</h4>
-                <p className="text-sm text-[#78350f]">Premium business features</p>
+                <p className="text-sm text-[#78350f]">
+                  Premium business features
+                </p>
               </div>
               <Badge variant="brand">Recommended</Badge>
             </div>
@@ -183,8 +216,15 @@ export default function MonetizationSettingsPage() {
               {initialSettings.tierFeatures
                 .filter((f) => f.paidIncluded)
                 .map((feature) => (
-                  <div key={feature.id} className="flex items-center gap-2 text-sm">
-                    <CheckCircle size={16} weight="fill" className="text-amber-800" />
+                  <div
+                    key={feature.id}
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <CheckCircle
+                      size={16}
+                      weight="fill"
+                      className="text-amber-800"
+                    />
                     <span className="text-[#78350f]">{feature.name}</span>
                   </div>
                 ))}
@@ -199,11 +239,17 @@ export default function MonetizationSettingsPage() {
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-600/10 flex items-center justify-center">
-                <CurrencyDollar size={20} weight="fill" className="text-emerald-600" />
+                <CurrencyDollar
+                  size={20}
+                  weight="fill"
+                  className="text-emerald-600"
+                />
               </div>
               <div>
                 <CardTitle>Lead Pricing</CardTitle>
-                <CardDescription>Per-lead costs by tier and credit package pricing</CardDescription>
+                <CardDescription>
+                  Per-lead costs by tier and credit package pricing
+                </CardDescription>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -227,7 +273,9 @@ export default function MonetizationSettingsPage() {
 
         {/* Per-Lead Pricing */}
         <div className="mb-8">
-          <h4 className="text-sm font-medium text-[#78350f] mb-4">Per-Lead Cost by Tier</h4>
+          <h4 className="text-sm font-medium text-[#78350f] mb-4">
+            Per-Lead Cost by Tier
+          </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0]">
               <div>
@@ -272,7 +320,9 @@ export default function MonetizationSettingsPage() {
 
         {/* Credit Packages Table */}
         <div>
-          <h4 className="text-sm font-medium text-[#78350f] mb-4">Credit Packages</h4>
+          <h4 className="text-sm font-medium text-[#78350f] mb-4">
+            Credit Packages
+          </h4>
 
           {/* Desktop Table View */}
           <div className="hidden sm:block overflow-x-auto">
@@ -298,10 +348,15 @@ export default function MonetizationSettingsPage() {
               </thead>
               <tbody className="divide-y divide-[#d4c4b0]">
                 {initialSettings.creditPackages.map((pkg) => (
-                  <tr key={pkg.id} className="hover:bg-[#faf5ee] transition-colors">
+                  <tr
+                    key={pkg.id}
+                    className="hover:bg-[#faf5ee] transition-colors"
+                  >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-[#451a03]">{pkg.credits} Credits</span>
+                        <span className="font-medium text-[#451a03]">
+                          {pkg.credits} Credits
+                        </span>
                         {pkg.isBestValue && (
                           <Badge variant="brand" size="sm">
                             Best Value
@@ -337,8 +392,12 @@ export default function MonetizationSettingsPage() {
                 {/* Header: Package Name + Best Value Badge */}
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="font-medium text-[#451a03]">{pkg.credits} Credits</p>
-                    <p className="text-sm text-[#92400e] mt-0.5">{pkg.credits} leads</p>
+                    <p className="font-medium text-[#451a03]">
+                      {pkg.credits} Credits
+                    </p>
+                    <p className="text-sm text-[#92400e] mt-0.5">
+                      {pkg.credits} leads
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     {pkg.isBestValue && (
@@ -383,7 +442,9 @@ export default function MonetizationSettingsPage() {
               </div>
               <div>
                 <CardTitle>Sponsored Placements</CardTitle>
-                <CardDescription>Boost pricing and impression multipliers for deals</CardDescription>
+                <CardDescription>
+                  Boost pricing and impression multipliers for deals
+                </CardDescription>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -424,7 +485,9 @@ export default function MonetizationSettingsPage() {
                 min={0}
               />
             </div>
-            <p className="text-xs text-[#92400e]">Featured in category listings</p>
+            <p className="text-xs text-[#92400e]">
+              Featured in category listings
+            </p>
           </div>
 
           {/* 14 Day Boost */}
@@ -445,7 +508,9 @@ export default function MonetizationSettingsPage() {
                 min={0}
               />
             </div>
-            <p className="text-xs text-[#92400e]">Featured + homepage carousel</p>
+            <p className="text-xs text-[#92400e]">
+              Featured + homepage carousel
+            </p>
           </div>
 
           {/* 30 Day Boost */}
@@ -466,7 +531,9 @@ export default function MonetizationSettingsPage() {
                 min={0}
               />
             </div>
-            <p className="text-xs text-[#92400e]">All placements + email spotlight</p>
+            <p className="text-xs text-[#92400e]">
+              All placements + email spotlight
+            </p>
           </div>
         </div>
       </Card>
@@ -510,8 +577,12 @@ export default function MonetizationSettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0]">
               <div className="flex-1">
-                <p className="text-sm font-medium text-[#451a03]">Transaction Fee</p>
-                <p className="text-xs text-[#92400e]">Payment processor fee (e.g., Stripe)</p>
+                <p className="text-sm font-medium text-[#451a03]">
+                  Transaction Fee
+                </p>
+                <p className="text-xs text-[#92400e]">
+                  Payment processor fee (e.g., Stripe)
+                </p>
               </div>
               <div className="flex items-center gap-1">
                 <input
@@ -529,8 +600,12 @@ export default function MonetizationSettingsPage() {
 
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0]">
               <div className="flex-1">
-                <p className="text-sm font-medium text-[#451a03]">Platform Fee</p>
-                <p className="text-xs text-[#92400e]">CostFinders marketplace fee</p>
+                <p className="text-sm font-medium text-[#451a03]">
+                  Platform Fee
+                </p>
+                <p className="text-xs text-[#92400e]">
+                  CostFinders marketplace fee
+                </p>
               </div>
               <div className="flex items-center gap-1">
                 <input
@@ -549,7 +624,9 @@ export default function MonetizationSettingsPage() {
 
           {/* Example Calculation */}
           <div className="p-4 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0]">
-            <h4 className="text-sm font-medium text-[#78350f] mb-4">Example Calculation</h4>
+            <h4 className="text-sm font-medium text-[#78350f] mb-4">
+              Example Calculation
+            </h4>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-[#78350f]">Sale Amount</span>
@@ -566,14 +643,18 @@ export default function MonetizationSettingsPage() {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#78350f]">Platform Fee ({platformFee.toFixed(1)}%)</span>
+                <span className="text-[#78350f]">
+                  Platform Fee ({platformFee.toFixed(1)}%)
+                </span>
                 <span className="text-red-600">
                   -${(examplePrice * (platformFee / 100)).toFixed(2)}
                 </span>
               </div>
               <div className="pt-3 border-t border-[#d4c4b0]">
                 <div className="flex justify-between items-center">
-                  <span className="text-[#451a03] font-medium">Net Revenue</span>
+                  <span className="text-[#451a03] font-medium">
+                    Net Revenue
+                  </span>
                   <span className="text-emerald-600 font-bold text-lg">
                     $
                     {(

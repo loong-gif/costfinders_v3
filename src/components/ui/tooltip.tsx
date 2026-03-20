@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface TooltipProps {
@@ -49,7 +49,6 @@ export function Tooltip({
         top = rect.top + rect.height / 2
         left = rect.left - offset
         break
-      case 'right':
       default:
         top = rect.top + rect.height / 2
         left = rect.right + offset
@@ -89,15 +88,15 @@ export function Tooltip({
         return 'translate(-50%, 0)'
       case 'left':
         return 'translate(-100%, -50%)'
-      case 'right':
       default:
         return 'translate(0, -50%)'
     }
   }
 
-  const tooltipContent = isVisible && mounted ? (
-    <div
-      className={`
+  const tooltipContent =
+    isVisible && mounted ? (
+      <div
+        className={`
         fixed z-[9999]
         px-3 py-1.5
         bg-[#f2ebe2]/95 backdrop-blur-md
@@ -109,15 +108,15 @@ export function Tooltip({
         pointer-events-none
         animate-in fade-in zoom-in-95 duration-150
       `}
-      style={{
-        top: position.top,
-        left: position.left,
-        transform: getTransformOrigin(),
-      }}
-    >
-      {content}
-    </div>
-  ) : null
+        style={{
+          top: position.top,
+          left: position.left,
+          transform: getTransformOrigin(),
+        }}
+      >
+        {content}
+      </div>
+    ) : null
 
   return (
     <div

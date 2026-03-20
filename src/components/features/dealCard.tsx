@@ -1,10 +1,10 @@
 'use client'
 
 import { Lock, MapPin, ShieldCheck, Star } from '@phosphor-icons/react'
-import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
 import { BlurredImage } from '@/components/patterns/blurredImage'
 import { SaveButton } from '@/components/patterns/saveButton'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface DealCardProps {
@@ -108,9 +108,7 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           <span className="flex items-center gap-1">
             <Star size={16} weight="fill" className="text-amber-800" />
             {deal.businessRating.toFixed(1)}
-            <span className="text-[#92400e]">
-              ({deal.businessReviewCount})
-            </span>
+            <span className="text-[#92400e]">({deal.businessReviewCount})</span>
           </span>
         </div>
 

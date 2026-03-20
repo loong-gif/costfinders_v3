@@ -1,38 +1,38 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
 import {
-  Rocket,
   ArrowLeft,
-  Clock,
-  Eye,
-  TrendUp,
-  CheckCircle,
-  XCircle,
   Calendar,
+  CheckCircle,
+  Clock,
   CurrencyDollar,
+  Eye,
   Lightning,
+  Rocket,
   Tag,
+  TrendUp,
+  XCircle,
 } from '@phosphor-icons/react'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Modal } from '@/components/ui/modal'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
 import { SponsoredDealConfig } from '@/components/features/sponsoredDealConfig'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Modal } from '@/components/ui/modal'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'
 import {
+  type ActiveBoost,
+  type BoostHistory,
+  cancelBoost,
+  createBoost,
   getActiveBoosts,
   getBoostHistory,
   getBoostOptionById,
-  getDaysRemaining,
   getBoostProgress,
-  createBoost,
-  cancelBoost,
+  getDaysRemaining,
   isDealEligibleForSponsorship,
-  type ActiveBoost,
-  type BoostHistory,
 } from '@/lib/mock-data/sponsorship'
 import type { Deal, TreatmentCategory } from '@/types/deal'
 
@@ -53,18 +53,18 @@ export default function SponsoredDealsPage() {
   const [boostModalOpen, setBoostModalOpen] = useState(false)
   const [cancelModalOpen, setCancelModalOpen] = useState(false)
   const [boostToCancel, setBoostToCancel] = useState<ActiveBoost | null>(null)
-  const [refreshKey, setRefreshKey] = useState(0)
+  const [_refreshKey, setRefreshKey] = useState(0)
 
   // Get data
   const deals = useMemo(() => {
     if (!businessId) return []
     return getDealsForBusiness(businessId)
-  }, [businessId, refreshKey])
+  }, [businessId])
 
   const activeBoosts = useMemo(() => {
     if (!businessId) return []
     return getActiveBoosts(businessId)
-  }, [businessId, refreshKey])
+  }, [businessId])
 
   const boostHistoryData = useMemo(() => {
     if (!businessId) return []
@@ -169,8 +169,8 @@ export default function SponsoredDealsPage() {
                 No Active Boosts
               </h3>
               <p className="text-[#78350f] mb-4">
-                Start boosting your deals to increase visibility and attract more
-                customers.
+                Start boosting your deals to increase visibility and attract
+                more customers.
               </p>
             </div>
           </Card>
@@ -317,7 +317,9 @@ export default function SponsoredDealsPage() {
             {/* Mobile Card View */}
             <div className="sm:hidden divide-y divide-[#d4c4b0]">
               {boostHistoryData.map((history) => {
-                const startDate = new Date(history.startDate).toLocaleDateString()
+                const startDate = new Date(
+                  history.startDate,
+                ).toLocaleDateString()
                 const endDate = new Date(history.endDate).toLocaleDateString()
                 return (
                   <div key={history.id} className="p-4">
@@ -332,16 +334,23 @@ export default function SponsoredDealsPage() {
                         </Badge>
                       </div>
                       <Badge
-                        variant={history.status === 'completed' ? 'success' : 'warning'}
+                        variant={
+                          history.status === 'completed' ? 'success' : 'warning'
+                        }
                         size="sm"
                         className="flex-shrink-0"
                       >
                         {history.status === 'completed' ? (
-                          <CheckCircle size={12} weight="fill" className="mr-1" />
+                          <CheckCircle
+                            size={12}
+                            weight="fill"
+                            className="mr-1"
+                          />
                         ) : (
                           <XCircle size={12} weight="fill" className="mr-1" />
                         )}
-                        {history.status.charAt(0).toUpperCase() + history.status.slice(1)}
+                        {history.status.charAt(0).toUpperCase() +
+                          history.status.slice(1)}
                       </Badge>
                     </div>
 
@@ -354,7 +363,8 @@ export default function SponsoredDealsPage() {
                     <div className="flex items-center justify-between pt-3 border-t border-[#d4c4b0]">
                       <span className="flex items-center gap-1 text-sm text-[#78350f]">
                         <Eye size={14} weight="fill" />
-                        {history.impressionsDelivered.toLocaleString()} impressions
+                        {history.impressionsDelivered.toLocaleString()}{' '}
+                        impressions
                       </span>
                       <span className="flex items-center gap-1 text-sm text-[#451a03] font-medium">
                         <CurrencyDollar size={14} weight="fill" />
@@ -434,7 +444,12 @@ interface ActiveBoostCardProps {
   onCancel: () => void
 }
 
-function ActiveBoostCard({ boost, deal, option, onCancel }: ActiveBoostCardProps) {
+function ActiveBoostCard({
+  boost,
+  deal,
+  option,
+  onCancel,
+}: ActiveBoostCardProps) {
   const daysRemaining = getDaysRemaining(boost)
   const progress = getBoostProgress(boost)
 

@@ -1,7 +1,7 @@
 'use client'
 
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { DealForm } from '@/components/features/dealManagement/dealForm'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 
 export default function NewDealPage() {
   const { state } = useBusinessAuth()

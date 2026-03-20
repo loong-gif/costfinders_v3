@@ -8,8 +8,8 @@ import {
   useMemo,
   useState,
 } from 'react'
-import type { Admin } from '@/types/admin'
 import { admins } from '@/lib/mock-data'
+import type { Admin } from '@/types/admin'
 
 const STORAGE_KEY = 'costfinders_admin_id'
 const MOCK_NETWORK_DELAY_MS = 500
@@ -70,9 +70,7 @@ function findAdminById(adminId: string): Admin | undefined {
   return admins.find((a) => a.id === adminId)
 }
 
-export function AdminAuthProvider({
-  children,
-}: { children: React.ReactNode }) {
+export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AdminAuthState>(getInitialState)
 
   // Load stored admin on mount

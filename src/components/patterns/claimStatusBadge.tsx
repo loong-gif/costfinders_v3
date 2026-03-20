@@ -10,7 +10,10 @@ interface ClaimStatusBadgeProps {
 
 const statusConfig: Record<
   ClaimStatus,
-  { variant: 'success' | 'warning' | 'error' | 'info' | 'default'; label: string }
+  {
+    variant: 'success' | 'warning' | 'error' | 'info' | 'default'
+    label: string
+  }
 > = {
   pending: { variant: 'warning', label: 'Pending' },
   contacted: { variant: 'info', label: 'Contacted' },
@@ -20,7 +23,10 @@ const statusConfig: Record<
   expired: { variant: 'default', label: 'Expired' },
 }
 
-export function ClaimStatusBadge({ status, size = 'sm' }: ClaimStatusBadgeProps) {
+export function ClaimStatusBadge({
+  status,
+  size = 'sm',
+}: ClaimStatusBadgeProps) {
   const config = statusConfig[status]
 
   return (

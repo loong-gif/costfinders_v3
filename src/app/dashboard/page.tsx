@@ -1,18 +1,17 @@
 'use client'
 
-import Link from 'next/link'
 import {
-  Heart,
+  CheckCircle,
   ClipboardText,
+  Heart,
   MagnifyingGlass,
   UserCircle,
-  CheckCircle,
   WarningCircle,
 } from '@phosphor-icons/react'
-import { Card, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/lib/context/authContext'
-import type { Metadata } from 'next'
 
 function getVerificationBadge(status: string | undefined) {
   switch (status) {
@@ -51,7 +50,9 @@ export default function DashboardPage() {
   const { state } = useAuth()
   const user = state.user
 
-  const greeting = user?.firstName ? `Welcome back, ${user.firstName}` : 'Welcome back'
+  const greeting = user?.firstName
+    ? `Welcome back, ${user.firstName}`
+    : 'Welcome back'
   const isFullyVerified = user?.verificationStatus === 'fully_verified'
 
   return (
@@ -59,7 +60,9 @@ export default function DashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-[#451a03]">{greeting}</h1>
-        <p className="text-[#78350f] mt-1">Here&apos;s an overview of your activity</p>
+        <p className="text-[#78350f] mt-1">
+          Here&apos;s an overview of your activity
+        </p>
       </div>
 
       {/* Stats Grid */}
@@ -84,7 +87,11 @@ export default function DashboardPage() {
           <CardContent>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-emerald-600/10 flex items-center justify-center">
-                <ClipboardText size={24} weight="fill" className="text-emerald-600" />
+                <ClipboardText
+                  size={24}
+                  weight="fill"
+                  className="text-emerald-600"
+                />
               </div>
               <div>
                 <p className="text-2xl font-bold text-[#451a03]">0</p>
@@ -136,14 +143,19 @@ export default function DashboardPage() {
         <CardContent>
           <div className="text-center py-8 space-y-4">
             <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center mx-auto">
-              <MagnifyingGlass size={32} weight="light" className="text-amber-800" />
+              <MagnifyingGlass
+                size={32}
+                weight="light"
+                className="text-amber-800"
+              />
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-[#451a03]">
                 Start Exploring Deals
               </h3>
               <p className="text-[#78350f] max-w-md mx-auto">
-                Browse medspa deals in your area, save your favorites, and claim exclusive pricing.
+                Browse medspa deals in your area, save your favorites, and claim
+                exclusive pricing.
               </p>
             </div>
             <Link href="/deals">

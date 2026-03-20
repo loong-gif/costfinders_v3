@@ -1,6 +1,6 @@
-import { Star, Syringe, MapPin } from '@phosphor-icons/react/dist/ssr'
-import type { OfferWithBusiness } from '@/types/supabase'
+import { MapPin, Star, Syringe } from '@phosphor-icons/react/dist/ssr'
 import { getCategoryLabel } from '@/lib/data/categories'
+import type { OfferWithBusiness } from '@/types/supabase'
 
 interface OfferCardProps {
   offer: OfferWithBusiness
@@ -62,13 +62,11 @@ export function OfferCard({ offer }: OfferCardProps) {
           )}
           {hasSavings && (
             <span className="text-[#92400e] line-through text-base font-mono">
-              ${offer.original_price!.toLocaleString()}
+              ${offer.original_price?.toLocaleString()}
             </span>
           )}
           {offer.unit_type && offer.unit_type !== 'package' && (
-            <span className="text-[#92400e] text-sm">
-              /{offer.unit_type}
-            </span>
+            <span className="text-[#92400e] text-sm">/{offer.unit_type}</span>
           )}
         </div>
 

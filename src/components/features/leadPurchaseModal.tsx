@@ -1,10 +1,13 @@
 'use client'
 
+import { Check, CreditCard, Lock, Users } from '@phosphor-icons/react'
 import { useState } from 'react'
-import { Users, Check, CreditCard, Lock } from '@phosphor-icons/react'
-import { Modal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
-import type { CreditPackage, BusinessCredits } from '@/lib/mock-data/leadPricing'
+import { Modal } from '@/components/ui/modal'
+import type {
+  BusinessCredits,
+  CreditPackage,
+} from '@/lib/mock-data/leadPricing'
 import { purchaseCredits } from '@/lib/mock-data/leadPricing'
 
 type PurchaseState = 'confirm' | 'processing' | 'success'
@@ -53,7 +56,13 @@ export function LeadPurchaseModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Buy leads" size="md" mobileVariant="fullscreen">
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      title="Buy leads"
+      size="md"
+      mobileVariant="fullscreen"
+    >
       {state === 'confirm' && (
         <div className="space-y-6">
           {/* Package Summary */}
@@ -75,11 +84,15 @@ export function LeadPurchaseModal({
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-[#78350f]">Package price</span>
-                <span className="text-[#451a03]">${selectedPackage.price.toFixed(2)}</span>
+                <span className="text-[#451a03]">
+                  ${selectedPackage.price.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#78350f]">Leads included</span>
-                <span className="text-[#451a03]">{selectedPackage.credits} leads</span>
+                <span className="text-[#451a03]">
+                  {selectedPackage.credits} leads
+                </span>
               </div>
               {selectedPackage.savingsPercent > 0 && (
                 <div className="flex justify-between text-emerald-600">
@@ -95,7 +108,9 @@ export function LeadPurchaseModal({
             <p className="text-sm text-[#78350f] mb-2">After purchase:</p>
             <div className="flex items-center justify-between">
               <span className="text-sm text-[#78350f]">Current balance</span>
-              <span className="text-[#451a03]">{currentBalance.available} leads</span>
+              <span className="text-[#451a03]">
+                {currentBalance.available} leads
+              </span>
             </div>
             <div className="flex items-center justify-between mt-1">
               <span className="text-sm text-[#78350f]">New balance</span>
@@ -109,10 +124,14 @@ export function LeadPurchaseModal({
           <div className="bg-[#f2ebe2] rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
-                <span className="text-xs font-bold text-white italic">VISA</span>
+                <span className="text-xs font-bold text-white italic">
+                  VISA
+                </span>
               </div>
               <div>
-                <p className="text-sm font-medium text-[#451a03]">Visa ending in 4242</p>
+                <p className="text-sm font-medium text-[#451a03]">
+                  Visa ending in 4242
+                </p>
                 <p className="text-xs text-[#78350f]">Expires 12/27</p>
               </div>
             </div>
@@ -120,10 +139,18 @@ export function LeadPurchaseModal({
 
           {/* Action Buttons */}
           <div className="flex gap-3">
-            <Button variant="secondary" onClick={handleClose} className="flex-1">
+            <Button
+              variant="secondary"
+              onClick={handleClose}
+              className="flex-1"
+            >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handlePurchase} className="flex-1">
+            <Button
+              variant="primary"
+              onClick={handlePurchase}
+              className="flex-1"
+            >
               Pay ${selectedPackage.price.toFixed(2)}
             </Button>
           </div>
@@ -139,10 +166,18 @@ export function LeadPurchaseModal({
       {state === 'processing' && (
         <div className="py-12 text-center">
           <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center mx-auto mb-4">
-            <CreditCard size={32} weight="fill" className="text-amber-800 animate-pulse" />
+            <CreditCard
+              size={32}
+              weight="fill"
+              className="text-amber-800 animate-pulse"
+            />
           </div>
-          <h3 className="text-lg font-semibold text-[#451a03] mb-2">Processing payment</h3>
-          <p className="text-sm text-[#78350f]">Please wait while we process your purchase...</p>
+          <h3 className="text-lg font-semibold text-[#451a03] mb-2">
+            Processing payment
+          </h3>
+          <p className="text-sm text-[#78350f]">
+            Please wait while we process your purchase...
+          </p>
         </div>
       )}
 
@@ -151,7 +186,9 @@ export function LeadPurchaseModal({
           <div className="w-16 h-16 rounded-full bg-emerald-600/10 flex items-center justify-center mx-auto mb-4">
             <Check size={32} weight="bold" className="text-emerald-600" />
           </div>
-          <h3 className="text-lg font-semibold text-[#451a03] mb-2">Purchase complete!</h3>
+          <h3 className="text-lg font-semibold text-[#451a03] mb-2">
+            Purchase complete!
+          </h3>
           <p className="text-sm text-[#78350f] mb-6">
             {selectedPackage.credits} leads have been added to your account.
           </p>
@@ -159,7 +196,9 @@ export function LeadPurchaseModal({
           {/* New Balance */}
           <div className="bg-[#f2ebe2] rounded-xl p-4 mb-6 inline-block">
             <p className="text-sm text-[#78350f] mb-1">New balance</p>
-            <p className="text-3xl font-bold text-amber-800">{newBalance.available} leads</p>
+            <p className="text-3xl font-bold text-amber-800">
+              {newBalance.available} leads
+            </p>
           </div>
 
           <Button variant="primary" onClick={handleClose} className="w-full">

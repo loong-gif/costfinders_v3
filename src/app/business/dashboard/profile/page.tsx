@@ -1,7 +1,7 @@
 'use client'
 
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { BusinessProfileForm } from '@/components/features/businessProfileForm'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 
 export default function BusinessProfilePage() {
   const { state } = useBusinessAuth()

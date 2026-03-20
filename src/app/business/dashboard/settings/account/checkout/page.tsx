@@ -1,12 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import {
+  CaretLeft,
+  Check,
+  CheckCircle,
+  Crown,
+  Lock,
+  ShieldCheck,
+} from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CaretLeft, CheckCircle, Crown, Check, Lock, ShieldCheck } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { MockPaymentForm } from '@/components/features/mockPaymentForm'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 
 const PLAN_PRICE = 99
 const PLAN_NAME = 'Professional'
@@ -54,7 +61,11 @@ export default function CheckoutPage() {
   if (isSuccess) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Card variant="glass" padding="lg" className="max-w-md w-full text-center">
+        <Card
+          variant="glass"
+          padding="lg"
+          className="max-w-md w-full text-center"
+        >
           <div className="w-16 h-16 rounded-full bg-emerald-600/10 flex items-center justify-center mx-auto mb-4">
             <CheckCircle size={40} weight="fill" className="text-emerald-600" />
           </div>
@@ -62,7 +73,8 @@ export default function CheckoutPage() {
             Welcome to Professional!
           </h1>
           <p className="text-[#78350f] mb-6">
-            Your subscription is now active. You have access to all premium features.
+            Your subscription is now active. You have access to all premium
+            features.
           </p>
           <div className="bg-[#f2ebe2] rounded-xl p-4 mb-6">
             <p className="text-xs text-[#92400e] mb-1">Subscription ID</p>
@@ -99,7 +111,9 @@ export default function CheckoutPage() {
 
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#451a03]">Upgrade to Professional</h1>
+        <h1 className="text-2xl font-bold text-[#451a03]">
+          Upgrade to Professional
+        </h1>
         <p className="text-[#78350f] mt-1">
           Complete your subscription to unlock all premium features
         </p>
@@ -129,7 +143,9 @@ export default function CheckoutPage() {
 
           {/* Price */}
           <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-4xl font-bold text-[#451a03]">${PLAN_PRICE}</span>
+            <span className="text-4xl font-bold text-[#451a03]">
+              ${PLAN_PRICE}
+            </span>
             <span className="text-[#78350f]">/month</span>
           </div>
 
@@ -142,7 +158,11 @@ export default function CheckoutPage() {
               {INCLUDED_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-center gap-2.5">
                   <div className="w-5 h-5 rounded-full bg-emerald-600/10 flex items-center justify-center flex-shrink-0">
-                    <Check size={12} weight="bold" className="text-emerald-600" />
+                    <Check
+                      size={12}
+                      weight="bold"
+                      className="text-emerald-600"
+                    />
                   </div>
                   <span className="text-sm text-[#451a03]">{feature}</span>
                 </li>
@@ -161,16 +181,21 @@ export default function CheckoutPage() {
               <span className="text-[#451a03]">$0.00</span>
             </div>
             <div className="flex justify-between items-center pt-4 border-t border-[#d4c4b0]">
-              <span className="font-semibold text-[#451a03]">Total due today</span>
-              <span className="text-xl font-bold text-[#451a03]">${PLAN_PRICE}.00</span>
+              <span className="font-semibold text-[#451a03]">
+                Total due today
+              </span>
+              <span className="text-xl font-bold text-[#451a03]">
+                ${PLAN_PRICE}.00
+              </span>
             </div>
           </div>
 
           {/* Billing Info */}
           <div className="mt-6 p-3 bg-[#f2ebe2] rounded-xl">
             <p className="text-xs text-[#92400e]">
-              You will be charged ${PLAN_PRICE}.00 monthly. Cancel anytime from your account settings.
-              Your subscription will renew automatically unless cancelled before the billing date.
+              You will be charged ${PLAN_PRICE}.00 monthly. Cancel anytime from
+              your account settings. Your subscription will renew automatically
+              unless cancelled before the billing date.
             </p>
           </div>
         </Card>

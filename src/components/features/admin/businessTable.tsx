@@ -1,22 +1,22 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import Link from 'next/link'
 import {
+  ArrowDown,
+  ArrowUp,
+  CheckCircle,
+  CurrencyDollar,
   DotsThreeVertical,
   Eye,
   Prohibit,
-  CheckCircle,
-  Storefront,
   Star,
-  ArrowUp,
-  ArrowDown,
-  CurrencyDollar,
+  Storefront,
 } from '@phosphor-icons/react'
-import type { Business, BusinessStatus, BusinessTier } from '@/types/business'
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'
+import type { Business, BusinessStatus, BusinessTier } from '@/types/business'
 
 interface BusinessTableProps {
   businesses: Business[]
@@ -30,7 +30,6 @@ function getTierBadge(tier: BusinessTier) {
       return <Badge variant="brand">Paid</Badge>
     case 'free':
       return <Badge variant="info">Free</Badge>
-    case 'unclaimed':
     default:
       return <Badge variant="default">Unclaimed</Badge>
   }
@@ -74,7 +73,10 @@ function ActionsDropdown({
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
         setShowTierMenu(false)
       }
@@ -269,16 +271,24 @@ export function BusinessTable({
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-sm text-[#78350f]">{business.city}</span>
+                    <span className="text-sm text-[#78350f]">
+                      {business.city}
+                    </span>
                   </td>
                   <td className="px-6 py-4">{getTierBadge(business.tier)}</td>
-                  <td className="px-6 py-4">{getStatusBadge(business.status)}</td>
+                  <td className="px-6 py-4">
+                    {getStatusBadge(business.status)}
+                  </td>
                   <td className="px-6 py-4">
                     <span className="text-sm text-[#451a03]">{dealsCount}</span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1.5">
-                      <Star size={14} weight="fill" className="text-amber-800" />
+                      <Star
+                        size={14}
+                        weight="fill"
+                        className="text-amber-800"
+                      />
                       <span className="text-sm text-[#451a03]">
                         {business.rating.toFixed(1)}
                       </span>
@@ -322,10 +332,16 @@ export function BusinessTable({
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center">
-                    <Storefront size={20} weight="fill" className="text-amber-800" />
+                    <Storefront
+                      size={20}
+                      weight="fill"
+                      className="text-amber-800"
+                    />
                   </div>
                   <div>
-                    <p className="font-medium text-[#451a03]">{business.name}</p>
+                    <p className="font-medium text-[#451a03]">
+                      {business.name}
+                    </p>
                     <p className="text-sm text-[#78350f]">{business.city}</p>
                   </div>
                 </div>

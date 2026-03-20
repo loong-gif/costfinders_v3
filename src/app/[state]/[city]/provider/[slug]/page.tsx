@@ -1,27 +1,27 @@
 import {
-  MapPin,
-  Storefront,
-  Tag,
-  Phone,
   Envelope,
   Globe,
+  MapPin,
+  Phone,
   Star,
+  Storefront,
+  Tag,
 } from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { DealCard } from '@/components/features/dealCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { DealCard } from '@/components/features/dealCard'
-import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
-import { getStateBySlug, slugifyCity } from '@/lib/mock-data/states'
 import { getCityBySlug } from '@/lib/mock-data/cities'
 import {
-  getProviderBySlug,
-  getDealsForProvider,
   getAllProvidersWithCityAndState,
+  getDealsForProvider,
+  getProviderBySlug,
   getProviderStats,
 } from '@/lib/mock-data/providers'
+import { getStateBySlug } from '@/lib/mock-data/states'
+import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
 
 // Generate static params for all supported providers
 export async function generateStaticParams() {
@@ -92,7 +92,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
     {
       name: provider.name,
       url: buildCanonicalUrl(
-        `/${state.slug}/${citySlug}/provider/${provider.slug}`
+        `/${state.slug}/${citySlug}/provider/${provider.slug}`,
       ),
     },
   ]
@@ -120,7 +120,11 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
             <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-8 shadow-md">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-amber-800/15 flex items-center justify-center">
-                  <Storefront size={24} weight="fill" className="text-amber-800" />
+                  <Storefront
+                    size={24}
+                    weight="fill"
+                    className="text-amber-800"
+                  />
                 </div>
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-bold text-[#451a03]">
@@ -128,7 +132,11 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                   </h1>
                   {provider.rating && (
                     <div className="flex items-center gap-1 mt-1">
-                      <Star size={16} weight="fill" className="text-yellow-400" />
+                      <Star
+                        size={16}
+                        weight="fill"
+                        className="text-yellow-400"
+                      />
                       <span className="text-[#78350f] text-sm">
                         {provider.rating.toFixed(1)} rating
                       </span>
@@ -165,7 +173,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 {provider.phone && (
                   <a
                     href={`tel:${provider.phone}`}
-                    className="flex items-center gap-2 text-[#78350f] hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-2 text-[#78350f] hover:text-[var(--color-accent-hover)] transition-colors"
                   >
                     <Phone size={18} weight="light" />
                     <span>{provider.phone}</span>
@@ -174,7 +182,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 {provider.email && (
                   <a
                     href={`mailto:${provider.email}`}
-                    className="flex items-center gap-2 text-[#78350f] hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-2 text-[#78350f] hover:text-[var(--color-accent-hover)] transition-colors"
                   >
                     <Envelope size={18} weight="light" />
                     <span>{provider.email}</span>
@@ -185,7 +193,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                     href={provider.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-[#78350f] hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-2 text-[#78350f] hover:text-[var(--color-accent-hover)] transition-colors"
                   >
                     <Globe size={18} weight="light" />
                     <span>Website</span>
@@ -210,7 +218,11 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
             ) : (
               /* Empty State */
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
-                <Tag size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <Tag
+                  size={48}
+                  weight="light"
+                  className="mx-auto text-[#92400e] mb-4"
+                />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No Deals Available Yet
                 </h3>
@@ -220,7 +232,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 </p>
                 <Link
                   href={`/${state.slug}/${citySlug}`}
-                  className="inline-flex items-center gap-2 text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
                 >
                   <MapPin size={18} weight="light" />
                   Browse other providers in {city.name}

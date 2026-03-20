@@ -26,9 +26,7 @@ export function getCategorySlug(dbCategory: string | null): string {
   return CATEGORY_MAP[dbCategory]?.slug ?? 'other'
 }
 
-export function getDbCategoryFromSlug(
-  slug: string,
-): string | undefined {
+export function getDbCategoryFromSlug(slug: string): string | undefined {
   for (const [dbName, mapping] of Object.entries(CATEGORY_MAP)) {
     if (mapping.slug === slug) return dbName
   }

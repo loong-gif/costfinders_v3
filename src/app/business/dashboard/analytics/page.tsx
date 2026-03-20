@@ -1,7 +1,7 @@
 'use client'
 
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { AnalyticsDashboard } from '@/components/features/analytics/analyticsDashboard'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 
 export default function AnalyticsPage() {
   const { state } = useBusinessAuth()

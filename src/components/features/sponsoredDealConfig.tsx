@@ -1,24 +1,24 @@
 'use client'
 
-import { useState } from 'react'
 import {
-  Rocket,
-  TrendUp,
-  Eye,
-  Star,
-  Info,
   CheckCircle,
+  Eye,
+  Info,
+  Rocket,
+  Star,
   Tag,
+  TrendUp,
 } from '@phosphor-icons/react'
-import type { Deal } from '@/types/deal'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
-  getBoostOptions,
-  calculateEstimatedReach,
   type BoostOption,
+  calculateEstimatedReach,
+  getBoostOptions,
 } from '@/lib/mock-data/sponsorship'
+import type { Deal } from '@/types/deal'
 
 interface SponsoredDealConfigProps {
   deal: Deal
@@ -41,7 +41,7 @@ export function SponsoredDealConfig({
     ? calculateEstimatedReach(
         deal.viewCount,
         selectedBoost.impressionMultiplier,
-        selectedBoost.duration
+        selectedBoost.duration,
       )
     : 0
 
@@ -196,9 +196,7 @@ export function SponsoredDealConfig({
             </div>
             <div className="text-right">
               <p className="text-sm text-[#78350f]">Package</p>
-              <p className="font-medium text-[#451a03]">
-                {selectedBoost.name}
-              </p>
+              <p className="font-medium text-[#451a03]">{selectedBoost.name}</p>
             </div>
           </div>
         </Card>
@@ -241,7 +239,7 @@ function BoostOptionCard({
   const estimatedReach = calculateEstimatedReach(
     currentViews,
     option.impressionMultiplier,
-    option.duration
+    option.duration,
   )
 
   return (
@@ -268,9 +266,7 @@ function BoostOptionCard({
               </Badge>
             )}
           </div>
-          <p className="text-sm text-[#78350f] mt-1">
-            {option.description}
-          </p>
+          <p className="text-sm text-[#78350f] mt-1">{option.description}</p>
           <div className="flex items-center gap-4 mt-2 text-xs text-[#92400e]">
             <span className="flex items-center gap-1">
               <TrendUp size={12} weight="fill" className="text-green-400" />
@@ -287,11 +283,7 @@ function BoostOptionCard({
           <p className="text-xl font-bold text-[#451a03]">${option.price}</p>
           <p className="text-xs text-[#92400e]">{option.duration} days</p>
           {isSelected && (
-            <CheckCircle
-              size={20}
-              weight="fill"
-              className="text-amber-800"
-            />
+            <CheckCircle size={20} weight="fill" className="text-amber-800" />
           )}
         </div>
       </div>

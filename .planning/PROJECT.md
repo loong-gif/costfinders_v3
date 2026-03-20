@@ -12,8 +12,8 @@ CostFinders is a price transparency and lead generation platform for medical spa
 
 **Tech Stack:**
 - Next.js 16 (App Router) + React + TypeScript
-- Tailwind CSS v4 with glassmorphic design system
-- Phosphor icons, Manrope font
+- Tailwind CSS v4 with Warm Sand design system
+- Phosphor icons, Sora font (Manrope fallback)
 - Mock data layer structured for Supabase
 
 **Lines of Code:** 24,676 TypeScript

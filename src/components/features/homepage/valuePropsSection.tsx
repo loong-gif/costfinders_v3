@@ -1,7 +1,7 @@
 import {
   MagnifyingGlass,
-  Scales,
   PiggyBank,
+  Scales,
 } from '@phosphor-icons/react/dist/ssr'
 
 const steps = [
@@ -33,9 +33,7 @@ export function ValuePropsSection() {
     <section className="py-16 sm:py-20">
       <div className="text-center mb-12">
         <h2 className="text-2xl font-bold text-[#451a03]">How it works</h2>
-        <p className="text-[#78350f] mt-2">
-          Three steps to better prices
-        </p>
+        <p className="text-[#78350f] mt-2">Three steps to better prices</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

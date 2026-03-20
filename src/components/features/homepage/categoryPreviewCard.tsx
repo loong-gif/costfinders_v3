@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import {
   CaretRight,
   Drop,
@@ -8,13 +7,21 @@ import {
   Sparkle,
   Syringe,
 } from '@phosphor-icons/react'
-import type { AnonymousDeal } from '@/types/deal'
-import type { Category } from '@/lib/mock-data/categories'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
+import type { Category } from '@/lib/mock-data/categories'
+import type { AnonymousDeal } from '@/types/deal'
 
 // Map category icon names to Phosphor components
-const iconMap: Record<string, React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>> = {
+const iconMap: Record<
+  string,
+  React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
+> = {
   Syringe,
   Drop,
   Sparkle,
@@ -26,7 +33,10 @@ interface CategoryPreviewCardProps {
   deals: AnonymousDeal[]
 }
 
-export function CategoryPreviewCard({ category, deals }: CategoryPreviewCardProps) {
+export function CategoryPreviewCard({
+  category,
+  deals,
+}: CategoryPreviewCardProps) {
   const Icon = iconMap[category.icon] || Syringe
 
   return (
@@ -44,7 +54,7 @@ export function CategoryPreviewCard({ category, deals }: CategoryPreviewCardProp
         </div>
         <Link
           href={`/deals?category=${category.slug}`}
-          className="flex items-center gap-1 text-sm text-amber-800 hover:text-amber-300 transition-colors"
+          className="flex items-center gap-1 text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
         >
           See all
           <CaretRight size={14} weight="bold" />

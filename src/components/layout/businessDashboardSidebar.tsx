@@ -17,7 +17,11 @@ const navItems: NavItem[] = [
   { href: '/business/dashboard', label: 'Home', icon: House },
   { href: '/business/dashboard/deals', label: 'Deals', icon: Tag },
   { href: '/business/dashboard/leads', label: 'Leads', icon: Users },
-  { href: '/business/dashboard/pricing', label: 'Pricing', icon: CurrencyDollar },
+  {
+    href: '/business/dashboard/pricing',
+    label: 'Pricing',
+    icon: CurrencyDollar,
+  },
   { href: '/business/dashboard/messages', label: 'Messages', icon: ChatCircle },
   {
     href: '/business/dashboard/analytics',

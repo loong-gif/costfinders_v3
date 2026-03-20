@@ -1,7 +1,7 @@
 'use client'
 
+import { CaretRight, CreditCard, Plugs, User } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { User, Plugs, CreditCard, CaretRight } from '@phosphor-icons/react'
 import { Card } from '@/components/ui/card'
 
 const settingsLinks = [
@@ -39,12 +39,18 @@ export default function SettingsPage() {
                     <Icon size={24} weight="light" className="text-amber-800" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-[#451a03]">{link.title}</h3>
+                    <h3 className="font-semibold text-[#451a03]">
+                      {link.title}
+                    </h3>
                     <p className="text-sm text-[#78350f] mt-0.5">
                       {link.description}
                     </p>
                   </div>
-                  <CaretRight size={20} weight="light" className="text-[#92400e]" />
+                  <CaretRight
+                    size={20}
+                    weight="light"
+                    className="text-[#92400e]"
+                  />
                 </div>
               </Card>
             </Link>

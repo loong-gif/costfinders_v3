@@ -1,9 +1,9 @@
 'use client'
 
-import { CurrencyDollar, ArrowUp } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { ArrowUp, CurrencyDollar } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
-import type { TierPricing, BusinessTier } from '@/lib/mock-data/leadPricing'
+import { Card } from '@/components/ui/card'
+import type { BusinessTier, TierPricing } from '@/lib/mock-data/leadPricing'
 import { calculateTierSavings } from '@/lib/mock-data/leadPricing'
 
 interface LeadCostCardProps {
@@ -28,10 +28,16 @@ export function LeadCostCard({
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
-            <CurrencyDollar size={24} weight="fill" className="text-amber-800" />
+            <CurrencyDollar
+              size={24}
+              weight="fill"
+              className="text-amber-800"
+            />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[#451a03]">What you pay per lead</h3>
+            <h3 className="text-lg font-semibold text-[#451a03]">
+              What you pay per lead
+            </h3>
             <p className="text-sm text-[#78350f]">
               Every time a consumer claims your deal
             </p>
@@ -64,7 +70,8 @@ export function LeadCostCard({
                 Save {savings.percent}% with Professional
               </p>
               <p className="text-xs text-[#78350f] mb-3">
-                Pay ${paidPricing.pricePerLead.toFixed(2)} per lead instead of ${currentPricing.pricePerLead.toFixed(2)}
+                Pay ${paidPricing.pricePerLead.toFixed(2)} per lead instead of $
+                {currentPricing.pricePerLead.toFixed(2)}
               </p>
 
               {/* Comparison */}

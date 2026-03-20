@@ -1,22 +1,22 @@
 import { MapPin, Storefront, Tag } from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { NeighborhoodCard } from '@/components/features/neighborhoodCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { NeighborhoodCard } from '@/components/features/neighborhoodCard'
+import {
+  getAllCitiesWithState,
+  getCityBySlug,
+  getCityStats,
+  getNeighborhoodsForCity,
+  slugifyNeighborhood,
+} from '@/lib/mock-data/cities'
+import { getStateBySlug } from '@/lib/mock-data/states'
 import {
   buildCanonicalUrl,
   generateLocationMetadata,
   SITE_CONFIG,
 } from '@/lib/seo/metadata'
-import { getStateBySlug } from '@/lib/mock-data/states'
-import {
-  getCityBySlug,
-  getNeighborhoodsForCity,
-  getCityStats,
-  getAllCitiesWithState,
-  slugifyNeighborhood,
-} from '@/lib/mock-data/cities'
 
 // Generate static params for all supported cities
 export async function generateStaticParams() {
@@ -105,10 +105,13 @@ export default async function CityPage({ params }: CityPageProps) {
 
               <p className="text-[#78350f] max-w-2xl mb-6">
                 Discover the best medspa deals and aesthetic treatments in{' '}
-                {city.name}, {state.name}. Compare prices on Botox, fillers, laser
-                treatments, and more from verified providers across{' '}
+                {city.name}, {state.name}. Compare prices on Botox, fillers,
+                laser treatments, and more from verified providers across{' '}
                 {stats.neighborhoodCount}{' '}
-                {stats.neighborhoodCount === 1 ? 'neighborhood' : 'neighborhoods'}.
+                {stats.neighborhoodCount === 1
+                  ? 'neighborhood'
+                  : 'neighborhoods'}
+                .
               </p>
 
               {/* Stats Row */}
@@ -121,7 +124,11 @@ export default async function CityPage({ params }: CityPageProps) {
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={20}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                   <span className="font-semibold text-[#451a03]">
                     {stats.businessCount}
                   </span>
@@ -133,7 +140,9 @@ export default async function CityPage({ params }: CityPageProps) {
                     {stats.neighborhoodCount}
                   </span>
                   <span className="text-[#78350f]">
-                    {stats.neighborhoodCount === 1 ? 'Neighborhood' : 'Neighborhoods'}
+                    {stats.neighborhoodCount === 1
+                      ? 'Neighborhood'
+                      : 'Neighborhoods'}
                   </span>
                 </div>
               </div>
@@ -151,10 +160,10 @@ export default async function CityPage({ params }: CityPageProps) {
                 const neighborhoodSlug = slugifyNeighborhood(neighborhood.name)
                 // Mock data: distribute deals/businesses across neighborhoods
                 const neighborhoodDealCount = Math.ceil(
-                  stats.dealCount / Math.max(stats.neighborhoodCount, 1)
+                  stats.dealCount / Math.max(stats.neighborhoodCount, 1),
                 )
                 const neighborhoodBusinessCount = Math.ceil(
-                  stats.businessCount / Math.max(stats.neighborhoodCount, 1)
+                  stats.businessCount / Math.max(stats.neighborhoodCount, 1),
                 )
 
                 return (
@@ -175,13 +184,17 @@ export default async function CityPage({ params }: CityPageProps) {
             {/* Empty State */}
             {neighborhoods.length === 0 && (
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
-                <MapPin size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <MapPin
+                  size={48}
+                  weight="light"
+                  className="mx-auto text-[#92400e] mb-4"
+                />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No Neighborhoods Available Yet
                 </h3>
                 <p className="text-[#78350f] max-w-md mx-auto">
-                  We&apos;re expanding to more neighborhoods in {city.name} soon. Check
-                  back later for new locations.
+                  We&apos;re expanding to more neighborhoods in {city.name}{' '}
+                  soon. Check back later for new locations.
                 </p>
               </div>
             )}

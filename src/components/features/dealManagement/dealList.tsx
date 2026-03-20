@@ -1,33 +1,37 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
 import {
-  MagnifyingGlass,
-  Plus,
-  PencilSimple,
-  Pause,
-  Play,
-  Trash,
   Eye,
-  Users,
-  Tag,
+  MagnifyingGlass,
+  Pause,
+  PencilSimple,
+  Play,
+  Plus,
   Rocket,
+  Tag,
+  Trash,
+  Users,
 } from '@phosphor-icons/react'
-import type { Deal, TreatmentCategory } from '@/types/deal'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Modal } from '@/components/ui/modal'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
 import { SponsoredDealConfig } from '@/components/features/sponsoredDealConfig'
-import { getDealsForBusiness, toggleDealStatus, deleteDeal } from '@/lib/mock-data/deals'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
 import {
-  getActiveBoosts,
-  isDealEligibleForSponsorship,
+  deleteDeal,
+  getDealsForBusiness,
+  toggleDealStatus,
+} from '@/lib/mock-data/deals'
+import {
   createBoost,
   getActiveBoostForDeal,
+  getActiveBoosts,
+  isDealEligibleForSponsorship,
 } from '@/lib/mock-data/sponsorship'
+import type { Deal, TreatmentCategory } from '@/types/deal'
 
 type FilterTab = 'all' | 'active' | 'paused'
 
@@ -51,12 +55,12 @@ export function DealList({ businessId }: DealListProps) {
   const [dealToDelete, setDealToDelete] = useState<Deal | null>(null)
   const [boostModalOpen, setBoostModalOpen] = useState(false)
   const [dealToBoost, setDealToBoost] = useState<Deal | null>(null)
-  const [refreshKey, setRefreshKey] = useState(0)
+  const [_refreshKey, setRefreshKey] = useState(0)
 
   // Get deals for this business
   const allDeals = useMemo(() => {
     return getDealsForBusiness(businessId)
-  }, [businessId, refreshKey])
+  }, [businessId])
 
   // Filter deals based on tab and search
   const filteredDeals = useMemo(() => {
@@ -75,7 +79,7 @@ export function DealList({ businessId }: DealListProps) {
       filtered = filtered.filter(
         (deal) =>
           deal.title.toLowerCase().includes(query) ||
-          deal.category.toLowerCase().includes(query)
+          deal.category.toLowerCase().includes(query),
       )
     }
 
@@ -94,7 +98,7 @@ export function DealList({ businessId }: DealListProps) {
   // Count sponsored deals
   const sponsoredCount = useMemo(() => {
     return getActiveBoosts(businessId).length
-  }, [businessId, refreshKey])
+  }, [businessId])
 
   const handleToggleStatus = (deal: Deal) => {
     toggleDealStatus(deal.id)
@@ -212,7 +216,11 @@ export function DealList({ businessId }: DealListProps) {
       {filteredDeals.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
-            <Tag size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+            <Tag
+              size={48}
+              weight="light"
+              className="mx-auto text-[#92400e] mb-4"
+            />
             <h3 className="text-lg font-medium text-[#451a03] mb-2">
               {searchQuery ? 'No deals found' : 'No deals yet'}
             </h3>
@@ -268,7 +276,11 @@ export function DealList({ businessId }: DealListProps) {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                          <Tag size={20} weight="fill" className="text-amber-800" />
+                          <Tag
+                            size={20}
+                            weight="fill"
+                            className="text-amber-800"
+                          />
                         </div>
                         <div className="min-w-0">
                           <p className="font-medium text-[#451a03] truncate">
@@ -282,7 +294,11 @@ export function DealList({ businessId }: DealListProps) {
                             )}
                             {getActiveBoostForDeal(deal.id) && (
                               <Badge variant="info" size="sm">
-                                <Rocket size={10} weight="fill" className="mr-0.5" />
+                                <Rocket
+                                  size={10}
+                                  weight="fill"
+                                  className="mr-0.5"
+                                />
                                 Boosted
                               </Badge>
                             )}
@@ -344,12 +360,14 @@ export function DealList({ businessId }: DealListProps) {
                             size="sm"
                             onClick={() => handleBoostClick(deal)}
                             title="Boost this deal"
-                            className="text-amber-800 hover:text-amber-300 hover:bg-amber-800/8"
+                            className="text-amber-800 hover:text-[var(--color-accent-hover)] hover:bg-[var(--color-accent)]/8"
                           >
                             <Rocket size={18} weight="light" />
                           </Button>
                         )}
-                        <Link href={`/business/dashboard/deals/${deal.id}/edit`}>
+                        <Link
+                          href={`/business/dashboard/deals/${deal.id}/edit`}
+                        >
                           <Button variant="ghost" size="sm">
                             <PencilSimple size={18} weight="light" />
                           </Button>
@@ -393,7 +411,9 @@ export function DealList({ businessId }: DealListProps) {
                       <Tag size={20} weight="fill" className="text-amber-800" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-medium text-[#451a03] truncate">{deal.title}</p>
+                      <p className="font-medium text-[#451a03] truncate">
+                        {deal.title}
+                      </p>
                       <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                         <Badge variant="default" size="sm">
                           {categoryLabels[deal.category]}
@@ -405,14 +425,22 @@ export function DealList({ businessId }: DealListProps) {
                         )}
                         {getActiveBoostForDeal(deal.id) && (
                           <Badge variant="info" size="sm">
-                            <Rocket size={10} weight="fill" className="mr-0.5" />
+                            <Rocket
+                              size={10}
+                              weight="fill"
+                              className="mr-0.5"
+                            />
                             Boosted
                           </Badge>
                         )}
                       </div>
                     </div>
                   </div>
-                  <Badge variant={deal.isActive ? 'success' : 'warning'} size="sm" className="flex-shrink-0">
+                  <Badge
+                    variant={deal.isActive ? 'success' : 'warning'}
+                    size="sm"
+                    className="flex-shrink-0"
+                  >
                     {deal.isActive ? 'Active' : 'Paused'}
                   </Badge>
                 </div>
@@ -447,7 +475,7 @@ export function DealList({ businessId }: DealListProps) {
                       size="sm"
                       onClick={() => handleBoostClick(deal)}
                       title="Boost this deal"
-                      className="text-amber-800 hover:text-amber-300 hover:bg-amber-800/8"
+                      className="text-amber-800 hover:text-[var(--color-accent-hover)] hover:bg-[var(--color-accent)]/8"
                     >
                       <Rocket size={18} weight="light" />
                     </Button>

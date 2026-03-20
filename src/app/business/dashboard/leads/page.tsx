@@ -1,7 +1,7 @@
 'use client'
 
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { LeadList } from '@/components/features/leadManagement/leadList'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 
 export default function LeadsPage() {
   const { state } = useBusinessAuth()

@@ -1,28 +1,29 @@
-import { Storefront, Tag } from '@phosphor-icons/react/dist/ssr'
+import {
+  Drop,
+  Leaf,
+  Lightning,
+  Person,
+  Sparkle,
+  Storefront,
+  Syringe,
+  Tag,
+} from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { DealCard } from '@/components/features/dealCard'
 import { BreadcrumbSchema, FaqSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Faq } from '@/components/ui/faq'
-import { RelatedLinks, type RelatedLink } from '@/components/ui/relatedLinks'
-import { DealCard } from '@/components/features/dealCard'
-import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
-import { getCategoryFaqs } from '@/lib/seo/faq-content'
+import { type RelatedLink, RelatedLinks } from '@/components/ui/relatedLinks'
 import {
   getAllCategorySlugs,
   getCategoryWithStats,
 } from '@/lib/mock-data/categories'
 import { getDealsForCategory, toAnonymousDeal } from '@/lib/mock-data/deals'
 import { getStates } from '@/lib/mock-data/states'
-import {
-  Syringe,
-  Drop,
-  Sparkle,
-  Lightning,
-  Person,
-  Leaf,
-} from '@phosphor-icons/react/dist/ssr'
+import { getCategoryFaqs } from '@/lib/seo/faq-content'
+import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -148,8 +149,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
               <p className="text-[#78350f] max-w-2xl mb-6">
                 {category.description}. Compare prices from verified medspa
-                providers and find the best deals on {category.name.toLowerCase()}{' '}
-                treatments near you.
+                providers and find the best deals on{' '}
+                {category.name.toLowerCase()} treatments near you.
               </p>
 
               {/* Stats Row */}
@@ -162,7 +163,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={20}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                   <span className="font-semibold text-[#451a03]">
                     {category.businessCount}
                   </span>
@@ -187,17 +192,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             ) : (
               /* Empty State */
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
-                <Tag size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <Tag
+                  size={48}
+                  weight="light"
+                  className="mx-auto text-[#92400e] mb-4"
+                />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No {category.name} Deals Available Yet
                 </h3>
                 <p className="text-[#78350f] max-w-md mx-auto mb-6">
-                  We&apos;re working to bring you the best {category.name.toLowerCase()}{' '}
-                  deals. Check back soon for new offers from verified providers.
+                  We&apos;re working to bring you the best{' '}
+                  {category.name.toLowerCase()} deals. Check back soon for new
+                  offers from verified providers.
                 </p>
                 <Link
                   href="/deals"
-                  className="inline-flex items-center gap-2 text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
                 >
                   <Tag size={18} weight="light" />
                   Browse all deals

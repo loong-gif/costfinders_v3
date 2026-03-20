@@ -1,30 +1,29 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
-import Link from 'next/link'
 import {
-  CaretLeft,
-  Plus,
-  MapPin,
   Buildings,
-  Tag,
+  CaretLeft,
   CaretRight,
+  MapPin,
+  Plus,
+  Tag,
   X,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { useCallback, useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import type { City, LocationArea } from '@/types/location'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
-  getCities,
-  getAreasForCity,
-  toggleCityStatus,
-  toggleAreaStatus,
-  addCity,
   addArea,
-  getLocationStats,
+  addCity,
+  getAreasForCity,
   getBusinessCountForCity,
+  getCities,
   getDealCountForCity,
+  getLocationStats,
+  toggleAreaStatus,
+  toggleCityStatus,
 } from '@/lib/mock-data/locations'
 
 export default function LocationsManagementPage() {
@@ -55,7 +54,7 @@ export default function LocationsManagementPage() {
     return getAreasForCity(selectedCityId)
   }, [selectedCityId])
 
-  const stats = useMemo(() => getLocationStats(), [cities])
+  const stats = useMemo(() => getLocationStats(), [])
 
   const showFeedback = useCallback((message: string) => {
     setFeedbackMessage(message)
@@ -72,11 +71,11 @@ export default function LocationsManagementPage() {
       if (updated) {
         refreshCities()
         showFeedback(
-          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`
+          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`,
         )
       }
     },
-    [refreshCities, showFeedback]
+    [refreshCities, showFeedback],
   )
 
   const handleToggleAreaStatus = useCallback(
@@ -86,11 +85,11 @@ export default function LocationsManagementPage() {
         // Force re-render by updating selected city
         setSelectedCityId((prev) => prev)
         showFeedback(
-          `${areaName} ${updated.isActive !== false ? 'activated' : 'deactivated'}`
+          `${areaName} ${updated.isActive !== false ? 'activated' : 'deactivated'}`,
         )
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   const handleAddCity = useCallback(() => {
@@ -172,19 +171,27 @@ export default function LocationsManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">{stats.totalCities}</p>
+          <p className="text-2xl font-bold text-[#451a03]">
+            {stats.totalCities}
+          </p>
           <p className="text-sm text-[#78350f]">Total Cities</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">{stats.activeCities}</p>
+          <p className="text-2xl font-bold text-[#451a03]">
+            {stats.activeCities}
+          </p>
           <p className="text-sm text-[#78350f]">Active Cities</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">{stats.totalAreas}</p>
+          <p className="text-2xl font-bold text-[#451a03]">
+            {stats.totalAreas}
+          </p>
           <p className="text-sm text-[#78350f]">Total Areas</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">{stats.activeAreas}</p>
+          <p className="text-2xl font-bold text-[#451a03]">
+            {stats.activeAreas}
+          </p>
           <p className="text-sm text-[#78350f]">Active Areas</p>
         </Card>
       </div>
@@ -193,7 +200,9 @@ export default function LocationsManagementPage() {
       {isAddingCity && (
         <Card variant="glass" padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-[#451a03]">Add New City</h3>
+            <h3 className="text-lg font-semibold text-[#451a03]">
+              Add New City
+            </h3>
             <button
               type="button"
               onClick={() => setIsAddingCity(false)}
@@ -401,9 +410,7 @@ export default function LocationsManagementPage() {
                     <input
                       type="text"
                       value={areaForm.name}
-                      onChange={(e) =>
-                        setAreaForm({ name: e.target.value })
-                      }
+                      onChange={(e) => setAreaForm({ name: e.target.value })}
                       placeholder="Area name (e.g., Downtown)"
                       className="flex-1 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                     />
@@ -487,7 +494,11 @@ export default function LocationsManagementPage() {
               ) : (
                 <Card variant="glass" padding="lg" className="text-center">
                   <div className="w-12 h-12 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-3">
-                    <MapPin size={24} weight="light" className="text-amber-800" />
+                    <MapPin
+                      size={24}
+                      weight="light"
+                      className="text-amber-800"
+                    />
                   </div>
                   <p className="text-[#78350f]">
                     No areas defined for {selectedCity.name}

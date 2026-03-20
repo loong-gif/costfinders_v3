@@ -1,14 +1,21 @@
-import { getCategories } from '@/lib/mock-data/categories'
 import { getDealsByCategory } from '@/lib/mock-data'
+import { getCategories } from '@/lib/mock-data/categories'
 import { CategoryPreviewCard } from './categoryPreviewCard'
 
 // Show only the main 4 categories
-const FEATURED_CATEGORY_SLUGS = ['botox', 'fillers', 'facials', 'laser'] as const
+const FEATURED_CATEGORY_SLUGS = [
+  'botox',
+  'fillers',
+  'facials',
+  'laser',
+] as const
 
 export function CategoryPreviewSection() {
   const allCategories = getCategories()
   const featuredCategories = allCategories.filter((cat) =>
-    FEATURED_CATEGORY_SLUGS.includes(cat.slug as typeof FEATURED_CATEGORY_SLUGS[number])
+    FEATURED_CATEGORY_SLUGS.includes(
+      cat.slug as (typeof FEATURED_CATEGORY_SLUGS)[number],
+    ),
   )
 
   // Get top 3 deals for each category

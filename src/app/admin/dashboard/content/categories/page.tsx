@@ -1,32 +1,39 @@
 'use client'
 
-import { useState, useCallback } from 'react'
 import {
-  Plus,
-  DotsSixVertical,
-  PencilSimple,
-  X,
   Check,
-  Syringe,
+  DotsSixVertical,
   Drop,
-  Sparkle,
-  Lightning,
-  Person,
   Leaf,
+  Lightning,
+  PencilSimple,
+  Person,
+  Plus,
+  Sparkle,
+  Syringe,
+  X,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useCallback, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  toggleCategoryStatus,
   type Category,
+  createCategory,
+  getCategories,
+  toggleCategoryStatus,
+  updateCategory,
 } from '@/lib/mock-data/categories'
 
 // Icon mapping for category icons
-const iconMap: Record<string, React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>> = {
+const iconMap: Record<
+  string,
+  React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
+> = {
   Syringe,
   Drop,
   Sparkle,
@@ -65,11 +72,11 @@ export default function CategoriesManagementPage() {
       if (updated) {
         refreshCategories()
         showFeedback(
-          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`
+          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`,
         )
       }
     },
-    [refreshCategories, showFeedback]
+    [refreshCategories, showFeedback],
   )
 
   const handleStartEdit = useCallback((category: Category) => {
@@ -108,7 +115,13 @@ export default function CategoriesManagementPage() {
     if (!formData.name.trim()) return
 
     // Generate a valid slug for the category
-    const slug = formData.name.toLowerCase().replace(/\s+/g, '-') as 'botox' | 'fillers' | 'facials' | 'laser' | 'body' | 'skincare'
+    const slug = formData.name.toLowerCase().replace(/\s+/g, '-') as
+      | 'botox'
+      | 'fillers'
+      | 'facials'
+      | 'laser'
+      | 'body'
+      | 'skincare'
     const newCat = createCategory({
       name: formData.name,
       slug,
@@ -160,7 +173,9 @@ export default function CategoriesManagementPage() {
           <p className="text-sm text-[#78350f]">Active</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">{stats.totalDeals}</p>
+          <p className="text-2xl font-bold text-[#451a03]">
+            {stats.totalDeals}
+          </p>
           <p className="text-sm text-[#78350f]">Total Deals</p>
         </Card>
       </div>
@@ -293,11 +308,19 @@ export default function CategoriesManagementPage() {
                     })}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="primary" size="sm" onClick={handleSaveEdit}>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSaveEdit}
+                    >
                       <Check size={16} />
                       Save
                     </Button>
-                    <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={handleCancelEdit}
+                    >
                       <X size={16} />
                       Cancel
                     </Button>
@@ -323,9 +346,7 @@ export default function CategoriesManagementPage() {
                       size={24}
                       weight="light"
                       className={
-                        category.isActive
-                          ? 'text-amber-800'
-                          : 'text-[#92400e]'
+                        category.isActive ? 'text-amber-800' : 'text-[#92400e]'
                       }
                     />
                   </div>
@@ -350,9 +371,7 @@ export default function CategoriesManagementPage() {
                     </div>
                     <p
                       className={`text-sm mt-0.5 ${
-                        category.isActive
-                          ? 'text-[#78350f]'
-                          : 'text-[#92400e]'
+                        category.isActive ? 'text-[#78350f]' : 'text-[#92400e]'
                       }`}
                     >
                       {category.description}

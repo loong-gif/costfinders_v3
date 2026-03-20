@@ -1,32 +1,32 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import {
   ArrowLeft,
   Calendar,
-  Clock,
-  Tag,
-  User,
-  Envelope,
-  Phone,
+  CalendarCheck,
   ChatCircle,
   CheckCircle,
-  XCircle,
+  Clock,
+  Envelope,
+  Phone,
   PhoneCall,
-  CalendarCheck,
+  Tag,
+  User,
+  XCircle,
 } from '@phosphor-icons/react'
-import type { Claim, ClaimStatus } from '@/types/claim'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
+import { useState } from 'react'
+import { MessageThread } from '@/components/features/messaging/messageThread'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
+  addBusinessResponse,
   getDealByIdDynamic as getDealById,
   updateClaimStatus,
-  addBusinessResponse,
 } from '@/lib/mock-data'
-import { MessageThread } from '@/components/features/messaging/messageThread'
+import type { Claim, ClaimStatus } from '@/types/claim'
 
 interface LeadDetailProps {
   claim: Claim
@@ -52,7 +52,8 @@ function formatRelativeTime(dateString: string): string {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
   if (diffHours < 1) return 'Just now'
-  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
   if (diffDays === 1) return 'Yesterday'
   if (diffDays < 7) return `${diffDays} days ago`
   return formatDate(dateString)
@@ -72,9 +73,15 @@ function getMockContactInfo(consumerId: string) {
   }
 }
 
-export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: LeadDetailProps) {
+export function LeadDetail({
+  claim: initialClaim,
+  businessId,
+  onClaimUpdate,
+}: LeadDetailProps) {
   const [claim, setClaim] = useState(initialClaim)
-  const [businessNotes, setBusinessNotes] = useState(claim.businessResponse || '')
+  const [businessNotes, setBusinessNotes] = useState(
+    claim.businessResponse || '',
+  )
   const [isSaving, setIsSaving] = useState(false)
 
   const deal = getDealById(claim.dealId)
@@ -106,20 +113,55 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
   const contactInfo = getMockContactInfo(claim.consumerId)
 
   // Status transition buttons
-  const statusActions: { status: ClaimStatus; label: string; icon: React.ReactNode; variant: 'primary' | 'secondary' | 'danger' }[] = []
+  const statusActions: {
+    status: ClaimStatus
+    label: string
+    icon: React.ReactNode
+    variant: 'primary' | 'secondary' | 'danger'
+  }[] = []
 
   switch (claim.status) {
     case 'pending':
-      statusActions.push({ status: 'contacted', label: 'Mark Contacted', icon: <PhoneCall size={18} weight="fill" />, variant: 'primary' })
-      statusActions.push({ status: 'cancelled', label: 'Cancel', icon: <XCircle size={18} weight="fill" />, variant: 'danger' })
+      statusActions.push({
+        status: 'contacted',
+        label: 'Mark Contacted',
+        icon: <PhoneCall size={18} weight="fill" />,
+        variant: 'primary',
+      })
+      statusActions.push({
+        status: 'cancelled',
+        label: 'Cancel',
+        icon: <XCircle size={18} weight="fill" />,
+        variant: 'danger',
+      })
       break
     case 'contacted':
-      statusActions.push({ status: 'booked', label: 'Mark Booked', icon: <CalendarCheck size={18} weight="fill" />, variant: 'primary' })
-      statusActions.push({ status: 'cancelled', label: 'Cancel', icon: <XCircle size={18} weight="fill" />, variant: 'danger' })
+      statusActions.push({
+        status: 'booked',
+        label: 'Mark Booked',
+        icon: <CalendarCheck size={18} weight="fill" />,
+        variant: 'primary',
+      })
+      statusActions.push({
+        status: 'cancelled',
+        label: 'Cancel',
+        icon: <XCircle size={18} weight="fill" />,
+        variant: 'danger',
+      })
       break
     case 'booked':
-      statusActions.push({ status: 'completed', label: 'Mark Completed', icon: <CheckCircle size={18} weight="fill" />, variant: 'primary' })
-      statusActions.push({ status: 'cancelled', label: 'Cancel', icon: <XCircle size={18} weight="fill" />, variant: 'danger' })
+      statusActions.push({
+        status: 'completed',
+        label: 'Mark Completed',
+        icon: <CheckCircle size={18} weight="fill" />,
+        variant: 'primary',
+      })
+      statusActions.push({
+        status: 'cancelled',
+        label: 'Cancel',
+        icon: <XCircle size={18} weight="fill" />,
+        variant: 'danger',
+      })
       break
   }
 
@@ -175,10 +217,14 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
                       <p className="font-medium text-[#451a03]">{deal.title}</p>
                       <div className="flex items-center gap-3 mt-1">
                         <Badge variant="default" size="sm">
-                          {deal.category.charAt(0).toUpperCase() + deal.category.slice(1)}
+                          {deal.category.charAt(0).toUpperCase() +
+                            deal.category.slice(1)}
                         </Badge>
                         <span className="text-amber-800 font-semibold">
-                          ${deal.dealPrice} <span className="text-[#92400e] font-normal">{deal.unit}</span>
+                          ${deal.dealPrice}{' '}
+                          <span className="text-[#92400e] font-normal">
+                            {deal.unit}
+                          </span>
                         </span>
                       </div>
                     </div>
@@ -188,19 +234,31 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
 
               {/* Customer Request */}
               <div>
-                <h3 className="text-sm font-medium text-[#78350f] mb-3">Customer Request</h3>
+                <h3 className="text-sm font-medium text-[#78350f] mb-3">
+                  Customer Request
+                </h3>
                 <div className="space-y-3">
                   {(claim.preferredDate || claim.preferredTime) && (
                     <div className="flex flex-wrap gap-4">
                       {claim.preferredDate && (
                         <div className="flex items-center gap-2 text-[#451a03]">
-                          <Calendar size={18} weight="regular" className="text-[#92400e]" />
-                          <span>Preferred: {formatDate(claim.preferredDate)}</span>
+                          <Calendar
+                            size={18}
+                            weight="regular"
+                            className="text-[#92400e]"
+                          />
+                          <span>
+                            Preferred: {formatDate(claim.preferredDate)}
+                          </span>
                         </div>
                       )}
                       {claim.preferredTime && (
                         <div className="flex items-center gap-2 text-[#451a03]">
-                          <Clock size={18} weight="regular" className="text-[#92400e]" />
+                          <Clock
+                            size={18}
+                            weight="regular"
+                            className="text-[#92400e]"
+                          />
                           <span>{claim.preferredTime}</span>
                         </div>
                       )}
@@ -208,19 +266,27 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
                   )}
                   {claim.notes && (
                     <div className="p-3 bg-[#f2ebe2] rounded-xl">
-                      <p className="text-sm text-[#78350f] italic">"{claim.notes}"</p>
+                      <p className="text-sm text-[#78350f] italic">
+                        "{claim.notes}"
+                      </p>
                     </div>
                   )}
-                  {!claim.preferredDate && !claim.preferredTime && !claim.notes && (
-                    <p className="text-[#92400e] text-sm">No specific preferences provided.</p>
-                  )}
+                  {!claim.preferredDate &&
+                    !claim.preferredTime &&
+                    !claim.notes && (
+                      <p className="text-[#92400e] text-sm">
+                        No specific preferences provided.
+                      </p>
+                    )}
                 </div>
               </div>
 
               {/* Status Actions */}
               {statusActions.length > 0 && (
                 <div className="pt-4 border-t border-[#d4c4b0]">
-                  <h3 className="text-sm font-medium text-[#78350f] mb-3">Update Status</h3>
+                  <h3 className="text-sm font-medium text-[#78350f] mb-3">
+                    Update Status
+                  </h3>
                   <div className="flex flex-wrap gap-3">
                     {statusActions.map((action) => (
                       <Button
@@ -261,7 +327,11 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
                   variant="secondary"
                   size="sm"
                   onClick={handleSaveNotes}
-                  disabled={isSaving || !businessNotes.trim() || businessNotes === claim.businessResponse}
+                  disabled={
+                    isSaving ||
+                    !businessNotes.trim() ||
+                    businessNotes === claim.businessResponse
+                  }
                   className="ml-auto"
                 >
                   {isSaving ? 'Saving...' : 'Save Notes'}
@@ -284,12 +354,18 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
         <div className="space-y-6">
           {/* Contact Info Card */}
           <Card variant="glass" padding="lg">
-            <h3 className="text-sm font-medium text-[#78350f] mb-4">Contact Information</h3>
+            <h3 className="text-sm font-medium text-[#78350f] mb-4">
+              Contact Information
+            </h3>
             {canShowContactInfo ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
-                    <Envelope size={20} weight="fill" className="text-green-500" />
+                    <Envelope
+                      size={20}
+                      weight="fill"
+                      className="text-green-500"
+                    />
                   </div>
                   <div>
                     <p className="text-xs text-[#92400e]">Email</p>
@@ -322,7 +398,8 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
                   <User size={24} weight="fill" className="text-warning" />
                 </div>
                 <p className="text-sm text-[#78350f]">
-                  Contact info will be revealed after you mark this lead as contacted.
+                  Contact info will be revealed after you mark this lead as
+                  contacted.
                 </p>
               </div>
             )}
@@ -330,13 +407,17 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
 
           {/* Timeline Card */}
           <Card variant="glass" padding="lg">
-            <h3 className="text-sm font-medium text-[#78350f] mb-4">Activity</h3>
+            <h3 className="text-sm font-medium text-[#78350f] mb-4">
+              Activity
+            </h3>
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="w-2 h-2 rounded-full bg-amber-800 mt-2 flex-shrink-0" />
                 <div>
                   <p className="text-sm text-[#451a03]">Lead received</p>
-                  <p className="text-xs text-[#92400e]">{formatRelativeTime(claim.createdAt)}</p>
+                  <p className="text-xs text-[#92400e]">
+                    {formatRelativeTime(claim.createdAt)}
+                  </p>
                 </div>
               </div>
               {claim.respondedAt && claim.status !== 'pending' && (
@@ -344,27 +425,36 @@ export function LeadDetail({ claim: initialClaim, businessId, onClaimUpdate }: L
                   <div className="w-2 h-2 rounded-full bg-info mt-2 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-[#451a03]">Contacted customer</p>
-                    <p className="text-xs text-[#92400e]">{formatRelativeTime(claim.respondedAt)}</p>
-                  </div>
-                </div>
-              )}
-              {claim.bookedDate && (claim.status === 'booked' || claim.status === 'completed') && (
-                <div className="flex gap-3">
-                  <div className="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0" />
-                  <div>
-                    <p className="text-sm text-[#451a03]">
-                      {claim.status === 'completed' ? 'Appointment completed' : 'Appointment booked'}
+                    <p className="text-xs text-[#92400e]">
+                      {formatRelativeTime(claim.respondedAt)}
                     </p>
-                    <p className="text-xs text-[#92400e]">{formatDate(claim.bookedDate)}</p>
                   </div>
                 </div>
               )}
+              {claim.bookedDate &&
+                (claim.status === 'booked' || claim.status === 'completed') && (
+                  <div className="flex gap-3">
+                    <div className="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-[#451a03]">
+                        {claim.status === 'completed'
+                          ? 'Appointment completed'
+                          : 'Appointment booked'}
+                      </p>
+                      <p className="text-xs text-[#92400e]">
+                        {formatDate(claim.bookedDate)}
+                      </p>
+                    </div>
+                  </div>
+                )}
               {claim.status === 'cancelled' && (
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-error mt-2 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-[#451a03]">Lead cancelled</p>
-                    <p className="text-xs text-[#92400e]">{formatRelativeTime(claim.updatedAt)}</p>
+                    <p className="text-xs text-[#92400e]">
+                      {formatRelativeTime(claim.updatedAt)}
+                    </p>
                   </div>
                 </div>
               )}

@@ -76,9 +76,7 @@ export function CardDescription({
   className?: string
 }) {
   return (
-    <p className={`text-sm text-[#78350f] mt-1 ${className}`}>
-      {children}
-    </p>
+    <p className={`text-sm text-[#78350f] mt-1 ${className}`}>{children}</p>
   )
 }
 

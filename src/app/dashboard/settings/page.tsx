@@ -1,22 +1,16 @@
 'use client'
 
-import {
-  User,
-  Bell,
-  SignOut,
-  Trash,
-  EnvelopeSimple,
-} from '@phosphor-icons/react'
+import { Bell, EnvelopeSimple, SignOut, User } from '@phosphor-icons/react'
+import { AlertPreferences } from '@/components/features/alertPreferences'
+import { ProfileForm } from '@/components/features/profileForm'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { ProfileForm } from '@/components/features/profileForm'
-import { AlertPreferences } from '@/components/features/alertPreferences'
 import { useAuth } from '@/lib/context/authContext'
 
 export default function SettingsPage() {
@@ -73,9 +67,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <CardTitle>Account</CardTitle>
-              <CardDescription>
-                Manage your account settings
-              </CardDescription>
+              <CardDescription>Manage your account settings</CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -83,9 +75,7 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between py-3 border-b border-[#d4c4b0]">
               <div>
-                <p className="text-sm font-medium text-[#451a03]">
-                  Sign out
-                </p>
+                <p className="text-sm font-medium text-[#451a03]">Sign out</p>
                 <p className="text-sm text-[#78350f]">
                   Sign out of your account on this device
                 </p>
@@ -109,7 +99,9 @@ export default function SettingsPage() {
                 type="button"
                 className="text-sm text-red-600 hover:text-red-600/80 transition-colors flex items-center gap-1.5"
                 onClick={() =>
-                  alert('Contact support@costfinders.com to delete your account')
+                  alert(
+                    'Contact support@costfinders.com to delete your account',
+                  )
                 }
               >
                 <EnvelopeSimple size={16} weight="bold" />

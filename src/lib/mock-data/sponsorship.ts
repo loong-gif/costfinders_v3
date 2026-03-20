@@ -65,7 +65,7 @@ const boostOptions: BoostOption[] = [
 ]
 
 // Track active boosts
-let activeBoosts: ActiveBoost[] = [
+const activeBoosts: ActiveBoost[] = [
   {
     id: 'ab-1',
     dealId: 'deal-2',
@@ -142,7 +142,7 @@ export function getBoostOptionById(id: string): BoostOption | undefined {
 /**
  * Get all active boosts for a business
  */
-export function getActiveBoosts(businessId: string): ActiveBoost[] {
+export function getActiveBoosts(_businessId: string): ActiveBoost[] {
   return activeBoosts.filter((boost) => boost.status === 'active')
 }
 
@@ -151,14 +151,14 @@ export function getActiveBoosts(businessId: string): ActiveBoost[] {
  */
 export function getActiveBoostForDeal(dealId: string): ActiveBoost | undefined {
   return activeBoosts.find(
-    (boost) => boost.dealId === dealId && boost.status === 'active'
+    (boost) => boost.dealId === dealId && boost.status === 'active',
   )
 }
 
 /**
  * Get boost history for a business
  */
-export function getBoostHistory(businessId: string): BoostHistory[] {
+export function getBoostHistory(_businessId: string): BoostHistory[] {
   return [...boostHistory]
 }
 
@@ -168,7 +168,7 @@ export function getBoostHistory(businessId: string): BoostHistory[] {
 export function calculateEstimatedReach(
   currentViews: number,
   multiplier: number,
-  duration: number
+  duration: number,
 ): number {
   // Estimate daily views from current total (assuming 30-day average)
   const dailyViews = currentViews / 30
@@ -180,7 +180,7 @@ export function calculateEstimatedReach(
  */
 export function createBoost(
   dealId: string,
-  boostOptionId: string
+  boostOptionId: string,
 ): ActiveBoost | null {
   const option = getBoostOptionById(boostOptionId)
   if (!option) return null

@@ -1,23 +1,23 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Buildings, CaretRight, MapPin, Tag } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { MapPin, Buildings, Tag, CaretRight } from '@phosphor-icons/react'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 import { DealsGrid } from '@/components/features/dealsGrid'
 import { FilterPanel } from '@/components/features/filterPanel'
 import { CategoryFilter } from '@/components/patterns/categoryFilter'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
 import {
-  getDealsForCitySlug,
-  getDealsForTreatmentAndCity,
-  getDealCountForCitySlug,
+  type DealFilters,
+  getAllActiveCitySlugs,
   getBusinessCountForCitySlug,
   getCategories,
-  getAllActiveCitySlugs,
   getCityBySlug,
-  type DealFilters,
+  getDealCountForCitySlug,
+  getDealsForCitySlug,
+  getDealsForTreatmentAndCity,
   type SortOption,
   sortDeals,
 } from '@/lib/mock-data'

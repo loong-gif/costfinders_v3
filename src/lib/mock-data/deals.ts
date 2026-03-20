@@ -277,7 +277,8 @@ export const deals: Deal[] = [
     id: 'deal-13',
     businessId: 'biz-1',
     title: 'Spring Botox Special',
-    description: 'Limited time spring promotion. Get natural-looking results with our expert injectors.',
+    description:
+      'Limited time spring promotion. Get natural-looking results with our expert injectors.',
     category: 'botox',
     originalPrice: 15,
     dealPrice: 11,
@@ -300,7 +301,8 @@ export const deals: Deal[] = [
     id: 'deal-14',
     businessId: 'biz-5',
     title: 'Lip Filler VIP Package',
-    description: 'Premium lip enhancement with 1ml of Juvederm Volbella. Includes consultation and aftercare.',
+    description:
+      'Premium lip enhancement with 1ml of Juvederm Volbella. Includes consultation and aftercare.',
     category: 'fillers',
     originalPrice: 700,
     dealPrice: 549,
@@ -322,7 +324,8 @@ export const deals: Deal[] = [
     id: 'deal-15',
     businessId: 'biz-3',
     title: 'HydraFacial Glow Bundle',
-    description: 'Three-session HydraFacial package for ultimate skin rejuvenation.',
+    description:
+      'Three-session HydraFacial package for ultimate skin rejuvenation.',
     category: 'facials',
     originalPrice: 525,
     dealPrice: 399,
@@ -344,7 +347,8 @@ export const deals: Deal[] = [
     id: 'deal-16',
     businessId: 'biz-2',
     title: 'Full Body Laser Package',
-    description: 'Complete laser hair removal for legs, arms, underarms, and bikini.',
+    description:
+      'Complete laser hair removal for legs, arms, underarms, and bikini.',
     category: 'laser',
     originalPrice: 2500,
     dealPrice: 1799,
@@ -366,7 +370,8 @@ export const deals: Deal[] = [
     id: 'deal-17',
     businessId: 'biz-4',
     title: 'Microneedling with PRP',
-    description: 'Vampire facial combining microneedling with platelet-rich plasma for skin renewal.',
+    description:
+      'Vampire facial combining microneedling with platelet-rich plasma for skin renewal.',
     category: 'facials',
     originalPrice: 800,
     dealPrice: 599,
@@ -374,7 +379,8 @@ export const deals: Deal[] = [
     unit: 'per session',
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-06-30T23:59:59Z',
-    termsAndConditions: 'Consultation required. Not suitable for all skin types.',
+    termsAndConditions:
+      'Consultation required. Not suitable for all skin types.',
     isActive: false,
     isFeatured: false,
     isSponsored: false,
@@ -388,7 +394,8 @@ export const deals: Deal[] = [
     id: 'deal-18',
     businessId: 'biz-6',
     title: 'Jawline Contouring Special',
-    description: 'Sculpt and define your jawline with dermal filler. Includes 2 syringes.',
+    description:
+      'Sculpt and define your jawline with dermal filler. Includes 2 syringes.',
     category: 'fillers',
     originalPrice: 1400,
     dealPrice: 999,
@@ -485,7 +492,15 @@ export function deleteDeal(dealId: string): boolean {
  * Create a new deal
  */
 export function createDeal(
-  data: Omit<Deal, 'id' | 'createdAt' | 'updatedAt' | 'claimCount' | 'viewCount' | 'isSponsored'>
+  data: Omit<
+    Deal,
+    | 'id'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'claimCount'
+    | 'viewCount'
+    | 'isSponsored'
+  >,
 ): Deal {
   const now = new Date().toISOString()
 
@@ -508,7 +523,9 @@ export function createDeal(
  */
 export function updateDeal(
   dealId: string,
-  data: Partial<Omit<Deal, 'id' | 'createdAt' | 'claimCount' | 'viewCount' | 'isSponsored'>>
+  data: Partial<
+    Omit<Deal, 'id' | 'createdAt' | 'claimCount' | 'viewCount' | 'isSponsored'>
+  >,
 ): Deal | null {
   const allDeals = getDynamicDeals()
   const index = allDeals.findIndex((d) => d.id === dealId)
@@ -532,7 +549,7 @@ export function updateDeal(
 export function updateDealModeration(
   dealId: string,
   status: ModerationStatus,
-  notes?: string
+  notes?: string,
 ): Deal | null {
   const allDeals = getDynamicDeals()
   const index = allDeals.findIndex((d) => d.id === dealId)
@@ -565,7 +582,7 @@ export function getAllDeals(): Deal[] {
  */
 export function getDealsForCategory(categorySlug: string): Deal[] {
   return getDynamicDeals().filter(
-    (d) => d.category === categorySlug && d.isActive
+    (d) => d.category === categorySlug && d.isActive,
   )
 }
 
@@ -575,6 +592,10 @@ export function getDealsForCategory(categorySlug: string): Deal[] {
  */
 export function getAllDealIds(): Array<{ id: string; updatedAt: string }> {
   return getDynamicDeals()
-    .filter((d) => d.isActive && (!d.moderationStatus || d.moderationStatus === 'approved'))
+    .filter(
+      (d) =>
+        d.isActive &&
+        (!d.moderationStatus || d.moderationStatus === 'approved'),
+    )
     .map((d) => ({ id: d.id, updatedAt: d.updatedAt }))
 }

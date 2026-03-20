@@ -1,19 +1,19 @@
 'use client'
 
 import {
+  Calendar,
+  ChartLineUp,
+  Clock,
+  Crown,
+  CurrencyDollar,
   Eye,
   HandGrabbing,
-  ChartLineUp,
-  CurrencyDollar,
-  TrendUp,
-  TrendDown,
   Info,
-  Crown,
-  Calendar,
-  Clock,
+  TrendDown,
+  TrendUp,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import { Tooltip } from '@/components/ui/tooltip'
 
 interface MetricCardProps {
@@ -131,7 +131,7 @@ const dealPerformanceData: DealPerformance[] = [
 
 function DealPerformanceTable() {
   const topDeal = dealPerformanceData.reduce((a, b) =>
-    a.claims > b.claims ? a : b
+    a.claims > b.claims ? a : b,
   )
 
   return (
@@ -200,9 +200,7 @@ function DealPerformanceTable() {
                   </span>
                 </td>
                 <td className="py-3 text-right">
-                  <span className="text-sm text-[#78350f]">
-                    {deal.claims}
-                  </span>
+                  <span className="text-sm text-[#78350f]">{deal.claims}</span>
                 </td>
                 <td className="py-3 text-right">
                   <span
@@ -247,7 +245,11 @@ function DealPerformanceTable() {
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-2 min-w-0">
                 {deal.id === topDeal.id && (
-                  <Crown size={16} weight="fill" className="text-yellow-500 flex-shrink-0" />
+                  <Crown
+                    size={16}
+                    weight="fill"
+                    className="text-yellow-500 flex-shrink-0"
+                  />
                 )}
                 <span className="text-sm font-medium text-[#451a03] truncate">
                   {deal.title}
@@ -270,7 +272,8 @@ function DealPerformanceTable() {
             <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#d4c4b0]">
               <div className="flex items-center gap-4 text-sm">
                 <div className="text-[#78350f]">
-                  <span className="text-[#92400e]">Views:</span> {deal.views.toLocaleString()}
+                  <span className="text-[#92400e]">Views:</span>{' '}
+                  {deal.views.toLocaleString()}
                 </div>
                 <div className="text-[#78350f]">
                   <span className="text-[#92400e]">Claims:</span> {deal.claims}
@@ -375,9 +378,7 @@ export function AnalyticsDashboard() {
       value: '45',
       change: '+8% vs last month',
       changeType: 'positive' as const,
-      icon: (
-        <HandGrabbing size={24} weight="fill" className="text-amber-800" />
-      ),
+      icon: <HandGrabbing size={24} weight="fill" className="text-amber-800" />,
       tooltip: 'Number of customers who claimed your deals this month',
     },
     {
@@ -385,9 +386,7 @@ export function AnalyticsDashboard() {
       value: '3.6%',
       change: '-0.2% vs last month',
       changeType: 'negative' as const,
-      icon: (
-        <ChartLineUp size={24} weight="fill" className="text-amber-800" />
-      ),
+      icon: <ChartLineUp size={24} weight="fill" className="text-amber-800" />,
       tooltip: 'Percentage of viewers who claimed a deal',
     },
     {

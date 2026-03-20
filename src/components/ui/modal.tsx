@@ -27,14 +27,19 @@ const mobileVariants = {
     animation: 'animate-in fade-in zoom-in-95 duration-200',
   },
   fullscreen: {
-    container: 'flex items-start justify-center md:pt-24 px-0 md:px-4 pb-0 md:pb-4',
-    modal: 'inset-0 md:inset-auto w-full h-full md:w-auto md:h-auto rounded-none md:rounded-2xl',
+    container:
+      'flex items-start justify-center md:pt-24 px-0 md:px-4 pb-0 md:pb-4',
+    modal:
+      'inset-0 md:inset-auto w-full h-full md:w-auto md:h-auto rounded-none md:rounded-2xl',
     animation: 'animate-in fade-in md:zoom-in-95 duration-200',
   },
   bottom: {
-    container: 'flex items-end md:items-start justify-center md:pt-24 px-0 md:px-4 pb-0 md:pb-4',
-    modal: 'w-full md:w-auto rounded-t-2xl md:rounded-2xl max-h-[90vh] md:max-h-none',
-    animation: 'animate-in slide-in-from-bottom md:fade-in md:zoom-in-95 duration-200',
+    container:
+      'flex items-end md:items-start justify-center md:pt-24 px-0 md:px-4 pb-0 md:pb-4',
+    modal:
+      'w-full md:w-auto rounded-t-2xl md:rounded-2xl max-h-[90vh] md:max-h-none',
+    animation:
+      'animate-in slide-in-from-bottom md:fade-in md:zoom-in-95 duration-200',
   },
 }
 

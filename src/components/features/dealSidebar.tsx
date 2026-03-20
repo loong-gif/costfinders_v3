@@ -1,9 +1,9 @@
 'use client'
 
+import { BusinessInfo } from '@/components/features/businessInfo'
+import { ClaimCTA } from '@/components/features/claimCTA'
 import { useAuth } from '@/lib/context/authContext'
 import { getBusinessForDeal } from '@/lib/mock-data'
-import { ClaimCTA } from '@/components/features/claimCTA'
-import { BusinessInfo } from '@/components/features/businessInfo'
 import type { Deal } from '@/types/deal'
 
 interface DealSidebarProps {

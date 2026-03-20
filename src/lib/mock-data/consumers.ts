@@ -202,7 +202,10 @@ export function getClaimsForBusiness(businessId: string): Claim[] {
 /**
  * Update claim status
  */
-export function updateClaimStatus(claimId: string, status: ClaimStatus): Claim | null {
+export function updateClaimStatus(
+  claimId: string,
+  status: ClaimStatus,
+): Claim | null {
   const allClaims = getDynamicClaims()
   const index = allClaims.findIndex((c) => c.id === claimId)
 
@@ -214,7 +217,8 @@ export function updateClaimStatus(claimId: string, status: ClaimStatus): Claim |
     status,
     updatedAt: now,
     // Track when business first responded
-    respondedAt: allClaims[index].respondedAt || (status !== 'pending' ? now : undefined),
+    respondedAt:
+      allClaims[index].respondedAt || (status !== 'pending' ? now : undefined),
   }
 
   dynamicClaims[index] = updatedClaim
@@ -224,7 +228,10 @@ export function updateClaimStatus(claimId: string, status: ClaimStatus): Claim |
 /**
  * Add business response to a claim
  */
-export function addBusinessResponse(claimId: string, response: string): Claim | null {
+export function addBusinessResponse(
+  claimId: string,
+  response: string,
+): Claim | null {
   const allClaims = getDynamicClaims()
   const index = allClaims.findIndex((c) => c.id === claimId)
 
@@ -279,7 +286,7 @@ export function getClaimsCountForConsumer(consumerId: string): number {
  */
 export function updateConsumerStatus(
   consumerId: string,
-  status: ConsumerStatus
+  status: ConsumerStatus,
 ): Consumer | null {
   const allConsumers = getDynamicConsumers()
   const index = allConsumers.findIndex((c) => c.id === consumerId)

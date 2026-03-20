@@ -96,7 +96,10 @@ export function getCityDealsFaqs(cityName: string): FaqItem[] {
  * @param cityName - Name of the city (e.g., "Houston")
  * @returns Array of FAQ items specific to this treatment in this city
  */
-export function getTreatmentCityFaqs(treatmentName: string, cityName: string): FaqItem[] {
+export function getTreatmentCityFaqs(
+  treatmentName: string,
+  cityName: string,
+): FaqItem[] {
   const lowerName = treatmentName.toLowerCase()
 
   return [

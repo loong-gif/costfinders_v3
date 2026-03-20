@@ -1,8 +1,8 @@
 'use client'
 
+import { ArrowLeft, CaretRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { ArrowLeft, CaretRight } from '@phosphor-icons/react'
 import { getBreadcrumbs } from '@/lib/routes'
 
 interface PageHeaderProps {
@@ -45,14 +45,23 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
     <div className="mb-6">
       {/* Breadcrumbs - hidden on mobile, shown on tablet+ */}
       {breadcrumbs.length > 1 && (
-        <nav className="hidden sm:flex items-center gap-1.5 text-sm mb-2" aria-label="Breadcrumb">
+        <nav
+          className="hidden sm:flex items-center gap-1.5 text-sm mb-2"
+          aria-label="Breadcrumb"
+        >
           {breadcrumbs.map((crumb, index) => (
             <div key={crumb.href} className="flex items-center gap-1.5">
               {index > 0 && (
-                <CaretRight size={14} weight="bold" className="text-[#92400e]" />
+                <CaretRight
+                  size={14}
+                  weight="bold"
+                  className="text-[#92400e]"
+                />
               )}
               {crumb.isCurrentPage ? (
-                <span className="text-[#451a03] font-medium">{crumb.label}</span>
+                <span className="text-[#451a03] font-medium">
+                  {crumb.label}
+                </span>
               ) : (
                 <Link
                   href={crumb.href}

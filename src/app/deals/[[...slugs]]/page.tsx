@@ -1,31 +1,28 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { CityDealsPage } from '@/components/features/deals/cityDealsPage'
+import { DealDetailPage } from '@/components/features/deals/dealDetailPage'
+import { DealsRedirect } from '@/components/features/deals/dealsRedirect'
+import { TreatmentCityPage } from '@/components/features/deals/treatmentCityPage'
 import {
-  getAllActiveCitySlugs,
-  getCityBySlug,
-  getCategories,
   getActiveDeals,
-  getDealsForCitySlug,
-  getDealsForTreatmentAndCity,
+  getAllActiveCitySlugs,
+  getAllTreatmentCityCombos,
+  getAnonymousDealById,
+  getBusinessCountForCitySlug,
+  getCategoryBySlug,
+  getCityBySlug,
+  getDealById,
   getDealCountForCitySlug,
   getDealCountForTreatmentAndCity,
   getMinPriceForCitySlug,
   getMinPriceForTreatmentAndCity,
-  getBusinessCountForCitySlug,
-  getCategoryBySlug,
-  getAnonymousDealById,
-  getDealById,
-  getAllTreatmentCityCombos,
 } from '@/lib/mock-data'
 import {
   generateCityDealsMetadata,
   generateTreatmentCityMetadata,
 } from '@/lib/seo/metadata'
 import type { TreatmentCategory } from '@/types/deal'
-import { DealsRedirect } from '@/components/features/deals/dealsRedirect'
-import { CityDealsPage } from '@/components/features/deals/cityDealsPage'
-import { TreatmentCityPage } from '@/components/features/deals/treatmentCityPage'
-import { DealDetailPage } from '@/components/features/deals/dealDetailPage'
 
 interface DealsPageProps {
   params: Promise<{ slugs?: string[] }>
@@ -35,7 +32,13 @@ interface DealsPageProps {
 type RouteType =
   | { type: 'redirect' }
   | { type: 'city'; citySlug: string; cityName: string }
-  | { type: 'treatment-city'; treatmentSlug: TreatmentCategory; treatmentName: string; citySlug: string; cityName: string }
+  | {
+      type: 'treatment-city'
+      treatmentSlug: TreatmentCategory
+      treatmentName: string
+      citySlug: string
+      cityName: string
+    }
   | { type: 'deal'; dealId: string }
   | { type: 'not-found' }
 
@@ -140,19 +143,19 @@ export async function generateMetadata({
     case 'treatment-city': {
       const dealCount = getDealCountForTreatmentAndCity(
         route.treatmentSlug,
-        route.citySlug
+        route.citySlug,
       )
       const businessCount = getBusinessCountForCitySlug(route.citySlug)
       const minPrice = getMinPriceForTreatmentAndCity(
         route.treatmentSlug,
-        route.citySlug
+        route.citySlug,
       )
       return generateTreatmentCityMetadata(
         route.treatmentName,
         route.treatmentSlug,
         route.cityName,
         route.citySlug,
-        { dealCount, businessCount, minPrice }
+        { dealCount, businessCount, minPrice },
       )
     }
 
@@ -199,15 +202,14 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
         />
       )
 
-    case 'deal':
+    case 'deal': {
       const deal = getAnonymousDealById(route.dealId)
       const fullDeal = getDealById(route.dealId)
       if (!deal || !fullDeal) {
         notFound()
       }
       return <DealDetailPage deal={deal} fullDeal={fullDeal} />
-
-    case 'not-found':
+    }
     default:
       notFound()
   }

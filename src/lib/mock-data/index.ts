@@ -2,71 +2,80 @@
 
 export { admins } from './admins'
 export { businesses } from './businesses'
-export { businessOwners, findBusinessOwnerByEmail, findBusinessOwnerById } from './businessOwners'
 export {
-  claims,
-  consumers,
-  getClaimsForBusiness,
-  updateClaimStatus,
-  addBusinessResponse,
-  getClaimByIdDynamic,
-} from './consumers'
+  businessOwners,
+  findBusinessOwnerByEmail,
+  findBusinessOwnerById,
+} from './businessOwners'
 export {
-  getMessagesForClaim,
-  sendMessage,
-  getLastMessageForClaim,
-  getUnreadCountForClaim,
-  markMessagesAsRead,
-  getClaimIdsWithMessages,
-  getConversationsForBusiness,
-  type ConversationSummary,
-} from './messages'
-export { deals, toAnonymousDeal, getDealById as getDealByIdDynamic, getDealsForBusiness } from './deals'
-export {
-  cities,
-  locationAreas,
-  getCityBySlug,
-  getAllActiveCitySlugs,
-  slugifyCity,
-  getCities,
-} from './locations'
-export {
+  type Category,
+  createCategory,
+  deleteCategory,
   getCategories,
   getCategoryById,
   getCategoryBySlug,
-  createCategory,
-  updateCategory,
-  toggleCategoryStatus,
-  deleteCategory,
   getCategoryStats,
-  type Category,
+  toggleCategoryStatus,
+  updateCategory,
 } from './categories'
 export {
+  addBusinessResponse,
+  claims,
+  consumers,
+  getClaimByIdDynamic,
+  getClaimsForBusiness,
+  updateClaimStatus,
+} from './consumers'
+export {
+  deals,
+  getDealById as getDealByIdDynamic,
+  getDealsForBusiness,
+  toAnonymousDeal,
+} from './deals'
+export {
+  type BusinessCredits,
+  type BusinessTier,
+  type CreditPackage,
+  type CreditUsageHistory,
+  calculateTierSavings,
+  getAllLeadPricing,
+  getBusinessCredits,
+  getCreditPackageById,
+  getCreditPackages,
+  getCreditUsageHistory,
+  getLeadPricing,
+  purchaseCredits,
+  type TierPricing,
+} from './leadPricing'
+export {
+  cities,
+  getAllActiveCitySlugs,
+  getCities,
+  getCityBySlug,
+  locationAreas,
+  slugifyCity,
+} from './locations'
+export {
+  type ConversationSummary,
+  getClaimIdsWithMessages,
+  getConversationsForBusiness,
+  getLastMessageForClaim,
+  getMessagesForClaim,
+  getUnreadCountForClaim,
+  markMessagesAsRead,
+  sendMessage,
+} from './messages'
+export {
+  createTreatment,
+  deleteTreatment,
+  getTreatmentById,
+  getTreatmentStats,
   getTreatments,
   getTreatmentsByCategory,
-  getTreatmentById,
-  createTreatment,
-  updateTreatment,
-  toggleTreatmentStatus,
-  deleteTreatment,
-  getTreatmentStats,
   type Treatment,
+  toggleTreatmentStatus,
+  updateTreatment,
 } from './treatments'
-export {
-  getLeadPricing,
-  getAllLeadPricing,
-  getCreditPackages,
-  getCreditPackageById,
-  getBusinessCredits,
-  getCreditUsageHistory,
-  calculateTierSavings,
-  purchaseCredits,
-  type BusinessTier,
-  type TierPricing,
-  type CreditPackage,
-  type BusinessCredits,
-  type CreditUsageHistory,
-} from './leadPricing'
 
 // Query utilities
 export {
@@ -83,6 +92,7 @@ export {
   getAreasForCity,
   // Businesses
   getBusinessById,
+  getBusinessCountForCitySlug,
   getBusinessForDeal,
   getCityById,
   getCityByName,
@@ -93,26 +103,25 @@ export {
   // Consumers
   getConsumerById,
   getDealById,
+  getDealCountForCitySlug,
+  getDealCountForTreatmentAndCity,
   getDealsByCategory,
   getDealsByCity,
-  getFeaturedDeals,
-  getSponsoredDeals,
-  type SortOption,
-  sortDeals,
   // SEO Page Queries
   getDealsForCitySlug,
   getDealsForTreatmentAndCity,
-  getDealCountForCitySlug,
-  getDealCountForTreatmentAndCity,
+  getFeaturedDeals,
   getMinPriceForCitySlug,
   getMinPriceForTreatmentAndCity,
-  getBusinessCountForCitySlug,
+  getSponsoredDeals,
+  type SortOption,
+  sortDeals,
 } from './utils'
 
+import type { TreatmentCategory } from '@/types/deal'
+import { getCategories } from './categories'
 // SEO Static Params Generation
 import { getAllActiveCitySlugs } from './locations'
-import { getCategories } from './categories'
-import type { TreatmentCategory } from '@/types/deal'
 
 /**
  * Get all treatment+city combinations for static params generation

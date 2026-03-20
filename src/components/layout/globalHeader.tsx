@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { MagnifyingGlass, SignIn, User } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { MagnifyingGlass, User, SignIn } from '@phosphor-icons/react'
+import { useState } from 'react'
+import { AuthModal } from '@/components/features/authModal'
 import { LocationDisplay } from '@/components/layout/locationDisplay'
 import { Button } from '@/components/ui/button'
-import { AuthModal } from '@/components/features/authModal'
 import { useAuth } from '@/lib/context/authContext'
 
 type AuthView = 'signUp' | 'signIn'
@@ -51,7 +51,9 @@ export function GlobalHeader() {
               weight="bold"
               className="text-amber-800"
             />
-            <span className="font-bold text-lg text-amber-800">CostFinders</span>
+            <span className="font-bold text-lg text-amber-800">
+              CostFinders
+            </span>
           </Link>
 
           {/* Right side: Location + Auth */}

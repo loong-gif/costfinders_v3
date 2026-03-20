@@ -15,9 +15,7 @@ export interface OfferFilters {
   limit?: number
 }
 
-export async function getOffers(
-  filters?: OfferFilters,
-): Promise<Offer[]> {
+export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
   let query = supabase
     .from(TABLE)
     .select('*')
@@ -92,9 +90,7 @@ export async function getOffersWithBusinesses(
 export async function getOfferCategories(): Promise<
   { service_category: string; count: number }[]
 > {
-  const { data, error } = await supabase
-    .from(TABLE)
-    .select('service_category')
+  const { data, error } = await supabase.from(TABLE).select('service_category')
 
   if (error) throw error
 

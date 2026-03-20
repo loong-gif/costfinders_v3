@@ -1,23 +1,23 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
 import {
+  CheckCircle,
+  CurrencyDollar,
   MagnifyingGlass,
   Storefront,
-  CurrencyDollar,
   Tag,
-  CheckCircle,
 } from '@phosphor-icons/react'
-import type { BusinessStatus, BusinessTier } from '@/types/business'
+import { useCallback, useMemo, useState } from 'react'
+import { BusinessTable } from '@/components/features/admin/businessTable'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   getAllBusinesses,
   updateBusinessStatus,
   updateBusinessTier,
 } from '@/lib/mock-data/businesses'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { BusinessTable } from '@/components/features/admin/businessTable'
+import type { BusinessStatus, BusinessTier } from '@/types/business'
 
 type FilterTab = 'all' | 'unclaimed' | 'free' | 'paid' | 'suspended'
 
@@ -30,7 +30,11 @@ const filterTabs: { value: FilterTab; label: string }[] = [
 ]
 
 interface MetricCardProps {
-  icon: React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>
+  icon: React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
   value: string | number
   label: string
   highlight?: boolean
@@ -78,17 +82,17 @@ export default function BusinessesManagementPage() {
     switch (activeFilter) {
       case 'unclaimed':
         filtered = filtered.filter(
-          (b) => b.tier === 'unclaimed' && b.status !== 'suspended'
+          (b) => b.tier === 'unclaimed' && b.status !== 'suspended',
         )
         break
       case 'free':
         filtered = filtered.filter(
-          (b) => b.tier === 'free' && b.status !== 'suspended'
+          (b) => b.tier === 'free' && b.status !== 'suspended',
         )
         break
       case 'paid':
         filtered = filtered.filter(
-          (b) => b.tier === 'paid' && b.status !== 'suspended'
+          (b) => b.tier === 'paid' && b.status !== 'suspended',
         )
         break
       case 'suspended':
@@ -103,7 +107,7 @@ export default function BusinessesManagementPage() {
       filtered = filtered.filter(
         (b) =>
           b.name.toLowerCase().includes(query) ||
-          b.city.toLowerCase().includes(query)
+          b.city.toLowerCase().includes(query),
       )
     }
 
@@ -116,13 +120,13 @@ export default function BusinessesManagementPage() {
     return {
       all: businesses.length,
       unclaimed: businesses.filter(
-        (b) => b.tier === 'unclaimed' && b.status !== 'suspended'
+        (b) => b.tier === 'unclaimed' && b.status !== 'suspended',
       ).length,
       free: businesses.filter(
-        (b) => b.tier === 'free' && b.status !== 'suspended'
+        (b) => b.tier === 'free' && b.status !== 'suspended',
       ).length,
       paid: businesses.filter(
-        (b) => b.tier === 'paid' && b.status !== 'suspended'
+        (b) => b.tier === 'paid' && b.status !== 'suspended',
       ).length,
       suspended: businesses.filter((b) => b.status === 'suspended').length,
     }
@@ -145,7 +149,13 @@ export default function BusinessesManagementPage() {
       return acc + getDealsForBusiness(b.id).length
     }, 0)
 
-    return { total, claimedPercent, paidCount, unclaimedWithDeals: unclaimedWithDeals.length, unclaimedDealsTotal }
+    return {
+      total,
+      claimedPercent,
+      paidCount,
+      unclaimedWithDeals: unclaimedWithDeals.length,
+      unclaimedDealsTotal,
+    }
   }, [businesses])
 
   const handleStatusChange = useCallback(
@@ -156,11 +166,11 @@ export default function BusinessesManagementPage() {
         showFeedback(
           status === 'suspended'
             ? `${updated.name} has been suspended`
-            : `${updated.name} has been activated`
+            : `${updated.name} has been activated`,
         )
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   const handleTierChange = useCallback(
@@ -168,18 +178,21 @@ export default function BusinessesManagementPage() {
       const updated = updateBusinessTier(businessId, tier)
       if (updated) {
         setBusinesses(getAllBusinesses())
-        const tierLabel = tier === 'paid' ? 'Paid' : tier === 'free' ? 'Free' : 'Unclaimed'
+        const tierLabel =
+          tier === 'paid' ? 'Paid' : tier === 'free' ? 'Free' : 'Unclaimed'
         showFeedback(`${updated.name} tier changed to ${tierLabel}`)
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#451a03]">Business Management</h1>
+        <h1 className="text-2xl font-bold text-[#451a03]">
+          Business Management
+        </h1>
         <p className="text-[#78350f] mt-1">Manage business profiles</p>
       </div>
 
@@ -192,7 +205,11 @@ export default function BusinessesManagementPage() {
 
       {/* Stats Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <MetricCard icon={Storefront} value={stats.total} label="Total Businesses" />
+        <MetricCard
+          icon={Storefront}
+          value={stats.total}
+          label="Total Businesses"
+        />
         <MetricCard
           icon={CheckCircle}
           value={`${stats.claimedPercent}%`}

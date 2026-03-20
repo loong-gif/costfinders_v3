@@ -1,9 +1,9 @@
 'use client'
 
+import { CreditCard, Lock } from '@phosphor-icons/react'
 import { useState } from 'react'
-import { CreditCard, Lock, Check } from '@phosphor-icons/react'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 interface MockPaymentFormProps {
   amount: number
@@ -79,7 +79,9 @@ function formatExpiry(value: string): string {
   return digits
 }
 
-function getCardBrand(cardNumber: string): 'visa' | 'mastercard' | 'amex' | 'unknown' {
+function getCardBrand(
+  cardNumber: string,
+): 'visa' | 'mastercard' | 'amex' | 'unknown' {
   const firstDigit = cardNumber.replace(/\s/g, '')[0]
   if (firstDigit === '4') return 'visa'
   if (firstDigit === '5') return 'mastercard'
@@ -87,7 +89,11 @@ function getCardBrand(cardNumber: string): 'visa' | 'mastercard' | 'amex' | 'unk
   return 'unknown'
 }
 
-function CardBrandIcon({ brand }: { brand: 'visa' | 'mastercard' | 'amex' | 'unknown' }) {
+function CardBrandIcon({
+  brand,
+}: {
+  brand: 'visa' | 'mastercard' | 'amex' | 'unknown'
+}) {
   if (brand === 'visa') {
     return (
       <div className="w-8 h-5 bg-blue-600 rounded flex items-center justify-center">
@@ -113,7 +119,12 @@ function CardBrandIcon({ brand }: { brand: 'visa' | 'mastercard' | 'amex' | 'unk
   return <CreditCard size={20} weight="light" className="text-[#92400e]" />
 }
 
-export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false }: MockPaymentFormProps) {
+export function MockPaymentForm({
+  amount,
+  planName,
+  onSubmit,
+  isLoading = false,
+}: MockPaymentFormProps) {
   const [cardNumber, setCardNumber] = useState('')
   const [expiry, setExpiry] = useState('')
   const [cvc, setCvc] = useState('')
@@ -160,7 +171,9 @@ export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false 
         <Input
           label="CVC"
           value={cvc}
-          onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+          onChange={(e) =>
+            setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))
+          }
           placeholder="123"
           required
           autoComplete="cc-csc"
@@ -218,7 +231,9 @@ export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false 
           <Input
             label="ZIP code"
             value={zip}
-            onChange={(e) => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
+            onChange={(e) =>
+              setZip(e.target.value.replace(/\D/g, '').slice(0, 5))
+            }
             placeholder="12345"
             required
           />

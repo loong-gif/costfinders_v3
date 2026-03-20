@@ -108,7 +108,7 @@ export function addPaymentMethod(
   brand: PaymentMethod['brand'],
   last4: string,
   expMonth: number,
-  expYear: number
+  expYear: number,
 ): PaymentMethod {
   const newMethod: PaymentMethod = {
     id: `pm_${Date.now()}`,

@@ -246,9 +246,7 @@ export function toggleCityStatus(id: string): City | undefined {
   return citiesData[index]
 }
 
-export function addCity(
-  data: Omit<City, 'id'>
-): City {
+export function addCity(data: Omit<City, 'id'>): City {
   const newCity: City = {
     ...data,
     id: `city-${Date.now()}`,
@@ -259,7 +257,7 @@ export function addCity(
 
 export function updateCity(
   id: string,
-  data: Partial<Omit<City, 'id'>>
+  data: Partial<Omit<City, 'id'>>,
 ): City | undefined {
   const index = citiesData.findIndex((city) => city.id === id)
   if (index === -1) return undefined
@@ -287,14 +285,12 @@ export function toggleAreaStatus(id: string): LocationArea | undefined {
 
   locationAreasData[index] = {
     ...locationAreasData[index],
-    isActive: locationAreasData[index].isActive === false ? true : false,
+    isActive: locationAreasData[index].isActive === false,
   }
   return locationAreasData[index]
 }
 
-export function addArea(
-  data: Omit<LocationArea, 'id'>
-): LocationArea {
+export function addArea(data: Omit<LocationArea, 'id'>): LocationArea {
   const newArea: LocationArea = {
     ...data,
     id: `area-${Date.now()}`,
@@ -306,7 +302,7 @@ export function addArea(
 
 export function updateArea(
   id: string,
-  data: Partial<Omit<LocationArea, 'id'>>
+  data: Partial<Omit<LocationArea, 'id'>>,
 ): LocationArea | undefined {
   const index = locationAreasData.findIndex((area) => area.id === id)
   if (index === -1) return undefined
@@ -334,7 +330,7 @@ export function slugifyCity(name: string): string {
  */
 export function getCityBySlug(slug: string): City | undefined {
   return citiesData.find(
-    (city) => city.isActive && slugifyCity(city.name) === slug
+    (city) => city.isActive && slugifyCity(city.name) === slug,
   )
 }
 
@@ -353,7 +349,9 @@ export function getLocationStats() {
   const totalCities = citiesData.length
   const activeCities = citiesData.filter((c) => c.isActive).length
   const totalAreas = locationAreasData.length
-  const activeAreas = locationAreasData.filter((a) => a.isActive !== false).length
+  const activeAreas = locationAreasData.filter(
+    (a) => a.isActive !== false,
+  ).length
 
   return { totalCities, activeCities, totalAreas, activeAreas }
 }

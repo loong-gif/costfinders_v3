@@ -1,9 +1,9 @@
 'use client'
 
-import { Receipt, DownloadSimple, Warning } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { DownloadSimple, Receipt, Warning } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import type { Invoice } from '@/lib/mock-data/billing'
 
 interface BillingHistoryProps {
@@ -20,7 +20,9 @@ function formatDate(dateString: string): string {
   })
 }
 
-function getStatusVariant(status: Invoice['status']): 'success' | 'warning' | 'error' {
+function getStatusVariant(
+  status: Invoice['status'],
+): 'success' | 'warning' | 'error' {
   switch (status) {
     case 'paid':
       return 'success'
@@ -50,7 +52,9 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
           <div className="w-12 h-12 rounded-xl bg-[#f2ebe2] flex items-center justify-center mx-auto mb-3">
             <Receipt size={24} weight="light" className="text-[#92400e]" />
           </div>
-          <h3 className="font-medium text-[#451a03] mb-1">No billing history</h3>
+          <h3 className="font-medium text-[#451a03] mb-1">
+            No billing history
+          </h3>
           <p className="text-sm text-[#78350f]">
             Your invoices will appear here once you have an active subscription.
           </p>
@@ -62,7 +66,9 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
   return (
     <Card variant="glass" padding="lg">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-[#451a03]">Billing History</h3>
+        <h3 className="text-lg font-semibold text-[#451a03]">
+          Billing History
+        </h3>
       </div>
 
       {/* Desktop Table View */}
@@ -162,11 +168,16 @@ export function BillingHistory({ invoices, onDownload }: BillingHistoryProps) {
       {/* Failed Payment Notice */}
       {invoices.some((inv) => inv.status === 'failed') && (
         <div className="mt-4 p-3 bg-red-400/10 rounded-xl border border-red-400/20 flex items-start gap-3">
-          <Warning size={18} weight="fill" className="text-red-600 flex-shrink-0 mt-0.5" />
+          <Warning
+            size={18}
+            weight="fill"
+            className="text-red-600 flex-shrink-0 mt-0.5"
+          />
           <div>
             <p className="text-sm font-medium text-red-600">Payment failed</p>
             <p className="text-xs text-[#78350f] mt-0.5">
-              One or more payments failed. Please update your payment method to avoid service interruption.
+              One or more payments failed. Please update your payment method to
+              avoid service interruption.
             </p>
           </div>
         </div>

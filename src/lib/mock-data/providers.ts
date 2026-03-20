@@ -1,9 +1,9 @@
 import type { Business } from '@/types/business'
 import type { AnonymousDeal } from '@/types/deal'
-import { businesses, getBusinessById } from './businesses'
-import { getStateBySlug, slugifyCity, SUPPORTED_STATES } from './states'
+import { businesses } from './businesses'
 import { getCityBySlug } from './cities'
 import { deals, toAnonymousDeal } from './deals'
+import { getStateBySlug, SUPPORTED_STATES, slugifyCity } from './states'
 
 /**
  * Get a provider by its slug within a specific state and city context.
@@ -12,7 +12,7 @@ import { deals, toAnonymousDeal } from './deals'
 export function getProviderBySlug(
   stateSlug: string,
   citySlug: string,
-  providerSlug: string
+  providerSlug: string,
 ): Business | undefined {
   // Validate state exists
   const state = getStateBySlug(stateSlug)
@@ -27,7 +27,7 @@ export function getProviderBySlug(
     (business) =>
       business.slug === providerSlug &&
       slugifyCity(business.city) === citySlug &&
-      business.state === state.code
+      business.state === state.code,
   )
 }
 

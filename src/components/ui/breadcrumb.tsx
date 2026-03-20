@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import { CaretRight } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 
 export interface BreadcrumbItem {
   label: string
-  href?: string  // Optional: no href = current page (no link)
+  href?: string // Optional: no href = current page (no link)
 }
 
 interface BreadcrumbProps {
@@ -30,7 +30,11 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
           return (
             <li key={item.label} className="flex items-center gap-2">
               {index > 0 && (
-                <CaretRight size={12} weight="bold" className="text-[#92400e]" />
+                <CaretRight
+                  size={12}
+                  weight="bold"
+                  className="text-[#92400e]"
+                />
               )}
               {item.href && !isLast ? (
                 <Link

@@ -1,29 +1,29 @@
 import { MapPin, Storefront, Tag } from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { CityCard } from '@/components/features/cityCard'
 import { BreadcrumbSchema, FaqSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Faq } from '@/components/ui/faq'
-import { RelatedLinks, type RelatedLink } from '@/components/ui/relatedLinks'
-import { CityCard } from '@/components/features/cityCard'
+import { type RelatedLink, RelatedLinks } from '@/components/ui/relatedLinks'
+import { getCategories } from '@/lib/mock-data/categories'
+import {
+  getBusinessCountForCity,
+  getDealCountForCity,
+} from '@/lib/mock-data/locations'
+import {
+  getCitiesForState,
+  getStateBySlug,
+  getStateStats,
+  getStates,
+  slugifyCity,
+} from '@/lib/mock-data/states'
+import { getStateFaqs } from '@/lib/seo/faq-content'
 import {
   buildCanonicalUrl,
   generateStateMetadata,
   SITE_CONFIG,
 } from '@/lib/seo/metadata'
-import { getStateFaqs } from '@/lib/seo/faq-content'
-import {
-  getStates,
-  getStateBySlug,
-  getCitiesForState,
-  getStateStats,
-  slugifyCity,
-} from '@/lib/mock-data/states'
-import {
-  getDealCountForCity,
-  getBusinessCountForCity,
-} from '@/lib/mock-data/locations'
-import { getCategories } from '@/lib/mock-data/categories'
 
 // Generate static params for all supported states
 export async function generateStaticParams() {
@@ -98,10 +98,7 @@ export default async function StatePage({ params }: StatePageProps) {
           <section className="mb-12">
             {/* Breadcrumb Navigation */}
             <Breadcrumb
-              items={[
-                { label: 'Home', href: '/' },
-                { label: state.name },
-              ]}
+              items={[{ label: 'Home', href: '/' }, { label: state.name }]}
             />
 
             {/* Hero Content */}
@@ -117,9 +114,9 @@ export default async function StatePage({ params }: StatePageProps) {
 
               <p className="text-[#78350f] max-w-2xl mb-6">
                 Discover the best medspa deals and aesthetic treatments across{' '}
-                {state.name}. Compare prices on Botox, fillers, laser treatments, and
-                more from verified providers in {stats.cityCount}{' '}
-                {stats.cityCount === 1 ? 'city' : 'cities'}.
+                {state.name}. Compare prices on Botox, fillers, laser
+                treatments, and more from verified providers in{' '}
+                {stats.cityCount} {stats.cityCount === 1 ? 'city' : 'cities'}.
               </p>
 
               {/* Stats Row */}
@@ -132,7 +129,11 @@ export default async function StatePage({ params }: StatePageProps) {
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={20}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                   <span className="font-semibold text-[#451a03]">
                     {stats.businessCount}
                   </span>
@@ -180,13 +181,17 @@ export default async function StatePage({ params }: StatePageProps) {
             {/* Empty State */}
             {cities.length === 0 && (
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
-                <MapPin size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <MapPin
+                  size={48}
+                  weight="light"
+                  className="mx-auto text-[#92400e] mb-4"
+                />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No Cities Available Yet
                 </h3>
                 <p className="text-[#78350f] max-w-md mx-auto">
-                  We&apos;re expanding to more cities in {state.name} soon. Check back
-                  later for new locations.
+                  We&apos;re expanding to more cities in {state.name} soon.
+                  Check back later for new locations.
                 </p>
               </div>
             )}
@@ -194,10 +199,7 @@ export default async function StatePage({ params }: StatePageProps) {
 
           {/* Related Treatments */}
           <section className="mt-12">
-            <RelatedLinks
-              title="Popular Treatments"
-              links={categoryLinks}
-            />
+            <RelatedLinks title="Popular Treatments" links={categoryLinks} />
           </section>
 
           {/* FAQ Section */}

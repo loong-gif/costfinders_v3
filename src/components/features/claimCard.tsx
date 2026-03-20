@@ -1,15 +1,15 @@
 'use client'
 
-import Link from 'next/link'
 import {
   Calendar,
-  Clock,
   ChatCircle,
   CheckCircle,
+  Clock,
   MapPin,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
+import { Card } from '@/components/ui/card'
 import { getAnonymousDealById, getBusinessById } from '@/lib/mock-data'
 import type { Claim } from '@/types/claim'
 
@@ -62,7 +62,11 @@ export function ClaimCard({ claim }: ClaimCardProps) {
   }
 
   return (
-    <Card variant="glass" padding="lg" className="hover:border-[#c4b09a] transition-colors">
+    <Card
+      variant="glass"
+      padding="lg"
+      className="hover:border-[#c4b09a] transition-colors"
+    >
       <div className="space-y-4">
         {/* Header: Deal title + Status */}
         <div className="flex items-start justify-between gap-4">
@@ -75,7 +79,11 @@ export function ClaimCard({ claim }: ClaimCardProps) {
             </Link>
             {business && (
               <div className="flex items-center gap-1.5 mt-1">
-                <MapPin size={14} weight="fill" className="text-[#92400e] shrink-0" />
+                <MapPin
+                  size={14}
+                  weight="fill"
+                  className="text-[#92400e] shrink-0"
+                />
                 <span className="text-sm text-[#78350f]">{business.name}</span>
               </div>
             )}
@@ -88,7 +96,11 @@ export function ClaimCard({ claim }: ClaimCardProps) {
           <div className="flex items-center gap-4 text-sm">
             {claim.preferredDate && (
               <div className="flex items-center gap-1.5 text-[#78350f]">
-                <Calendar size={16} weight="regular" className="text-[#92400e]" />
+                <Calendar
+                  size={16}
+                  weight="regular"
+                  className="text-[#92400e]"
+                />
                 <span>Requested: {formatDate(claim.preferredDate)}</span>
               </div>
             )}
@@ -102,28 +114,43 @@ export function ClaimCard({ claim }: ClaimCardProps) {
         )}
 
         {/* Booked Date/Time (if booked or completed) */}
-        {claim.bookedDate && (claim.status === 'booked' || claim.status === 'completed') && (
-          <div className="flex items-center gap-2 p-3 bg-emerald-600/10 rounded-xl">
-            <CheckCircle size={18} weight="fill" className="text-emerald-600 shrink-0" />
-            <div className="text-sm">
-              <span className="text-emerald-600 font-medium">
-                {claim.status === 'completed' ? 'Completed' : 'Booked'}: {formatDate(claim.bookedDate)}
-              </span>
-              {claim.bookedTime && (
-                <span className="text-emerald-600/80"> at {claim.bookedTime}</span>
-              )}
+        {claim.bookedDate &&
+          (claim.status === 'booked' || claim.status === 'completed') && (
+            <div className="flex items-center gap-2 p-3 bg-emerald-600/10 rounded-xl">
+              <CheckCircle
+                size={18}
+                weight="fill"
+                className="text-emerald-600 shrink-0"
+              />
+              <div className="text-sm">
+                <span className="text-emerald-600 font-medium">
+                  {claim.status === 'completed' ? 'Completed' : 'Booked'}:{' '}
+                  {formatDate(claim.bookedDate)}
+                </span>
+                {claim.bookedTime && (
+                  <span className="text-emerald-600/80">
+                    {' '}
+                    at {claim.bookedTime}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Business Response */}
         {claim.businessResponse && (
           <div className="p-3 bg-[#faf5ee] rounded-xl">
             <div className="flex items-start gap-2">
-              <ChatCircle size={16} weight="fill" className="text-[#92400e] mt-0.5 shrink-0" />
+              <ChatCircle
+                size={16}
+                weight="fill"
+                className="text-[#92400e] mt-0.5 shrink-0"
+              />
               <div>
                 <p className="text-xs text-[#92400e] mb-1">Business Response</p>
-                <p className="text-sm text-[#78350f]">{claim.businessResponse}</p>
+                <p className="text-sm text-[#78350f]">
+                  {claim.businessResponse}
+                </p>
               </div>
             </div>
           </div>

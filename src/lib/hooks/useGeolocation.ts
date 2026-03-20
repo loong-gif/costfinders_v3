@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export interface GeolocationState {
   coordinates: {
@@ -98,6 +98,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     mergedOptions.enableHighAccuracy,
     mergedOptions.timeout,
     mergedOptions.maximumAge,
+    getErrorMessage,
   ])
 
   const clearLocation = useCallback(() => {

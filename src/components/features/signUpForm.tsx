@@ -158,7 +158,7 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
           <button
             type="button"
             onClick={onSwitchToSignIn}
-            className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+            className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
           >
             Sign in
           </button>

@@ -1,7 +1,7 @@
 import { Calculator } from '@phosphor-icons/react/dist/ssr'
-import type { AnonymousDeal } from '@/types/deal'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
+import type { AnonymousDeal } from '@/types/deal'
 
 interface PricingBreakdownProps {
   deal: AnonymousDeal

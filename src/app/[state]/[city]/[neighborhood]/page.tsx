@@ -2,31 +2,33 @@ import { MapPin, Storefront, Tag } from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { DealCard } from '@/components/features/dealCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { DealCard } from '@/components/features/dealCard'
+import { getCityBySlug } from '@/lib/mock-data/cities'
+import {
+  getAllNeighborhoodsWithCityAndState,
+  getDealsForNeighborhood,
+  getNeighborhoodBySlug,
+  getNeighborhoodStats,
+} from '@/lib/mock-data/neighborhoods'
+import { getStateBySlug } from '@/lib/mock-data/states'
 import {
   buildCanonicalUrl,
   generateLocationMetadata,
   SITE_CONFIG,
 } from '@/lib/seo/metadata'
-import { getStateBySlug } from '@/lib/mock-data/states'
-import { getCityBySlug, slugifyNeighborhood } from '@/lib/mock-data/cities'
-import {
-  getNeighborhoodBySlug,
-  getNeighborhoodStats,
-  getDealsForNeighborhood,
-  getAllNeighborhoodsWithCityAndState,
-} from '@/lib/mock-data/neighborhoods'
 
 // Generate static params for all supported neighborhoods
 export async function generateStaticParams() {
   const neighborhoodsWithContext = getAllNeighborhoodsWithCityAndState()
-  return neighborhoodsWithContext.map(({ stateSlug, citySlug, neighborhoodSlug }) => ({
-    state: stateSlug,
-    city: citySlug,
-    neighborhood: neighborhoodSlug,
-  }))
+  return neighborhoodsWithContext.map(
+    ({ stateSlug, citySlug, neighborhoodSlug }) => ({
+      state: stateSlug,
+      city: citySlug,
+      neighborhood: neighborhoodSlug,
+    }),
+  )
 }
 
 // Generate metadata for SEO
@@ -37,10 +39,18 @@ interface MetadataProps {
 export async function generateMetadata({
   params,
 }: MetadataProps): Promise<Metadata> {
-  const { state: stateSlug, city: citySlug, neighborhood: neighborhoodSlug } = await params
+  const {
+    state: stateSlug,
+    city: citySlug,
+    neighborhood: neighborhoodSlug,
+  } = await params
   const state = getStateBySlug(stateSlug)
   const city = getCityBySlug(stateSlug, citySlug)
-  const neighborhood = getNeighborhoodBySlug(stateSlug, citySlug, neighborhoodSlug)
+  const neighborhood = getNeighborhoodBySlug(
+    stateSlug,
+    citySlug,
+    neighborhoodSlug,
+  )
 
   if (!state || !city || !neighborhood) {
     return {
@@ -64,11 +74,21 @@ interface NeighborhoodPageProps {
   params: Promise<{ state: string; city: string; neighborhood: string }>
 }
 
-export default async function NeighborhoodPage({ params }: NeighborhoodPageProps) {
-  const { state: stateSlug, city: citySlug, neighborhood: neighborhoodSlug } = await params
+export default async function NeighborhoodPage({
+  params,
+}: NeighborhoodPageProps) {
+  const {
+    state: stateSlug,
+    city: citySlug,
+    neighborhood: neighborhoodSlug,
+  } = await params
   const state = getStateBySlug(stateSlug)
   const city = getCityBySlug(stateSlug, citySlug)
-  const neighborhood = getNeighborhoodBySlug(stateSlug, citySlug, neighborhoodSlug)
+  const neighborhood = getNeighborhoodBySlug(
+    stateSlug,
+    citySlug,
+    neighborhoodSlug,
+  )
 
   if (!state || !city || !neighborhood) {
     notFound()
@@ -120,8 +140,9 @@ export default async function NeighborhoodPage({ params }: NeighborhoodPageProps
 
               <p className="text-[#78350f] max-w-2xl mb-6">
                 Browse exclusive medspa deals and aesthetic treatments in{' '}
-                {neighborhood.name}, {city.name}. Compare prices on Botox, fillers,
-                laser treatments, and facials from trusted local providers.
+                {neighborhood.name}, {city.name}. Compare prices on Botox,
+                fillers, laser treatments, and facials from trusted local
+                providers.
               </p>
 
               {/* Stats Row */}
@@ -134,7 +155,11 @@ export default async function NeighborhoodPage({ params }: NeighborhoodPageProps
                   <span className="text-[#78350f]">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Storefront size={20} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={20}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                   <span className="font-semibold text-[#451a03]">
                     {stats.businessCount}
                   </span>
@@ -159,7 +184,11 @@ export default async function NeighborhoodPage({ params }: NeighborhoodPageProps
             ) : (
               /* Empty State */
               <div className="text-center py-12 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]">
-                <Tag size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+                <Tag
+                  size={48}
+                  weight="light"
+                  className="mx-auto text-[#92400e] mb-4"
+                />
                 <h3 className="text-lg font-medium text-[#451a03] mb-2">
                   No Deals Available Yet
                 </h3>
@@ -169,7 +198,7 @@ export default async function NeighborhoodPage({ params }: NeighborhoodPageProps
                 </p>
                 <Link
                   href={`/${state.slug}/${citySlug}`}
-                  className="inline-flex items-center gap-2 text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
                 >
                   <MapPin size={18} weight="light" />
                   Browse other neighborhoods in {city.name}

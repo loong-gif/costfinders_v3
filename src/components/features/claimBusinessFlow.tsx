@@ -115,7 +115,12 @@ export function ClaimBusinessFlow({
 
     try {
       if (authView === 'signUp') {
-        await signUp(email, password, firstName || undefined, lastName || undefined)
+        await signUp(
+          email,
+          password,
+          firstName || undefined,
+          lastName || undefined,
+        )
       } else {
         await signIn(email, password)
       }
@@ -191,7 +196,11 @@ export function ClaimBusinessFlow({
 
           <div className="space-y-3 text-sm">
             <div className="flex items-start gap-3">
-              <MapPin size={18} weight="light" className="text-[#92400e] mt-0.5" />
+              <MapPin
+                size={18}
+                weight="light"
+                className="text-[#92400e] mt-0.5"
+              />
               <div className="text-[#78350f]">
                 <p>{business.address}</p>
                 <p>
@@ -206,7 +215,11 @@ export function ClaimBusinessFlow({
             </div>
 
             <div className="flex items-center gap-3">
-              <EnvelopeSimple size={18} weight="light" className="text-[#92400e]" />
+              <EnvelopeSimple
+                size={18}
+                weight="light"
+                className="text-[#92400e]"
+              />
               <span className="text-[#78350f]">{business.email}</span>
             </div>
           </div>
@@ -223,7 +236,7 @@ export function ClaimBusinessFlow({
           <button
             type="button"
             onClick={() => router.back()}
-            className="text-amber-800 hover:text-amber-300 transition-colors"
+            className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
           >
             Go back
           </button>
@@ -239,7 +252,9 @@ export function ClaimBusinessFlow({
         {/* Header */}
         <div className="text-center space-y-2">
           <h2 className="text-xl font-semibold text-[#451a03]">
-            {authView === 'signUp' ? 'Create your account' : 'Sign in to continue'}
+            {authView === 'signUp'
+              ? 'Create your account'
+              : 'Sign in to continue'}
           </h2>
           <p className="text-[#78350f]">
             {authView === 'signUp'
@@ -288,7 +303,11 @@ export function ClaimBusinessFlow({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder={authView === 'signUp' ? 'Min. 8 characters' : 'Enter your password'}
+            placeholder={
+              authView === 'signUp'
+                ? 'Min. 8 characters'
+                : 'Enter your password'
+            }
             error={errors.password}
             disabled={isSubmitting}
             required
@@ -333,7 +352,7 @@ export function ClaimBusinessFlow({
               <button
                 type="button"
                 onClick={() => setAuthView('signIn')}
-                className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
               >
                 Sign in
               </button>
@@ -344,7 +363,7 @@ export function ClaimBusinessFlow({
               <button
                 type="button"
                 onClick={() => setAuthView('signUp')}
-                className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
               >
                 Create one
               </button>
@@ -385,7 +404,11 @@ export function ClaimBusinessFlow({
             >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
-                  <EnvelopeSimple size={24} weight="light" className="text-amber-800" />
+                  <EnvelopeSimple
+                    size={24}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                 </div>
                 <div>
                   <p className="font-medium text-[#451a03]">Verify via email</p>
@@ -426,7 +449,11 @@ export function ClaimBusinessFlow({
           <div className="flex justify-center">
             <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
               {verifyMethod === 'email' ? (
-                <EnvelopeSimple size={32} weight="light" className="text-amber-800" />
+                <EnvelopeSimple
+                  size={32}
+                  weight="light"
+                  className="text-amber-800"
+                />
               ) : (
                 <Phone size={32} weight="light" className="text-amber-800" />
               )}
@@ -498,7 +525,9 @@ export function ClaimBusinessFlow({
           Claim submitted!
         </h2>
         <p className="text-[#78350f]">
-          Your claim for <span className="font-medium text-[#451a03]">{business.name}</span> is being reviewed.
+          Your claim for{' '}
+          <span className="font-medium text-[#451a03]">{business.name}</span> is
+          being reviewed.
         </p>
       </div>
 
@@ -509,10 +538,13 @@ export function ClaimBusinessFlow({
             <Shield size={20} weight="light" className="text-amber-800" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-medium text-[#451a03]">What happens next?</p>
+            <p className="text-sm font-medium text-[#451a03]">
+              What happens next?
+            </p>
             <p className="text-sm text-[#78350f]">
-              We&apos;ll verify your ownership and notify you within 24-48 hours.
-              Once approved, you&apos;ll have full access to manage your business profile.
+              We&apos;ll verify your ownership and notify you within 24-48
+              hours. Once approved, you&apos;ll have full access to manage your
+              business profile.
             </p>
           </div>
         </div>

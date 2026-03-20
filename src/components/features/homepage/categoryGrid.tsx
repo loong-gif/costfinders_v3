@@ -1,6 +1,13 @@
-import Link from 'next/link'
-import { Syringe, Drop, Sparkle, Heart, Stethoscope, FirstAid } from '@phosphor-icons/react/dist/ssr'
 import type { Icon } from '@phosphor-icons/react'
+import {
+  Drop,
+  FirstAid,
+  Heart,
+  Sparkle,
+  Stethoscope,
+  Syringe,
+} from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 
 interface CategoryGridProps {
   categories: { slug: string; label: string; count: number }[]

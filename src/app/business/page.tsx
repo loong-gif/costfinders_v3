@@ -49,7 +49,7 @@ export default function BusinessPage() {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-400/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-accent)]/5 via-transparent to-transparent" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
           <div className="text-center">
@@ -63,8 +63,8 @@ export default function BusinessPage() {
               Are you a business owner?
             </h1>
             <p className="text-lg sm:text-xl text-[#78350f] max-w-2xl mx-auto mb-12">
-              Join CostFinders to showcase your medspa, manage deals, and connect
-              with customers looking for your services.
+              Join CostFinders to showcase your medspa, manage deals, and
+              connect with customers looking for your services.
             </p>
 
             {/* CTA Buttons */}

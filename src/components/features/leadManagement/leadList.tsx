@@ -1,22 +1,26 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
 import {
-  MagnifyingGlass,
-  Envelope,
-  Clock,
   Calendar,
-  Users,
-  Tag,
+  Clock,
   Coins,
   CurrencyDollar,
+  Envelope,
+  MagnifyingGlass,
+  Tag,
+  Users,
 } from '@phosphor-icons/react'
-import type { Claim, ClaimStatus } from '@/types/claim'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
+import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
-import { getClaimsForBusiness, getDealByIdDynamic as getDealById, getBusinessCredits } from '@/lib/mock-data'
+import {
+  getBusinessCredits,
+  getClaimsForBusiness,
+  getDealByIdDynamic as getDealById,
+} from '@/lib/mock-data'
+import type { Claim } from '@/types/claim'
 
 type FilterTab = 'all' | 'pending' | 'active' | 'completed' | 'cancelled'
 
@@ -32,10 +36,12 @@ function formatRelativeTime(dateString: string): string {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
   if (diffHours < 1) return 'Just now'
-  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
   if (diffDays === 1) return 'Yesterday'
   if (diffDays < 7) return `${diffDays} days ago`
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) === 1 ? '' : 's'} ago`
+  if (diffDays < 30)
+    return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) === 1 ? '' : 's'} ago`
   return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) === 1 ? '' : 's'} ago`
 }
 
@@ -78,7 +84,8 @@ export function LeadList({ businessId }: LeadListProps) {
   // Get claims for this business
   const allClaims = useMemo(() => {
     return getClaimsForBusiness(businessId).sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
   }, [businessId])
 
@@ -106,9 +113,13 @@ export function LeadList({ businessId }: LeadListProps) {
     return {
       all: allClaims.length,
       pending: allClaims.filter((c) => c.status === 'pending').length,
-      active: allClaims.filter((c) => c.status === 'contacted' || c.status === 'booked').length,
+      active: allClaims.filter(
+        (c) => c.status === 'contacted' || c.status === 'booked',
+      ).length,
       completed: allClaims.filter((c) => c.status === 'completed').length,
-      cancelled: allClaims.filter((c) => c.status === 'cancelled' || c.status === 'expired').length,
+      cancelled: allClaims.filter(
+        (c) => c.status === 'cancelled' || c.status === 'expired',
+      ).length,
     }
   }, [allClaims])
 
@@ -133,7 +144,13 @@ export function LeadList({ businessId }: LeadListProps) {
         <div className="flex items-center gap-3">
           {/* Credits Indicator */}
           <div className="flex items-center gap-2 px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl">
-            <Coins size={18} weight="fill" className={credits.available < 5 ? 'text-amber-800' : 'text-amber-800'} />
+            <Coins
+              size={18}
+              weight="fill"
+              className={
+                credits.available < 5 ? 'text-amber-800' : 'text-amber-800'
+              }
+            />
             <span className="text-sm font-medium text-[#451a03]">
               {credits.available} Credits
             </span>
@@ -172,11 +189,7 @@ export function LeadList({ businessId }: LeadListProps) {
                 <span
                   className={`
                     px-1.5 py-0.5 rounded-md text-xs font-medium
-                    ${
-                      activeTab === tab.id
-                        ? 'bg-[#faf5ee]'
-                        : 'bg-[#faf5ee]'
-                    }
+                    ${activeTab === tab.id ? 'bg-[#faf5ee]' : 'bg-[#faf5ee]'}
                   `}
                 >
                   {tabCounts[tab.id]}
@@ -209,7 +222,11 @@ export function LeadList({ businessId }: LeadListProps) {
       {filteredClaims.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
-            <Envelope size={48} weight="light" className="mx-auto text-[#92400e] mb-4" />
+            <Envelope
+              size={48}
+              weight="light"
+              className="mx-auto text-[#92400e] mb-4"
+            />
             <h3 className="text-lg font-medium text-[#451a03] mb-2">
               {searchQuery ? 'No leads found' : 'No leads yet'}
             </h3>
@@ -242,7 +259,11 @@ export function LeadList({ businessId }: LeadListProps) {
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                          <Users size={20} weight="fill" className="text-amber-800" />
+                          <Users
+                            size={20}
+                            weight="fill"
+                            className="text-amber-800"
+                          />
                         </div>
                         <div className="min-w-0">
                           <p className="font-medium text-[#451a03]">
@@ -250,7 +271,11 @@ export function LeadList({ businessId }: LeadListProps) {
                           </p>
                           {deal && (
                             <div className="flex items-center gap-1.5 text-sm text-[#78350f]">
-                              <Tag size={14} weight="fill" className="text-[#92400e] flex-shrink-0" />
+                              <Tag
+                                size={14}
+                                weight="fill"
+                                className="text-[#92400e] flex-shrink-0"
+                              />
                               <span className="truncate">{deal.title}</span>
                             </div>
                           )}
@@ -262,13 +287,23 @@ export function LeadList({ businessId }: LeadListProps) {
                         <div className="flex items-center gap-4 text-sm text-[#78350f] ml-13">
                           {claim.preferredDate && (
                             <div className="flex items-center gap-1.5">
-                              <Calendar size={14} weight="regular" className="text-[#92400e]" />
-                              <span>Requested: {formatDate(claim.preferredDate)}</span>
+                              <Calendar
+                                size={14}
+                                weight="regular"
+                                className="text-[#92400e]"
+                              />
+                              <span>
+                                Requested: {formatDate(claim.preferredDate)}
+                              </span>
                             </div>
                           )}
                           {claim.preferredTime && (
                             <div className="flex items-center gap-1.5">
-                              <Clock size={14} weight="regular" className="text-[#92400e]" />
+                              <Clock
+                                size={14}
+                                weight="regular"
+                                className="text-[#92400e]"
+                              />
                               <span>{claim.preferredTime}</span>
                             </div>
                           )}

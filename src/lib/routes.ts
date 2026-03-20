@@ -17,32 +17,86 @@ export const routeConfig: Record<string, RouteConfig> = {
 
   // Business dashboard
   '/business/dashboard': { label: 'Dashboard' },
-  '/business/dashboard/deals': { label: 'Deals', parent: '/business/dashboard' },
-  '/business/dashboard/deals/new': { label: 'New Deal', parent: '/business/dashboard/deals' },
-  '/business/dashboard/deals/sponsored': { label: 'Sponsored', parent: '/business/dashboard/deals' },
-  '/business/dashboard/leads': { label: 'Leads', parent: '/business/dashboard' },
-  '/business/dashboard/leads/pricing': { label: 'Lead Pricing', parent: '/business/dashboard/leads' },
-  '/business/dashboard/messages': { label: 'Messages', parent: '/business/dashboard' },
-  '/business/dashboard/analytics': { label: 'Analytics', parent: '/business/dashboard' },
-  '/business/dashboard/profile': { label: 'Profile', parent: '/business/dashboard' },
-  '/business/dashboard/settings': { label: 'Settings', parent: '/business/dashboard' },
-  '/business/dashboard/settings/integrations': { label: 'Integrations', parent: '/business/dashboard/settings' },
-  '/business/dashboard/settings/account': { label: 'Account & Billing', parent: '/business/dashboard/settings' },
-  '/business/dashboard/settings/account/checkout': { label: 'Checkout', parent: '/business/dashboard/settings/account' },
+  '/business/dashboard/deals': {
+    label: 'Deals',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/deals/new': {
+    label: 'New Deal',
+    parent: '/business/dashboard/deals',
+  },
+  '/business/dashboard/deals/sponsored': {
+    label: 'Sponsored',
+    parent: '/business/dashboard/deals',
+  },
+  '/business/dashboard/leads': {
+    label: 'Leads',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/leads/pricing': {
+    label: 'Lead Pricing',
+    parent: '/business/dashboard/leads',
+  },
+  '/business/dashboard/messages': {
+    label: 'Messages',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/analytics': {
+    label: 'Analytics',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/profile': {
+    label: 'Profile',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/settings': {
+    label: 'Settings',
+    parent: '/business/dashboard',
+  },
+  '/business/dashboard/settings/integrations': {
+    label: 'Integrations',
+    parent: '/business/dashboard/settings',
+  },
+  '/business/dashboard/settings/account': {
+    label: 'Account & Billing',
+    parent: '/business/dashboard/settings',
+  },
+  '/business/dashboard/settings/account/checkout': {
+    label: 'Checkout',
+    parent: '/business/dashboard/settings/account',
+  },
 
   // Admin dashboard
   '/admin/dashboard': { label: 'Dashboard' },
   '/admin/dashboard/deals': { label: 'Deals', parent: '/admin/dashboard' },
   '/admin/dashboard/users': { label: 'Users', parent: '/admin/dashboard' },
-  '/admin/dashboard/businesses': { label: 'Businesses', parent: '/admin/dashboard' },
+  '/admin/dashboard/businesses': {
+    label: 'Businesses',
+    parent: '/admin/dashboard',
+  },
   '/admin/dashboard/content': { label: 'Content', parent: '/admin/dashboard' },
-  '/admin/dashboard/content/categories': { label: 'Categories', parent: '/admin/dashboard/content' },
-  '/admin/dashboard/content/locations': { label: 'Locations', parent: '/admin/dashboard/content' },
-  '/admin/dashboard/content/treatments': { label: 'Treatments', parent: '/admin/dashboard/content' },
+  '/admin/dashboard/content/categories': {
+    label: 'Categories',
+    parent: '/admin/dashboard/content',
+  },
+  '/admin/dashboard/content/locations': {
+    label: 'Locations',
+    parent: '/admin/dashboard/content',
+  },
+  '/admin/dashboard/content/treatments': {
+    label: 'Treatments',
+    parent: '/admin/dashboard/content',
+  },
   '/admin/dashboard/reports': { label: 'Reports', parent: '/admin/dashboard' },
-  '/admin/dashboard/monetization': { label: 'Monetization', parent: '/admin/dashboard' },
+  '/admin/dashboard/monetization': {
+    label: 'Monetization',
+    parent: '/admin/dashboard',
+  },
   '/admin/dashboard/data': { label: 'Data', parent: '/admin/dashboard' },
-  '/admin/dashboard/settings': { label: 'Settings', parent: '/admin/dashboard' },
+  '/admin/dashboard/settings': {
+    label: 'Settings',
+    parent: '/admin/dashboard',
+  },
 }
 
 export interface Breadcrumb {

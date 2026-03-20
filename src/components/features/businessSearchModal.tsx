@@ -84,7 +84,12 @@ export function BusinessSearchModal({
   )
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Find Your Business" size="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Find Your Business"
+      size="lg"
+    >
       <div className="space-y-6">
         {/* Search Input */}
         <div className="relative">

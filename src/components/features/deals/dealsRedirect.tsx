@@ -1,11 +1,11 @@
 'use client'
 
+import { MapPin, Spinner } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { MapPin, Spinner } from '@phosphor-icons/react'
-import { useLocation } from '@/lib/context/locationContext'
-import { slugifyCity, DEFAULT_CITY } from '@/lib/mock-data'
 import { Card } from '@/components/ui/card'
+import { useLocation } from '@/lib/context/locationContext'
+import { DEFAULT_CITY, slugifyCity } from '@/lib/mock-data'
 
 /**
  * DealsRedirect - Detects user location and redirects to city deals page
@@ -19,7 +19,7 @@ export function DealsRedirect() {
   const router = useRouter()
   const { state: locationState, detectLocation } = useLocation()
   const [status, setStatus] = useState<'detecting' | 'redirecting' | 'error'>(
-    'detecting'
+    'detecting',
   )
 
   useEffect(() => {
@@ -60,7 +60,12 @@ export function DealsRedirect() {
     }
 
     handleRedirect()
-  }, [locationState.current.city, locationState.current.type, detectLocation, router])
+  }, [
+    locationState.current.city,
+    locationState.current.type,
+    detectLocation,
+    router,
+  ])
 
   // Watch for location changes after detection
   useEffect(() => {
@@ -78,7 +83,11 @@ export function DealsRedirect() {
   return (
     <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto mt-20">
-        <Card variant="glass" padding="lg" className="text-center bg-[#f2ebe2] border-[#d4c4b0] shadow-md">
+        <Card
+          variant="glass"
+          padding="lg"
+          className="text-center bg-[#f2ebe2] border-[#d4c4b0] shadow-md"
+        >
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center">
               {status === 'detecting' ? (

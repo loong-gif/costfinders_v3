@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { Sora, Manrope } from 'next/font/google'
+import { Manrope, Sora } from 'next/font/google'
+import { GlobalHeader } from '@/components/layout/globalHeader'
+import { OrganizationSchema, WebsiteSchema } from '@/components/seo'
 import { AuthProvider } from '@/lib/context/authContext'
 import { BusinessAuthProvider } from '@/lib/context/businessAuthContext'
 import { ClaimsProvider } from '@/lib/context/claimsContext'
 import { LocationProvider } from '@/lib/context/locationContext'
-import { GlobalHeader } from '@/components/layout/globalHeader'
-import { WebsiteSchema, OrganizationSchema } from '@/components/seo'
 import './globals.css'
 
 const sora = Sora({
@@ -26,7 +26,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || 'https://www.costfinders.ai'
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://www.costfinders.ai',
   ),
   title: {
     default: 'CostFinders - Compare MedSpa Prices',
@@ -63,7 +63,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} ${manrope.variable} font-sans antialiased`}>
+      <body
+        className={`${sora.variable} ${manrope.variable} font-sans antialiased`}
+      >
         <WebsiteSchema />
         <OrganizationSchema />
         <LocationProvider>

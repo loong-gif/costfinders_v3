@@ -32,7 +32,7 @@ export default function CreateBusinessPage() {
 
   // Page state
   const [pageView, setPageView] = useState<PageView>(
-    state.isAuthenticated ? 'form' : 'auth'
+    state.isAuthenticated ? 'form' : 'auth',
   )
   const [createdBusiness, setCreatedBusiness] = useState<Business | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -94,7 +94,7 @@ export default function CreateBusinessPage() {
           email,
           password,
           firstName || undefined,
-          lastName || undefined
+          lastName || undefined,
         )
       } else {
         await signIn(email, password)
@@ -217,7 +217,9 @@ export default function CreateBusinessPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={
-                  authView === 'signUp' ? 'Min. 8 characters' : 'Enter your password'
+                  authView === 'signUp'
+                    ? 'Min. 8 characters'
+                    : 'Enter your password'
                 }
                 error={errors.password}
                 disabled={isSubmitting}
@@ -263,7 +265,7 @@ export default function CreateBusinessPage() {
                   <button
                     type="button"
                     onClick={() => setAuthView('signIn')}
-                    className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                    className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
                   >
                     Sign in
                   </button>
@@ -274,7 +276,7 @@ export default function CreateBusinessPage() {
                   <button
                     type="button"
                     onClick={() => setAuthView('signUp')}
-                    className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                    className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
                   >
                     Create one
                   </button>
@@ -307,7 +309,11 @@ export default function CreateBusinessPage() {
             {/* Success icon */}
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-emerald-400/20 flex items-center justify-center">
-                <CheckCircle size={48} weight="fill" className="text-emerald-600" />
+                <CheckCircle
+                  size={48}
+                  weight="fill"
+                  className="text-emerald-600"
+                />
               </div>
             </div>
 
@@ -328,7 +334,11 @@ export default function CreateBusinessPage() {
             <Card className="p-6 text-left">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                  <Storefront size={24} weight="light" className="text-amber-800" />
+                  <Storefront
+                    size={24}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-semibold text-[#451a03]">
@@ -347,8 +357,8 @@ export default function CreateBusinessPage() {
             {/* Info note */}
             <div className="p-4 rounded-xl bg-amber-800/5 border border-amber-800/15">
               <p className="text-sm text-[#78350f]">
-                Your listing will go live after a brief review. You&apos;ll have full
-                access to manage your profile and create deals.
+                Your listing will go live after a brief review. You&apos;ll have
+                full access to manage your profile and create deals.
               </p>
             </div>
 

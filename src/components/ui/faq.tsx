@@ -40,9 +40,7 @@ export function Faq({ items, className = '' }: FaqProps) {
                 className="text-[#92400e] group-open:rotate-180 transition-transform flex-shrink-0"
               />
             </summary>
-            <div className="px-4 pb-4 text-[#78350f]">
-              {item.answer}
-            </div>
+            <div className="px-4 pb-4 text-[#78350f]">{item.answer}</div>
           </details>
         ))}
       </div>

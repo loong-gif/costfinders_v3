@@ -1,8 +1,8 @@
 'use client'
 
 import { Check, Star } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 
 type TierType = 'free' | 'paid'
 
@@ -13,13 +13,16 @@ interface PricingTierCardProps {
   highlighted?: boolean
 }
 
-const tierDetails: Record<TierType, {
-  name: string
-  price: string
-  period: string
-  description: string
-  features: string[]
-}> = {
+const tierDetails: Record<
+  TierType,
+  {
+    name: string
+    price: string
+    period: string
+    description: string
+    features: string[]
+  }
+> = {
   free: {
     name: 'Free',
     price: '$0',
@@ -94,7 +97,9 @@ export function PricingTierCard({
 
         {/* Price */}
         <div className="mb-6">
-          <span className="text-4xl font-bold text-[#451a03]">{details.price}</span>
+          <span className="text-4xl font-bold text-[#451a03]">
+            {details.price}
+          </span>
           <span className="text-[#78350f]">{details.period}</span>
         </div>
 
@@ -128,7 +133,11 @@ export function PricingTierCard({
             }
           `}
         >
-          {isCurrentTier ? 'Current Plan' : tier === 'paid' ? 'Upgrade Now' : 'Select Plan'}
+          {isCurrentTier
+            ? 'Current Plan'
+            : tier === 'paid'
+              ? 'Upgrade Now'
+              : 'Select Plan'}
         </button>
       </div>
     </Card>

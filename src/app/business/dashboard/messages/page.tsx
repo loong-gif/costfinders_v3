@@ -1,18 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import {
   ChatCircle,
-  MagnifyingGlass,
-  User,
-  Tag,
   EnvelopeSimple,
+  MagnifyingGlass,
+  Tag,
+  User,
 } from '@phosphor-icons/react'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { getConversationsForBusiness, type ConversationSummary } from '@/lib/mock-data'
-import { Card } from '@/components/ui/card'
+import Link from 'next/link'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+import {
+  type ConversationSummary,
+  getConversationsForBusiness,
+} from '@/lib/mock-data'
 
 type FilterTab = 'all' | 'unread'
 
@@ -76,7 +79,7 @@ export default function MessagesPage() {
     filteredConversations = filteredConversations.filter(
       (c) =>
         c.dealTitle.toLowerCase().includes(query) ||
-        getCustomerDisplay(c.claim.consumerId).toLowerCase().includes(query)
+        getCustomerDisplay(c.claim.consumerId).toLowerCase().includes(query),
     )
   }
 
@@ -142,7 +145,11 @@ export default function MessagesPage() {
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full bg-[#f2ebe2] mx-auto mb-4 flex items-center justify-center">
-              <EnvelopeSimple size={32} weight="light" className="text-[#92400e]" />
+              <EnvelopeSimple
+                size={32}
+                weight="light"
+                className="text-[#92400e]"
+              />
             </div>
             <h3 className="text-lg font-semibold text-[#451a03] mb-2">
               {searchQuery
@@ -161,7 +168,11 @@ export default function MessagesPage() {
           </div>
         </Card>
       ) : (
-        <Card variant="glass" padding="none" className="divide-y divide-[#d4c4b0]">
+        <Card
+          variant="glass"
+          padding="none"
+          className="divide-y divide-[#d4c4b0]"
+        >
           {filteredConversations.map((conversation) => (
             <ConversationRow
               key={conversation.claim.id}
@@ -174,7 +185,11 @@ export default function MessagesPage() {
   )
 }
 
-function ConversationRow({ conversation }: { conversation: ConversationSummary }) {
+function ConversationRow({
+  conversation,
+}: {
+  conversation: ConversationSummary
+}) {
   const { claim, dealTitle, lastMessage, unreadCount } = conversation
   const hasUnread = unreadCount > 0
 
@@ -210,7 +225,11 @@ function ConversationRow({ conversation }: { conversation: ConversationSummary }
           </div>
 
           <div className="flex items-center gap-2 mb-1.5">
-            <Tag size={14} weight="fill" className="text-[#92400e] flex-shrink-0" />
+            <Tag
+              size={14}
+              weight="fill"
+              className="text-[#92400e] flex-shrink-0"
+            />
             <span className="text-sm text-[#92400e] truncate">{dealTitle}</span>
           </div>
 

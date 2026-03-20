@@ -1,9 +1,9 @@
 'use client'
 
-import { use } from 'react'
 import { notFound } from 'next/navigation'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+import { use } from 'react'
 import { LeadDetail } from '@/components/features/leadManagement/leadDetail'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { getClaimByIdDynamic, getClaimsForBusiness } from '@/lib/mock-data'
 
 interface LeadDetailPageProps {

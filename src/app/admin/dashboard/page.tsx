@@ -1,23 +1,23 @@
 'use client'
 
-import Link from 'next/link'
 import {
-  Tag,
-  Clock,
-  Storefront,
-  Users,
-  MagnifyingGlass,
-  Gear,
-  FileText,
   ArrowRight,
+  Clock,
+  FileText,
+  Gear,
+  MagnifyingGlass,
+  Storefront,
+  Tag,
+  Users,
 } from '@phosphor-icons/react'
-import { useAdminAuth } from '@/lib/context/adminAuthContext'
-import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { deals } from '@/lib/mock-data/deals'
+import { Card } from '@/components/ui/card'
+import { useAdminAuth } from '@/lib/context/adminAuthContext'
 import { businesses } from '@/lib/mock-data/businesses'
 import { consumers } from '@/lib/mock-data/consumers'
+import { deals } from '@/lib/mock-data/deals'
 
 // Inline mock data for pending moderation items
 const pendingModerationDeals = [
@@ -48,7 +48,11 @@ const pendingModerationDeals = [
 ]
 
 interface MetricCardProps {
-  icon: React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>
+  icon: React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
   value: string | number
   label: string
   highlight?: boolean
@@ -106,7 +110,9 @@ export default function AdminDashboardPage() {
   // Calculate metrics
   const totalDeals = deals.filter((d) => d.isActive).length
   const pendingModeration = 8 // Mock count as specified
-  const activeBusinesses = businesses.filter((b) => b.status === 'active').length
+  const activeBusinesses = businesses.filter(
+    (b) => b.status === 'active',
+  ).length
   const totalConsumers = consumers.length
 
   const metrics = [
@@ -174,7 +180,9 @@ export default function AdminDashboardPage() {
 
       {/* Platform Overview Metrics */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Platform Overview</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Platform Overview
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map((metric) => (
             <MetricCard
@@ -191,7 +199,9 @@ export default function AdminDashboardPage() {
       {/* Moderation Queue Preview */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-[#451a03]">Pending Review</h2>
+          <h2 className="text-lg font-semibold text-[#451a03]">
+            Pending Review
+          </h2>
           <Link href="/admin/dashboard/deals">
             <Button variant="ghost" size="sm" className="gap-1">
               View All <ArrowRight size={16} />
@@ -207,11 +217,17 @@ export default function AdminDashboardPage() {
               >
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
-                    <FileText size={20} weight="fill" className="text-amber-800" />
+                    <FileText
+                      size={20}
+                      weight="fill"
+                      className="text-amber-800"
+                    />
                   </div>
                   <div>
                     <p className="font-medium text-[#451a03]">{deal.title}</p>
-                    <p className="text-sm text-[#78350f]">{deal.businessName}</p>
+                    <p className="text-sm text-[#78350f]">
+                      {deal.businessName}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -232,18 +248,26 @@ export default function AdminDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Quick Actions
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action) => (
             <Link key={action.href} href={action.href}>
               <Card variant="glass" padding="md" hover className="group h-full">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
-                    <action.icon size={20} weight="fill" className="text-amber-800" />
+                    <action.icon
+                      size={20}
+                      weight="fill"
+                      className="text-amber-800"
+                    />
                   </div>
                   <div>
                     <p className="font-medium text-[#451a03]">{action.title}</p>
-                    <p className="text-sm text-[#78350f]">{action.description}</p>
+                    <p className="text-sm text-[#78350f]">
+                      {action.description}
+                    </p>
                   </div>
                 </div>
               </Card>

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { PaperPlaneRight, ChatCircle } from '@phosphor-icons/react'
-import type { Message } from '@/types/message'
-import { Card } from '@/components/ui/card'
+import { ChatCircle, PaperPlaneRight } from '@phosphor-icons/react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { getMessagesForClaim, sendMessage } from '@/lib/mock-data'
+import type { Message } from '@/types/message'
 
 interface MessageThreadProps {
   claimId: string
@@ -49,7 +49,7 @@ export function MessageThread({
   currentUserType,
 }: MessageThreadProps) {
   const [messages, setMessages] = useState<Message[]>(() =>
-    getMessagesForClaim(claimId)
+    getMessagesForClaim(claimId),
   )
   const [newMessage, setNewMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
@@ -72,7 +72,12 @@ export function MessageThread({
 
     // Simulate send delay
     setTimeout(() => {
-      const sent = sendMessage(claimId, newMessage.trim(), currentUserType, currentUserId)
+      const sent = sendMessage(
+        claimId,
+        newMessage.trim(),
+        currentUserType,
+        currentUserId,
+      )
       setMessages((prev) => [...prev, sent])
       setNewMessage('')
       setIsSending(false)

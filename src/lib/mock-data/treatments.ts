@@ -179,7 +179,9 @@ export function getTreatments(): Treatment[] {
   return [...treatments]
 }
 
-export function getTreatmentsByCategory(categoryId: TreatmentCategory): Treatment[] {
+export function getTreatmentsByCategory(
+  categoryId: TreatmentCategory,
+): Treatment[] {
   return treatments.filter((t) => t.categoryId === categoryId)
 }
 
@@ -187,9 +189,7 @@ export function getTreatmentById(id: string): Treatment | undefined {
   return treatments.find((t) => t.id === id)
 }
 
-export function createTreatment(
-  data: Omit<Treatment, 'id'>
-): Treatment {
+export function createTreatment(data: Omit<Treatment, 'id'>): Treatment {
   const newTreatment: Treatment = {
     ...data,
     id: `treatment-${Date.now()}`,
@@ -200,7 +200,7 @@ export function createTreatment(
 
 export function updateTreatment(
   id: string,
-  data: Partial<Omit<Treatment, 'id'>>
+  data: Partial<Omit<Treatment, 'id'>>,
 ): Treatment | undefined {
   const index = treatments.findIndex((t) => t.id === id)
   if (index === -1) return undefined

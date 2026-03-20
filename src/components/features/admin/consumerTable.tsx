@@ -1,17 +1,21 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
 import {
+  CheckCircle,
   DotsThreeVertical,
   Eye,
   Prohibit,
-  CheckCircle,
   User,
 } from '@phosphor-icons/react'
-import type { Consumer, ConsumerStatus, VerificationStatus } from '@/types/consumer'
+import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { getClaimsCountForConsumer } from '@/lib/mock-data/consumers'
+import type {
+  Consumer,
+  ConsumerStatus,
+  VerificationStatus,
+} from '@/types/consumer'
 
 interface ConsumerTableProps {
   consumers: Consumer[]
@@ -26,7 +30,6 @@ function getVerificationBadge(status: VerificationStatus) {
       return <Badge variant="info">Email Verified</Badge>
     case 'phone_verified':
       return <Badge variant="info">Phone Verified</Badge>
-    case 'unverified':
     default:
       return <Badge variant="default">Unverified</Badge>
   }
@@ -64,7 +67,10 @@ function ActionsDropdown({
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -127,14 +133,19 @@ function ActionsDropdown({
   )
 }
 
-export function ConsumerTable({ consumers, onStatusChange }: ConsumerTableProps) {
+export function ConsumerTable({
+  consumers,
+  onStatusChange,
+}: ConsumerTableProps) {
   if (consumers.length === 0) {
     return (
       <Card variant="glass" padding="lg" className="text-center py-12">
         <div className="w-16 h-16 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-4">
           <User size={32} weight="light" className="text-amber-800" />
         </div>
-        <h3 className="text-lg font-semibold text-[#451a03] mb-2">No users found</h3>
+        <h3 className="text-lg font-semibold text-[#451a03] mb-2">
+          No users found
+        </h3>
         <p className="text-[#78350f]">
           Try adjusting your search or filter criteria
         </p>
@@ -184,7 +195,11 @@ export function ConsumerTable({ consumers, onStatusChange }: ConsumerTableProps)
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-amber-800/8 flex items-center justify-center">
-                      <User size={16} weight="fill" className="text-amber-800" />
+                      <User
+                        size={16}
+                        weight="fill"
+                        className="text-amber-800"
+                      />
                     </div>
                     <span className="text-sm font-medium text-[#451a03]">
                       {consumer.firstName || consumer.lastName
@@ -194,7 +209,9 @@ export function ConsumerTable({ consumers, onStatusChange }: ConsumerTableProps)
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f]">{consumer.email}</span>
+                  <span className="text-sm text-[#78350f]">
+                    {consumer.email}
+                  </span>
                 </td>
                 <td className="px-6 py-4">
                   <span className="text-sm text-[#78350f]">
@@ -216,7 +233,10 @@ export function ConsumerTable({ consumers, onStatusChange }: ConsumerTableProps)
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <ActionsDropdown consumer={consumer} onStatusChange={onStatusChange} />
+                  <ActionsDropdown
+                    consumer={consumer}
+                    onStatusChange={onStatusChange}
+                  />
                 </td>
               </tr>
             ))}
@@ -242,7 +262,10 @@ export function ConsumerTable({ consumers, onStatusChange }: ConsumerTableProps)
                   <p className="text-sm text-[#78350f]">{consumer.email}</p>
                 </div>
               </div>
-              <ActionsDropdown consumer={consumer} onStatusChange={onStatusChange} />
+              <ActionsDropdown
+                consumer={consumer}
+                onStatusChange={onStatusChange}
+              />
             </div>
 
             <div className="flex flex-wrap items-center gap-2">

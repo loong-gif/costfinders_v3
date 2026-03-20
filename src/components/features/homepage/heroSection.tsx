@@ -1,7 +1,6 @@
-import Link from 'next/link'
 import { MagnifyingGlass, TrendUp } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import type { CategoryMapping } from '@/lib/data/categories'
 
 interface HeroSectionProps {
   categories: { slug: string; label: string; count: number }[]

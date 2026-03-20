@@ -1,8 +1,8 @@
 'use client'
 
 import { Heart } from '@phosphor-icons/react'
-import { useAuth } from '@/lib/context/authContext'
 import { Tooltip } from '@/components/ui/tooltip'
+import { useAuth } from '@/lib/context/authContext'
 
 interface SaveButtonProps {
   dealId: string
@@ -10,7 +10,11 @@ interface SaveButtonProps {
   className?: string
 }
 
-export function SaveButton({ dealId, size = 'sm', className = '' }: SaveButtonProps) {
+export function SaveButton({
+  dealId,
+  size = 'sm',
+  className = '',
+}: SaveButtonProps) {
   const { state, saveDeal, unsaveDeal, isDealSaved } = useAuth()
   const { isAuthenticated } = state
   const saved = isDealSaved(dealId)

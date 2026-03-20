@@ -154,7 +154,7 @@ export function PhoneVerification({
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-amber-800 hover:text-amber-300 transition-colors font-medium"
+                className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
               >
                 Resend
               </button>

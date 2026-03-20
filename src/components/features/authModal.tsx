@@ -94,7 +94,12 @@ export function AuthModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" mobileVariant="fullscreen">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="md"
+      mobileVariant="fullscreen"
+    >
       <div className="space-y-6">
         {/* Header */}
         <h2 className="text-xl font-semibold text-[#451a03] text-center">

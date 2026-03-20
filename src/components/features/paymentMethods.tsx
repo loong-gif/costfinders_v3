@@ -1,10 +1,10 @@
 'use client'
 
+import { CreditCard, Plus, Star, Trash } from '@phosphor-icons/react'
 import { useState } from 'react'
-import { CreditCard, Plus, Trash, Star } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Modal } from '@/components/ui/modal'
 import type { PaymentMethod } from '@/lib/mock-data/billing'
 
@@ -78,7 +78,9 @@ export function PaymentMethods({
           <div className="w-12 h-12 rounded-xl bg-[#f2ebe2] flex items-center justify-center mx-auto mb-3">
             <CreditCard size={24} weight="light" className="text-[#92400e]" />
           </div>
-          <h3 className="font-medium text-[#451a03] mb-1">No payment methods</h3>
+          <h3 className="font-medium text-[#451a03] mb-1">
+            No payment methods
+          </h3>
           <p className="text-sm text-[#78350f] mb-4">
             Add a payment method to manage your subscription.
           </p>
@@ -95,7 +97,9 @@ export function PaymentMethods({
     <>
       <Card variant="glass" padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-[#451a03]">Payment Methods</h3>
+          <h3 className="text-lg font-semibold text-[#451a03]">
+            Payment Methods
+          </h3>
           <Button variant="secondary" size="sm" onClick={onAddMethod}>
             <Plus size={16} weight="bold" />
             Add New
@@ -108,9 +112,10 @@ export function PaymentMethods({
               key={method.id}
               className={`
                 p-4 rounded-xl border transition-colors
-                ${method.isDefault
-                  ? 'bg-amber-800/5 border-amber-800/15'
-                  : 'bg-[#f2ebe2] border-[#d4c4b0] hover:border-[#c4b09a]'
+                ${
+                  method.isDefault
+                    ? 'bg-amber-800/5 border-amber-800/15'
+                    : 'bg-[#f2ebe2] border-[#d4c4b0] hover:border-[#c4b09a]'
                 }
               `}
             >
@@ -125,7 +130,9 @@ export function PaymentMethods({
                       {getBrandName(method.brand)} ending in {method.last4}
                     </span>
                     {method.isDefault && (
-                      <Badge variant="brand" size="sm">Default</Badge>
+                      <Badge variant="brand" size="sm">
+                        Default
+                      </Badge>
                     )}
                   </div>
                   <p className="text-xs text-[#92400e] mt-0.5">
@@ -177,7 +184,8 @@ export function PaymentMethods({
       >
         <div className="space-y-4">
           <p className="text-[#78350f]">
-            Are you sure you want to remove this payment method? This action cannot be undone.
+            Are you sure you want to remove this payment method? This action
+            cannot be undone.
           </p>
           <div className="flex gap-3">
             <Button

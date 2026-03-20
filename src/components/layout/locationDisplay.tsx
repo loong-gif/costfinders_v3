@@ -1,8 +1,8 @@
 'use client'
 
 import { CaretDown, MapPin } from '@phosphor-icons/react'
-import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useCallback, useState } from 'react'
 import { LocationSelector } from '@/components/features/locationSelector'
 import { Modal } from '@/components/ui/modal'
 import { useLocation } from '@/lib/context/locationContext'

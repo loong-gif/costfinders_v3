@@ -5,7 +5,7 @@ import type { City, LocationArea } from '@/types/location'
 import { businesses } from './businesses'
 import { claims, consumers } from './consumers'
 import { deals, toAnonymousDeal } from './deals'
-import { cities, locationAreas, getCityBySlug, slugifyCity } from './locations'
+import { cities, getCityBySlug, locationAreas } from './locations'
 
 // Deal queries
 export function getActiveDeals(): AnonymousDeal[] {
@@ -169,7 +169,7 @@ export function filterDeals(filters: DealFilters): AnonymousDeal[] {
 
   if (filters.city) {
     const cityBusinessIds = businesses
-      .filter((b) => b.city.toLowerCase() === filters.city!.toLowerCase())
+      .filter((b) => b.city.toLowerCase() === filters.city?.toLowerCase())
       .map((b) => b.id)
     result = result.filter((d) => {
       const deal = deals.find((dd) => dd.id === d.id)

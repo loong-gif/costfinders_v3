@@ -1,12 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import Link from 'next/link'
 import { ClipboardText, MagnifyingGlass } from '@phosphor-icons/react'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
 import { ClaimCard } from '@/components/features/claimCard'
 import { Button } from '@/components/ui/button'
-import { useClaims } from '@/lib/context/claimsContext'
 import { useAuth } from '@/lib/context/authContext'
+import { useClaims } from '@/lib/context/claimsContext'
 import { getClaimsByConsumer } from '@/lib/mock-data'
 import type { Claim, ClaimStatus } from '@/types/claim'
 
@@ -66,13 +66,14 @@ export default function ClaimsPage() {
 
     // Sort by createdAt descending (newest first)
     return Array.from(claimMap.values()).sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
   }, [claimsState.claims, authState.user])
 
   const filteredClaims = useMemo(
     () => filterClaimsByTab(allClaims, activeTab),
-    [allClaims, activeTab]
+    [allClaims, activeTab],
   )
 
   // Loading state
@@ -82,12 +83,18 @@ export default function ClaimsPage() {
         <div className="h-8 w-32 bg-[#faf5ee] rounded-lg animate-pulse" />
         <div className="flex gap-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-10 w-20 bg-[#faf5ee] rounded-xl animate-pulse" />
+            <div
+              key={i}
+              className="h-10 w-20 bg-[#faf5ee] rounded-xl animate-pulse"
+            />
           ))}
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 bg-[#faf5ee] rounded-2xl animate-pulse" />
+            <div
+              key={i}
+              className="h-40 bg-[#faf5ee] rounded-2xl animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -139,7 +146,11 @@ export default function ClaimsPage() {
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <div className="w-20 h-20 rounded-full bg-[#faf5ee] flex items-center justify-center mb-6">
-            <ClipboardText size={40} weight="light" className="text-[#92400e]" />
+            <ClipboardText
+              size={40}
+              weight="light"
+              className="text-[#92400e]"
+            />
           </div>
           <h2 className="text-xl font-semibold text-[#451a03] mb-2">
             {activeTab === 'all' ? 'No claims yet' : `No ${activeTab} claims`}

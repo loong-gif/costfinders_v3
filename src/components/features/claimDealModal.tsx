@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { CheckCircle, X } from '@phosphor-icons/react'
-import { Modal } from '@/components/ui/modal'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
 import { useClaims } from '@/lib/context/claimsContext'
 
 interface ClaimDealModalProps {
@@ -116,7 +116,11 @@ export function ClaimDealModal({
           /* Success State */
           <div className="flex flex-col items-center text-center py-8">
             <div className="w-20 h-20 rounded-full bg-emerald-600/10 flex items-center justify-center mb-6">
-              <CheckCircle size={48} weight="fill" className="text-emerald-600" />
+              <CheckCircle
+                size={48}
+                weight="fill"
+                className="text-emerald-600"
+              />
             </div>
             <h3 className="text-lg font-semibold text-[#451a03] mb-2">
               Claim submitted!
@@ -216,11 +220,7 @@ export function ClaimDealModal({
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1"
-              >
+              <Button type="submit" disabled={isSubmitting} className="flex-1">
                 {isSubmitting ? 'Submitting...' : 'Submit Claim'}
               </Button>
             </div>

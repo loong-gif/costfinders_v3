@@ -1,4 +1,9 @@
-import { ArrowRight, MapPin, Storefront, Tag } from '@phosphor-icons/react/dist/ssr'
+import {
+  ArrowRight,
+  MapPin,
+  Storefront,
+  Tag,
+} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 interface CityCardProps {

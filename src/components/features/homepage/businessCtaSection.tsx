@@ -1,5 +1,5 @@
+import { ArrowRight, Storefront } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
-import { Storefront, ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@/components/ui/button'
 
 export function BusinessCtaSection() {

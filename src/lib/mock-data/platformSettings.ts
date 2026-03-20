@@ -1,6 +1,6 @@
 // Platform-wide pricing and monetization settings mock data
 
-import { getCreditPackages, type CreditPackage } from './leadPricing'
+import { type CreditPackage, getCreditPackages } from './leadPricing'
 
 export type BillingStatus = 'active' | 'suspended' | 'comped'
 
@@ -58,16 +58,66 @@ export interface BillingOverride {
 
 // Default tier features
 const tierFeatures: TierFeature[] = [
-  { id: 'feat-1', name: 'Basic listing', freeIncluded: true, paidIncluded: true },
-  { id: 'feat-2', name: 'Deal posting (3/month)', freeIncluded: true, paidIncluded: true },
-  { id: 'feat-3', name: 'Lead notifications', freeIncluded: true, paidIncluded: true },
-  { id: 'feat-4', name: 'Unlimited deals', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-5', name: 'Priority placement', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-6', name: 'Analytics dashboard', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-7', name: 'Verified badge', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-8', name: 'Featured deals', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-9', name: 'Custom branding', freeIncluded: false, paidIncluded: true },
-  { id: 'feat-10', name: 'Dedicated support', freeIncluded: false, paidIncluded: true },
+  {
+    id: 'feat-1',
+    name: 'Basic listing',
+    freeIncluded: true,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-2',
+    name: 'Deal posting (3/month)',
+    freeIncluded: true,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-3',
+    name: 'Lead notifications',
+    freeIncluded: true,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-4',
+    name: 'Unlimited deals',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-5',
+    name: 'Priority placement',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-6',
+    name: 'Analytics dashboard',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-7',
+    name: 'Verified badge',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-8',
+    name: 'Featured deals',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-9',
+    name: 'Custom branding',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
+  {
+    id: 'feat-10',
+    name: 'Dedicated support',
+    freeIncluded: false,
+    paidIncluded: true,
+  },
 ]
 
 // Platform settings singleton
@@ -95,7 +145,7 @@ let platformSettings: PlatformSettings = {
 }
 
 // Mock billing overrides history
-let billingOverrides: BillingOverride[] = [
+const billingOverrides: BillingOverride[] = [
   {
     id: 'override-1',
     businessId: 'biz-3',
@@ -143,7 +193,7 @@ export function getPlatformSettings(): PlatformSettings {
  * Update platform settings
  */
 export function updatePlatformSettings(
-  updates: Partial<Omit<PlatformSettings, 'updatedAt'>>
+  updates: Partial<Omit<PlatformSettings, 'updatedAt'>>,
 ): PlatformSettings {
   platformSettings = {
     ...platformSettings,
@@ -168,7 +218,9 @@ export function updateTierPricing(pricing: Partial<TierPricing>): TierPricing {
 /**
  * Update lead pricing by tier
  */
-export function updateLeadPricing(pricing: Partial<LeadPricingByTier>): LeadPricingByTier {
+export function updateLeadPricing(
+  pricing: Partial<LeadPricingByTier>,
+): LeadPricingByTier {
   platformSettings.leadPricingByTier = {
     ...platformSettings.leadPricingByTier,
     ...pricing,
@@ -181,7 +233,7 @@ export function updateLeadPricing(pricing: Partial<LeadPricingByTier>): LeadPric
  * Update sponsorship pricing
  */
 export function updateSponsorshipPricing(
-  pricing: Partial<SponsorshipPricing>
+  pricing: Partial<SponsorshipPricing>,
 ): SponsorshipPricing {
   platformSettings.sponsorshipPricing = {
     ...platformSettings.sponsorshipPricing,
@@ -206,18 +258,23 @@ export function updatePlatformFees(fees: Partial<PlatformFees>): PlatformFees {
 /**
  * Get billing overrides for a specific business
  */
-export function getBillingOverridesForBusiness(businessId: string): BillingOverride[] {
+export function getBillingOverridesForBusiness(
+  businessId: string,
+): BillingOverride[] {
   return billingOverrides
     .filter((o) => o.businessId === businessId)
     .map((o) => ({ ...o }))
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
 }
 
 /**
  * Create a new billing override
  */
 export function createBillingOverride(
-  override: Omit<BillingOverride, 'id' | 'createdAt'>
+  override: Omit<BillingOverride, 'id' | 'createdAt'>,
 ): BillingOverride {
   const newOverride: BillingOverride = {
     ...override,
@@ -231,9 +288,12 @@ export function createBillingOverride(
 /**
  * Calculate effective price after fees
  */
-export function calculateEffectivePrice(
-  basePrice: number
-): { total: number; transactionFee: number; platformFee: number; netRevenue: number } {
+export function calculateEffectivePrice(basePrice: number): {
+  total: number
+  transactionFee: number
+  platformFee: number
+  netRevenue: number
+} {
   const { transactionFee, platformFee } = platformSettings.platformFees
   const transactionFeeAmount = basePrice * transactionFee
   const platformFeeAmount = basePrice * platformFee

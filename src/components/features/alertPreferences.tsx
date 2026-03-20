@@ -1,6 +1,6 @@
 'use client'
 
-import { EnvelopeSimple, DeviceMobile, Warning } from '@phosphor-icons/react'
+import { DeviceMobile, EnvelopeSimple, Warning } from '@phosphor-icons/react'
 import { useAuth } from '@/lib/context/authContext'
 
 interface ToggleSwitchProps {

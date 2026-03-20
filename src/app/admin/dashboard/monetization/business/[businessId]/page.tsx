@@ -1,17 +1,12 @@
 'use client'
 
-import { use } from 'react'
+import { CurrencyDollar, Storefront, Tag, Users } from '@phosphor-icons/react'
 import Link from 'next/link'
-import {
-  Storefront,
-  Tag,
-  CurrencyDollar,
-  Users,
-} from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { use } from 'react'
+import { BusinessBillingOverride } from '@/components/features/admin/businessBillingOverride'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { BusinessBillingOverride } from '@/components/features/admin/businessBillingOverride'
+import { Card } from '@/components/ui/card'
 import { getBusinessById } from '@/lib/mock-data/businesses'
 import { getDealsForBusiness } from '@/lib/mock-data/deals'
 import type { BusinessTier } from '@/types/business'
@@ -26,7 +21,6 @@ function getTierBadge(tier: BusinessTier) {
       return <Badge variant="brand">Paid</Badge>
     case 'free':
       return <Badge variant="info">Free</Badge>
-    case 'unclaimed':
     default:
       return <Badge variant="default">Unclaimed</Badge>
   }
@@ -39,25 +33,27 @@ export default function BusinessBillingPage({ params }: PageProps) {
   if (!business) {
     return (
       <Card variant="glass" padding="lg" className="text-center py-12">
-          <div className="w-16 h-16 mx-auto rounded-full bg-red-400/10 flex items-center justify-center mb-4">
-            <Storefront size={32} className="text-red-600" />
-          </div>
-          <h2 className="text-xl font-semibold text-[#451a03] mb-2">
-            Business Not Found
-          </h2>
-          <p className="text-[#78350f] mb-6">
-            The business you&apos;re looking for doesn&apos;t exist or has been removed.
-          </p>
-          <Link href="/admin/dashboard/businesses">
-            <Button>View All Businesses</Button>
-          </Link>
-        </Card>
+        <div className="w-16 h-16 mx-auto rounded-full bg-red-400/10 flex items-center justify-center mb-4">
+          <Storefront size={32} className="text-red-600" />
+        </div>
+        <h2 className="text-xl font-semibold text-[#451a03] mb-2">
+          Business Not Found
+        </h2>
+        <p className="text-[#78350f] mb-6">
+          The business you&apos;re looking for doesn&apos;t exist or has been
+          removed.
+        </p>
+        <Link href="/admin/dashboard/businesses">
+          <Button>View All Businesses</Button>
+        </Link>
+      </Card>
     )
   }
 
   // Mock stats
   const deals = getDealsForBusiness(business.id)
-  const mockCredits = business.tier === 'paid' ? 45 : business.tier === 'free' ? 12 : 0
+  const mockCredits =
+    business.tier === 'paid' ? 45 : business.tier === 'free' ? 12 : 0
   const mockLeadsReceived = Math.floor(Math.random() * 50) + 10
 
   return (
@@ -70,7 +66,9 @@ export default function BusinessBillingPage({ params }: PageProps) {
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-[#451a03]">{business.name}</h1>
+              <h1 className="text-2xl font-bold text-[#451a03]">
+                {business.name}
+              </h1>
               {getTierBadge(business.tier)}
             </div>
             <p className="text-[#78350f]">
@@ -103,7 +101,11 @@ export default function BusinessBillingPage({ params }: PageProps) {
         <Card variant="glass" padding="md">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-600/10 flex items-center justify-center">
-              <CurrencyDollar size={20} weight="fill" className="text-emerald-600" />
+              <CurrencyDollar
+                size={20}
+                weight="fill"
+                className="text-emerald-600"
+              />
             </div>
             <div>
               <p className="text-sm text-[#78350f]">Credits Available</p>
@@ -119,7 +121,9 @@ export default function BusinessBillingPage({ params }: PageProps) {
             </div>
             <div>
               <p className="text-sm text-[#78350f]">Leads Received</p>
-              <p className="text-xl font-bold text-[#451a03]">{mockLeadsReceived}</p>
+              <p className="text-xl font-bold text-[#451a03]">
+                {mockLeadsReceived}
+              </p>
             </div>
           </div>
         </Card>

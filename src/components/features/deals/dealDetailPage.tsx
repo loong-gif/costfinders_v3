@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   ArrowLeft,
   Clock,
@@ -6,11 +5,12 @@ import {
   MapPin,
   Star,
 } from '@phosphor-icons/react/dist/ssr'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { BlurredImage } from '@/components/patterns/blurredImage'
-import { PricingBreakdown } from '@/components/features/pricingBreakdown'
+import Link from 'next/link'
 import { DealSidebar } from '@/components/features/dealSidebar'
+import { PricingBreakdown } from '@/components/features/pricingBreakdown'
+import { BlurredImage } from '@/components/patterns/blurredImage'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import type { AnonymousDeal, Deal, TreatmentCategory } from '@/types/deal'
 
 const categoryLabels: Record<TreatmentCategory, string> = {
@@ -94,14 +94,22 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Clock size={16} weight="regular" className="text-[#92400e]" />
+                  <Clock
+                    size={16}
+                    weight="regular"
+                    className="text-[#92400e]"
+                  />
                   <span>{deal.claimCount} claimed</span>
                 </div>
               </div>
             </div>
 
             {/* Description */}
-            <Card variant="glass" padding="lg" className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md">
+            <Card
+              variant="glass"
+              padding="lg"
+              className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md"
+            >
               <h2 className="text-lg font-semibold text-[#451a03] mb-3">
                 About This Deal
               </h2>
@@ -111,7 +119,11 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
             </Card>
 
             {/* Terms */}
-            <Card variant="glass" padding="lg" className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md">
+            <Card
+              variant="glass"
+              padding="lg"
+              className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md"
+            >
               <div className="flex items-center gap-2 mb-3">
                 <Info size={20} weight="regular" className="text-[#92400e]" />
                 <h2 className="text-lg font-semibold text-[#451a03]">
@@ -134,7 +146,11 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
 
             {/* Verified Badge */}
             {deal.businessTier === 'paid' && (
-              <Card variant="glass" padding="md" className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md">
+              <Card
+                variant="glass"
+                padding="md"
+                className="bg-[#f2ebe2] border-[#d4c4b0] shadow-md"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center">
                     <Star size={20} weight="fill" className="text-amber-800" />

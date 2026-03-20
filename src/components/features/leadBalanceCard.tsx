@@ -1,9 +1,12 @@
 'use client'
 
-import { Users, Warning, Plus, ChartBar } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { ChartBar, Plus, Users, Warning } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
-import type { BusinessCredits, CreditUsageHistory } from '@/lib/mock-data/leadPricing'
+import { Card } from '@/components/ui/card'
+import type {
+  BusinessCredits,
+  CreditUsageHistory,
+} from '@/lib/mock-data/leadPricing'
 
 interface LeadBalanceCardProps {
   credits: BusinessCredits
@@ -16,9 +19,10 @@ export function LeadBalanceCard({
   usageHistory,
   onBuyMore,
 }: LeadBalanceCardProps) {
-  const usagePercent = credits.totalPurchased > 0
-    ? Math.round((credits.used / credits.totalPurchased) * 100)
-    : 0
+  const usagePercent =
+    credits.totalPurchased > 0
+      ? Math.round((credits.used / credits.totalPurchased) * 100)
+      : 0
   const isLowBalance = credits.available < 5
 
   // Calculate this month and last month usage from history
@@ -34,7 +38,9 @@ export function LeadBalanceCard({
             <Users size={24} weight="fill" className="text-amber-800" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[#451a03]">Your lead balance</h3>
+            <h3 className="text-lg font-semibold text-[#451a03]">
+              Your lead balance
+            </h3>
             <p className="text-sm text-[#78350f]">Prepaid leads available</p>
           </div>
         </div>
@@ -49,7 +55,9 @@ export function LeadBalanceCard({
       <div className="bg-[#f2ebe2] rounded-xl p-4 mb-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm text-[#78350f]">Available leads</span>
-          <span className="text-3xl font-bold text-[#451a03]">{credits.available}</span>
+          <span className="text-3xl font-bold text-[#451a03]">
+            {credits.available}
+          </span>
         </div>
 
         {/* Progress Bar */}
@@ -70,11 +78,18 @@ export function LeadBalanceCard({
       {isLowBalance && (
         <div className="bg-amber-800/5 border border-amber-800/15 rounded-xl p-4 mb-4">
           <div className="flex items-start gap-3">
-            <Warning size={20} weight="fill" className="text-amber-800 flex-shrink-0 mt-0.5" />
+            <Warning
+              size={20}
+              weight="fill"
+              className="text-amber-800 flex-shrink-0 mt-0.5"
+            />
             <div>
-              <p className="text-sm font-medium text-[#451a03]">Running low on leads</p>
+              <p className="text-sm font-medium text-[#451a03]">
+                Running low on leads
+              </p>
               <p className="text-xs text-[#78350f] mt-1">
-                You have only {credits.available} leads left. Buy more to keep receiving inquiries without interruption.
+                You have only {credits.available} leads left. Buy more to keep
+                receiving inquiries without interruption.
               </p>
             </div>
           </div>
@@ -89,14 +104,18 @@ export function LeadBalanceCard({
               <ChartBar size={14} weight="fill" className="text-[#92400e]" />
               <span className="text-xs text-[#92400e]">This month</span>
             </div>
-            <p className="text-lg font-semibold text-[#451a03]">{thisMonthUsage} leads</p>
+            <p className="text-lg font-semibold text-[#451a03]">
+              {thisMonthUsage} leads
+            </p>
           </div>
           <div className="bg-[#f2ebe2] rounded-xl p-3">
             <div className="flex items-center gap-2 mb-1">
               <ChartBar size={14} weight="light" className="text-[#92400e]" />
               <span className="text-xs text-[#92400e]">Last month</span>
             </div>
-            <p className="text-lg font-semibold text-[#451a03]">{lastMonthUsage} leads</p>
+            <p className="text-lg font-semibold text-[#451a03]">
+              {lastMonthUsage} leads
+            </p>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 
 export interface RelatedLink {
   label: string
@@ -17,7 +17,11 @@ interface RelatedLinksProps {
  * RelatedLinks - Cross-navigation component for SEO internal linking
  * Renders a titled section with links to related pages
  */
-export function RelatedLinks({ title, links, className = '' }: RelatedLinksProps) {
+export function RelatedLinks({
+  title,
+  links,
+  className = '',
+}: RelatedLinksProps) {
   if (links.length === 0) return null
 
   return (
@@ -35,7 +39,9 @@ export function RelatedLinks({ title, links, className = '' }: RelatedLinksProps
                 {link.label}
               </span>
               {link.description && (
-                <p className="text-sm text-[#92400e] mt-1">{link.description}</p>
+                <p className="text-sm text-[#92400e] mt-1">
+                  {link.description}
+                </p>
               )}
             </div>
             <ArrowRight

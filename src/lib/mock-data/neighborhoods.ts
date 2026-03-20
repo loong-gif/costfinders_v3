@@ -1,14 +1,14 @@
-import type { LocationArea } from '@/types/location'
 import type { AnonymousDeal } from '@/types/deal'
-import {
-  getAreaById,
-  getAreasForCity,
-  getCityById,
-} from './locations'
-import { getStateBySlug, SUPPORTED_STATES } from './states'
-import { getCityBySlug, slugifyNeighborhood, getAllCitiesWithState } from './cities'
-import { deals, toAnonymousDeal } from './deals'
+import type { LocationArea } from '@/types/location'
 import { businesses } from './businesses'
+import {
+  getAllCitiesWithState,
+  getCityBySlug,
+  slugifyNeighborhood,
+} from './cities'
+import { deals, toAnonymousDeal } from './deals'
+import { getAreaById, getAreasForCity } from './locations'
+import { getStateBySlug } from './states'
 
 /**
  * Get a neighborhood by state slug, city slug, and neighborhood slug
@@ -20,7 +20,7 @@ import { businesses } from './businesses'
 export function getNeighborhoodBySlug(
   stateSlug: string,
   citySlug: string,
-  neighborhoodSlug: string
+  neighborhoodSlug: string,
 ): LocationArea | undefined {
   // Validate state exists
   const state = getStateBySlug(stateSlug)
@@ -35,7 +35,7 @@ export function getNeighborhoodBySlug(
   return neighborhoods.find(
     (area) =>
       area.isActive !== false &&
-      slugifyNeighborhood(area.name) === neighborhoodSlug
+      slugifyNeighborhood(area.name) === neighborhoodSlug,
   )
 }
 
@@ -53,7 +53,7 @@ export function getNeighborhoodStats(neighborhoodId: string): {
 
   // Find businesses in this neighborhood
   const neighborhoodBusinesses = businesses.filter(
-    (b) => b.locationArea === neighborhood.name
+    (b) => b.locationArea === neighborhood.name,
   )
 
   const businessCount = neighborhoodBusinesses.length
@@ -61,7 +61,7 @@ export function getNeighborhoodStats(neighborhoodId: string): {
 
   // Find active deals for these businesses
   const neighborhoodDeals = deals.filter(
-    (d) => businessIds.includes(d.businessId) && d.isActive
+    (d) => businessIds.includes(d.businessId) && d.isActive,
   )
 
   return {
@@ -75,20 +75,22 @@ export function getNeighborhoodStats(neighborhoodId: string): {
  * @param neighborhoodId - LocationArea ID (e.g., 'area-austin-downtown')
  * @returns Array of AnonymousDeal objects
  */
-export function getDealsForNeighborhood(neighborhoodId: string): AnonymousDeal[] {
+export function getDealsForNeighborhood(
+  neighborhoodId: string,
+): AnonymousDeal[] {
   const neighborhood = getAreaById(neighborhoodId)
   if (!neighborhood) return []
 
   // Find businesses in this neighborhood
   const neighborhoodBusinesses = businesses.filter(
-    (b) => b.locationArea === neighborhood.name
+    (b) => b.locationArea === neighborhood.name,
   )
 
   const businessIds = neighborhoodBusinesses.map((b) => b.id)
 
   // Find active deals for these businesses
   const neighborhoodDeals = deals.filter(
-    (d) => businessIds.includes(d.businessId) && d.isActive
+    (d) => businessIds.includes(d.businessId) && d.isActive,
   )
 
   // Convert to anonymous deals
@@ -122,7 +124,9 @@ export function getAllNeighborhoodsWithCityAndState(): Array<{
 
   for (const { city, stateCode, stateSlug, citySlug } of citiesWithState) {
     const neighborhoods = getAreasForCity(city.id)
-    const activeNeighborhoods = neighborhoods.filter((n) => n.isActive !== false)
+    const activeNeighborhoods = neighborhoods.filter(
+      (n) => n.isActive !== false,
+    )
 
     for (const neighborhood of activeNeighborhoods) {
       result.push({

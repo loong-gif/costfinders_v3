@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { ArrowLeft, FloppyDisk, Sparkle } from '@phosphor-icons/react'
-import type { Deal, TreatmentCategory } from '@/types/deal'
-import { Card } from '@/components/ui/card'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { createDeal, updateDeal } from '@/lib/mock-data/deals'
+import type { Deal, TreatmentCategory } from '@/types/deal'
 
 const categories: { value: TreatmentCategory; label: string }[] = [
   { value: 'botox', label: 'Botox' },
@@ -99,11 +99,13 @@ function getInitialFormData(deal?: Deal): DealFormData {
 export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<DealFormData>(() =>
-    getInitialFormData(existingDeal)
+    getInitialFormData(existingDeal),
   )
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitStatus, setSubmitStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle')
 
   // Update form when existingDeal changes (for edit mode)
   useEffect(() => {
@@ -113,7 +115,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
   }, [existingDeal])
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value, type } = e.target
     const checked = (e.target as HTMLInputElement).checked
@@ -144,7 +148,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
     // Original price required and must be a number
     const originalPrice = Number.parseFloat(formData.originalPrice)
-    if (!formData.originalPrice || Number.isNaN(originalPrice) || originalPrice <= 0) {
+    if (
+      !formData.originalPrice ||
+      Number.isNaN(originalPrice) ||
+      originalPrice <= 0
+    ) {
       newErrors.originalPrice = 'Original price must be a positive number'
     }
 
@@ -168,7 +176,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
     if (!formData.validUntil) {
       newErrors.validUntil = 'End date is required'
     }
-    if (formData.validFrom && formData.validUntil && formData.validFrom > formData.validUntil) {
+    if (
+      formData.validFrom &&
+      formData.validUntil &&
+      formData.validFrom > formData.validUntil
+    ) {
       newErrors.validUntil = 'End date must be after start date'
     }
 
@@ -195,7 +207,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
       const originalPrice = Number.parseFloat(formData.originalPrice)
       const dealPrice = Number.parseFloat(formData.dealPrice)
-      const discountPercent = Math.round(((originalPrice - dealPrice) / originalPrice) * 100)
+      const discountPercent = Math.round(
+        ((originalPrice - dealPrice) / originalPrice) * 100,
+      )
 
       const dealData = {
         businessId,
@@ -206,8 +220,12 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
         dealPrice,
         discountPercent,
         unit: formData.unit.trim(),
-        minUnits: formData.minUnits ? Number.parseInt(formData.minUnits, 10) : undefined,
-        maxUnits: formData.maxUnits ? Number.parseInt(formData.maxUnits, 10) : undefined,
+        minUnits: formData.minUnits
+          ? Number.parseInt(formData.minUnits, 10)
+          : undefined,
+        maxUnits: formData.maxUnits
+          ? Number.parseInt(formData.maxUnits, 10)
+          : undefined,
         validFrom: `${formData.validFrom}T00:00:00Z`,
         validUntil: `${formData.validUntil}T23:59:59Z`,
         termsAndConditions: formData.termsAndConditions.trim(),
@@ -305,7 +323,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 `}
               />
               {errors.description && (
-                <p className="mt-1.5 text-xs text-red-600">{errors.description}</p>
+                <p className="mt-1.5 text-xs text-red-600">
+                  {errors.description}
+                </p>
               )}
             </div>
 
@@ -412,7 +432,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                   ((Number.parseFloat(formData.originalPrice) -
                     Number.parseFloat(formData.dealPrice)) /
                     Number.parseFloat(formData.originalPrice)) *
-                    100
+                    100,
                 )}
                 % discount
               </p>
@@ -422,7 +442,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Validity */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Validity Period</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+            Validity Period
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Valid From"
@@ -480,7 +502,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 `}
               />
               {errors.termsAndConditions && (
-                <p className="mt-1.5 text-xs text-red-600">{errors.termsAndConditions}</p>
+                <p className="mt-1.5 text-xs text-red-600">
+                  {errors.termsAndConditions}
+                </p>
               )}
             </div>
 
@@ -498,7 +522,9 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Settings */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Settings</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+            Settings
+          </h2>
           <div className="space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -538,7 +564,8 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
         {submitStatus === 'success' && (
           <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
             <p className="text-green-400">
-              Deal {mode === 'create' ? 'created' : 'updated'} successfully! Redirecting...
+              Deal {mode === 'create' ? 'created' : 'updated'} successfully!
+              Redirecting...
             </p>
           </div>
         )}
@@ -546,7 +573,8 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
         {submitStatus === 'error' && (
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
             <p className="text-red-600">
-              Failed to {mode === 'create' ? 'create' : 'update'} deal. Please try again.
+              Failed to {mode === 'create' ? 'create' : 'update'} deal. Please
+              try again.
             </p>
           </div>
         )}

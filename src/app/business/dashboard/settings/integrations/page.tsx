@@ -1,18 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import {
   ArrowLeft,
-  CalendarBlank,
   Calendar,
-  SquareLogo,
-  Code,
+  CalendarBlank,
   CheckCircle,
+  Code,
   EnvelopeSimple,
+  SquareLogo,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import Link from 'next/link'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 
 const integrations = [
@@ -37,7 +37,8 @@ const integrations = [
   {
     id: 'webhook',
     name: 'Custom Webhook',
-    description: 'Set up custom integration via webhook for your existing systems',
+    description:
+      'Set up custom integration via webhook for your existing systems',
     icon: Code,
   },
 ]
@@ -79,8 +80,8 @@ export default function IntegrationsPage() {
           Scheduling Integrations
         </h1>
         <p className="text-[#78350f] mt-1">
-          Connect your scheduling software to automatically sync appointments from
-          claimed deals.
+          Connect your scheduling software to automatically sync appointments
+          from claimed deals.
         </p>
       </div>
 
@@ -130,7 +131,11 @@ export default function IntegrationsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
-              <EnvelopeSimple size={24} weight="light" className="text-amber-800" />
+              <EnvelopeSimple
+                size={24}
+                weight="light"
+                className="text-amber-800"
+              />
             </div>
           </div>
           <div className="flex-1">
@@ -138,8 +143,8 @@ export default function IntegrationsPage() {
               Get notified when integrations launch
             </h3>
             <p className="text-sm text-[#78350f] mt-0.5">
-              Be the first to know when we add support for your favorite scheduling
-              tools.
+              Be the first to know when we add support for your favorite
+              scheduling tools.
             </p>
           </div>
         </div>
@@ -163,7 +168,11 @@ export default function IntegrationsPage() {
                 required
               />
             </div>
-            <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+            <Button
+              type="submit"
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+            >
               Notify Me
             </Button>
           </form>

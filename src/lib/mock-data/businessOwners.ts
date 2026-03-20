@@ -78,9 +78,11 @@ export const businessOwners: BusinessOwner[] = [
 /**
  * Find a business owner by email
  */
-export function findBusinessOwnerByEmail(email: string): BusinessOwner | undefined {
+export function findBusinessOwnerByEmail(
+  email: string,
+): BusinessOwner | undefined {
   return businessOwners.find(
-    (owner) => owner.email.toLowerCase() === email.toLowerCase()
+    (owner) => owner.email.toLowerCase() === email.toLowerCase(),
   )
 }
 

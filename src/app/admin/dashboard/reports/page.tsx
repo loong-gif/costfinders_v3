@@ -1,28 +1,32 @@
 'use client'
 
-import { useState } from 'react'
 import {
+  ArrowUp,
+  CheckCircle,
+  Clock,
   CurrencyDollar,
+  Star,
   Storefront,
   Ticket,
-  Users,
-  TrendUp,
   TrendDown,
-  Clock,
-  CheckCircle,
-  Star,
-  ArrowUp,
+  TrendUp,
+  Users,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import { businesses } from '@/lib/mock-data/businesses'
-import { consumers } from '@/lib/mock-data/consumers'
 import { getCategories } from '@/lib/mock-data/categories'
+import { consumers } from '@/lib/mock-data/consumers'
 
 type TimePeriod = '7d' | '30d' | '90d' | 'all'
 
 interface MetricCardProps {
-  icon: React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>
+  icon: React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
   value: string | number
   label: string
   trend?: {
@@ -44,7 +48,11 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
               trend.positive ? 'text-emerald-600' : 'text-red-600'
             }`}
           >
-            {trend.positive ? <TrendUp size={16} weight="bold" /> : <TrendDown size={16} weight="bold" />}
+            {trend.positive ? (
+              <TrendUp size={16} weight="bold" />
+            ) : (
+              <TrendDown size={16} weight="bold" />
+            )}
             {trend.value}
           </div>
         )}
@@ -59,16 +67,66 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
 
 // Mock platform activity data
 const platformActivities = [
-  { id: 'act-1', type: 'new_business', description: 'New business registered: Serene Spa', timestamp: '2 hours ago' },
-  { id: 'act-2', type: 'new_claim', description: 'New claim submitted for Botox Special', timestamp: '3 hours ago' },
-  { id: 'act-3', type: 'deal_approved', description: 'Deal approved: Summer Facial Package', timestamp: '4 hours ago' },
-  { id: 'act-4', type: 'tier_upgrade', description: 'Elite Aesthetics upgraded to Premium', timestamp: '5 hours ago' },
-  { id: 'act-5', type: 'new_user', description: 'New user registered: Emily S.', timestamp: '6 hours ago' },
-  { id: 'act-6', type: 'deal_approved', description: 'Deal approved: Lip Filler Special', timestamp: '8 hours ago' },
-  { id: 'act-7', type: 'new_claim', description: 'New claim submitted for HydraFacial', timestamp: '10 hours ago' },
-  { id: 'act-8', type: 'new_business', description: 'New business registered: Glow Up Studio', timestamp: '12 hours ago' },
-  { id: 'act-9', type: 'new_user', description: 'New user registered: Michael R.', timestamp: '14 hours ago' },
-  { id: 'act-10', type: 'tier_upgrade', description: 'Luxe Skin Studio upgraded to Free tier', timestamp: '1 day ago' },
+  {
+    id: 'act-1',
+    type: 'new_business',
+    description: 'New business registered: Serene Spa',
+    timestamp: '2 hours ago',
+  },
+  {
+    id: 'act-2',
+    type: 'new_claim',
+    description: 'New claim submitted for Botox Special',
+    timestamp: '3 hours ago',
+  },
+  {
+    id: 'act-3',
+    type: 'deal_approved',
+    description: 'Deal approved: Summer Facial Package',
+    timestamp: '4 hours ago',
+  },
+  {
+    id: 'act-4',
+    type: 'tier_upgrade',
+    description: 'Elite Aesthetics upgraded to Premium',
+    timestamp: '5 hours ago',
+  },
+  {
+    id: 'act-5',
+    type: 'new_user',
+    description: 'New user registered: Emily S.',
+    timestamp: '6 hours ago',
+  },
+  {
+    id: 'act-6',
+    type: 'deal_approved',
+    description: 'Deal approved: Lip Filler Special',
+    timestamp: '8 hours ago',
+  },
+  {
+    id: 'act-7',
+    type: 'new_claim',
+    description: 'New claim submitted for HydraFacial',
+    timestamp: '10 hours ago',
+  },
+  {
+    id: 'act-8',
+    type: 'new_business',
+    description: 'New business registered: Glow Up Studio',
+    timestamp: '12 hours ago',
+  },
+  {
+    id: 'act-9',
+    type: 'new_user',
+    description: 'New user registered: Michael R.',
+    timestamp: '14 hours ago',
+  },
+  {
+    id: 'act-10',
+    type: 'tier_upgrade',
+    description: 'Luxe Skin Studio upgraded to Free tier',
+    timestamp: '1 day ago',
+  },
 ]
 
 function getActivityIcon(type: string) {
@@ -88,7 +146,9 @@ function getActivityIcon(type: string) {
   }
 }
 
-function getActivityBadgeVariant(type: string): 'success' | 'info' | 'warning' | 'default' {
+function getActivityBadgeVariant(
+  type: string,
+): 'success' | 'info' | 'warning' | 'default' {
   switch (type) {
     case 'new_business':
       return 'info'
@@ -126,7 +186,9 @@ export default function AdminReportsPage() {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('30d')
 
   // Calculate metrics from mock data
-  const activeBusinesses = businesses.filter((b) => b.status === 'active').length
+  const activeBusinesses = businesses.filter(
+    (b) => b.status === 'active',
+  ).length
   const totalConsumers = consumers.length
 
   // Get categories for top performing section
@@ -134,9 +196,19 @@ export default function AdminReportsPage() {
 
   // Mock business activity data
   const businessActivity = [
-    { metric: 'New Businesses', thisPeriod: 12, change: '+25%', positive: true },
+    {
+      metric: 'New Businesses',
+      thisPeriod: 12,
+      change: '+25%',
+      positive: true,
+    },
     { metric: 'New Claims', thisPeriod: 156, change: '+18%', positive: true },
-    { metric: 'Deal Views', thisPeriod: '4.2K', change: '+34%', positive: true },
+    {
+      metric: 'Deal Views',
+      thisPeriod: '4.2K',
+      change: '+34%',
+      positive: true,
+    },
     { metric: 'Messages Sent', thisPeriod: 89, change: '-5%', positive: false },
   ]
 
@@ -186,7 +258,9 @@ export default function AdminReportsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-[#451a03]">Platform Reports</h1>
-        <p className="text-[#78350f] mt-1">Platform-wide performance and analytics</p>
+        <p className="text-[#78350f] mt-1">
+          Platform-wide performance and analytics
+        </p>
       </div>
 
       {/* Time Period Selector */}
@@ -209,7 +283,9 @@ export default function AdminReportsPage() {
 
       {/* Platform Health Metrics */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Platform Health</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Platform Health
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map((metric) => (
             <MetricCard
@@ -227,30 +303,49 @@ export default function AdminReportsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Business Activity */}
         <div>
-          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Business Activity</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+            Business Activity
+          </h2>
           <Card variant="glass" padding="none">
             {/* Desktop Table View */}
             <div className="hidden sm:block">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[#d4c4b0]">
-                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">Metric</th>
-                    <th className="text-right px-4 py-3 text-sm font-medium text-[#78350f]">This Period</th>
-                    <th className="text-right px-4 py-3 text-sm font-medium text-[#78350f]">Change</th>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-[#78350f]">
+                      Metric
+                    </th>
+                    <th className="text-right px-4 py-3 text-sm font-medium text-[#78350f]">
+                      This Period
+                    </th>
+                    <th className="text-right px-4 py-3 text-sm font-medium text-[#78350f]">
+                      Change
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#d4c4b0]">
                   {businessActivity.map((row) => (
-                    <tr key={row.metric} className="hover:bg-[#faf5ee] transition-colors">
-                      <td className="px-4 py-3 text-sm text-[#451a03] font-medium">{row.metric}</td>
-                      <td className="px-4 py-3 text-sm text-[#451a03] text-right">{row.thisPeriod}</td>
+                    <tr
+                      key={row.metric}
+                      className="hover:bg-[#faf5ee] transition-colors"
+                    >
+                      <td className="px-4 py-3 text-sm text-[#451a03] font-medium">
+                        {row.metric}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-[#451a03] text-right">
+                        {row.thisPeriod}
+                      </td>
                       <td className="px-4 py-3 text-right">
                         <span
                           className={`inline-flex items-center gap-1 text-sm font-medium ${
                             row.positive ? 'text-emerald-600' : 'text-red-600'
                           }`}
                         >
-                          {row.positive ? <ArrowUp size={14} weight="bold" /> : <TrendDown size={14} weight="bold" />}
+                          {row.positive ? (
+                            <ArrowUp size={14} weight="bold" />
+                          ) : (
+                            <TrendDown size={14} weight="bold" />
+                          )}
                           {row.change}
                         </span>
                       </td>
@@ -263,17 +358,28 @@ export default function AdminReportsPage() {
             {/* Mobile Card View */}
             <div className="sm:hidden divide-y divide-[#d4c4b0]">
               {businessActivity.map((row) => (
-                <div key={row.metric} className="p-4 flex items-center justify-between">
+                <div
+                  key={row.metric}
+                  className="p-4 flex items-center justify-between"
+                >
                   <div>
-                    <p className="text-sm font-medium text-[#451a03]">{row.metric}</p>
-                    <p className="text-lg font-semibold text-[#451a03] mt-0.5">{row.thisPeriod}</p>
+                    <p className="text-sm font-medium text-[#451a03]">
+                      {row.metric}
+                    </p>
+                    <p className="text-lg font-semibold text-[#451a03] mt-0.5">
+                      {row.thisPeriod}
+                    </p>
                   </div>
                   <span
                     className={`inline-flex items-center gap-1 text-sm font-medium ${
                       row.positive ? 'text-emerald-600' : 'text-red-600'
                     }`}
                   >
-                    {row.positive ? <ArrowUp size={14} weight="bold" /> : <TrendDown size={14} weight="bold" />}
+                    {row.positive ? (
+                      <ArrowUp size={14} weight="bold" />
+                    ) : (
+                      <TrendDown size={14} weight="bold" />
+                    )}
                     {row.change}
                   </span>
                 </div>
@@ -284,14 +390,20 @@ export default function AdminReportsPage() {
 
         {/* Top Performing Categories */}
         <div>
-          <h2 className="text-lg font-semibold text-[#451a03] mb-4">Top Performing Categories</h2>
+          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+            Top Performing Categories
+          </h2>
           <Card variant="glass" padding="md">
             <div className="space-y-4">
               {topCategories.map((category) => (
                 <div key={category.name} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-[#451a03]">{category.name}</span>
-                    <span className="text-sm text-[#78350f]">{category.claims} claims</span>
+                    <span className="text-sm font-medium text-[#451a03]">
+                      {category.name}
+                    </span>
+                    <span className="text-sm text-[#78350f]">
+                      {category.claims} claims
+                    </span>
                   </div>
                   <div className="h-2 bg-[#f2ebe2] rounded-full overflow-hidden">
                     <div
@@ -308,7 +420,9 @@ export default function AdminReportsPage() {
 
       {/* Recent Platform Activity */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Recent Platform Activity</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Recent Platform Activity
+        </h2>
         <Card variant="glass" padding="none">
           <div className="divide-y divide-[#d4c4b0]">
             {platformActivities.map((activity) => {
@@ -319,16 +433,27 @@ export default function AdminReportsPage() {
                   className="flex items-center gap-4 p-4 hover:bg-[#faf5ee] transition-colors"
                 >
                   <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                    <IconComponent size={20} weight="fill" className="text-amber-800" />
+                    <IconComponent
+                      size={20}
+                      weight="fill"
+                      className="text-amber-800"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-[#451a03] truncate">{activity.description}</p>
+                    <p className="text-sm text-[#451a03] truncate">
+                      {activity.description}
+                    </p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <Badge variant={getActivityBadgeVariant(activity.type)} size="sm">
+                    <Badge
+                      variant={getActivityBadgeVariant(activity.type)}
+                      size="sm"
+                    >
                       {getActivityLabel(activity.type)}
                     </Badge>
-                    <span className="text-xs text-[#92400e] whitespace-nowrap">{activity.timestamp}</span>
+                    <span className="text-xs text-[#92400e] whitespace-nowrap">
+                      {activity.timestamp}
+                    </span>
                   </div>
                 </div>
               )

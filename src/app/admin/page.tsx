@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { ShieldCheck } from '@phosphor-icons/react'
-import { AdminAuthProvider, useAdminAuth } from '@/lib/context/adminAuthContext'
-import { Input } from '@/components/ui/input'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { AdminAuthProvider, useAdminAuth } from '@/lib/context/adminAuthContext'
 
 function AdminLoginContent() {
   const router = useRouter()
@@ -39,7 +39,10 @@ function AdminLoginContent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
+          <svg
+            className="animate-spin h-8 w-8 text-amber-800"
+            viewBox="0 0 24 24"
+          >
             <circle
               className="opacity-25"
               cx="12"
@@ -76,9 +79,7 @@ function AdminLoginContent() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-800/15 mb-4">
               <ShieldCheck size={32} weight="fill" className="text-amber-800" />
             </div>
-            <h1 className="text-2xl font-bold text-[#451a03]">
-              Admin Portal
-            </h1>
+            <h1 className="text-2xl font-bold text-[#451a03]">Admin Portal</h1>
             <p className="text-[#78350f] mt-2">
               Sign in to access the admin dashboard
             </p>
@@ -112,7 +113,8 @@ function AdminLoginContent() {
           {/* Help Text */}
           <div className="mt-6 pt-6 border-t border-[#d4c4b0]">
             <p className="text-xs text-[#92400e] text-center">
-              For demo purposes, use: admin@costfinders.com, moderator@costfinders.com, or support@costfinders.com
+              For demo purposes, use: admin@costfinders.com,
+              moderator@costfinders.com, or support@costfinders.com
             </p>
           </div>
         </div>

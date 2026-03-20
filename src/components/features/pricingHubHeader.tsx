@@ -1,8 +1,8 @@
 'use client'
 
-import { Crown, CheckCircle, ArrowRight } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
+import { ArrowRight, CheckCircle, Crown } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import type { BusinessTier } from '@/lib/mock-data/leadPricing'
 
 interface PricingHubHeaderProps {
@@ -20,9 +20,11 @@ export function PricingHubHeader({
     <Card variant="glass" padding="lg">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-            isPaidTier ? 'bg-amber-800/15' : 'bg-[#f2ebe2]'
-          }`}>
+          <div
+            className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+              isPaidTier ? 'bg-amber-800/15' : 'bg-[#f2ebe2]'
+            }`}
+          >
             <Crown
               size={28}
               weight={isPaidTier ? 'fill' : 'light'}

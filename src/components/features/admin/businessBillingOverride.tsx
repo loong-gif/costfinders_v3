@@ -1,26 +1,30 @@
 'use client'
 
-import { useState } from 'react'
 import {
-  CurrencyDollar,
-  CheckCircle,
-  Warning,
   Clock,
+  CurrencyDollar,
   FloppyDisk,
   Plus,
   User,
+  Warning,
 } from '@phosphor-icons/react'
-import type { Business, BusinessTier } from '@/types/business'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
-  getBillingOverridesForBusiness,
-  createBillingOverride,
-  type BillingStatus,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import {
   type BillingOverride,
+  type BillingStatus,
+  createBillingOverride,
+  getBillingOverridesForBusiness,
 } from '@/lib/mock-data/platformSettings'
+import type { Business, BusinessTier } from '@/types/business'
 
 interface BusinessBillingOverrideProps {
   business: Business
@@ -32,7 +36,6 @@ function getTierBadge(tier: BusinessTier) {
       return <Badge variant="brand">Paid</Badge>
     case 'free':
       return <Badge variant="info">Free</Badge>
-    case 'unclaimed':
     default:
       return <Badge variant="default">Unclaimed</Badge>
   }
@@ -61,7 +64,9 @@ function formatDate(dateString: string): string {
   })
 }
 
-export function BusinessBillingOverride({ business }: BusinessBillingOverrideProps) {
+export function BusinessBillingOverride({
+  business,
+}: BusinessBillingOverrideProps) {
   const [overrideEnabled, setOverrideEnabled] = useState(false)
   const [selectedTier, setSelectedTier] = useState<BusinessTier>(business.tier)
   const [billingStatus, setBillingStatus] = useState<BillingStatus>('active')
@@ -71,7 +76,7 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
   const [isSaving, setIsSaving] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [overrides, setOverrides] = useState<BillingOverride[]>(() =>
-    getBillingOverridesForBusiness(business.id)
+    getBillingOverridesForBusiness(business.id),
   )
 
   const tierOptions: { value: BusinessTier; label: string }[] = [
@@ -104,7 +109,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
       previousBillingStatus: 'active',
       newBillingStatus: billingStatus,
       creditsGranted: creditsToGrant > 0 ? creditsToGrant : undefined,
-      customLeadPrice: customLeadPrice ? parseFloat(customLeadPrice) : undefined,
+      customLeadPrice: customLeadPrice
+        ? parseFloat(customLeadPrice)
+        : undefined,
       reason: reason.trim(),
       createdBy: 'admin-1', // Mock admin
     })
@@ -125,12 +132,17 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
         <CardHeader className="mb-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
-              <CurrencyDollar size={20} weight="fill" className="text-amber-800" />
+              <CurrencyDollar
+                size={20}
+                weight="fill"
+                className="text-amber-800"
+              />
             </div>
             <div>
               <CardTitle>Billing Override</CardTitle>
               <CardDescription>
-                Manually override tier, billing status, and credits for this business
+                Manually override tier, billing status, and credits for this
+                business
               </CardDescription>
             </div>
           </div>
@@ -138,7 +150,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
 
         {/* Current Status */}
         <div className="mb-6 p-4 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0]">
-          <h4 className="text-sm font-medium text-[#78350f] mb-3">Current Status</h4>
+          <h4 className="text-sm font-medium text-[#78350f] mb-3">
+            Current Status
+          </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <p className="text-xs text-[#92400e] mb-1">Tier</p>
@@ -146,7 +160,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
             </div>
             <div>
               <p className="text-xs text-[#92400e] mb-1">Business Status</p>
-              <Badge variant={business.status === 'active' ? 'success' : 'warning'}>
+              <Badge
+                variant={business.status === 'active' ? 'success' : 'warning'}
+              >
                 {business.status}
               </Badge>
             </div>
@@ -333,7 +349,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
                 <Warning size={20} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-[#451a03]">Confirm Override</h3>
+                <h3 className="text-lg font-semibold text-[#451a03]">
+                  Confirm Override
+                </h3>
                 <p className="text-sm text-[#78350f]">
                   This action will be logged
                 </p>
@@ -343,7 +361,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
             <div className="space-y-2 mb-6 p-3 rounded-lg bg-[#f2ebe2]">
               <div className="flex justify-between text-sm">
                 <span className="text-[#78350f]">Tier</span>
-                <span className="text-[#451a03]">{business.tier} → {selectedTier}</span>
+                <span className="text-[#451a03]">
+                  {business.tier} → {selectedTier}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-[#78350f]">Billing Status</span>
@@ -358,7 +378,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
               {customLeadPrice && (
                 <div className="flex justify-between text-sm">
                   <span className="text-[#78350f]">Custom Lead Price</span>
-                  <span className="text-[#451a03]">${customLeadPrice}/lead</span>
+                  <span className="text-[#451a03]">
+                    ${customLeadPrice}/lead
+                  </span>
                 </div>
               )}
             </div>
@@ -433,7 +455,9 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
                 <div className="space-y-1 ml-8">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-[#78350f]">Tier:</span>
-                    <span className="text-[#92400e]">{override.previousTier}</span>
+                    <span className="text-[#92400e]">
+                      {override.previousTier}
+                    </span>
                     <span className="text-[#92400e]">→</span>
                     <span className="text-[#451a03]">{override.newTier}</span>
                   </div>
@@ -448,14 +472,18 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
                   {override.creditsGranted && (
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-[#78350f]">Credits:</span>
-                      <span className="text-emerald-600">+{override.creditsGranted}</span>
+                      <span className="text-emerald-600">
+                        +{override.creditsGranted}
+                      </span>
                     </div>
                   )}
 
                   {override.customLeadPrice && (
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-[#78350f]">Custom Lead Price:</span>
-                      <span className="text-[#451a03]">${override.customLeadPrice}/lead</span>
+                      <span className="text-[#451a03]">
+                        ${override.customLeadPrice}/lead
+                      </span>
                     </div>
                   )}
 

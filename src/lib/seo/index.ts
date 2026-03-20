@@ -1,27 +1,25 @@
 // SEO utility library barrel export
 
-// Metadata utilities
-export {
-  SITE_CONFIG,
-  buildCanonicalUrl,
-  generateLocationMetadata,
-  generateStateMetadata,
-} from './metadata'
-
-// Structured data schema builders
-export {
-  buildWebsiteSchema,
-  buildOrganizationSchema,
-  buildBreadcrumbSchema,
-  buildLocalBusinessSchema,
-  buildFaqSchema,
-} from './schemas'
-
 // Re-export types for convenience
 export type { Metadata } from 'next'
 export type {
-  WithContext,
-  WebSite,
-  Organization,
   BreadcrumbList,
+  Organization,
+  WebSite,
+  WithContext,
 } from 'schema-dts'
+// Metadata utilities
+export {
+  buildCanonicalUrl,
+  generateLocationMetadata,
+  generateStateMetadata,
+  SITE_CONFIG,
+} from './metadata'
+// Structured data schema builders
+export {
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildLocalBusinessSchema,
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+} from './schemas'

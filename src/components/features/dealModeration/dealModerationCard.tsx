@@ -1,19 +1,19 @@
 'use client'
 
-import { useState } from 'react'
 import {
+  CalendarBlank,
   Check,
-  X,
   PencilSimple,
   Storefront,
   Tag,
-  CalendarBlank,
+  X,
 } from '@phosphor-icons/react'
-import type { Deal, ModerationStatus } from '@/types/deal'
-import { getBusinessById } from '@/lib/mock-data/businesses'
-import { Card } from '@/components/ui/card'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { getBusinessById } from '@/lib/mock-data/businesses'
+import type { Deal, ModerationStatus } from '@/types/deal'
 
 interface DealModerationCardProps {
   deal: Deal
@@ -31,7 +31,10 @@ const categoryLabels: Record<string, string> = {
   skincare: 'Skincare',
 }
 
-const statusBadgeVariants: Record<ModerationStatus, 'warning' | 'success' | 'error' | 'info'> = {
+const statusBadgeVariants: Record<
+  ModerationStatus,
+  'warning' | 'success' | 'error' | 'info'
+> = {
   pending_review: 'warning',
   approved: 'success',
   rejected: 'error',
@@ -136,12 +139,16 @@ export function DealModerationCard({
           </Badge>
         </div>
 
-        <p className="text-sm text-[#78350f] line-clamp-2">{deal.description}</p>
+        <p className="text-sm text-[#78350f] line-clamp-2">
+          {deal.description}
+        </p>
 
         <div className="flex items-center gap-4 text-sm">
           <div>
             <span className="text-[#92400e]">Price: </span>
-            <span className="text-[#451a03] font-medium">{formatPrice(deal)}</span>
+            <span className="text-[#451a03] font-medium">
+              {formatPrice(deal)}
+            </span>
             <span className="text-[#92400e] ml-2 line-through">
               ${deal.originalPrice.toLocaleString()}
             </span>
@@ -169,7 +176,9 @@ export function DealModerationCard({
       {/* Moderation notes if any */}
       {deal.moderationNotes && (
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
-          <p className="text-sm text-amber-800 font-medium">Moderation Notes:</p>
+          <p className="text-sm text-amber-800 font-medium">
+            Moderation Notes:
+          </p>
           <p className="text-sm text-[#78350f] mt-1">{deal.moderationNotes}</p>
         </div>
       )}

@@ -1,12 +1,23 @@
 'use client'
 
-import { Tag, Users, ChatCircle, Eye, TrendUp, TrendDown } from '@phosphor-icons/react'
+import {
+  ChatCircle,
+  Eye,
+  Tag,
+  TrendDown,
+  TrendUp,
+  Users,
+} from '@phosphor-icons/react'
+import { Card } from '@/components/ui/card'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { getBusinessById } from '@/lib/mock-data/businesses'
-import { Card } from '@/components/ui/card'
 
 interface MetricCardProps {
-  icon: React.ComponentType<{ size?: number; weight?: 'light' | 'fill'; className?: string }>
+  icon: React.ComponentType<{
+    size?: number
+    weight?: 'light' | 'fill'
+    className?: string
+  }>
   value: string | number
   label: string
   trend?: {
@@ -33,7 +44,9 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
             }`}
           >
             {trend.direction === 'up' && <TrendUp size={16} weight="bold" />}
-            {trend.direction === 'down' && <TrendDown size={16} weight="bold" />}
+            {trend.direction === 'down' && (
+              <TrendDown size={16} weight="bold" />
+            )}
             <span>{trend.value}</span>
           </div>
         )}
@@ -48,7 +61,9 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
 
 export default function BusinessDashboardPage() {
   const { state } = useBusinessAuth()
-  const business = state.owner?.businessId ? getBusinessById(state.owner.businessId) : null
+  const business = state.owner?.businessId
+    ? getBusinessById(state.owner.businessId)
+    : null
 
   // Mock metrics data
   const metrics = [
@@ -105,7 +120,9 @@ export default function BusinessDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-[#451a03] mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-[#451a03] mb-4">
+          Quick Actions
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Card variant="glass" padding="md" hover className="group">
             <div className="flex items-center gap-3">
@@ -132,7 +149,11 @@ export default function BusinessDashboardPage() {
           <Card variant="glass" padding="md" hover className="group">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
-                <ChatCircle size={20} weight="fill" className="text-amber-800" />
+                <ChatCircle
+                  size={20}
+                  weight="fill"
+                  className="text-amber-800"
+                />
               </div>
               <div>
                 <p className="font-medium text-[#451a03]">Reply to Messages</p>

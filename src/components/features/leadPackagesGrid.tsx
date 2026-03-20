@@ -1,9 +1,9 @@
 'use client'
 
 import { Star } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import type { CreditPackage } from '@/lib/mock-data/leadPricing'
 
 interface LeadPackagesGridProps {
@@ -43,13 +43,17 @@ export function LeadPackagesGrid({
             <div className="p-5">
               {/* Lead Amount */}
               <div className="text-center mb-4">
-                <p className="text-3xl font-bold text-[#451a03]">{pkg.credits}</p>
+                <p className="text-3xl font-bold text-[#451a03]">
+                  {pkg.credits}
+                </p>
                 <p className="text-sm text-[#78350f]">leads</p>
               </div>
 
               {/* Price */}
               <div className="text-center mb-4">
-                <p className="text-2xl font-bold text-[#451a03]">${pkg.price}</p>
+                <p className="text-2xl font-bold text-[#451a03]">
+                  ${pkg.price}
+                </p>
                 <p className="text-sm text-[#92400e]">
                   ${pkg.pricePerLead.toFixed(2)} per lead
                 </p>

@@ -101,7 +101,7 @@ function saveSavedDeals(deals: string[]) {
 }
 
 // Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
-let dynamicUsers: Consumer[] = []
+const dynamicUsers: Consumer[] = []
 
 function findUserByEmail(email: string): Consumer | undefined {
   const normalizedEmail = email.toLowerCase()
@@ -145,7 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(
     async (
       email: string,
-      password: string,
+      _password: string,
       firstName?: string,
       lastName?: string,
     ): Promise<void> => {
@@ -210,7 +210,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   const signIn = useCallback(
-    async (email: string, password: string): Promise<void> => {
+    async (email: string, _password: string): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
       // Simulate network delay
@@ -273,40 +273,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearStoredAuth()
   }, [])
 
-  const updateVerificationStatus = useCallback(
-    (status: VerificationStatus) => {
-      setState((prev) => {
-        if (!prev.user) return prev
+  const updateVerificationStatus = useCallback((status: VerificationStatus) => {
+    setState((prev) => {
+      if (!prev.user) return prev
 
-        const now = new Date().toISOString()
-        const updatedUser: Consumer = {
-          ...prev.user,
-          verificationStatus: status,
-          updatedAt: now,
-          ...(status === 'email_verified' || status === 'fully_verified'
-            ? { emailVerifiedAt: now }
-            : {}),
-          ...(status === 'phone_verified' || status === 'fully_verified'
-            ? { phoneVerifiedAt: now }
-            : {}),
-        }
+      const now = new Date().toISOString()
+      const updatedUser: Consumer = {
+        ...prev.user,
+        verificationStatus: status,
+        updatedAt: now,
+        ...(status === 'email_verified' || status === 'fully_verified'
+          ? { emailVerifiedAt: now }
+          : {}),
+        ...(status === 'phone_verified' || status === 'fully_verified'
+          ? { phoneVerifiedAt: now }
+          : {}),
+      }
 
-        // Update in dynamic users if needed
-        const dynamicIndex = dynamicUsers.findIndex(
-          (u) => u.id === updatedUser.id,
-        )
-        if (dynamicIndex !== -1) {
-          dynamicUsers[dynamicIndex] = updatedUser
-        }
+      // Update in dynamic users if needed
+      const dynamicIndex = dynamicUsers.findIndex(
+        (u) => u.id === updatedUser.id,
+      )
+      if (dynamicIndex !== -1) {
+        dynamicUsers[dynamicIndex] = updatedUser
+      }
 
-        return {
-          ...prev,
-          user: updatedUser,
-        }
-      })
-    },
-    [],
-  )
+      return {
+        ...prev,
+        user: updatedUser,
+      }
+    })
+  }, [])
 
   const verifyPhone = useCallback((phone: string) => {
     setState((prev) => {

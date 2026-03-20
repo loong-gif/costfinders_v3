@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
-import { MagnifyingGlass, Funnel, Tag } from '@phosphor-icons/react'
-import type { ModerationStatus } from '@/types/deal'
-import { getAllDeals, updateDealModeration } from '@/lib/mock-data/deals'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { MagnifyingGlass, Tag } from '@phosphor-icons/react'
+import { useCallback, useMemo, useState } from 'react'
 import { DealModerationCard } from '@/components/features/dealModeration/dealModerationCard'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { getAllDeals, updateDealModeration } from '@/lib/mock-data/deals'
+import type { ModerationStatus } from '@/types/deal'
 
 type FilterTab = 'all' | ModerationStatus
 
@@ -36,7 +36,9 @@ export default function DealModerationPage() {
 
     // Filter by moderation status
     if (activeFilter !== 'all') {
-      filtered = filtered.filter((deal) => deal.moderationStatus === activeFilter)
+      filtered = filtered.filter(
+        (deal) => deal.moderationStatus === activeFilter,
+      )
     }
 
     // Filter by search query
@@ -45,13 +47,14 @@ export default function DealModerationPage() {
       filtered = filtered.filter(
         (deal) =>
           deal.title.toLowerCase().includes(query) ||
-          deal.description.toLowerCase().includes(query)
+          deal.description.toLowerCase().includes(query),
       )
     }
 
     // Sort by createdAt descending (newest first)
     return filtered.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
   }, [deals, activeFilter, searchQuery])
 
@@ -59,10 +62,14 @@ export default function DealModerationPage() {
   const statusCounts = useMemo(() => {
     return {
       all: deals.length,
-      pending_review: deals.filter((d) => d.moderationStatus === 'pending_review').length,
+      pending_review: deals.filter(
+        (d) => d.moderationStatus === 'pending_review',
+      ).length,
       approved: deals.filter((d) => d.moderationStatus === 'approved').length,
       rejected: deals.filter((d) => d.moderationStatus === 'rejected').length,
-      changes_requested: deals.filter((d) => d.moderationStatus === 'changes_requested').length,
+      changes_requested: deals.filter(
+        (d) => d.moderationStatus === 'changes_requested',
+      ).length,
     }
   }, [deals])
 
@@ -74,7 +81,7 @@ export default function DealModerationPage() {
         showFeedback(`Deal "${updated.title}" has been approved`)
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   const handleReject = useCallback(
@@ -85,7 +92,7 @@ export default function DealModerationPage() {
         showFeedback(`Deal "${updated.title}" has been rejected`)
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   const handleRequestChanges = useCallback(
@@ -96,7 +103,7 @@ export default function DealModerationPage() {
         showFeedback(`Changes requested for "${updated.title}"`)
       }
     },
-    [showFeedback]
+    [showFeedback],
   )
 
   return (
@@ -149,9 +156,7 @@ export default function DealModerationPage() {
             {tab.label}
             <span
               className={`px-1.5 py-0.5 text-xs rounded-full ${
-                activeFilter === tab.value
-                  ? 'bg-[#faf5ee]'
-                  : 'bg-[#f2ebe2]'
+                activeFilter === tab.value ? 'bg-[#faf5ee]' : 'bg-[#f2ebe2]'
               }`}
             >
               {statusCounts[tab.value]}

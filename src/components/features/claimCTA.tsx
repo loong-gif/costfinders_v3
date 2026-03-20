@@ -1,11 +1,17 @@
 'use client'
 
+import {
+  CheckCircle,
+  Clock,
+  Lock,
+  Sparkle,
+  UserPlus,
+} from '@phosphor-icons/react'
 import { useState } from 'react'
-import { CheckCircle, Clock, Lock, Sparkle, UserPlus } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { AuthModal } from '@/components/features/authModal'
 import { ClaimDealModal } from '@/components/features/claimDealModal'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { useAuth } from '@/lib/context/authContext'
 import { useClaims } from '@/lib/context/claimsContext'
 
@@ -107,7 +113,8 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
                 Ready to Claim
               </h3>
               <p className="text-sm text-[#78350f]">
-                Submit your claim and the business will contact you to schedule your appointment.
+                Submit your claim and the business will contact you to schedule
+                your appointment.
               </p>
             </div>
             <Button
@@ -191,7 +198,7 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
             <button
               type="button"
               onClick={handleSignIn}
-              className="text-sm text-amber-800 hover:text-amber-300 transition-colors"
+              className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
             >
               Already have an account? Sign in
             </button>

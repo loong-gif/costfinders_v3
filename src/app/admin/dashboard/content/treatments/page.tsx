@@ -1,31 +1,30 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
-import Link from 'next/link'
 import {
   CaretLeft,
-  Plus,
+  Check,
   FirstAidKit,
   MagnifyingGlass,
   PencilSimple,
-  X,
-  Check,
+  Plus,
   TrendUp,
+  X,
 } from '@phosphor-icons/react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { useCallback, useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import type { TreatmentCategory } from '@/types/deal'
-import {
-  getTreatments,
-  getTreatmentsByCategory,
-  createTreatment,
-  updateTreatment,
-  toggleTreatmentStatus,
-  getTreatmentStats,
-  type Treatment,
-} from '@/lib/mock-data/treatments'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { getCategories } from '@/lib/mock-data/categories'
+import {
+  createTreatment,
+  getTreatmentStats,
+  getTreatments,
+  type Treatment,
+  toggleTreatmentStatus,
+  updateTreatment,
+} from '@/lib/mock-data/treatments'
+import type { TreatmentCategory } from '@/types/deal'
 
 type FilterOption = 'all' | TreatmentCategory
 
@@ -56,7 +55,7 @@ export default function TreatmentsManagementPage() {
     popularity: 50,
   })
 
-  const stats = useMemo(() => getTreatmentStats(), [treatments])
+  const stats = useMemo(() => getTreatmentStats(), [])
 
   const filteredTreatments = useMemo(() => {
     let filtered = treatments
@@ -72,7 +71,7 @@ export default function TreatmentsManagementPage() {
       filtered = filtered.filter(
         (t) =>
           t.name.toLowerCase().includes(query) ||
-          t.description.toLowerCase().includes(query)
+          t.description.toLowerCase().includes(query),
       )
     }
 
@@ -95,11 +94,11 @@ export default function TreatmentsManagementPage() {
       if (updated) {
         refreshTreatments()
         showFeedback(
-          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`
+          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`,
         )
       }
     },
-    [refreshTreatments, showFeedback]
+    [refreshTreatments, showFeedback],
   )
 
   const handleStartEdit = useCallback((treatment: Treatment) => {
@@ -220,9 +219,11 @@ export default function TreatmentsManagementPage() {
         </Card>
         <Card variant="glass" padding="md">
           <p className="text-2xl font-bold text-[#451a03]">
-            {Object.keys(stats.byCategory).filter(
-              (k) => stats.byCategory[k as TreatmentCategory] > 0
-            ).length}
+            {
+              Object.keys(stats.byCategory).filter(
+                (k) => stats.byCategory[k as TreatmentCategory] > 0,
+              ).length
+            }
           </p>
           <p className="text-sm text-[#78350f]">Categories Used</p>
         </Card>
@@ -285,7 +286,9 @@ export default function TreatmentsManagementPage() {
             return (
               <Button
                 key={category.id}
-                variant={activeFilter === category.slug ? 'primary' : 'secondary'}
+                variant={
+                  activeFilter === category.slug ? 'primary' : 'secondary'
+                }
                 size="sm"
                 onClick={() => setActiveFilter(category.slug)}
                 className="gap-2"
@@ -293,7 +296,9 @@ export default function TreatmentsManagementPage() {
                 {category.name}
                 <span
                   className={`px-1.5 py-0.5 text-xs rounded-full ${
-                    activeFilter === category.slug ? 'bg-[#faf5ee]' : 'bg-[#f2ebe2]'
+                    activeFilter === category.slug
+                      ? 'bg-[#faf5ee]'
+                      : 'bg-[#f2ebe2]'
                   }`}
                 >
                   {count}
@@ -399,7 +404,10 @@ export default function TreatmentsManagementPage() {
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    popularity: Math.min(100, Math.max(1, Number(e.target.value))),
+                    popularity: Math.min(
+                      100,
+                      Math.max(1, Number(e.target.value)),
+                    ),
                   }))
                 }
                 placeholder="50"
@@ -435,7 +443,10 @@ export default function TreatmentsManagementPage() {
                       type="text"
                       value={formData.name}
                       onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, name: e.target.value }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
                       }
                       className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                     />
@@ -452,11 +463,19 @@ export default function TreatmentsManagementPage() {
                       className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
                     />
                     <div className="flex gap-2">
-                      <Button variant="primary" size="sm" onClick={handleSaveEdit}>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={handleSaveEdit}
+                      >
                         <Check size={16} />
                         Save
                       </Button>
-                      <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleCancelEdit}
+                      >
                         <X size={16} />
                         Cancel
                       </Button>
@@ -488,8 +507,9 @@ export default function TreatmentsManagementPage() {
                             categoryColors[treatment.categoryId]
                           }`}
                         >
-                          {categories.find((c) => c.slug === treatment.categoryId)
-                            ?.name || treatment.categoryId}
+                          {categories.find(
+                            (c) => c.slug === treatment.categoryId,
+                          )?.name || treatment.categoryId}
                         </span>
                       </div>
                       <button
@@ -503,9 +523,7 @@ export default function TreatmentsManagementPage() {
 
                     <p
                       className={`text-sm line-clamp-2 ${
-                        treatment.isActive
-                          ? 'text-[#78350f]'
-                          : 'text-[#92400e]'
+                        treatment.isActive ? 'text-[#78350f]' : 'text-[#92400e]'
                       }`}
                     >
                       {treatment.description}
@@ -530,7 +548,9 @@ export default function TreatmentsManagementPage() {
                       >
                         <span
                           className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            treatment.isActive ? 'translate-x-6' : 'translate-x-1'
+                            treatment.isActive
+                              ? 'translate-x-6'
+                              : 'translate-x-1'
                           }`}
                         />
                       </button>
