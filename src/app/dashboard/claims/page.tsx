@@ -2,9 +2,10 @@
 
 import { ClipboardText, MagnifyingGlass } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ClaimCard } from '@/components/features/claimCard'
 import { Button } from '@/components/ui/button'
+import { getDealById } from '@/lib/data/unified'
 import { useClaims } from '@/lib/context/claimsContext'
 import type { Claim, ClaimStatus } from '@/types/claim'
 
@@ -40,12 +41,39 @@ function countClaimsByTab(claims: Claim[], tab: FilterTab): number {
 export default function ClaimsPage() {
   const { state: claimsState } = useClaims()
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
+  const [dealTitles, setDealTitles] = useState<Record<string, string>>({})
 
   // Claims are fetched from Supabase via the ClaimsContext
   const allClaims = useMemo(() => {
-    // Already sorted newest-first by the server action
     return claimsState.claims
   }, [claimsState.claims])
+
+  // Enrich claims with deal titles from Supabase
+  useEffect(() => {
+    if (allClaims.length === 0) return
+    let cancelled = false
+
+    const fetchTitles = async () => {
+      const titles: Record<string, string> = {}
+      await Promise.all(
+        allClaims.map(async (claim) => {
+          if (dealTitles[claim.dealId]) return
+          const deal = await getDealById(claim.dealId)
+          if (deal && !cancelled) {
+            titles[claim.dealId] = deal.title
+          }
+        }),
+      )
+      if (!cancelled) {
+        setDealTitles((prev) => ({ ...prev, ...titles }))
+      }
+    }
+
+    fetchTitles()
+    return () => {
+      cancelled = true
+    }
+  }, [allClaims])
 
   const filteredClaims = useMemo(
     () => filterClaimsByTab(allClaims, activeTab),
@@ -116,7 +144,11 @@ export default function ClaimsPage() {
       {filteredClaims.length > 0 ? (
         <div className="grid gap-4">
           {filteredClaims.map((claim) => (
-            <ClaimCard key={claim.id} claim={claim} />
+            <ClaimCard
+              key={claim.id}
+              claim={claim}
+              dealTitle={dealTitles[claim.dealId]}
+            />
           ))}
         </div>
       ) : (

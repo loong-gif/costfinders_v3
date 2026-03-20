@@ -35,7 +35,7 @@ export function HeroSection({
         <Link href="/deals">
           <Button size="lg" className="text-base px-8 py-3.5">
             <MagnifyingGlass size={20} weight="bold" />
-            Browse all deals
+            Find deals near you
           </Button>
         </Link>
 
