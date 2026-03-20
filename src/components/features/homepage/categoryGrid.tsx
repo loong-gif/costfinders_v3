@@ -37,7 +37,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
           return (
             <Link
               key={cat.slug}
-              href={`/deals?category=${cat.slug}`}
+              href={`/treatments/${cat.slug}`}
               className="group bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] p-4 text-center hover:border-amber-800/25 hover:shadow-[0_0_20px_rgba(251,191,36,0.1)] transition-all duration-200 cursor-pointer"
             >
               <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-amber-800/8 group-hover:bg-amber-800/15 transition-colors mb-3">

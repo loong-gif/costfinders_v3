@@ -93,14 +93,16 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
                     reviews)
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Clock
-                    size={16}
-                    weight="regular"
-                    className="text-[#92400e]"
-                  />
-                  <span>{deal.claimCount} claimed</span>
-                </div>
+                {deal.claimCount > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    <Clock
+                      size={16}
+                      weight="regular"
+                      className="text-[#92400e]"
+                    />
+                    <span>{deal.claimCount} claimed</span>
+                  </div>
+                )}
               </div>
             </div>
 

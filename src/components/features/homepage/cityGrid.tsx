@@ -16,7 +16,7 @@ export function CityGrid({ cities }: CityGridProps) {
         {cities.map((item) => (
           <Link
             key={item.city}
-            href={`/deals?city=${encodeURIComponent(item.city)}`}
+            href={`/deals/${item.city.toLowerCase().replace(/\s+/g, '-')}`}
             className="group flex items-center gap-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] px-4 py-3 hover:border-[#c4b09a] transition-all duration-200 cursor-pointer"
           >
             <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[#faf5ee] group-hover:bg-amber-800/8 transition-colors shrink-0">

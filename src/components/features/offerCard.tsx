@@ -43,7 +43,10 @@ export function OfferCard({ offer }: OfferCardProps) {
 
         {business && (
           <div className="flex items-center gap-3 text-sm text-[#78350f] mb-4">
-            <span className="truncate">{business.name}</span>
+            <span className="flex items-center gap-1 truncate">
+              <MapPin size={12} weight="bold" className="shrink-0" />
+              {business.city ? `Provider in ${business.city}` : 'Local Provider'}
+            </span>
             {business.score && (
               <span className="flex items-center gap-1 shrink-0">
                 <Star size={14} weight="fill" className="text-amber-800" />

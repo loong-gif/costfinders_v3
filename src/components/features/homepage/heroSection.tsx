@@ -44,7 +44,7 @@ export function HeroSection({
           {categories.map((cat) => (
             <Link
               key={cat.slug}
-              href={`/deals?category=${cat.slug}`}
+              href={`/treatments/${cat.slug}`}
               className="bg-[#faf5ee]/60 hover:bg-[#faf5ee] border border-[#d4c4b0] hover:border-[#c4b09a] text-[#6b3410] hover:text-[#451a03] rounded-full px-4 py-1.5 text-sm transition-colors duration-200 cursor-pointer"
             >
               {cat.label}

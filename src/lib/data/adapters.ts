@@ -128,7 +128,10 @@ export function offerToAnonymousDeal(offer: OfferWithBusiness): {
     category: dbCategoryToTreatment(offer.service_category),
     originalPrice: offer.original_price ?? 0,
     dealPrice: offer.discount_price ?? offer.original_price ?? 0,
-    discountPercent: offer.discount_percent ?? 0,
+    discountPercent: offer.discount_percent ??
+      (offer.original_price && offer.discount_price && offer.original_price > offer.discount_price
+        ? Math.round((1 - offer.discount_price / offer.original_price) * 100)
+        : 0),
     unit: offer.unit_type ?? 'per treatment',
     validFrom: offer.start_date ?? offer.created_at ?? new Date().toISOString(),
     validUntil: offer.end_date ?? '',
