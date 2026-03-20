@@ -65,7 +65,7 @@ export function AuthenticatedDashboardLayout({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       {sidebar}
       {/* Main content with left padding for sidebar on desktop */}
       <main className="md:pl-16 pt-20 pb-20 md:pb-0 px-4 sm:px-6 lg:px-8">

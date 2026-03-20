@@ -100,7 +100,7 @@ export default function BusinessPage() {
                 <prop.icon
                   size={24}
                   weight="fill"
-                  className="text-emerald-600 mb-4"
+                  className="text-[var(--color-accent)] mb-4"
                 />
                 <h3 className="font-semibold text-[#451a03] mb-2">
                   {prop.title}

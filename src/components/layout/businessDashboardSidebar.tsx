@@ -52,6 +52,7 @@ export function BusinessDashboardSidebar() {
           : null
       }
       onSignOut={signOut}
+      mobileNavCount={4}
     />
   )
 }

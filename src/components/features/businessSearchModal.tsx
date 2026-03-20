@@ -89,6 +89,7 @@ export function BusinessSearchModal({
       onClose={onClose}
       title="Find Your Business"
       size="lg"
+      mobileVariant="fullscreen"
     >
       <div className="space-y-6">
         {/* Search Input */}
@@ -190,7 +191,7 @@ export function BusinessSearchModal({
             <button
               type="button"
               onClick={onCreateNew}
-              className="text-amber-800 hover:underline"
+              className="text-amber-800 hover:underline cursor-pointer"
             >
               Create a new listing
             </button>

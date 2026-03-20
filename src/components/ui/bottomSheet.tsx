@@ -85,7 +85,7 @@ export function BottomSheet({
             <h2 className="text-lg font-semibold text-[#451a03]">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
+              className="p-2.5 -mr-1.5 rounded-lg text-[#92400e] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors cursor-pointer"
               type="button"
             >
               <X size={20} weight="bold" />

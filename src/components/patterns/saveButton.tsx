@@ -20,7 +20,7 @@ export function SaveButton({
   const saved = isDealSaved(dealId)
 
   const iconSize = size === 'sm' ? 20 : 24
-  const buttonSize = size === 'sm' ? 'w-8 h-8' : 'w-10 h-10'
+  const buttonSize = size === 'sm' ? 'w-11 h-11' : 'w-11 h-11'
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()

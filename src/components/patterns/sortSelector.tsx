@@ -68,12 +68,12 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="
-          flex items-center gap-2 px-4 py-2.5
+          flex items-center gap-2 px-4 py-2.5 min-h-[44px]
           bg-[#f2ebe2]
           border border-[#d4c4b0] rounded-xl
           text-[#451a03] text-sm font-medium
           hover:border-[#c4b09a]
-          transition-all duration-200
+          transition-all duration-200 cursor-pointer
         "
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -111,8 +111,8 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
                 id={`sort-option-${option.value}`}
                 onClick={() => handleSelect(option.value)}
                 className={`
-                  w-full flex items-center gap-3 px-4 py-3
-                  text-sm transition-colors duration-150
+                  w-full flex items-center gap-3 px-4 py-3 min-h-[44px]
+                  text-sm transition-colors duration-150 cursor-pointer
                   ${
                     isSelected
                       ? 'bg-amber-800/8 text-amber-800'

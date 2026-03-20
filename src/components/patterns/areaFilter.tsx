@@ -62,11 +62,11 @@ export function AreaFilter({
         disabled={disabled}
         className={`
           inline-flex items-center gap-1.5
-          px-3 py-1.5
+          px-3 py-2.5 min-h-[44px]
           bg-[#f2ebe2]
           border border-[#d4c4b0] rounded-full
           text-sm
-          transition-all duration-200
+          transition-all duration-200 cursor-pointer
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-[#c4b09a]'}
           focus:outline-none focus:ring-1 focus:ring-amber-800/15
           ${isOpen ? 'border-amber-800/40 ring-1 ring-amber-800/15' : ''}
@@ -85,7 +85,7 @@ export function AreaFilter({
                   handleClear(e as unknown as React.MouseEvent)
                 }
               }}
-              className="p-0.5 rounded-full hover:bg-[#faf5ee] transition-colors cursor-pointer"
+              className="p-1.5 -mr-1 rounded-full hover:bg-[#faf5ee] transition-colors cursor-pointer"
               aria-label="Clear area filter"
             >
               <X size={14} weight="bold" className="text-[#92400e]" />
@@ -123,9 +123,9 @@ export function AreaFilter({
             onClick={() => handleSelect(null)}
             className={`
               w-full flex items-center justify-between gap-2
-              px-4 py-2.5
+              px-4 py-3 min-h-[44px]
               text-left text-sm
-              transition-colors duration-150
+              transition-colors duration-150 cursor-pointer
               ${
                 selectedArea === null
                   ? 'bg-amber-800/8 text-amber-800'
@@ -151,9 +151,9 @@ export function AreaFilter({
                 onClick={() => handleSelect(area)}
                 className={`
                   w-full flex items-center justify-between gap-2
-                  px-4 py-2.5
+                  px-4 py-3 min-h-[44px]
                   text-left text-sm
-                  transition-colors duration-150
+                  transition-colors duration-150 cursor-pointer
                   ${
                     selectedArea?.id === area.id
                       ? 'bg-amber-800/8 text-amber-800'

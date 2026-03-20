@@ -62,7 +62,7 @@ export function PriceRangeFilter({
             aria-label="Minimum price"
             min={0}
             className="
-              w-full pl-8 pr-3 py-2.5
+              w-full pl-8 pr-3 py-2.5 min-h-[44px]
               bg-[#f2ebe2]
               border border-[#d4c4b0] rounded-xl
               text-[#451a03] placeholder:text-[#92400e]
@@ -95,7 +95,7 @@ export function PriceRangeFilter({
             aria-label="Maximum price"
             min={0}
             className="
-              w-full pl-8 pr-3 py-2.5
+              w-full pl-8 pr-3 py-2.5 min-h-[44px]
               bg-[#f2ebe2]
               border border-[#d4c4b0] rounded-xl
               text-[#451a03] placeholder:text-[#92400e]

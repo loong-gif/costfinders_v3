@@ -1,6 +1,7 @@
 'use client'
 
-import { MagnifyingGlass, SignIn, User } from '@phosphor-icons/react'
+import { SignIn, User } from '@phosphor-icons/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -46,12 +47,8 @@ export function GlobalHeader() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <MagnifyingGlass
-              size={22}
-              weight="bold"
-              className="text-amber-800"
-            />
-            <span className="font-bold text-lg text-amber-800">
+            <Image src="/icon.png" alt="CostFinders" width={36} height={36} />
+            <span className="font-bold text-xl text-amber-800">
               CostFinders
             </span>
           </Link>

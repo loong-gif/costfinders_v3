@@ -38,10 +38,10 @@ export function LocationDisplay() {
         onClick={() => setIsModalOpen(true)}
         className={`
           inline-flex items-center gap-1.5
-          px-3 py-1.5
+          px-3 py-2.5 min-h-[44px]
           bg-[#f2ebe2] hover:bg-[#faf5ee]
           border border-[#d4c4b0] rounded-full
-          text-sm
+          text-sm cursor-pointer
           transition-all duration-200
           focus:outline-none focus:ring-2 focus:ring-amber-800/40
         `}
@@ -63,6 +63,7 @@ export function LocationDisplay() {
         onClose={() => setIsModalOpen(false)}
         title="Set your location"
         size="sm"
+        mobileVariant="bottom"
       >
         <LocationSelector
           showAreaFilter={true}

@@ -52,6 +52,7 @@ export function AdminDashboardSidebar() {
           : null
       }
       onSignOut={signOut}
+      mobileNavCount={4}
     />
   )
 }
