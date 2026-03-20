@@ -11,20 +11,36 @@ import { getCategorySlug } from './categories'
  * master_business_info has city but no state column.
  */
 const CITY_STATE_MAP: Record<string, { state: string; stateCode: string }> = {
+  // Arizona
   tucson: { state: 'Arizona', stateCode: 'AZ' },
-  'oklahoma city': { state: 'Oklahoma', stateCode: 'OK' },
-  edmond: { state: 'Oklahoma', stateCode: 'OK' },
-  norman: { state: 'Oklahoma', stateCode: 'OK' },
+  'oro valley': { state: 'Arizona', stateCode: 'AZ' },
+  // California
   irvine: { state: 'California', stateCode: 'CA' },
   tustin: { state: 'California', stateCode: 'CA' },
   'costa mesa': { state: 'California', stateCode: 'CA' },
   'santa ana': { state: 'California', stateCode: 'CA' },
   'laguna hills': { state: 'California', stateCode: 'CA' },
   'laguna niguel': { state: 'California', stateCode: 'CA' },
+  'laguna beach': { state: 'California', stateCode: 'CA' },
   'newport beach': { state: 'California', stateCode: 'CA' },
   'lake forest': { state: 'California', stateCode: 'CA' },
   'mission viejo': { state: 'California', stateCode: 'CA' },
+  'foothill ranch': { state: 'California', stateCode: 'CA' },
+  pasadena: { state: 'California', stateCode: 'CA' },
+  // Colorado
   boulder: { state: 'Colorado', stateCode: 'CO' },
+  louisville: { state: 'Colorado', stateCode: 'CO' },
+  superior: { state: 'Colorado', stateCode: 'CO' },
+  // Oklahoma
+  'oklahoma city': { state: 'Oklahoma', stateCode: 'OK' },
+  edmond: { state: 'Oklahoma', stateCode: 'OK' },
+  norman: { state: 'Oklahoma', stateCode: 'OK' },
+  yukon: { state: 'Oklahoma', stateCode: 'OK' },
+  moore: { state: 'Oklahoma', stateCode: 'OK' },
+  newalla: { state: 'Oklahoma', stateCode: 'OK' },
+  bethany: { state: 'Oklahoma', stateCode: 'OK' },
+  'midwest city': { state: 'Oklahoma', stateCode: 'OK' },
+  'the village': { state: 'Oklahoma', stateCode: 'OK' },
 }
 
 export function inferState(city: string | null): {

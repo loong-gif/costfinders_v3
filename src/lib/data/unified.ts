@@ -14,9 +14,34 @@ import {
 } from './categories'
 import {
   getOfferCategories,
-  getOffers,
+  getOffersByBusiness,
   getOffersWithBusinesses,
 } from './offers'
+
+// ────────────────────────────────────────────────────────
+// Slug utilities (single source of truth)
+// ────────────────────────────────────────────────────────
+
+/** Convert a city name to a URL slug: "Oklahoma City" → "oklahoma-city" */
+export function cityToSlug(cityName: string): string {
+  return cityName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
+
+/**
+ * Resolve a city slug back to the exact DB city name.
+ * Uses ilike query to handle case differences.
+ * Returns null if no matching city found.
+ */
+export async function getCityNameFromSlug(
+  slug: string,
+): Promise<string | null> {
+  const cities = await getBusinessCities()
+  const match = cities.find((c) => c.city && cityToSlug(c.city) === slug)
+  return match?.city ?? null
+}
 
 // ────────────────────────────────────────────────────────
 // Deal / Offer queries (replaces mock-data/utils.ts)
@@ -36,7 +61,6 @@ export async function getDealsByCategory(category: TreatmentCategory) {
   const dbCategories = treatmentToDbCategories(category)
   if (dbCategories.length === 0) return []
 
-  // Query each DB category and merge results
   const results = await Promise.all(
     dbCategories.map((dbCat) =>
       getOffersWithBusinesses({ serviceCategory: dbCat }),
@@ -49,14 +73,14 @@ export async function getDealById(id: string) {
   const numericId = Number(id)
   if (Number.isNaN(numericId)) return null
 
-  const offers = await getOffersWithBusinesses()
-  const match = offers.find((o) => o.id === numericId)
-  return match ? offerToAnonymousDeal(match) : null
+  const { getOfferById } = await import('./offers')
+  const offer = await getOfferById(numericId)
+  return offer ? offerToAnonymousDeal(offer) : null
 }
 
 export async function getDealsForCitySlug(citySlug: string) {
-  // Convert slug back to city name (e.g., "oklahoma-city" → "Oklahoma City")
-  const cityName = citySlug.replace(/-/g, ' ')
+  const cityName = await getCityNameFromSlug(citySlug)
+  if (!cityName) return []
   return getDealsByCity(cityName)
 }
 
@@ -72,7 +96,9 @@ export async function getDealsForTreatmentAndCity(
   const dbCategories = treatmentToDbCategories(category)
   if (dbCategories.length === 0) return []
 
-  const cityName = citySlug.replace(/-/g, ' ')
+  const cityName = await getCityNameFromSlug(citySlug)
+  if (!cityName) return []
+
   const results = await Promise.all(
     dbCategories.map((dbCat) =>
       getOffersWithBusinesses({ serviceCategory: dbCat, city: cityName }),
@@ -123,9 +149,7 @@ export function getTreatmentLabel(slug: TreatmentCategory): string {
 }
 
 // ────────────────────────────────────────────────────────
-// DB-category-slug queries (for URL slugs from getAllTreatmentCityCombos)
-// These accept the slug from CATEGORY_MAP (e.g. "neurotoxins", "facials-lasers")
-// rather than the TreatmentCategory enum (e.g. "botox", "facials")
+// DB-category-slug queries
 // ────────────────────────────────────────────────────────
 
 export async function getDealsForDbCategoryAndCity(
@@ -135,7 +159,9 @@ export async function getDealsForDbCategoryAndCity(
   const dbCategory = getDbCategoryFromSlug(categorySlug)
   if (!dbCategory) return []
 
-  const cityName = citySlug.replace(/-/g, ' ')
+  const cityName = await getCityNameFromSlug(citySlug)
+  if (!cityName) return []
+
   const offers = await getOffersWithBusinesses({
     serviceCategory: dbCategory,
     city: cityName,
@@ -189,20 +215,18 @@ export async function getUnifiedCategories() {
 
 export async function getUnifiedCities() {
   const cities = await getBusinessCities()
-  return cities.map((c) => {
-    const { state, stateCode } = inferState(c.city)
-    const slug = c.city
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
-    return {
-      name: c.city,
-      slug,
-      state,
-      stateCode,
-      businessCount: c.count,
-    }
-  })
+  return cities
+    .filter((c) => c.city?.trim())
+    .map((c) => {
+      const { state, stateCode } = inferState(c.city)
+      return {
+        name: c.city,
+        slug: cityToSlug(c.city),
+        state,
+        stateCode,
+        businessCount: c.count,
+      }
+    })
 }
 
 export async function getCityOfferCount(cityName: string) {
@@ -229,25 +253,44 @@ export async function getBusinessCountForCity(cityName: string) {
   return businesses.length
 }
 
+/** Get deals for a specific business by its Supabase ID */
+export async function getDealsForBusiness(businessId: number) {
+  const offers = await getOffersByBusiness(businessId)
+  // getOffersByBusiness returns Offer[], not OfferWithBusiness[]
+  // We need to fetch the business separately for the adapter
+  const biz = await getBusinessById(businessId)
+  return offers.map((offer) =>
+    offerToAnonymousDeal({
+      ...offer,
+      master_business_info: biz
+        ? {
+            business_id: biz.business_id,
+            name: biz.name,
+            address: biz.address,
+            city: biz.city,
+            score: biz.score,
+            review_count: biz.review_count,
+            category: biz.category,
+            website_clean: biz.website_clean,
+          }
+        : null,
+    }),
+  )
+}
+
 // ────────────────────────────────────────────────────────
 // SSG: Get all valid city slugs from real data
 // ────────────────────────────────────────────────────────
 
 export async function getAllActiveCitySlugs() {
   const cities = await getBusinessCities()
-  return cities.map((c) =>
-    c.city
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, ''),
-  )
+  return cities.filter((c) => c.city?.trim()).map((c) => cityToSlug(c.city))
 }
 
 export async function getAllTreatmentCityCombos() {
   const categories = await getOfferCategories()
   const cities = await getBusinessCities()
 
-  // Deduplicate: multiple DB categories can map to the same TreatmentCategory
   const treatmentSlugs = new Set<TreatmentCategory>()
   for (const cat of categories) {
     treatmentSlugs.add(dbCategoryToTreatment(cat.service_category))
@@ -256,11 +299,8 @@ export async function getAllTreatmentCityCombos() {
   const combos: { treatment: string; city: string }[] = []
   for (const treatment of treatmentSlugs) {
     for (const c of cities) {
-      const citySlug = c.city
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')
-      combos.push({ treatment, city: citySlug })
+      if (!c.city?.trim()) continue
+      combos.push({ treatment, city: cityToSlug(c.city) })
     }
   }
   return combos

@@ -14,7 +14,11 @@ import { DealsGrid } from '@/components/features/dealsGrid'
 import { FilterPanel } from '@/components/features/filterPanel'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
-import { type DealFilters, type SortOption, sortDeals } from '@/lib/mock-data'
+import {
+  type DealFilters,
+  type SortOption,
+  sortDeals,
+} from '@/lib/utils/deal-sorting'
 import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
 import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 

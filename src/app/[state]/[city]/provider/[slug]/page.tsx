@@ -12,7 +12,7 @@ import { DealCard } from '@/components/features/dealCard'
 import { BreadcrumbSchema } from '@/components/seo'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import {
-  getDealsByCity,
+  getDealsForBusiness,
   getProvidersByCity,
   getUnifiedCities,
 } from '@/lib/data/unified'
@@ -84,11 +84,8 @@ export async function generateMetadata({
     }
   }
 
-  // Get deals for this provider to show count
-  const cityDeals = await getDealsByCity(city.name)
-  const providerDeals = cityDeals.filter(
-    (d) => d.locationArea.toLowerCase() === city.name.toLowerCase(),
-  )
+  // Get deals for this specific provider
+  const providerDeals = await getDealsForBusiness(Number(provider.id))
 
   return {
     title: `${provider.name} - Medspa Deals in ${city.name}, ${state.name} | CostFinders`,
@@ -132,11 +129,8 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
     notFound()
   }
 
-  // Get deals for this city, then filter to ones from this business
-  const cityDeals = await getDealsByCity(city.name)
-  // The offerToAnonymousDeal adapter sets locationArea to the business city,
-  // and we can match by checking the deal's locationArea against the provider's city
-  const deals = cityDeals
+  // Get deals for this specific business
+  const deals = await getDealsForBusiness(Number(provider.id))
 
   // Build breadcrumb items
   const breadcrumbItems = [

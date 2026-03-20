@@ -67,7 +67,18 @@ export async function getOffersWithBusinesses(
     .order('created_at', { ascending: false })
 
   if (filters?.city) {
-    query = query.eq('master_business_info.city', filters.city)
+    // PostgREST can't filter parent rows by joined table columns,
+    // so first resolve business IDs for this city, then filter offers
+    const { data: cityBusinesses } = await supabase
+      .from('master_business_info')
+      .select('business_id')
+      .ilike('city', filters.city)
+
+    if (!cityBusinesses || cityBusinesses.length === 0) return []
+    query = query.in(
+      'business_id',
+      cityBusinesses.map((b) => b.business_id),
+    )
   }
   if (filters?.serviceCategory) {
     query = query.eq('service_category', filters.serviceCategory)
