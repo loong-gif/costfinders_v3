@@ -9,27 +9,25 @@ import { FilterPanel } from '@/components/features/filterPanel'
 import { CategoryFilter } from '@/components/patterns/categoryFilter'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
-import {
-  type DealFilters,
-  getAllActiveCitySlugs,
-  getBusinessCountForCitySlug,
-  getCategories,
-  getCityBySlug,
-  getDealCountForCitySlug,
-  getDealsForCitySlug,
-  getDealsForTreatmentAndCity,
-  type SortOption,
-  sortDeals,
-} from '@/lib/mock-data'
+import { type DealFilters, type SortOption, sortDeals } from '@/lib/mock-data'
 import { getCityDealsFaqs } from '@/lib/seo/faq-content'
-import type { TreatmentCategory } from '@/types/deal'
+import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface CityDealsPageProps {
   citySlug: string
   cityName: string
+  initialDeals: AnonymousDeal[]
+  dealCount: number
+  businessCount: number
 }
 
-export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
+export function CityDealsPage({
+  citySlug,
+  cityName,
+  initialDeals,
+  dealCount,
+  businessCount,
+}: CityDealsPageProps) {
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState<
     TreatmentCategory | 'all'
@@ -38,17 +36,6 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
   const [sortBy, setSortBy] = useState<SortOption>('popular')
 
   // Get data
-  const dealCount = getDealCountForCitySlug(citySlug)
-  const businessCount = getBusinessCountForCitySlug(citySlug)
-  const categories = getCategories().filter((c) => c.isActive)
-  const otherCities = getAllActiveCitySlugs()
-    .filter((slug) => slug !== citySlug)
-    .slice(0, 4)
-    .map((slug) => {
-      const city = getCityBySlug(slug)
-      return city ? { slug, name: city.name } : null
-    })
-    .filter(Boolean) as Array<{ slug: string; name: string }>
   const faqs = getCityDealsFaqs(cityName)
 
   // Calculate active filter count
@@ -61,10 +48,12 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
 
   // Filter and sort deals
   const filteredDeals = useMemo(() => {
-    let deals =
-      selectedCategory !== 'all'
-        ? getDealsForTreatmentAndCity(selectedCategory, citySlug)
-        : getDealsForCitySlug(citySlug)
+    let deals = initialDeals
+
+    // Apply category filter
+    if (selectedCategory !== 'all') {
+      deals = deals.filter((d) => d.category === selectedCategory)
+    }
 
     // Apply price filters
     if (filters.minPrice !== undefined) {
@@ -76,7 +65,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
 
     // Apply sorting
     return sortDeals(deals, sortBy)
-  }, [citySlug, selectedCategory, filters, sortBy])
+  }, [initialDeals, selectedCategory, filters, sortBy])
 
   const handleDealClick = (dealId: string) => {
     router.push(`/deals/${dealId}`)
@@ -154,10 +143,10 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
             Popular Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {categories.map((category) => (
+            {(['botox', 'fillers', 'facials', 'laser', 'body', 'skincare'] as const).map((slug) => (
               <Link
-                key={category.slug}
-                href={`/deals/${category.slug}/${citySlug}`}
+                key={slug}
+                href={`/deals/${slug}/${citySlug}`}
                 className="group"
               >
                 <Card
@@ -167,7 +156,7 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-[#451a03] group-hover:text-amber-800 transition-colors">
-                      {category.name}
+                      {slug.charAt(0).toUpperCase() + slug.slice(1)}
                     </span>
                     <CaretRight
                       size={14}
@@ -180,26 +169,6 @@ export function CityDealsPage({ citySlug, cityName }: CityDealsPageProps) {
             ))}
           </div>
         </section>
-
-        {/* Other Cities Section */}
-        {otherCities.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-lg font-semibold text-[#451a03] mb-4">
-              Deals in Other Cities
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {otherCities.map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/deals/${city.slug}`}
-                  className="px-4 py-2 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] text-sm text-[#78350f] hover:bg-[#faf5ee] hover:text-[#451a03] transition-colors"
-                >
-                  {city.name}
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* FAQ Section */}
         <Faq items={faqs} className="mt-12" />

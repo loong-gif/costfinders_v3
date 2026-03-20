@@ -14,25 +14,18 @@ import { DealsGrid } from '@/components/features/dealsGrid'
 import { FilterPanel } from '@/components/features/filterPanel'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
-import {
-  type DealFilters,
-  getAllActiveCitySlugs,
-  getBusinessCountForCitySlug,
-  getCategories,
-  getCityBySlug,
-  getDealCountForTreatmentAndCity,
-  getDealsForTreatmentAndCity,
-  type SortOption,
-  sortDeals,
-} from '@/lib/mock-data'
+import { type DealFilters, type SortOption, sortDeals } from '@/lib/mock-data'
 import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
-import type { TreatmentCategory } from '@/types/deal'
+import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface TreatmentCityPageProps {
   treatmentSlug: TreatmentCategory
   treatmentName: string
   citySlug: string
   cityName: string
+  initialDeals: AnonymousDeal[]
+  dealCount: number
+  businessCount: number
 }
 
 export function TreatmentCityPage({
@@ -40,25 +33,15 @@ export function TreatmentCityPage({
   treatmentName,
   citySlug,
   cityName,
+  initialDeals,
+  dealCount,
+  businessCount,
 }: TreatmentCityPageProps) {
   const router = useRouter()
   const [filters, setFilters] = useState<DealFilters>({})
   const [sortBy, setSortBy] = useState<SortOption>('popular')
 
   // Get data
-  const dealCount = getDealCountForTreatmentAndCity(treatmentSlug, citySlug)
-  const businessCount = getBusinessCountForCitySlug(citySlug)
-  const categories = getCategories()
-    .filter((c) => c.isActive && c.slug !== treatmentSlug)
-    .slice(0, 5)
-  const otherCities = getAllActiveCitySlugs()
-    .filter((slug) => slug !== citySlug)
-    .slice(0, 4)
-    .map((slug) => {
-      const city = getCityBySlug(slug)
-      return city ? { slug, name: city.name } : null
-    })
-    .filter(Boolean) as Array<{ slug: string; name: string }>
   const faqs = getTreatmentCityFaqs(treatmentName, cityName)
 
   // Calculate active filter count
@@ -71,7 +54,7 @@ export function TreatmentCityPage({
 
   // Filter and sort deals
   const filteredDeals = useMemo(() => {
-    let deals = getDealsForTreatmentAndCity(treatmentSlug, citySlug)
+    let deals = [...initialDeals]
 
     // Apply price filters
     if (filters.minPrice !== undefined) {
@@ -83,7 +66,7 @@ export function TreatmentCityPage({
 
     // Apply sorting
     return sortDeals(deals, sortBy)
-  }, [treatmentSlug, citySlug, filters, sortBy])
+  }, [initialDeals, filters, sortBy])
 
   const handleDealClick = (dealId: string) => {
     router.push(`/deals/${dealId}`)
@@ -149,56 +132,38 @@ export function TreatmentCityPage({
         {/* Deals Grid */}
         <DealsGrid deals={filteredDeals} onDealClick={handleDealClick} />
 
-        {/* Same Treatment in Other Cities */}
-        {otherCities.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-lg font-semibold text-[#451a03] mb-4">
-              {treatmentName} in Other Cities
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {otherCities.map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/deals/${treatmentSlug}/${city.slug}`}
-                  className="px-4 py-2 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] text-sm text-[#78350f] hover:bg-[#faf5ee] hover:text-[#451a03] transition-colors"
-                >
-                  {treatmentName} in {city.name}
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* Other Treatments in Same City */}
         <section className="mt-12">
           <h2 className="text-lg font-semibold text-[#451a03] mb-4">
             Other Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {categories.map((category) => (
-              <Link
-                key={category.slug}
-                href={`/deals/${category.slug}/${citySlug}`}
-                className="group"
-              >
-                <Card
-                  variant="glass"
-                  padding="md"
-                  className="bg-[#f2ebe2] border-[#d4c4b0] hover:bg-[#faf5ee] transition-colors"
+            {(['botox', 'fillers', 'facials', 'laser', 'body', 'skincare'] as const)
+              .filter((slug) => slug !== treatmentSlug)
+              .map((slug) => (
+                <Link
+                  key={slug}
+                  href={`/deals/${slug}/${citySlug}`}
+                  className="group"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-[#451a03] group-hover:text-amber-800 transition-colors">
-                      {category.name}
-                    </span>
-                    <CaretRight
-                      size={14}
-                      weight="bold"
-                      className="text-[#92400e] group-hover:text-amber-800 transition-colors"
-                    />
-                  </div>
-                </Card>
-              </Link>
-            ))}
+                  <Card
+                    variant="glass"
+                    padding="md"
+                    className="bg-[#f2ebe2] border-[#d4c4b0] hover:bg-[#faf5ee] transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-[#451a03] group-hover:text-amber-800 transition-colors">
+                        {slug.charAt(0).toUpperCase() + slug.slice(1)}
+                      </span>
+                      <CaretRight
+                        size={14}
+                        weight="bold"
+                        className="text-[#92400e] group-hover:text-amber-800 transition-colors"
+                      />
+                    </div>
+                  </Card>
+                </Link>
+              ))}
           </div>
         </section>
 
