@@ -5,17 +5,17 @@ import { HeroSection } from '@/components/features/homepage/heroSection'
 import { SocialProofSection } from '@/components/features/homepage/socialProofSection'
 import { TrendingDealsSection } from '@/components/features/homepage/trendingDealsSection'
 import { ValuePropsSection } from '@/components/features/homepage/valuePropsSection'
-import { getBusinessCities } from '@/lib/data/businesses'
 import { getCategoryLabel, getCategorySlug } from '@/lib/data/categories'
 import { getFeaturedOffers, getOfferCategories } from '@/lib/data/offers'
+import { getCityDealCounts } from '@/lib/data/unified'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const [featuredOffers, rawCategories, cities] = await Promise.all([
+  const [featuredOffers, rawCategories, cityDealCounts] = await Promise.all([
     getFeaturedOffers(6),
     getOfferCategories(),
-    getBusinessCities(),
+    getCityDealCounts(),
   ])
 
   const categories = rawCategories.map((c) => ({
@@ -25,7 +25,7 @@ export default async function Home() {
   }))
 
   const totalOffers = rawCategories.reduce((sum, c) => sum + c.count, 0)
-  const totalBusinesses = cities.reduce((sum, c) => sum + c.count, 0)
+  const totalProviders = new Set(cityDealCounts.flatMap((c) => Array.from({ length: c.providerCount }))).size || cityDealCounts.reduce((sum, c) => sum + c.providerCount, 0)
 
   return (
     <main className="min-h-screen pt-16 pb-0">
@@ -33,7 +33,7 @@ export default async function Home() {
       <HeroSection
         categories={categories}
         totalOffers={totalOffers}
-        totalBusinesses={totalBusinesses}
+        totalBusinesses={totalProviders}
       />
 
       {/* Trending Deals — contained, base background */}
@@ -43,7 +43,7 @@ export default async function Home() {
       <CategoryGrid categories={categories} />
 
       {/* Browse by City — contained, base background */}
-      <CityGrid cities={cities} />
+      <CityGrid cities={cityDealCounts} />
 
       {/* How It Works — full-bleed image background */}
       <ValuePropsSection />
@@ -51,7 +51,7 @@ export default async function Home() {
       {/* Social Proof — full-bleed elevated band */}
       <SocialProofSection
         totalOffers={totalOffers}
-        totalBusinesses={totalBusinesses}
+        totalBusinesses={totalProviders}
       />
 
       {/* Business CTA — full-bleed dark inverted */}

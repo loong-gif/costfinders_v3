@@ -110,7 +110,7 @@ export function HeroSection({
             }`}
           >
             {categories
-              .filter((cat) => cat.count > 0)
+              .filter((cat) => cat.count >= 2)
               .map((cat) => (
                 <Link
                   key={cat.slug}

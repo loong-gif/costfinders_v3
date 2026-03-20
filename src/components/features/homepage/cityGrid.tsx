@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { ScrollRevealItem } from '@/components/patterns/scrollReveal'
 
 interface CityGridProps {
-  cities: { city: string; count: number }[]
+  cities: { city: string; slug: string; dealCount: number; providerCount: number }[]
 }
 
 const CITY_IMAGES = [
@@ -17,6 +17,10 @@ const CITY_IMAGES = [
 ]
 
 export function CityGrid({ cities }: CityGridProps) {
+  const visibleCities = cities.filter((c) => c.dealCount > 0)
+
+  if (visibleCities.length === 0) return null
+
   return (
     <section className="py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +36,7 @@ export function CityGrid({ cities }: CityGridProps) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {cities.map((item, index) => (
+          {visibleCities.map((item, index) => (
             <ScrollRevealItem
               key={item.city}
               index={index}
@@ -40,7 +44,7 @@ export function CityGrid({ cities }: CityGridProps) {
               stagger={100}
             >
               <Link
-                href={`/deals/${item.city.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`/deals/${item.slug}`}
                 className="group relative block h-40 sm:h-44 rounded-xl overflow-hidden cursor-pointer"
               >
                 {/* City background image */}
@@ -69,7 +73,7 @@ export function CityGrid({ cities }: CityGridProps) {
                     </h3>
                   </div>
                   <p className="text-white/70 text-sm">
-                    {item.count} {item.count === 1 ? 'provider' : 'providers'}
+                    {item.dealCount} {item.dealCount === 1 ? 'deal' : 'deals'}
                   </p>
                 </div>
               </Link>

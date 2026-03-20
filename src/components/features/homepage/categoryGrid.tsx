@@ -41,7 +41,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((cat, index) => {
+          {categories.filter((c) => c.count >= 2).map((cat, index) => {
             const IconComponent = CATEGORY_ICONS[cat.slug] ?? FirstAid
             return (
               <ScrollRevealItem
