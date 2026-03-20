@@ -13,16 +13,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-brand-primary hover:bg-brand-secondary text-white shadow-md hover:shadow-lg',
+    'bg-amber-400 hover:bg-amber-300 text-stone-950 font-semibold',
   secondary:
-    'bg-glass-bg hover:bg-glass-bg-hover border border-glass-border text-text-primary backdrop-blur-md',
-  ghost: 'hover:bg-glass-bg text-text-secondary hover:text-text-primary',
-  danger: 'bg-red-600 hover:bg-red-700 text-white',
+    'bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100',
+  ghost: 'hover:bg-stone-800/50 text-stone-400 hover:text-stone-100',
+  danger: 'bg-red-400/15 hover:bg-red-400/25 text-red-400',
 }
 
 const sizes: Record<ButtonSize, string> = {
   sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-sm',
+  md: 'px-4 py-2.5 text-sm',
   lg: 'px-6 py-3 text-base',
 }
 
@@ -45,9 +45,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         className={`
           inline-flex items-center justify-center gap-2
-          font-medium rounded-xl
-          transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:ring-offset-2 focus:ring-offset-bg-primary
+          font-medium rounded-md cursor-pointer
+          transition-colors duration-200
+          focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:ring-offset-2 focus:ring-offset-stone-950
           disabled:opacity-50 disabled:cursor-not-allowed
           ${variants[variant]}
           ${sizes[size]}

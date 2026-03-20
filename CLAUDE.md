@@ -8,10 +8,14 @@
 Project-specific additions to global stack (Next.js 16 + React + TS + Tailwind):
 
 - **Images**: Cloudinary (storage + optimization)
-- **Font**: Manrope (via next/font)
+- **Font**: Sora (via next/font, Manrope fallback)
 - **Icons**: Phosphor Icons only (`@phosphor-icons/react`)
 - **Hosting**: Vercel
-- **Database**: Supabase (mock data layer for now, backend team integrates later)
+- **Database**: Supabase (project: "costfinder", `kdlpkjzcnbkjcvwsvlwn`)
+  - `master_business_info` (354 businesses) → business profiles
+  - `promo_offer_master` (347 offers) → deals/promotions
+  - See `docs/DATABASE.md` for full schema
+- **Design System**: Bold & Warm (see `design-system/costfinders-v2/MASTER.md`)
 
 ---
 

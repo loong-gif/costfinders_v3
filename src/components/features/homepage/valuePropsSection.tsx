@@ -1,49 +1,64 @@
-import { Lock, MagnifyingGlass, ShieldCheck } from '@phosphor-icons/react/dist/ssr'
+import {
+  MagnifyingGlass,
+  Scales,
+  PiggyBank,
+} from '@phosphor-icons/react/dist/ssr'
 
-const valueProps = [
-  {
-    icon: ShieldCheck,
-    title: 'Verified deals',
-    description: 'Every deal is from a licensed medspa. No hidden fees, no surprises.',
-  },
+const steps = [
   {
     icon: MagnifyingGlass,
-    title: 'Compare prices',
-    description: 'See real prices from multiple providers. Find the best value for your treatment.',
+    step: '01',
+    title: 'Browse',
+    description:
+      'Search by treatment or city. See real prices from real providers — no hidden fees.',
   },
   {
-    icon: Lock,
-    title: 'Private until ready',
-    description: "Browse anonymously. Business details are revealed only when you claim a deal.",
+    icon: Scales,
+    step: '02',
+    title: 'Compare',
+    description:
+      'Side-by-side pricing so you can spot the best value. Filter by category, location, or price.',
+  },
+  {
+    icon: PiggyBank,
+    step: '03',
+    title: 'Save',
+    description:
+      'Claim deals directly. Save 20-60% compared to standard pricing at top medspas.',
   },
 ]
 
 export function ValuePropsSection() {
   return (
-    <section className="py-12 border-t border-glass-border">
-      <div className="text-center mb-10">
-        <h2 className="text-xl font-semibold text-text-primary">
-          Why CostFinders
-        </h2>
-        <p className="text-text-secondary mt-2">
-          Trusted by thousands of consumers
+    <section className="py-16 sm:py-20">
+      <div className="text-center mb-12">
+        <h2 className="text-2xl font-bold text-stone-100">How it works</h2>
+        <p className="text-stone-400 mt-2">
+          Three steps to better prices
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {valueProps.map((prop) => (
+        {steps.map((item) => (
           <div
-            key={prop.title}
-            className="p-6 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-sm text-center"
+            key={item.step}
+            className="bg-stone-900 border border-stone-800 rounded-[10px] p-6 text-center"
           >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-primary/10 border border-brand-primary/20 mb-4">
-              <prop.icon size={24} weight="light" className="text-brand-primary" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-400/10 border border-amber-400/20 mb-4">
+              <item.icon
+                size={24}
+                weight="duotone"
+                className="text-amber-400"
+              />
             </div>
-            <h3 className="font-semibold text-text-primary mb-2">
-              {prop.title}
+            <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+              Step {item.step}
+            </div>
+            <h3 className="font-semibold text-stone-100 text-lg mb-2">
+              {item.title}
             </h3>
-            <p className="text-sm text-text-secondary">
-              {prop.description}
+            <p className="text-sm text-stone-400 leading-relaxed">
+              {item.description}
             </p>
           </div>
         ))}

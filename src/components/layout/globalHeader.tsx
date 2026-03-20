@@ -42,16 +42,16 @@ export function GlobalHeader() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-bg-primary/80 backdrop-blur-md border-b border-glass-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-stone-950/95 backdrop-blur-sm border-b border-stone-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <MagnifyingGlass
-              size={24}
+              size={22}
               weight="bold"
-              className="text-brand-primary"
+              className="text-amber-400"
             />
-            <span className="font-semibold text-text-primary">CostFinders</span>
+            <span className="font-bold text-lg text-amber-400">CostFinders</span>
           </Link>
 
           {/* Right side: Location + Auth */}
@@ -70,7 +70,7 @@ export function GlobalHeader() {
                 <button
                   type="button"
                   onClick={handleSignIn}
-                  className="text-sm text-text-secondary hover:text-text-primary transition-colors hidden sm:block"
+                  className="text-sm text-stone-400 hover:text-stone-100 transition-colors hidden sm:block cursor-pointer"
                 >
                   Sign in
                 </button>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Manrope } from 'next/font/google'
+import { Sora, Manrope } from 'next/font/google'
 import { AuthProvider } from '@/lib/context/authContext'
 import { BusinessAuthProvider } from '@/lib/context/businessAuthContext'
 import { ClaimsProvider } from '@/lib/context/claimsContext'
@@ -8,11 +8,19 @@ import { GlobalHeader } from '@/components/layout/globalHeader'
 import { WebsiteSchema, OrganizationSchema } from '@/components/seo'
 import './globals.css'
 
+const sora = Sora({
+  variable: '--font-sora',
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  weight: ['400', '500', '600', '700'],
+})
+
 const manrope = Manrope({
   variable: '--font-manrope',
   subsets: ['latin'],
   display: 'swap',
-  preload: true,
+  preload: false,
   weight: ['400', '500', '600', '700'],
 })
 
@@ -55,7 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} font-sans antialiased`}>
+      <body className={`${sora.variable} ${manrope.variable} font-sans antialiased`}>
         <WebsiteSchema />
         <OrganizationSchema />
         <LocationProvider>
