@@ -1,41 +1,81 @@
-import { MapPin } from '@phosphor-icons/react/dist/ssr'
+'use client'
+
+import { MapPin } from '@phosphor-icons/react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { ScrollRevealItem } from '@/components/patterns/scrollReveal'
 
 interface CityGridProps {
   cities: { city: string; count: number }[]
 }
 
+const CITY_IMAGES = [
+  '/images/homepage/city-1.png',
+  '/images/homepage/city-2.png',
+  '/images/homepage/city-3.png',
+  '/images/homepage/city-4.png',
+]
+
 export function CityGrid({ cities }: CityGridProps) {
   return (
-    <section className="py-12">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-[#451a03]">Browse by city</h2>
-      </div>
+    <section className="py-16 sm:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-[#451a03]">
+              Browse by city
+            </h2>
+            <p className="text-sm text-[#78350f] mt-1">
+              Discover providers near you
+            </p>
+          </div>
+        </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {cities.map((item) => (
-          <Link
-            key={item.city}
-            href={`/deals/${item.city.toLowerCase().replace(/\s+/g, '-')}`}
-            className="group flex items-center gap-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px] px-4 py-3 hover:border-[#c4b09a] transition-all duration-200 cursor-pointer"
-          >
-            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[#faf5ee] group-hover:bg-amber-800/8 transition-colors shrink-0">
-              <MapPin
-                size={16}
-                weight="bold"
-                className="text-[#78350f] group-hover:text-amber-800 transition-colors"
-              />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-[#5c2d0a] group-hover:text-[#451a03] truncate">
-                {item.city}
-              </p>
-              <p className="text-xs text-[#92400e]">
-                {item.count} {item.count === 1 ? 'provider' : 'providers'}
-              </p>
-            </div>
-          </Link>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {cities.map((item, index) => (
+            <ScrollRevealItem
+              key={item.city}
+              index={index}
+              animation="fadeInUp"
+              stagger={100}
+            >
+              <Link
+                href={`/deals/${item.city.toLowerCase().replace(/\s+/g, '-')}`}
+                className="group relative block h-40 sm:h-44 rounded-xl overflow-hidden cursor-pointer"
+              >
+                {/* City background image */}
+                <Image
+                  src={CITY_IMAGES[index % CITY_IMAGES.length]}
+                  alt={`${item.city} skyline`}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  loading="lazy"
+                />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#451a03]/80 via-[#451a03]/30 to-transparent group-hover:from-[#451a03]/70 transition-colors duration-300" />
+
+                {/* Content overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MapPin
+                      size={16}
+                      weight="fill"
+                      className="text-amber-300"
+                    />
+                    <h3 className="text-white font-semibold text-lg">
+                      {item.city}
+                    </h3>
+                  </div>
+                  <p className="text-white/70 text-sm">
+                    {item.count} {item.count === 1 ? 'provider' : 'providers'}
+                  </p>
+                </div>
+              </Link>
+            </ScrollRevealItem>
+          ))}
+        </div>
       </div>
     </section>
   )

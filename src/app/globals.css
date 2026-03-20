@@ -116,11 +116,92 @@
   --color-bg-secondary: #f2ebe2;
   --color-bg-tertiary: #faf5ee;
 
+  /* Inverted / Dark section */
+  --color-bg-inverted: #451a03;
+  --color-text-on-dark: #faf5ee;
+  --color-text-on-dark-muted: #d4c4b0;
+
   --font-sans: var(--font-sora), var(--font-manrope), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-bg-base);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+}
+
+/* ============================================
+   Scroll Reveal & Animation Keyframes
+   ============================================ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes drawLineVertical {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* Scroll reveal base — hidden until visible */
+[data-scroll-reveal] {
+  opacity: 0;
+}
+
+[data-scroll-reveal][data-visible="true"] {
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-scroll-reveal="fadeInUp"][data-visible="true"] {
+  animation-name: fadeInUp;
+}
+
+[data-scroll-reveal="fadeIn"][data-visible="true"] {
+  animation-name: fadeIn;
+}
+
+[data-scroll-reveal="scaleIn"][data-visible="true"] {
+  animation-name: scaleIn;
+}
+
+[data-scroll-reveal="slideInLeft"][data-visible="true"] {
+  animation-name: slideInLeft;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-reveal] {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }
