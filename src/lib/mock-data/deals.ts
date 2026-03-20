@@ -438,6 +438,7 @@ export function toAnonymousDeal(deal: Deal): AnonymousDeal {
     businessRating: business.rating,
     businessReviewCount: business.reviewCount,
     businessTier: business.tier,
+    templateType: 'FIXED_PRICE' as const,
   }
 }
 

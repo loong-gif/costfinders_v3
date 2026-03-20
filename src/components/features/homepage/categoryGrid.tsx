@@ -23,6 +23,10 @@ const CATEGORY_ICONS: Record<string, Icon> = {
 }
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
+  const visibleCategories = categories.filter((cat) => cat.count > 0)
+
+  if (visibleCategories.length === 0) return null
+
   return (
     <section className="py-12">
       <div className="flex items-center justify-between mb-6">
@@ -32,7 +36,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {categories.map((cat) => {
+        {visibleCategories.map((cat) => {
           const IconComponent = CATEGORY_ICONS[cat.slug] ?? FirstAid
           return (
             <Link

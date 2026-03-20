@@ -1,4 +1,4 @@
-import type { TreatmentCategory } from '@/types/deal'
+import type { AnonymousDeal, TemplateType, TreatmentCategory } from '@/types/deal'
 import type {
   Business as SupaBusiness,
   Offer,
@@ -92,31 +92,7 @@ export function treatmentToDbCategories(
  * Transform a Supabase OfferWithBusiness into the AnonymousDeal shape
  * that all consumer-facing UI components expect.
  */
-export function offerToAnonymousDeal(offer: OfferWithBusiness): {
-  id: string
-  title: string
-  description: string
-  category: TreatmentCategory
-  originalPrice: number
-  dealPrice: number
-  discountPercent: number
-  unit: string
-  validFrom: string
-  validUntil: string
-  termsAndConditions: string
-  imageUrl?: string
-  isActive: boolean
-  isFeatured: boolean
-  isSponsored: boolean
-  claimCount: number
-  viewCount: number
-  createdAt: string
-  updatedAt: string
-  locationArea: string
-  businessRating: number
-  businessReviewCount: number
-  businessTier: 'unclaimed' | 'free' | 'paid'
-} {
+export function offerToAnonymousDeal(offer: OfferWithBusiness): AnonymousDeal {
   const biz = offer.master_business_info
 
   return {
@@ -142,6 +118,7 @@ export function offerToAnonymousDeal(offer: OfferWithBusiness): {
     isSponsored: false,
     claimCount: 0,
     viewCount: 0,
+    templateType: (offer.template_type as TemplateType) ?? 'FIXED_PRICE',
     createdAt: offer.created_at ?? new Date().toISOString(),
     updatedAt: offer.created_at ?? new Date().toISOString(),
     locationArea: biz?.city ?? '',

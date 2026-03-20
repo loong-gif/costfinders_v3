@@ -41,7 +41,7 @@ export function HeroSection({
 
         {/* Category chips */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-          {categories.map((cat) => (
+          {categories.filter((cat) => cat.count > 0).map((cat) => (
             <Link
               key={cat.slug}
               href={`/treatments/${cat.slug}`}

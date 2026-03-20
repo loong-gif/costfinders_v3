@@ -106,7 +106,8 @@ function CategoryCard({
 }
 
 export default async function TreatmentsPage() {
-  const categories = await getUnifiedCategories()
+  const allCategories = await getUnifiedCategories()
+  const categories = allCategories.filter((c) => c.count > 0)
 
   // Build breadcrumb items
   const breadcrumbItems = [

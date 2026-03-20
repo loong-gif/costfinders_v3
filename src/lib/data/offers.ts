@@ -64,7 +64,8 @@ export async function getOffersWithBusinesses(
   let query = supabase
     .from(TABLE)
     .select(`*, ${BUSINESS_JOIN}`)
-    .order('created_at', { ascending: false })
+    // Rule 1: Hide deals with no pricing data
+    .or('discount_price.gt.0,original_price.gt.0')
 
   if (filters?.city) {
     // PostgREST can't filter parent rows by joined table columns,
@@ -95,13 +96,34 @@ export async function getOffersWithBusinesses(
 
   const { data, error } = await query
   if (error) throw error
-  return (data ?? []) as OfferWithBusiness[]
+
+  // Rule 5: Sort by pricing quality — deals with savings first, then priced, then rest
+  const results = (data ?? []) as OfferWithBusiness[]
+  return results.sort((a, b) => {
+    const scoreA =
+      a.discount_price && a.original_price && a.discount_price < a.original_price
+        ? 0
+        : a.discount_price && a.discount_price > 0
+          ? 1
+          : 2
+    const scoreB =
+      b.discount_price && b.original_price && b.discount_price < b.original_price
+        ? 0
+        : b.discount_price && b.discount_price > 0
+          ? 1
+          : 2
+    return scoreA - scoreB
+  })
 }
 
 export async function getOfferCategories(): Promise<
   { service_category: string; count: number }[]
 > {
-  const { data, error } = await supabase.from(TABLE).select('service_category')
+  // Only count deals that have pricing (matches Rule 1 filter)
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select('service_category')
+    .or('discount_price.gt.0,original_price.gt.0')
 
   if (error) throw error
 

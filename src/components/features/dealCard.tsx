@@ -92,14 +92,26 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           {categoryLabels[deal.category]}
         </Badge>
 
-        {/* Save Button & Discount Badge - Top Right (above blur) */}
+        {/* Save Button & Discount/Template Badge - Top Right (above blur) */}
         <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
           <SaveButton dealId={deal.id} size="sm" />
-          {effectiveDiscount > 0 && (
+          {effectiveDiscount > 0 ? (
             <Badge variant="brand" size="sm">
-              {effectiveDiscount}% OFF
+              Save {effectiveDiscount}%
             </Badge>
-          )}
+          ) : deal.templateType === 'BUNDLE' ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+              Bundle
+            </span>
+          ) : deal.templateType === 'MEMBERSHIP' ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
+              Members
+            </span>
+          ) : deal.templateType === 'DISCOUNT' ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--color-accent-muted)] text-[var(--color-accent)]">
+              Deal
+            </span>
+          ) : null}
         </div>
 
         {/* Sponsored Indicator - Bottom Left (above blur) */}
@@ -127,9 +139,15 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
         {/* Pricing */}
         <div className="mt-2 flex items-baseline gap-2">
           {hasDealPrice ? (
-            <span className="text-xl font-bold font-mono text-amber-800">
-              ${deal.dealPrice}
-            </span>
+            deal.unit === 'unit' && deal.dealPrice < 50 ? (
+              <span className="text-xl font-bold font-mono text-amber-800">
+                ${deal.dealPrice}<span className="text-base font-semibold">/unit</span>
+              </span>
+            ) : (
+              <span className="text-xl font-bold font-mono text-amber-800">
+                ${deal.dealPrice}
+              </span>
+            )
           ) : (
             <span className="text-base font-semibold text-amber-800">
               Contact for pricing
@@ -142,8 +160,10 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           )}
         </div>
 
-        {/* Unit Info */}
-        <p className="mt-1 text-xs text-[#92400e]">{deal.unit}</p>
+        {/* Unit Info — hidden when already shown inline */}
+        {!(deal.unit === 'unit' && deal.dealPrice < 50) && (
+          <p className="mt-1 text-xs text-[#92400e]">{deal.unit}</p>
+        )}
 
         {/* Location & Rating */}
         <div className="mt-3 flex items-center gap-4 text-sm text-[#78350f]">
