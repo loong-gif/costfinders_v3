@@ -42,7 +42,7 @@ export function PriceRangeFilter({
 
   return (
     <fieldset className="space-y-2">
-      <legend className="text-sm font-medium text-text-secondary">
+      <legend className="text-sm font-medium text-stone-400">
         Price Range
       </legend>
       <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
             aria-hidden="true"
           />
           <input
@@ -63,10 +63,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5
-              bg-glass-bg backdrop-blur-md
-              border border-glass-border rounded-xl
-              text-text-primary placeholder:text-text-muted
-              focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50
+              bg-stone-900
+              border border-stone-800 rounded-xl
+              text-stone-100 placeholder:text-stone-500
+              focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none
@@ -75,7 +75,7 @@ export function PriceRangeFilter({
           />
         </div>
 
-        <span className="text-text-muted" aria-hidden="true">
+        <span className="text-stone-500" aria-hidden="true">
           —
         </span>
 
@@ -84,7 +84,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
             aria-hidden="true"
           />
           <input
@@ -96,10 +96,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5
-              bg-glass-bg backdrop-blur-md
-              border border-glass-border rounded-xl
-              text-text-primary placeholder:text-text-muted
-              focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50
+              bg-stone-900
+              border border-stone-800 rounded-xl
+              text-stone-100 placeholder:text-stone-500
+              focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none

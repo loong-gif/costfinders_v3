@@ -4,12 +4,12 @@ interface SkeletonProps {
 
 /**
  * Base skeleton component with animated pulse effect.
- * Uses glassmorphic styling to match design system.
+ * Uses warm stone styling to match design system.
  */
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse bg-glass-bg rounded-lg ${className}`}
+      className={`animate-pulse bg-stone-900 rounded-lg ${className}`}
       aria-hidden="true"
     />
   )
@@ -21,7 +21,7 @@ export function Skeleton({ className = '' }: SkeletonProps) {
  */
 export function SkeletonCard() {
   return (
-    <div className="bg-glass-bg border border-glass-border rounded-2xl overflow-hidden">
+    <div className="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
       <Skeleton className="aspect-[4/3]" />
       <div className="p-4 space-y-3">
         <Skeleton className="h-5 w-3/4" />

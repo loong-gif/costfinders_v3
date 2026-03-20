@@ -69,10 +69,10 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="
           flex items-center gap-2 px-4 py-2.5
-          bg-glass-bg backdrop-blur-md
-          border border-glass-border rounded-xl
-          text-text-primary text-sm font-medium
-          hover:border-glass-border-hover
+          bg-stone-900
+          border border-stone-800 rounded-xl
+          text-stone-100 text-sm font-medium
+          hover:border-stone-700
           transition-all duration-200
         "
         aria-expanded={isOpen}
@@ -83,7 +83,7 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
         <CaretDown
           size={14}
           weight="regular"
-          className={`text-text-muted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`text-stone-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -92,8 +92,8 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
         <div
           className="
             absolute right-0 mt-2 w-56 z-50
-            bg-bg-secondary backdrop-blur-xl
-            border border-glass-border rounded-xl
+            bg-stone-900
+            border border-stone-800 rounded-xl
             shadow-elevated
             overflow-hidden
           "
@@ -115,8 +115,8 @@ export function SortSelector({ value, onChange }: SortSelectorProps) {
                   text-sm transition-colors duration-150
                   ${
                     isSelected
-                      ? 'bg-brand-primary/10 text-brand-primary'
-                      : 'text-text-secondary hover:bg-glass-bg hover:text-text-primary'
+                      ? 'bg-amber-400/10 text-amber-400'
+                      : 'text-stone-400 hover:bg-stone-800 hover:text-stone-100'
                   }
                 `}
                 role="option"

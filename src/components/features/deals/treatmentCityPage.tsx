@@ -89,7 +89,7 @@ export function TreatmentCityPage({
         {/* Back Link */}
         <Link
           href={`/deals/${citySlug}`}
-          className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-100 transition-colors mb-6"
         >
           <ArrowLeft size={16} weight="bold" />
           All {cityName} Deals
@@ -97,19 +97,19 @@ export function TreatmentCityPage({
 
         {/* Hero Section */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
+          <h1 className="text-2xl sm:text-3xl font-bold text-stone-100">
             {treatmentName} in {cityName}
           </h1>
-          <p className="mt-2 text-text-secondary max-w-2xl">
+          <p className="mt-2 text-stone-400 max-w-2xl">
             Compare {dealCount} {treatmentName.toLowerCase()} deals from
             verified {cityName} providers. Find the best prices and save up to
             50%.
           </p>
 
           {/* Stats Row */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-stone-400">
             <div className="flex items-center gap-1.5">
-              <MapPin size={16} weight="fill" className="text-brand-primary" />
+              <MapPin size={16} weight="fill" className="text-amber-400" />
               <span>{cityName}</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -146,7 +146,7 @@ export function TreatmentCityPage({
         {/* Same Treatment in Other Cities */}
         {otherCities.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-lg font-semibold text-text-primary mb-4">
+            <h2 className="text-lg font-semibold text-stone-100 mb-4">
               {treatmentName} in Other Cities
             </h2>
             <div className="flex flex-wrap gap-3">
@@ -154,7 +154,7 @@ export function TreatmentCityPage({
                 <Link
                   key={city.slug}
                   href={`/deals/${treatmentSlug}/${city.slug}`}
-                  className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors"
+                  className="px-4 py-2 rounded-full bg-stone-900 border border-stone-800 text-sm text-stone-400 hover:bg-stone-800 hover:text-stone-100 transition-colors"
                 >
                   {treatmentName} in {city.name}
                 </Link>
@@ -165,7 +165,7 @@ export function TreatmentCityPage({
 
         {/* Other Treatments in Same City */}
         <section className="mt-12">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">
             Other Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -178,16 +178,16 @@ export function TreatmentCityPage({
                 <Card
                   variant="glass"
                   padding="md"
-                  className="hover:bg-white/10 transition-colors"
+                  className="bg-stone-900 border-stone-800 hover:bg-stone-800 transition-colors"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-text-primary group-hover:text-brand-primary transition-colors">
+                    <span className="text-sm font-medium text-stone-100 group-hover:text-amber-400 transition-colors">
                       {category.name}
                     </span>
                     <CaretRight
                       size={14}
                       weight="bold"
-                      className="text-text-muted group-hover:text-brand-primary transition-colors"
+                      className="text-stone-500 group-hover:text-amber-400 transition-colors"
                     />
                   </div>
                 </Card>

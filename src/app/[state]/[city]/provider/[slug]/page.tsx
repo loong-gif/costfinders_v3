@@ -117,19 +117,19 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
             />
 
             {/* Hero Content */}
-            <div className="bg-glass-bg backdrop-blur-lg border border-glass-border rounded-2xl p-8 shadow-glass">
+            <div className="bg-stone-900 border border-stone-800 rounded-[10px] p-8 shadow-md">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-brand-primary/20 flex items-center justify-center">
-                  <Storefront size={24} weight="fill" className="text-brand-primary" />
+                <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
+                  <Storefront size={24} weight="fill" className="text-amber-400" />
                 </div>
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-stone-100">
                     {provider.name}
                   </h1>
                   {provider.rating && (
                     <div className="flex items-center gap-1 mt-1">
                       <Star size={16} weight="fill" className="text-yellow-400" />
-                      <span className="text-text-secondary text-sm">
+                      <span className="text-stone-400 text-sm">
                         {provider.rating.toFixed(1)} rating
                       </span>
                     </div>
@@ -138,7 +138,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
               </div>
 
               {provider.description && (
-                <p className="text-text-secondary max-w-2xl mb-6">
+                <p className="text-stone-400 max-w-2xl mb-6">
                   {provider.description}
                 </p>
               )}
@@ -146,26 +146,26 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
               {/* Stats Row */}
               <div className="flex flex-wrap gap-6 mb-6">
                 <div className="flex items-center gap-2">
-                  <Tag size={20} weight="light" className="text-brand-primary" />
-                  <span className="font-semibold text-text-primary">
+                  <Tag size={20} weight="light" className="text-amber-400" />
+                  <span className="font-semibold text-stone-100">
                     {stats.activeDealCount}
                   </span>
-                  <span className="text-text-secondary">Active Deals</span>
+                  <span className="text-stone-400">Active Deals</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MapPin size={20} weight="light" className="text-brand-primary" />
-                  <span className="text-text-secondary">
+                  <MapPin size={20} weight="light" className="text-amber-400" />
+                  <span className="text-stone-400">
                     {city.name}, {state.name}
                   </span>
                 </div>
               </div>
 
               {/* Contact Info */}
-              <div className="flex flex-wrap gap-6 pt-6 border-t border-glass-border">
+              <div className="flex flex-wrap gap-6 pt-6 border-t border-stone-800">
                 {provider.phone && (
                   <a
                     href={`tel:${provider.phone}`}
-                    className="flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors"
+                    className="flex items-center gap-2 text-stone-400 hover:text-amber-300 transition-colors"
                   >
                     <Phone size={18} weight="light" />
                     <span>{provider.phone}</span>
@@ -174,7 +174,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 {provider.email && (
                   <a
                     href={`mailto:${provider.email}`}
-                    className="flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors"
+                    className="flex items-center gap-2 text-stone-400 hover:text-amber-300 transition-colors"
                   >
                     <Envelope size={18} weight="light" />
                     <span>{provider.email}</span>
@@ -185,7 +185,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                     href={provider.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors"
+                    className="flex items-center gap-2 text-stone-400 hover:text-amber-300 transition-colors"
                   >
                     <Globe size={18} weight="light" />
                     <span>Website</span>
@@ -197,7 +197,7 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
 
           {/* Deals Grid */}
           <section>
-            <h2 className="text-xl font-semibold text-text-primary mb-6">
+            <h2 className="text-xl font-semibold text-stone-100 mb-6">
               Deals from {provider.name}
             </h2>
 
@@ -209,18 +209,18 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
               </div>
             ) : (
               /* Empty State */
-              <div className="text-center py-12 bg-glass-bg backdrop-blur-lg border border-glass-border rounded-2xl">
-                <Tag size={48} weight="light" className="mx-auto text-text-tertiary mb-4" />
-                <h3 className="text-lg font-medium text-text-primary mb-2">
+              <div className="text-center py-12 bg-stone-900 border border-stone-800 rounded-[10px]">
+                <Tag size={48} weight="light" className="mx-auto text-stone-500 mb-4" />
+                <h3 className="text-lg font-medium text-stone-100 mb-2">
                   No Deals Available Yet
                 </h3>
-                <p className="text-text-secondary max-w-md mx-auto mb-6">
+                <p className="text-stone-400 max-w-md mx-auto mb-6">
                   We&apos;re working to bring you exclusive deals from{' '}
                   {provider.name}. Check back soon for new offers.
                 </p>
                 <Link
                   href={`/${state.slug}/${citySlug}`}
-                  className="inline-flex items-center gap-2 text-brand-primary hover:text-brand-primary/80 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors font-medium"
                 >
                   <MapPin size={18} weight="light" />
                   Browse other providers in {city.name}
@@ -230,10 +230,10 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
           </section>
 
           {/* Back Navigation */}
-          <div className="mt-8 pt-6 border-t border-glass-border">
+          <div className="mt-8 pt-6 border-t border-stone-800">
             <Link
               href={`/${state.slug}/${citySlug}`}
-              className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-stone-400 hover:text-stone-100 transition-colors"
             >
               <MapPin size={18} weight="light" />
               Back to {city.name} providers

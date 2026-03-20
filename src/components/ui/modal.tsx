@@ -85,8 +85,8 @@ export function Modal({
       <div
         className={`
           relative w-full ${mobileVariant === 'default' ? sizes[size] : `md:${sizes[size]}`}
-          bg-bg-secondary backdrop-blur-xl
-          border border-glass-border
+          bg-stone-900
+          border border-stone-800
           ${mobileVariant === 'default' ? 'rounded-2xl' : ''} shadow-elevated
           ${variant.modal}
           ${variant.animation}
@@ -96,11 +96,11 @@ export function Modal({
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
-            <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800">
+            <h2 className="text-lg font-semibold text-stone-100">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-text-tertiary hover:text-text-primary hover:bg-glass-bg transition-colors"
+              className="p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />
@@ -113,7 +113,7 @@ export function Modal({
           {!title && (
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-lg text-text-tertiary hover:text-text-primary hover:bg-glass-bg transition-colors"
+              className="absolute top-4 right-4 p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />

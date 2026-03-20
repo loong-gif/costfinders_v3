@@ -17,12 +17,12 @@ interface BadgeProps {
 }
 
 const variants: Record<BadgeVariant, string> = {
-  default: 'bg-glass-bg border-glass-border text-text-secondary',
+  default: 'bg-stone-900 border-stone-800 text-stone-400',
   success: 'bg-success/10 border-success/20 text-success-text',
   warning: 'bg-warning/10 border-warning/20 text-warning-text',
   error: 'bg-error/10 border-error/20 text-error-text',
   info: 'bg-info/10 border-info/20 text-info-text',
-  brand: 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary',
+  brand: 'bg-amber-400/10 border-amber-400/20 text-amber-400',
 }
 
 const sizes: Record<BadgeSize, string> = {
@@ -41,7 +41,7 @@ export function Badge({
       className={`
         inline-flex items-center
         font-medium rounded-full
-        border backdrop-blur-sm
+        border
         ${variants[variant]}
         ${sizes[size]}
         ${className}

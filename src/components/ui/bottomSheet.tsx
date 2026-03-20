@@ -63,8 +63,8 @@ export function BottomSheet({
         className={`
           fixed bottom-0 left-0 right-0 z-50
           ${heights[height]}
-          bg-bg-secondary backdrop-blur-xl
-          border-t border-glass-border
+          bg-stone-900
+          border-t border-stone-800
           rounded-t-2xl shadow-elevated
           animate-in slide-in-from-bottom duration-200
           flex flex-col
@@ -75,17 +75,17 @@ export function BottomSheet({
         {/* Drag handle indicator */}
         {height === 'full' && (
           <div className="flex justify-center py-2">
-            <div className="w-10 h-1 bg-text-tertiary/50 rounded-full" />
+            <div className="w-10 h-1 bg-stone-500/50 rounded-full" />
           </div>
         )}
 
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border shrink-0">
-            <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-stone-800 shrink-0">
+            <h2 className="text-lg font-semibold text-stone-100">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-text-tertiary hover:text-text-primary hover:bg-glass-bg transition-colors"
+              className="p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />
@@ -98,7 +98,7 @@ export function BottomSheet({
           {!title && (
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-lg text-text-tertiary hover:text-text-primary hover:bg-glass-bg transition-colors"
+              className="absolute top-4 right-4 p-1 rounded-lg text-stone-500 hover:text-stone-100 hover:bg-stone-800 transition-colors"
               type="button"
             >
               <X size={20} weight="bold" />

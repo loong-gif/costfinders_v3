@@ -31,12 +31,12 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
       padding="none"
       hover
       onClick={onClick}
-      className={`overflow-hidden ${isGrid ? '' : 'flex'}`}
+      className={`overflow-hidden bg-stone-900 border-stone-800 rounded-[10px] hover:border-stone-700 shadow-md ${isGrid ? '' : 'flex'}`}
     >
       {/* Image Section */}
       <div
         className={`
-          relative bg-bg-tertiary
+          relative bg-stone-800
           ${isGrid ? 'aspect-[4/3]' : 'w-48 shrink-0 aspect-square'}
         `}
       >
@@ -66,7 +66,7 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
 
         {/* Sponsored Indicator - Bottom Left (above blur) */}
         {deal.isSponsored && (
-          <span className="absolute bottom-3 left-3 z-10 text-xs text-text-tertiary bg-bg-tertiary/80 backdrop-blur-sm px-2 py-1 rounded">
+          <span className="absolute bottom-3 left-3 z-10 text-xs text-stone-500 bg-stone-800/80 px-2 py-1 rounded">
             Sponsored
           </span>
         )}
@@ -75,48 +75,48 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
       {/* Content Section */}
       <div className={`p-4 flex flex-col ${isGrid ? '' : 'flex-1'}`}>
         {/* Title */}
-        <h3 className="font-semibold text-text-primary line-clamp-2">
+        <h3 className="font-semibold text-stone-100 line-clamp-2">
           {deal.title}
         </h3>
 
         {/* Description - List variant only */}
         {!isGrid && (
-          <p className="mt-1 text-sm text-text-secondary line-clamp-2">
+          <p className="mt-1 text-sm text-stone-400 line-clamp-2">
             {deal.description}
           </p>
         )}
 
         {/* Pricing */}
         <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-xl font-bold text-brand-primary">
+          <span className="text-xl font-bold font-mono text-amber-400">
             ${deal.dealPrice}
           </span>
-          <span className="text-sm text-text-tertiary line-through">
+          <span className="text-sm text-stone-500 line-through">
             ${deal.originalPrice}
           </span>
         </div>
 
         {/* Unit Info */}
-        <p className="mt-1 text-xs text-text-tertiary">{deal.unit}</p>
+        <p className="mt-1 text-xs text-stone-500">{deal.unit}</p>
 
         {/* Location & Rating */}
-        <div className="mt-3 flex items-center gap-4 text-sm text-text-secondary">
+        <div className="mt-3 flex items-center gap-4 text-sm text-stone-400">
           <span className="flex items-center gap-1">
-            <MapPin size={16} weight="light" className="text-text-tertiary" />
+            <MapPin size={16} weight="light" className="text-stone-500" />
             {deal.locationArea}
           </span>
           <span className="flex items-center gap-1">
             <Star size={16} weight="fill" className="text-amber-400" />
             {deal.businessRating.toFixed(1)}
-            <span className="text-text-tertiary">
+            <span className="text-stone-500">
               ({deal.businessReviewCount})
             </span>
           </span>
         </div>
 
         {/* Business Hidden Section */}
-        <div className="mt-3 pt-3 border-t border-glass-border flex items-center justify-between">
-          <div className="flex items-center gap-2 text-text-tertiary">
+        <div className="mt-3 pt-3 border-t border-stone-800 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-stone-500">
             <Lock size={16} weight="light" />
             <span className="text-sm">Business details hidden</span>
           </div>

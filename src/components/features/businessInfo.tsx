@@ -41,7 +41,7 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
         <div className="space-y-4">
         {/* Business Name & Verified Badge */}
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-xl font-semibold text-text-primary">
+          <h3 className="text-xl font-semibold text-stone-100">
             {business.name}
           </h3>
           {business.tier === 'paid' && (
@@ -55,17 +55,17 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
         {/* Rating */}
         <div className="flex items-center gap-1.5">
           <Star size={16} weight="fill" className="text-amber-400" />
-          <span className="text-sm text-text-secondary">
+          <span className="text-sm text-stone-400">
             {business.rating.toFixed(1)} ({business.reviewCount} reviews)
           </span>
         </div>
 
         {/* Contact Info */}
-        <div className="space-y-3 pt-2 border-t border-glass-border">
+        <div className="space-y-3 pt-2 border-t border-stone-800">
           {/* Address */}
           <div className="flex items-start gap-2">
-            <MapPin size={18} className="text-text-muted mt-0.5 shrink-0" />
-            <span className="text-sm text-text-secondary">
+            <MapPin size={18} className="text-stone-500 mt-0.5 shrink-0" />
+            <span className="text-sm text-stone-400">
               {business.address}
               <br />
               {business.city}, {business.state} {business.zipCode}
@@ -74,10 +74,10 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
 
           {/* Phone */}
           <div className="flex items-center gap-2">
-            <Phone size={18} className="text-text-muted shrink-0" />
+            <Phone size={18} className="text-stone-500 shrink-0" />
             <a
               href={`tel:${business.phone.replace(/\D/g, '')}`}
-              className="text-sm text-brand-primary hover:text-brand-secondary transition-colors"
+              className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
             >
               {business.phone}
             </a>
@@ -86,12 +86,12 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
           {/* Website */}
           {business.website && (
             <div className="flex items-center gap-2">
-              <Globe size={18} className="text-text-muted shrink-0" />
+              <Globe size={18} className="text-stone-500 shrink-0" />
               <a
                 href={business.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-brand-primary hover:text-brand-secondary transition-colors truncate"
+                className="text-sm text-amber-400 hover:text-amber-300 transition-colors truncate"
               >
                 {business.website.replace(/^https?:\/\//, '')}
               </a>
@@ -102,20 +102,20 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
         {/* Claim Button or Already Claimed State */}
         {existingClaim ? (
           <div className="mt-2 space-y-3">
-            <div className="p-3 bg-success/10 rounded-xl">
+            <div className="p-3 bg-emerald-400/10 rounded-xl">
               <div className="flex items-center gap-2">
-                <CheckCircle size={20} weight="fill" className="text-success-text" />
-                <span className="text-sm font-medium text-success-text">
+                <CheckCircle size={20} weight="fill" className="text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-400">
                   Deal Claimed
                 </span>
               </div>
             </div>
-            <div className="p-3 bg-bg-tertiary rounded-xl">
+            <div className="p-3 bg-stone-800 rounded-xl">
               <div className="flex items-center gap-2 text-sm">
-                <Clock size={16} weight="regular" className="text-text-muted" />
-                <span className="text-text-secondary">
+                <Clock size={16} weight="regular" className="text-stone-500" />
+                <span className="text-stone-400">
                   Status:{' '}
-                  <span className="text-text-primary capitalize">
+                  <span className="text-stone-100 capitalize">
                     {existingClaim.status}
                   </span>
                 </span>

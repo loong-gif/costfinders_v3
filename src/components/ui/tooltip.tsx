@@ -100,10 +100,10 @@ export function Tooltip({
       className={`
         fixed z-[9999]
         px-3 py-1.5
-        bg-bg-secondary/95 backdrop-blur-md
-        border border-glass-border
+        bg-stone-900/95 backdrop-blur-md
+        border border-stone-800
         rounded-lg
-        text-sm text-text-primary
+        text-sm text-stone-100
         shadow-lg
         whitespace-nowrap
         pointer-events-none

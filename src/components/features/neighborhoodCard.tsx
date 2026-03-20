@@ -13,7 +13,7 @@ interface NeighborhoodCardProps {
 
 /**
  * NeighborhoodCard - Server Component for displaying neighborhood listings on city pages
- * Features glassmorphic styling with hover effects and navigation link
+ * Features Bold & Warm styling with hover effects and navigation link
  */
 export function NeighborhoodCard({
   name,
@@ -27,35 +27,35 @@ export function NeighborhoodCard({
   return (
     <Link
       href={`/${stateSlug}/${citySlug}/${slug}`}
-      className="group bg-glass-bg backdrop-blur-lg border border-glass-border rounded-xl p-5 shadow-glass transition-all duration-200 hover:border-glass-border-hover hover:shadow-elevated"
+      className="group bg-stone-900 border border-stone-800 rounded-xl p-5 shadow-md transition-all duration-200 hover:border-stone-700 hover:shadow-lg"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-brand-primary/10 flex items-center justify-center">
-            <MapPin size={20} weight="light" className="text-brand-primary" />
+          <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
+            <MapPin size={20} weight="light" className="text-amber-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-lg text-text-primary group-hover:text-brand-primary transition-colors">
+            <h3 className="font-semibold text-lg text-stone-100 group-hover:text-amber-400 transition-colors">
               {name}
             </h3>
-            <p className="text-sm text-text-tertiary">{cityName}</p>
+            <p className="text-sm text-stone-500">{cityName}</p>
           </div>
         </div>
         <ArrowRight
           size={20}
           weight="light"
-          className="text-text-tertiary group-hover:text-brand-primary group-hover:translate-x-1 transition-all"
+          className="text-stone-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all"
         />
       </div>
 
       {/* Stats */}
-      <div className="mt-4 pt-4 border-t border-glass-border flex items-center gap-4 text-sm">
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <Tag size={16} weight="light" className="text-brand-primary" />
+      <div className="mt-4 pt-4 border-t border-stone-800 flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1.5 text-stone-400">
+          <Tag size={16} weight="light" className="text-amber-400" />
           <span>{dealCount} deals</span>
         </div>
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <Storefront size={16} weight="light" className="text-brand-primary" />
+        <div className="flex items-center gap-1.5 text-stone-400">
+          <Storefront size={16} weight="light" className="text-amber-400" />
           <span>{businessCount} providers</span>
         </div>
       </div>

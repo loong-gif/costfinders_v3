@@ -34,7 +34,7 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
         {/* Back Link */}
         <Link
           href="/deals"
-          className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-100 transition-colors mb-6"
         >
           <ArrowLeft size={16} weight="bold" />
           Back to deals
@@ -45,7 +45,7 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Hero Image */}
-            <div className="relative aspect-video bg-bg-tertiary rounded-2xl overflow-hidden">
+            <div className="relative aspect-video bg-stone-800 rounded-2xl overflow-hidden">
               {/* Blurred Image with Lock Overlay */}
               <BlurredImage
                 src={deal.imageUrl}
@@ -68,7 +68,7 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
               {/* Sponsored Indicator (above blur) */}
               {deal.isSponsored && (
                 <div className="absolute top-4 right-4 z-10">
-                  <span className="text-xs text-text-muted bg-bg-primary/80 backdrop-blur-sm px-2 py-1 rounded">
+                  <span className="text-xs text-stone-500 bg-stone-950/80 px-2 py-1 rounded">
                     Sponsored
                   </span>
                 </div>
@@ -77,13 +77,13 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
 
             {/* Title & Meta */}
             <div className="space-y-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
+              <h1 className="text-2xl sm:text-3xl font-bold text-stone-100">
                 {deal.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-stone-400">
                 <div className="flex items-center gap-1.5">
-                  <MapPin size={16} weight="fill" className="text-text-muted" />
+                  <MapPin size={16} weight="fill" className="text-stone-500" />
                   <span>{deal.locationArea}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -94,31 +94,31 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Clock size={16} weight="regular" className="text-text-muted" />
+                  <Clock size={16} weight="regular" className="text-stone-500" />
                   <span>{deal.claimCount} claimed</span>
                 </div>
               </div>
             </div>
 
             {/* Description */}
-            <Card variant="glass" padding="lg">
-              <h2 className="text-lg font-semibold text-text-primary mb-3">
+            <Card variant="glass" padding="lg" className="bg-stone-900 border-stone-800 shadow-md">
+              <h2 className="text-lg font-semibold text-stone-100 mb-3">
                 About This Deal
               </h2>
-              <p className="text-text-secondary whitespace-pre-line">
+              <p className="text-stone-400 whitespace-pre-line">
                 {deal.description}
               </p>
             </Card>
 
             {/* Terms */}
-            <Card variant="glass" padding="lg">
+            <Card variant="glass" padding="lg" className="bg-stone-900 border-stone-800 shadow-md">
               <div className="flex items-center gap-2 mb-3">
-                <Info size={20} weight="regular" className="text-text-muted" />
-                <h2 className="text-lg font-semibold text-text-primary">
+                <Info size={20} weight="regular" className="text-stone-500" />
+                <h2 className="text-lg font-semibold text-stone-100">
                   Terms & Conditions
                 </h2>
               </div>
-              <p className="text-sm text-text-secondary whitespace-pre-line">
+              <p className="text-sm text-stone-400 whitespace-pre-line">
                 {deal.termsAndConditions}
               </p>
             </Card>
@@ -134,16 +134,16 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
 
             {/* Verified Badge */}
             {deal.businessTier === 'paid' && (
-              <Card variant="glass" padding="md">
+              <Card variant="glass" padding="md" className="bg-stone-900 border-stone-800 shadow-md">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
                     <Star size={20} weight="fill" className="text-amber-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-text-primary">
+                    <p className="text-sm font-medium text-stone-100">
                       Verified Business
                     </p>
-                    <p className="text-xs text-text-muted">Premium partner</p>
+                    <p className="text-xs text-stone-500">Premium partner</p>
                   </div>
                 </div>
               </Card>

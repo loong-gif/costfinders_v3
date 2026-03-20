@@ -63,19 +63,19 @@ export function AreaFilter({
         className={`
           inline-flex items-center gap-1.5
           px-3 py-1.5
-          bg-glass-bg backdrop-blur-md
-          border border-glass-border rounded-full
+          bg-stone-900
+          border border-stone-800 rounded-full
           text-sm
           transition-all duration-200
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-glass-border-hover'}
-          focus:outline-none focus:ring-2 focus:ring-brand-primary/50
-          ${isOpen ? 'border-brand-primary/50 ring-2 ring-brand-primary/50' : ''}
-          ${selectedArea ? 'bg-brand-primary/10 border-brand-primary/30' : ''}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-stone-700'}
+          focus:outline-none focus:ring-1 focus:ring-amber-400/20
+          ${isOpen ? 'border-amber-400/50 ring-1 ring-amber-400/20' : ''}
+          ${selectedArea ? 'bg-amber-400/10 border-amber-400/30' : ''}
         `}
       >
         {selectedArea ? (
           <>
-            <span className="text-text-primary">{selectedArea.name}</span>
+            <span className="text-stone-100">{selectedArea.name}</span>
             <span
               role="button"
               tabIndex={0}
@@ -85,19 +85,19 @@ export function AreaFilter({
                   handleClear(e as unknown as React.MouseEvent)
                 }
               }}
-              className="p-0.5 rounded-full hover:bg-glass-bg transition-colors cursor-pointer"
+              className="p-0.5 rounded-full hover:bg-stone-800 transition-colors cursor-pointer"
               aria-label="Clear area filter"
             >
-              <X size={14} weight="bold" className="text-text-tertiary" />
+              <X size={14} weight="bold" className="text-stone-500" />
             </span>
           </>
         ) : (
           <>
-            <span className="text-text-secondary">All areas</span>
+            <span className="text-stone-400">All areas</span>
             <CaretDown
               size={14}
               weight="bold"
-              className={`text-text-tertiary transition-transform duration-200 ${
+              className={`text-stone-500 transition-transform duration-200 ${
                 isOpen ? 'rotate-180' : ''
               }`}
             />
@@ -110,8 +110,8 @@ export function AreaFilter({
         <div
           className={`
             absolute z-50 mt-2 min-w-48
-            bg-bg-secondary backdrop-blur-xl
-            border border-glass-border rounded-xl
+            bg-stone-900
+            border border-stone-800 rounded-xl
             shadow-elevated
             overflow-hidden
             animate-in fade-in slide-in-from-top-2 duration-200
@@ -128,8 +128,8 @@ export function AreaFilter({
               transition-colors duration-150
               ${
                 selectedArea === null
-                  ? 'bg-brand-primary/10 text-brand-primary'
-                  : 'text-text-primary hover:bg-glass-bg'
+                  ? 'bg-amber-400/10 text-amber-400'
+                  : 'text-stone-100 hover:bg-stone-800'
               }
             `}
           >
@@ -140,7 +140,7 @@ export function AreaFilter({
           </button>
 
           {/* Divider */}
-          <div className="border-t border-glass-border" />
+          <div className="border-t border-stone-800" />
 
           {/* Area List */}
           <div className="max-h-48 overflow-y-auto">
@@ -156,8 +156,8 @@ export function AreaFilter({
                   transition-colors duration-150
                   ${
                     selectedArea?.id === area.id
-                      ? 'bg-brand-primary/10 text-brand-primary'
-                      : 'text-text-primary hover:bg-glass-bg'
+                      ? 'bg-amber-400/10 text-amber-400'
+                      : 'text-stone-100 hover:bg-stone-800'
                   }
                 `}
               >

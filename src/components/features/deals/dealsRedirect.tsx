@@ -78,32 +78,32 @@ export function DealsRedirect() {
   return (
     <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto mt-20">
-        <Card variant="glass" padding="lg" className="text-center">
+        <Card variant="glass" padding="lg" className="text-center bg-stone-900 border-stone-800 shadow-md">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-full bg-brand-primary/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center">
               {status === 'detecting' ? (
                 <MapPin
                   size={32}
                   weight="duotone"
-                  className="text-brand-primary animate-pulse"
+                  className="text-amber-400 animate-pulse"
                 />
               ) : (
                 <Spinner
                   size={32}
                   weight="bold"
-                  className="text-brand-primary animate-spin"
+                  className="text-amber-400 animate-spin"
                 />
               )}
             </div>
           </div>
 
-          <h1 className="text-xl font-semibold text-text-primary mb-2">
+          <h1 className="text-xl font-semibold text-stone-100 mb-2">
             {status === 'detecting'
               ? 'Finding Deals Near You'
               : 'Redirecting...'}
           </h1>
 
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             {status === 'detecting'
               ? 'Detecting your location to show nearby medspa deals'
               : `Taking you to deals in ${locationState.current.city?.name || DEFAULT_CITY.name}`}

@@ -23,11 +23,11 @@ export function DealSidebar({ deal }: DealSidebarProps) {
   // Show skeleton during loading
   if (isLoading) {
     return (
-      <div className="rounded-2xl bg-glass-bg backdrop-blur-lg border border-glass-border shadow-glass p-6 animate-pulse">
+      <div className="rounded-2xl bg-stone-900 border border-stone-800 shadow-md p-6 animate-pulse">
         <div className="space-y-4">
-          <div className="h-6 bg-bg-tertiary rounded w-3/4" />
-          <div className="h-4 bg-bg-tertiary rounded w-1/2" />
-          <div className="h-10 bg-bg-tertiary rounded w-full mt-4" />
+          <div className="h-6 bg-stone-800 rounded w-3/4" />
+          <div className="h-4 bg-stone-800 rounded w-1/2" />
+          <div className="h-10 bg-stone-800 rounded w-full mt-4" />
         </div>
       </div>
     )

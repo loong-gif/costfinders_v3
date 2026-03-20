@@ -22,7 +22,7 @@ interface ViewModeToggleProps {
 
 function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
   return (
-    <div className="flex items-center gap-1 p-1 bg-glass-bg rounded-lg border border-glass-border">
+    <div className="flex items-center gap-1 p-1 bg-stone-900 rounded-lg border border-stone-800">
       <button
         type="button"
         onClick={() => onChange('grid')}
@@ -31,8 +31,8 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
           p-2 rounded-md transition-colors
           ${
             viewMode === 'grid'
-              ? 'bg-brand-primary/20 text-brand-primary'
-              : 'text-text-secondary hover:text-text-primary'
+              ? 'bg-amber-400/20 text-amber-400'
+              : 'text-stone-400 hover:text-stone-100'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         `}
@@ -52,8 +52,8 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
           p-2 rounded-md transition-colors
           ${
             viewMode === 'list'
-              ? 'bg-brand-primary/20 text-brand-primary'
-              : 'text-text-secondary hover:text-text-primary'
+              ? 'bg-amber-400/20 text-amber-400'
+              : 'text-stone-400 hover:text-stone-100'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         `}
@@ -110,17 +110,17 @@ export function DealsGrid({
           <ViewModeToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
         <div className="flex flex-col items-center justify-center py-16">
-          <div className="w-16 h-16 rounded-full bg-glass-bg border border-glass-border flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center mb-4">
             <MagnifyingGlass
               size={32}
               weight="light"
-              className="text-text-tertiary"
+              className="text-stone-500"
             />
           </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">
+          <h3 className="text-lg font-semibold text-stone-100 mb-2">
             No deals found
           </h3>
-          <p className="text-text-secondary text-center max-w-md">
+          <p className="text-stone-400 text-center max-w-md">
             Try adjusting your filters or location to see more deals in your
             area.
           </p>
@@ -133,7 +133,7 @@ export function DealsGrid({
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-text-secondary">
+        <p className="text-sm text-stone-400">
           {deals.length} {deals.length === 1 ? 'deal' : 'deals'} found
         </p>
         <ViewModeToggle viewMode={viewMode} onChange={setViewMode} />

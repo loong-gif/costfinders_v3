@@ -72,33 +72,33 @@ export function CityPicker({
         className={`
           w-full flex items-center justify-between gap-2
           px-4 py-2.5
-          bg-glass-bg backdrop-blur-md
-          border border-glass-border rounded-xl
+          bg-stone-900
+          border border-stone-800 rounded-xl
           text-left
           transition-all duration-200
-          hover:border-glass-border-hover
-          focus:outline-none focus:ring-2 focus:ring-brand-primary/50
-          ${isOpen ? 'border-brand-primary/50 ring-2 ring-brand-primary/50' : ''}
+          hover:border-stone-700
+          focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20
+          ${isOpen ? 'border-amber-400/50 ring-1 ring-amber-400/20' : ''}
         `}
       >
         <div className="flex items-center gap-2 min-w-0">
           <MapPin
             size={18}
             weight={selectedCity ? 'fill' : 'regular'}
-            className="text-brand-primary flex-shrink-0"
+            className="text-amber-400 flex-shrink-0"
           />
           {selectedCity ? (
-            <span className="text-text-primary truncate">
+            <span className="text-stone-100 truncate">
               {selectedCity.name}, {selectedCity.stateCode}
             </span>
           ) : (
-            <span className="text-text-muted">{placeholder}</span>
+            <span className="text-stone-500">{placeholder}</span>
           )}
         </div>
         <CaretDown
           size={16}
           weight="bold"
-          className={`text-text-tertiary flex-shrink-0 transition-transform duration-200 ${
+          className={`text-stone-500 flex-shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -109,19 +109,19 @@ export function CityPicker({
         <div
           className={`
             absolute z-50 w-full mt-2
-            bg-bg-secondary backdrop-blur-xl
-            border border-glass-border rounded-xl
+            bg-stone-900
+            border border-stone-800 rounded-xl
             shadow-elevated
             overflow-hidden
             animate-in fade-in slide-in-from-top-2 duration-200
           `}
         >
           {/* Search Input */}
-          <div className="p-2 border-b border-glass-border">
+          <div className="p-2 border-b border-stone-800">
             <div className="relative">
               <MagnifyingGlass
                 size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
               />
               <input
                 ref={searchInputRef}
@@ -131,10 +131,10 @@ export function CityPicker({
                 placeholder="Search cities..."
                 className={`
                   w-full pl-9 pr-4 py-2
-                  bg-glass-bg backdrop-blur-md
-                  border border-glass-border rounded-lg
-                  text-sm text-text-primary placeholder:text-text-muted
-                  focus:outline-none focus:border-brand-primary/50
+                  bg-stone-900
+                  border border-stone-800 rounded-lg
+                  text-sm text-stone-100 placeholder:text-stone-500
+                  focus:outline-none focus:border-amber-400/50
                 `}
               />
             </div>
@@ -143,7 +143,7 @@ export function CityPicker({
           {/* City List */}
           <div className="max-h-64 overflow-y-auto">
             {filteredCities.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-text-tertiary text-center">
+              <div className="px-4 py-3 text-sm text-stone-500 text-center">
                 No cities found
               </div>
             ) : (
@@ -159,8 +159,8 @@ export function CityPicker({
                     transition-colors duration-150
                     ${
                       selectedCity?.id === city.id
-                        ? 'bg-brand-primary/10 text-brand-primary'
-                        : 'text-text-primary hover:bg-glass-bg'
+                        ? 'bg-amber-400/10 text-amber-400'
+                        : 'text-stone-100 hover:bg-stone-800'
                     }
                   `}
                 >

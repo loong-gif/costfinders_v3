@@ -32,20 +32,20 @@ export function BlurredImage({
           className="object-cover blur-xl scale-110"
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-bg-tertiary">
-          <Tag size={48} weight="light" className="text-text-tertiary blur-sm" />
+        <div className="absolute inset-0 flex items-center justify-center bg-stone-800">
+          <Tag size={48} weight="light" className="text-stone-500 blur-sm" />
         </div>
       )}
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-bg-primary/60" />
+      <div className="absolute inset-0 bg-stone-950/60" />
 
       {/* Lock Icon + Message */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-        <div className="w-16 h-16 rounded-full bg-glass-bg backdrop-blur-md border border-glass-border flex items-center justify-center">
-          <Lock size={32} weight="light" className="text-text-secondary" />
+        <div className="w-16 h-16 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center">
+          <Lock size={32} weight="light" className="text-stone-400" />
         </div>
-        <span className="text-xs text-text-tertiary font-medium">
+        <span className="text-xs text-stone-500 font-medium">
           Unlock with account
         </span>
       </div>
