@@ -5,9 +5,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { ClaimCard } from '@/components/features/claimCard'
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/lib/context/authContext'
 import { useClaims } from '@/lib/context/claimsContext'
-import { getClaimsByConsumer } from '@/lib/mock-data'
 import type { Claim, ClaimStatus } from '@/types/claim'
 
 type FilterTab = 'all' | 'active' | 'completed' | 'cancelled'
@@ -40,36 +38,14 @@ function countClaimsByTab(claims: Claim[], tab: FilterTab): number {
 }
 
 export default function ClaimsPage() {
-  const { state: authState } = useAuth()
   const { state: claimsState } = useClaims()
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
 
-  // Merge localStorage claims with mock claims, avoiding duplicates
+  // Claims are fetched from Supabase via the ClaimsContext
   const allClaims = useMemo(() => {
-    const localClaims = claimsState.claims
-    const mockClaims = authState.user
-      ? getClaimsByConsumer(authState.user.id)
-      : []
-
-    // Create a map to dedupe by claim ID
-    const claimMap = new Map<string, Claim>()
-
-    // Add mock claims first
-    for (const claim of mockClaims) {
-      claimMap.set(claim.id, claim)
-    }
-
-    // Override/add local claims (newer)
-    for (const claim of localClaims) {
-      claimMap.set(claim.id, claim)
-    }
-
-    // Sort by createdAt descending (newest first)
-    return Array.from(claimMap.values()).sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-  }, [claimsState.claims, authState.user])
+    // Already sorted newest-first by the server action
+    return claimsState.claims
+  }, [claimsState.claims])
 
   const filteredClaims = useMemo(
     () => filterClaimsByTab(allClaims, activeTab),

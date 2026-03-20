@@ -26,14 +26,36 @@ export function AuthModal({
   const { state } = useAuth()
   const [currentView, setCurrentView] = useState<AuthView>(initialView)
   const [pendingEmail, setPendingEmail] = useState<string | null>(null)
+  const [awaitingSignIn, setAwaitingSignIn] = useState(false)
 
   // Reset state when modal opens or initialView changes
   useEffect(() => {
     if (isOpen) {
       setCurrentView(initialView)
       setPendingEmail(null)
+      setAwaitingSignIn(false)
     }
   }, [isOpen, initialView])
+
+  // After sign-in, state.user may not be available until the next render.
+  // This effect handles the routing once the user object is hydrated.
+  useEffect(() => {
+    if (!awaitingSignIn) return
+    if (state.isLoading) return
+
+    // User is now hydrated — route based on verification status
+    setAwaitingSignIn(false)
+
+    if (state.user?.verificationStatus === 'unverified') {
+      setPendingEmail(state.user.email)
+      setCurrentView('emailVerification')
+    } else if (state.user?.verificationStatus === 'email_verified') {
+      setCurrentView('phoneVerification')
+    } else {
+      onSuccess?.()
+      onClose()
+    }
+  }, [awaitingSignIn, state.isLoading, state.user, onSuccess, onClose])
 
   const handleSignUpSuccess = (email: string) => {
     // Don't close modal - switch to email verification
@@ -42,18 +64,8 @@ export function AuthModal({
   }
 
   const handleSignInSuccess = () => {
-    // Check if user needs verification
-    if (state.user?.verificationStatus === 'unverified') {
-      setPendingEmail(state.user.email)
-      setCurrentView('emailVerification')
-    } else if (state.user?.verificationStatus === 'email_verified') {
-      // Email verified but phone not yet - show phone verification
-      setCurrentView('phoneVerification')
-    } else {
-      // Already fully_verified - close modal
-      onSuccess?.()
-      onClose()
-    }
+    // Defer routing until state.user is hydrated on next render
+    setAwaitingSignIn(true)
   }
 
   const handleEmailVerificationComplete = () => {

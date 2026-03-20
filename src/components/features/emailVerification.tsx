@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/context/authContext'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
 interface EmailVerificationProps {
   email: string
@@ -36,26 +37,56 @@ export function EmailVerification({
 
     setIsVerifying(true)
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    try {
+      const supabase = createSupabaseBrowserClient()
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email,
+        token: code,
+        type: 'signup',
+      })
 
-    // Mock verification: accept any 6-digit code
-    updateVerificationStatus('email_verified')
-    setIsVerifying(false)
-    onVerified?.()
+      if (verifyError) {
+        if (verifyError.message.includes('expired')) {
+          setError('Code expired. Please request a new one.')
+        } else {
+          setError('Invalid code. Please try again.')
+        }
+        setIsVerifying(false)
+        return
+      }
+
+      updateVerificationStatus('email_verified')
+      setIsVerifying(false)
+      onVerified?.()
+    } catch {
+      setError('Verification failed. Please try again.')
+      setIsVerifying(false)
+    }
   }
 
-  const handleResend = () => {
-    setResendMessage(true)
-    onResendCode?.()
-    // Hide message after 3 seconds
-    setTimeout(() => setResendMessage(false), 3000)
+  const handleResend = async () => {
+    try {
+      const supabase = createSupabaseBrowserClient()
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      })
+
+      if (resendError) {
+        setError(resendError.message)
+        return
+      }
+
+      setResendMessage(true)
+      onResendCode?.()
+      setTimeout(() => setResendMessage(false), 3000)
+    } catch {
+      setError('Failed to resend code. Please try again.')
+    }
   }
 
   const handleOpenEmailApp = () => {
-    // Mock action - in real app, could use mailto: or show instructions
-    setResendMessage(true)
-    setTimeout(() => setResendMessage(false), 3000)
+    window.open('mailto:', '_blank')
   }
 
   if (showCodeEntry) {

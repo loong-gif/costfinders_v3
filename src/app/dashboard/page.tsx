@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/lib/context/authContext'
+import { useClaims } from '@/lib/context/claimsContext'
 
 function getVerificationBadge(status: string | undefined) {
   switch (status) {
@@ -47,13 +48,19 @@ function getVerificationBadge(status: string | undefined) {
 }
 
 export default function DashboardPage() {
-  const { state } = useAuth()
+  const { state, savedDeals } = useAuth()
+  const { state: claimsState } = useClaims()
   const user = state.user
 
   const greeting = user?.firstName
     ? `Welcome back, ${user.firstName}`
     : 'Welcome back'
   const isFullyVerified = user?.verificationStatus === 'fully_verified'
+
+  const savedDealsCount = savedDeals.length
+  const activeClaimsCount = claimsState.claims.filter((c) =>
+    ['pending', 'contacted', 'booked'].includes(c.status),
+  ).length
 
   return (
     <div className="space-y-8">
@@ -75,7 +82,7 @@ export default function DashboardPage() {
                 <Heart size={24} weight="fill" className="text-amber-800" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-[#451a03]">0</p>
+                <p className="text-2xl font-bold text-[#451a03]">{savedDealsCount}</p>
                 <p className="text-sm text-[#78350f]">Saved Deals</p>
               </div>
             </div>
@@ -94,7 +101,7 @@ export default function DashboardPage() {
                 />
               </div>
               <div>
-                <p className="text-2xl font-bold text-[#451a03]">0</p>
+                <p className="text-2xl font-bold text-[#451a03]">{activeClaimsCount}</p>
                 <p className="text-sm text-[#78350f]">Active Claims</p>
               </div>
             </div>

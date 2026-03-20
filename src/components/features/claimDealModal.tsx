@@ -57,10 +57,7 @@ export function ClaimDealModal({
     setIsSubmitting(true)
 
     try {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      createClaim(
+      await createClaim(
         dealId,
         businessId,
         preferredDate || undefined,

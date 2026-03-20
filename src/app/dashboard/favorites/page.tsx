@@ -3,22 +3,67 @@
 import { Heart, MagnifyingGlass } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { DealCard } from '@/components/features/dealCard'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
-import { getAnonymousDealById } from '@/lib/mock-data'
+import { getDealById } from '@/lib/data/unified'
+import type { AnonymousDeal } from '@/types/deal'
 
 export default function FavoritesPage() {
   const router = useRouter()
   const { savedDeals } = useAuth()
+  const [deals, setDeals] = useState<AnonymousDeal[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Fetch deal data for each saved ID
-  const deals = useMemo(() => {
-    return savedDeals
-      .map((id) => getAnonymousDealById(id))
-      .filter((deal) => deal !== undefined)
+  // Fetch deal details whenever savedDeals changes
+  useEffect(() => {
+    let cancelled = false
+
+    async function fetchDeals() {
+      setIsLoading(true)
+
+      if (savedDeals.length === 0) {
+        setDeals([])
+        setIsLoading(false)
+        return
+      }
+
+      const results = await Promise.all(
+        savedDeals.map((id) => getDealById(id)),
+      )
+
+      if (cancelled) return
+
+      const validDeals = results.filter(
+        (deal): deal is AnonymousDeal => deal !== null,
+      )
+      setDeals(validDeals)
+      setIsLoading(false)
+    }
+
+    fetchDeals()
+
+    return () => {
+      cancelled = true
+    }
   }, [savedDeals])
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-8 w-32 bg-[#faf5ee] rounded-lg animate-pulse" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="aspect-[4/5] bg-[#faf5ee] rounded-2xl animate-pulse"
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">

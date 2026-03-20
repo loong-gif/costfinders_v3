@@ -42,9 +42,6 @@ export function ProfileForm() {
     setIsSaving(true)
     setSaveMessage(null)
 
-    // Simulate brief network delay
-    await new Promise((resolve) => setTimeout(resolve, 300))
-
     updateProfile({
       firstName: firstName.trim() || undefined,
       lastName: lastName.trim() || undefined,
