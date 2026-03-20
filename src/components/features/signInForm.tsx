@@ -104,7 +104,7 @@ export function SignInForm({
         <button
           type="button"
           onClick={handleForgotPassword}
-          className="text-sm text-brand-primary hover:text-brand-secondary transition-colors"
+          className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
         >
           Forgot password?
         </button>
@@ -112,13 +112,13 @@ export function SignInForm({
 
       {/* Forgot Password Toast */}
       {forgotPasswordSent && (
-        <p className="text-sm text-success-text bg-success/10 px-3 py-2 rounded-lg">
+        <p className="text-sm text-emerald-400 bg-emerald-400/10 px-3 py-2 rounded-lg">
           Check your email for password reset instructions.
         </p>
       )}
 
       {state.error && (
-        <p className="text-sm text-error-text bg-error/10 px-3 py-2 rounded-lg">
+        <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">
           {state.error}
         </p>
       )}
@@ -134,12 +134,12 @@ export function SignInForm({
       </Button>
 
       {onSwitchToSignUp && (
-        <p className="text-center text-sm text-text-secondary">
+        <p className="text-center text-sm text-stone-400">
           Don&apos;t have an account?{' '}
           <button
             type="button"
             onClick={onSwitchToSignUp}
-            className="text-brand-primary hover:text-brand-secondary transition-colors font-medium"
+            className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
           >
             Sign up
           </button>

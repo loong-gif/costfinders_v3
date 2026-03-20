@@ -58,23 +58,23 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
     return (
       <Card variant="glass" padding="lg">
         <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
-            <CheckCircle size={32} weight="fill" className="text-success-text" />
+          <div className="w-16 h-16 rounded-full bg-emerald-400/10 flex items-center justify-center">
+            <CheckCircle size={32} weight="fill" className="text-emerald-400" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-text-primary">
+            <h3 className="text-lg font-semibold text-stone-100">
               Already Claimed
             </h3>
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm text-stone-400">
               You&apos;ve already submitted a claim for this deal.
             </p>
           </div>
-          <div className="w-full p-3 bg-bg-tertiary rounded-xl">
+          <div className="w-full p-3 bg-stone-800 rounded-xl">
             <div className="flex items-center gap-2 text-sm">
-              <Clock size={16} weight="regular" className="text-text-muted" />
-              <span className="text-text-secondary">
+              <Clock size={16} weight="regular" className="text-stone-500" />
+              <span className="text-stone-400">
                 Status:{' '}
-                <span className="text-text-primary capitalize">
+                <span className="text-stone-100 capitalize">
                   {existingClaim.status}
                 </span>
               </span>
@@ -99,14 +99,14 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
       <>
         <Card variant="glass" padding="lg">
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-brand-primary/10 flex items-center justify-center">
-              <Sparkle size={32} weight="fill" className="text-brand-primary" />
+            <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center">
+              <Sparkle size={32} weight="fill" className="text-amber-400" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-text-primary">
+              <h3 className="text-lg font-semibold text-stone-100">
                 Ready to Claim
               </h3>
-              <p className="text-sm text-text-secondary">
+              <p className="text-sm text-stone-400">
                 Submit your claim and the business will contact you to schedule your appointment.
               </p>
             </div>
@@ -137,14 +137,14 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
     return (
       <Card variant="glass" padding="lg">
         <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-warning/10 flex items-center justify-center">
-            <Lock size={32} weight="fill" className="text-warning-text" />
+          <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center">
+            <Lock size={32} weight="fill" className="text-amber-400" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-text-primary">
+            <h3 className="text-lg font-semibold text-stone-100">
               Verification Required
             </h3>
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm text-stone-400">
               Please verify your email or phone to claim this deal.
             </p>
           </div>
@@ -166,14 +166,14 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
     <>
       <Card variant="glass" padding="lg">
         <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-brand-primary/10 flex items-center justify-center">
-            <Lock size={32} weight="fill" className="text-brand-primary" />
+          <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center">
+            <Lock size={32} weight="fill" className="text-amber-400" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-text-primary">
+            <h3 className="text-lg font-semibold text-stone-100">
               Business Details Hidden
             </h3>
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm text-stone-400">
               Create a free account to reveal the business name, location, and
               contact details — then claim this deal.
             </p>
@@ -191,12 +191,12 @@ export function ClaimCTA({ dealId, businessId, dealTitle }: ClaimCTAProps) {
             <button
               type="button"
               onClick={handleSignIn}
-              className="text-sm text-brand-primary hover:text-brand-secondary transition-colors"
+              className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
             >
               Already have an account? Sign in
             </button>
           </div>
-          <p className="text-xs text-text-muted">
+          <p className="text-xs text-stone-500">
             Your information is secure and never shared without permission.
           </p>
         </div>

@@ -95,19 +95,19 @@ export function PhoneVerification({
       <div className="text-center space-y-6">
         {/* Icon */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-            <Phone size={32} weight="light" className="text-brand-primary" />
+          <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+            <Phone size={32} weight="light" className="text-amber-400" />
           </div>
         </div>
 
         {/* Heading */}
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-text-primary">
+          <h3 className="text-lg font-semibold text-stone-100">
             Enter verification code
           </h3>
-          <p className="text-sm text-text-secondary">
+          <p className="text-sm text-stone-400">
             We sent a 6-digit code to{' '}
-            <span className="font-medium text-text-primary">
+            <span className="font-medium text-stone-100">
               {formatPhoneForDisplay(phoneNumber)}
             </span>
           </p>
@@ -145,16 +145,16 @@ export function PhoneVerification({
         {/* Resend */}
         <div className="space-y-2">
           {resendMessage ? (
-            <p className="text-sm text-success-text bg-success/10 px-3 py-2 rounded-lg">
+            <p className="text-sm text-emerald-400 bg-emerald-400/10 px-3 py-2 rounded-lg">
               Code sent!
             </p>
           ) : (
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm text-stone-400">
               Didn&apos;t receive the code?{' '}
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-brand-primary hover:text-brand-secondary transition-colors font-medium"
+                className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
               >
                 Resend
               </button>
@@ -166,7 +166,7 @@ export function PhoneVerification({
         <button
           type="button"
           onClick={handleChangeNumber}
-          className="text-sm text-text-tertiary hover:text-text-secondary transition-colors"
+          className="text-sm text-stone-500 hover:text-stone-400 transition-colors"
         >
           Use different number
         </button>
@@ -178,17 +178,17 @@ export function PhoneVerification({
     <div className="text-center space-y-6">
       {/* Icon */}
       <div className="flex justify-center">
-        <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-          <Phone size={32} weight="light" className="text-brand-primary" />
+        <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+          <Phone size={32} weight="light" className="text-amber-400" />
         </div>
       </div>
 
       {/* Heading */}
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-text-primary">
+        <h3 className="text-lg font-semibold text-stone-100">
           Verify your phone
         </h3>
-        <p className="text-sm text-text-secondary">
+        <p className="text-sm text-stone-400">
           Add your phone number to secure your account
         </p>
       </div>
@@ -224,7 +224,7 @@ export function PhoneVerification({
         <button
           type="button"
           onClick={onSkip}
-          className="text-sm text-text-tertiary hover:text-text-secondary transition-colors"
+          className="text-sm text-stone-500 hover:text-stone-400 transition-colors"
         >
           Skip for now
         </button>

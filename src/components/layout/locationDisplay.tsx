@@ -39,22 +39,22 @@ export function LocationDisplay() {
         className={`
           inline-flex items-center gap-1.5
           px-3 py-1.5
-          bg-glass-bg hover:bg-glass-bg-hover
-          border border-glass-border rounded-full
+          bg-stone-900 hover:bg-stone-800
+          border border-stone-800 rounded-full
           text-sm
           transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+          focus:outline-none focus:ring-2 focus:ring-amber-400/50
         `}
       >
         <MapPin
           size={16}
           weight={current.city ? 'fill' : 'regular'}
-          className="text-brand-primary"
+          className="text-amber-400"
         />
-        <span className="text-text-primary max-w-32 truncate">
+        <span className="text-stone-100 max-w-32 truncate">
           {getDisplayText()}
         </span>
-        <CaretDown size={14} weight="bold" className="text-text-tertiary" />
+        <CaretDown size={14} weight="bold" className="text-stone-500" />
       </button>
 
       {/* Location Modal */}

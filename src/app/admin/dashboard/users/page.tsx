@@ -32,18 +32,18 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
     <Card variant="glass" padding="md" className="flex items-center gap-4">
       <div
         className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-          highlight ? 'bg-warning/10' : 'bg-brand-primary/10'
+          highlight ? 'bg-amber-400/10' : 'bg-amber-400/10'
         }`}
       >
         <Icon
           size={24}
           weight="fill"
-          className={highlight ? 'text-warning-text' : 'text-brand-primary'}
+          className={highlight ? 'text-amber-400' : 'text-amber-400'}
         />
       </div>
       <div>
-        <p className="text-2xl font-bold text-text-primary">{value}</p>
-        <p className="text-sm text-text-secondary">{label}</p>
+        <p className="text-2xl font-bold text-stone-100">{value}</p>
+        <p className="text-sm text-stone-400">{label}</p>
       </div>
     </Card>
   )
@@ -156,13 +156,13 @@ export default function UsersManagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">User Management</h1>
-        <p className="text-text-secondary mt-1">Manage consumer accounts</p>
+        <h1 className="text-2xl font-bold text-stone-100">User Management</h1>
+        <p className="text-stone-400 mt-1">Manage consumer accounts</p>
       </div>
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-success/10 border border-success/20 text-success-text px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -183,14 +183,14 @@ export default function UsersManagementPage() {
       <div className="relative">
         <MagnifyingGlass
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
         />
         <input
           type="text"
           placeholder="Search by name or email..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-glass-bg border border-glass-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+          className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
         />
       </div>
 
@@ -208,7 +208,7 @@ export default function UsersManagementPage() {
             {tab.label}
             <span
               className={`px-1.5 py-0.5 text-xs rounded-full ${
-                activeFilter === tab.value ? 'bg-white/20' : 'bg-glass-bg'
+                activeFilter === tab.value ? 'bg-stone-800' : 'bg-stone-900'
               }`}
             >
               {tabCounts[tab.value]}
@@ -221,7 +221,7 @@ export default function UsersManagementPage() {
       <ConsumerTable consumers={filteredConsumers} onStatusChange={handleStatusChange} />
 
       {/* Pagination placeholder */}
-      <div className="text-sm text-text-tertiary text-center">
+      <div className="text-sm text-stone-500 text-center">
         Showing {filteredConsumers.length} of {consumers.length} users
       </div>
     </div>

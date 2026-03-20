@@ -182,10 +182,10 @@ export default function TreatmentsManagementPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">
+            <h1 className="text-2xl font-bold text-stone-100">
               Treatment Types
             </h1>
-            <p className="text-text-secondary mt-1">
+            <p className="text-stone-400 mt-1">
               Manage treatment types across categories
             </p>
           </div>
@@ -203,7 +203,7 @@ export default function TreatmentsManagementPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-success/10 border border-success/20 text-success-text px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -211,32 +211,32 @@ export default function TreatmentsManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.total}</p>
-          <p className="text-sm text-text-secondary">Total Treatments</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.total}</p>
+          <p className="text-sm text-stone-400">Total Treatments</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.active}</p>
-          <p className="text-sm text-text-secondary">Active</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.active}</p>
+          <p className="text-sm text-stone-400">Active</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">
+          <p className="text-2xl font-bold text-stone-100">
             {Object.keys(stats.byCategory).filter(
               (k) => stats.byCategory[k as TreatmentCategory] > 0
             ).length}
           </p>
-          <p className="text-sm text-text-secondary">Categories Used</p>
+          <p className="text-sm text-stone-400">Categories Used</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">
+          <p className="text-2xl font-bold text-stone-100">
             {filteredTreatments.length}
           </p>
-          <p className="text-sm text-text-secondary">Showing</p>
+          <p className="text-sm text-stone-400">Showing</p>
         </Card>
       </div>
 
       {/* Bulk Actions Hint */}
-      <div className="bg-glass-bg border border-glass-border rounded-xl px-4 py-3 text-sm text-text-secondary flex items-center gap-2">
-        <FirstAidKit size={18} className="text-brand-primary" />
+      <div className="bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-stone-400 flex items-center gap-2">
+        <FirstAidKit size={18} className="text-amber-400" />
         <span>Select multiple treatments to activate/deactivate in bulk</span>
         <Badge variant="info" size="sm">
           Coming Soon
@@ -249,14 +249,14 @@ export default function TreatmentsManagementPage() {
         <div className="relative flex-1">
           <MagnifyingGlass
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
           />
           <input
             type="text"
             placeholder="Search treatments..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-glass-bg border border-glass-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
           />
         </div>
       </div>
@@ -272,7 +272,7 @@ export default function TreatmentsManagementPage() {
           All
           <span
             className={`px-1.5 py-0.5 text-xs rounded-full ${
-              activeFilter === 'all' ? 'bg-white/20' : 'bg-glass-bg'
+              activeFilter === 'all' ? 'bg-stone-800' : 'bg-stone-900'
             }`}
           >
             {stats.total}
@@ -293,7 +293,7 @@ export default function TreatmentsManagementPage() {
                 {category.name}
                 <span
                   className={`px-1.5 py-0.5 text-xs rounded-full ${
-                    activeFilter === category.slug ? 'bg-white/20' : 'bg-glass-bg'
+                    activeFilter === category.slug ? 'bg-stone-800' : 'bg-stone-900'
                   }`}
                 >
                   {count}
@@ -307,20 +307,20 @@ export default function TreatmentsManagementPage() {
       {isAddingNew && (
         <Card variant="glass" padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-text-primary">
+            <h3 className="text-lg font-semibold text-stone-100">
               Add New Treatment
             </h3>
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="text-text-muted hover:text-text-secondary"
+              className="text-stone-500 hover:text-stone-400"
             >
               <X size={20} />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 Name
               </label>
               <input
@@ -330,11 +330,11 @@ export default function TreatmentsManagementPage() {
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="Treatment name"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 Category
               </label>
               <select
@@ -345,7 +345,7 @@ export default function TreatmentsManagementPage() {
                     categoryId: e.target.value as TreatmentCategory,
                   }))
                 }
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.slug}>
@@ -355,7 +355,7 @@ export default function TreatmentsManagementPage() {
               </select>
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 Description
               </label>
               <input
@@ -368,11 +368,11 @@ export default function TreatmentsManagementPage() {
                   }))
                 }
                 placeholder="Brief description"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 Average Price ($)
               </label>
               <input
@@ -386,11 +386,11 @@ export default function TreatmentsManagementPage() {
                 }
                 placeholder="0"
                 min="0"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 Popularity Score (1-100)
               </label>
               <input
@@ -405,7 +405,7 @@ export default function TreatmentsManagementPage() {
                 placeholder="50"
                 min="1"
                 max="100"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
           </div>
@@ -437,7 +437,7 @@ export default function TreatmentsManagementPage() {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, name: e.target.value }))
                       }
-                      className="w-full bg-glass-bg border border-glass-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
                     />
                     <input
                       type="text"
@@ -449,7 +449,7 @@ export default function TreatmentsManagementPage() {
                         }))
                       }
                       placeholder="Description"
-                      className="w-full bg-glass-bg border border-glass-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-sm text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
                     />
                     <div className="flex gap-2">
                       <Button variant="primary" size="sm" onClick={handleSaveEdit}>
@@ -471,8 +471,8 @@ export default function TreatmentsManagementPage() {
                           <h3
                             className={`font-semibold truncate ${
                               treatment.isActive
-                                ? 'text-text-primary'
-                                : 'text-text-muted'
+                                ? 'text-stone-100'
+                                : 'text-stone-500'
                             }`}
                           >
                             {treatment.name}
@@ -495,7 +495,7 @@ export default function TreatmentsManagementPage() {
                       <button
                         type="button"
                         onClick={() => handleStartEdit(treatment)}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:bg-glass-bg-hover transition-colors"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:bg-stone-800 transition-colors"
                       >
                         <PencilSimple size={18} />
                       </button>
@@ -504,19 +504,19 @@ export default function TreatmentsManagementPage() {
                     <p
                       className={`text-sm line-clamp-2 ${
                         treatment.isActive
-                          ? 'text-text-secondary'
-                          : 'text-text-muted'
+                          ? 'text-stone-400'
+                          : 'text-stone-500'
                       }`}
                     >
                       {treatment.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-glass-border">
+                    <div className="flex items-center justify-between pt-2 border-t border-stone-800">
                       <div className="flex items-center gap-4 text-sm">
-                        <span className="text-text-primary font-semibold">
+                        <span className="text-stone-100 font-semibold">
                           {formatPrice(treatment.averagePrice)}
                         </span>
-                        <span className="flex items-center gap-1 text-text-tertiary">
+                        <span className="flex items-center gap-1 text-stone-500">
                           <TrendUp size={14} />
                           {treatment.popularity}
                         </span>
@@ -525,7 +525,7 @@ export default function TreatmentsManagementPage() {
                         type="button"
                         onClick={() => handleToggleStatus(treatment.id)}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          treatment.isActive ? 'bg-brand-primary' : 'bg-glass-bg'
+                          treatment.isActive ? 'bg-amber-400' : 'bg-stone-900'
                         }`}
                       >
                         <span
@@ -543,13 +543,13 @@ export default function TreatmentsManagementPage() {
         </div>
       ) : (
         <Card variant="glass" padding="lg" className="text-center py-12">
-          <div className="w-16 h-16 mx-auto rounded-full bg-brand-primary/10 flex items-center justify-center mb-4">
-            <FirstAidKit size={32} weight="light" className="text-brand-primary" />
+          <div className="w-16 h-16 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-4">
+            <FirstAidKit size={32} weight="light" className="text-amber-400" />
           </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">
+          <h3 className="text-lg font-semibold text-stone-100 mb-2">
             No treatments found
           </h3>
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             {searchQuery
               ? 'Try adjusting your search terms'
               : activeFilter !== 'all'

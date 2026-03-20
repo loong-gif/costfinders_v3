@@ -39,13 +39,13 @@ export default function BusinessBillingPage({ params }: PageProps) {
   if (!business) {
     return (
       <Card variant="glass" padding="lg" className="text-center py-12">
-          <div className="w-16 h-16 mx-auto rounded-full bg-error/10 flex items-center justify-center mb-4">
-            <Storefront size={32} className="text-error-text" />
+          <div className="w-16 h-16 mx-auto rounded-full bg-red-400/10 flex items-center justify-center mb-4">
+            <Storefront size={32} className="text-red-400" />
           </div>
-          <h2 className="text-xl font-semibold text-text-primary mb-2">
+          <h2 className="text-xl font-semibold text-stone-100 mb-2">
             Business Not Found
           </h2>
-          <p className="text-text-secondary mb-6">
+          <p className="text-stone-400 mb-6">
             The business you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
           <Link href="/admin/dashboard/businesses">
@@ -65,15 +65,15 @@ export default function BusinessBillingPage({ params }: PageProps) {
       {/* Business Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-            <Storefront size={28} weight="fill" className="text-brand-primary" />
+          <div className="w-14 h-14 rounded-xl bg-amber-400/10 flex items-center justify-center">
+            <Storefront size={28} weight="fill" className="text-amber-400" />
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-text-primary">{business.name}</h1>
+              <h1 className="text-2xl font-bold text-stone-100">{business.name}</h1>
               {getTierBadge(business.tier)}
             </div>
-            <p className="text-text-secondary">
+            <p className="text-stone-400">
               {business.address}, {business.city}, {business.state}
             </p>
           </div>
@@ -90,24 +90,24 @@ export default function BusinessBillingPage({ params }: PageProps) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card variant="glass" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-              <Tag size={20} weight="fill" className="text-brand-primary" />
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
+              <Tag size={20} weight="fill" className="text-amber-400" />
             </div>
             <div>
-              <p className="text-sm text-text-secondary">Active Deals</p>
-              <p className="text-xl font-bold text-text-primary">{deals.length}</p>
+              <p className="text-sm text-stone-400">Active Deals</p>
+              <p className="text-xl font-bold text-stone-100">{deals.length}</p>
             </div>
           </div>
         </Card>
 
         <Card variant="glass" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
-              <CurrencyDollar size={20} weight="fill" className="text-success-text" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-400/10 flex items-center justify-center">
+              <CurrencyDollar size={20} weight="fill" className="text-emerald-400" />
             </div>
             <div>
-              <p className="text-sm text-text-secondary">Credits Available</p>
-              <p className="text-xl font-bold text-text-primary">{mockCredits}</p>
+              <p className="text-sm text-stone-400">Credits Available</p>
+              <p className="text-xl font-bold text-stone-100">{mockCredits}</p>
             </div>
           </div>
         </Card>
@@ -118,8 +118,8 @@ export default function BusinessBillingPage({ params }: PageProps) {
               <Users size={20} weight="fill" className="text-purple-400" />
             </div>
             <div>
-              <p className="text-sm text-text-secondary">Leads Received</p>
-              <p className="text-xl font-bold text-text-primary">{mockLeadsReceived}</p>
+              <p className="text-sm text-stone-400">Leads Received</p>
+              <p className="text-xl font-bold text-stone-100">{mockLeadsReceived}</p>
             </div>
           </div>
         </Card>

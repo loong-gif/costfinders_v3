@@ -45,24 +45,24 @@ export default function BusinessPage() {
   }
 
   return (
-    <main className="min-h-screen bg-bg-primary pt-20">
+    <main className="min-h-screen bg-stone-950 pt-20">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-primary/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-400/5 via-transparent to-transparent" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
           <div className="text-center">
             {/* Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 mb-8">
-              <Storefront size={40} weight="light" className="text-brand-primary" />
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-amber-400/10 border border-amber-400/20 mb-8">
+              <Storefront size={40} weight="light" className="text-amber-400" />
             </div>
 
             {/* Heading */}
-            <h1 className="text-4xl sm:text-5xl font-bold text-text-primary mb-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-stone-100 mb-4">
               Are you a business owner?
             </h1>
-            <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto mb-12">
+            <p className="text-lg sm:text-xl text-stone-400 max-w-2xl mx-auto mb-12">
               Join CostFinders to showcase your medspa, manage deals, and connect
               with customers looking for your services.
             </p>
@@ -95,17 +95,17 @@ export default function BusinessPage() {
             {valueProps.map((prop) => (
               <div
                 key={prop.title}
-                className="p-6 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-sm"
+                className="p-6 rounded-2xl border border-stone-800 bg-stone-900"
               >
                 <prop.icon
                   size={24}
                   weight="fill"
-                  className="text-success-text mb-4"
+                  className="text-emerald-400 mb-4"
                 />
-                <h3 className="font-semibold text-text-primary mb-2">
+                <h3 className="font-semibold text-stone-100 mb-2">
                   {prop.title}
                 </h3>
-                <p className="text-sm text-text-secondary">{prop.description}</p>
+                <p className="text-sm text-stone-400">{prop.description}</p>
               </div>
             ))}
           </div>

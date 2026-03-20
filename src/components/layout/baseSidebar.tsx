@@ -41,7 +41,7 @@ export function BaseSidebar({
   return (
     <>
       {/* Desktop Sidebar - Icon Only */}
-      <aside className="hidden md:flex fixed left-0 top-20 bottom-0 w-16 flex-col items-center bg-glass-bg backdrop-blur-xl border-r border-white/10 z-40">
+      <aside className="hidden md:flex fixed left-0 top-20 bottom-0 w-16 flex-col items-center bg-stone-900 border-r border-stone-800 z-40">
         {/* Navigation */}
         <nav className="flex-1 py-4 space-y-2 flex flex-col items-center">
           {navItems.map((item) => {
@@ -56,8 +56,8 @@ export function BaseSidebar({
                     transition-all duration-200
                     ${
                       active
-                        ? 'bg-brand-primary/10 text-brand-primary'
-                        : 'text-text-secondary hover:bg-glass-bg-hover hover:text-text-primary'
+                        ? 'bg-amber-400/10 text-amber-400'
+                        : 'text-stone-400 hover:bg-stone-800 hover:text-stone-100'
                     }
                   `}
                 >
@@ -69,11 +69,11 @@ export function BaseSidebar({
         </nav>
 
         {/* User Section */}
-        <div className="py-4 border-t border-white/10 space-y-2 flex flex-col items-center">
+        <div className="py-4 border-t border-stone-800 space-y-2 flex flex-col items-center">
           {/* Avatar */}
           <Tooltip content={user?.displayName || 'User'} side="right">
-            <div className="w-10 h-10 rounded-full bg-brand-primary/20 flex items-center justify-center cursor-default">
-              <span className="text-sm font-semibold text-brand-primary">
+            <div className="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center cursor-default">
+              <span className="text-sm font-semibold text-amber-400">
                 {user?.initial || 'U'}
               </span>
             </div>
@@ -84,7 +84,7 @@ export function BaseSidebar({
             <button
               type="button"
               onClick={onSignOut}
-              className="flex items-center justify-center w-12 h-12 rounded-xl text-text-secondary hover:text-text-primary hover:bg-glass-bg-hover transition-all duration-200"
+              className="flex items-center justify-center w-12 h-12 rounded-xl text-stone-400 hover:text-stone-100 hover:bg-stone-800 transition-all duration-200"
             >
               <SignOut size={24} weight="light" />
             </button>
@@ -93,7 +93,7 @@ export function BaseSidebar({
       </aside>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-glass-bg backdrop-blur-xl border-t border-white/10 z-50">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 z-50">
         <div className="flex items-center justify-around py-2">
           {navItems.slice(0, mobileNavCount).map((item) => {
             const active = isActive(item.href)
@@ -107,8 +107,8 @@ export function BaseSidebar({
                   transition-all duration-200
                   ${
                     active
-                      ? 'text-brand-primary'
-                      : 'text-text-secondary hover:text-text-primary'
+                      ? 'text-amber-400'
+                      : 'text-stone-400 hover:text-stone-100'
                   }
                 `}
               >

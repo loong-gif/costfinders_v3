@@ -247,10 +247,10 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
           <ArrowLeft size={20} weight="light" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">
+          <h1 className="text-2xl font-bold text-stone-100">
             {mode === 'create' ? 'Create New Deal' : 'Edit Deal'}
           </h1>
-          <p className="text-text-secondary mt-1">
+          <p className="text-stone-400 mt-1">
             {mode === 'create'
               ? 'Add a new special offer for your customers'
               : 'Update your deal details'}
@@ -262,7 +262,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">
             Basic Information
           </h2>
           <div className="space-y-4">
@@ -278,7 +278,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
             <div className="w-full">
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-text-secondary mb-1.5"
+                className="block text-sm font-medium text-stone-400 mb-1.5"
               >
                 Description
               </label>
@@ -291,16 +291,16 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 rows={3}
                 className={`
                   w-full px-4 py-2.5
-                  bg-glass-bg backdrop-blur-md
+                  bg-stone-900
                   border rounded-xl
-                  text-text-primary placeholder:text-text-muted
+                  text-stone-100 placeholder:text-stone-500
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
                   resize-none
                   ${
                     errors.description
                       ? 'border-red-500/50 focus:border-red-500'
-                      : 'border-glass-border hover:border-glass-border-hover focus:border-brand-primary/50'
+                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
                   }
                 `}
               />
@@ -312,7 +312,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
             <div className="w-full">
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-text-secondary mb-1.5"
+                className="block text-sm font-medium text-stone-400 mb-1.5"
               >
                 Category
               </label>
@@ -323,12 +323,12 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 onChange={handleChange}
                 className="
                   w-full px-4 py-2.5
-                  bg-glass-bg backdrop-blur-md
-                  border border-glass-border hover:border-glass-border-hover
+                  bg-stone-900
+                  border border-stone-800 hover:border-stone-700
                   rounded-xl
-                  text-text-primary
+                  text-stone-100
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50
                 "
               >
                 {categories.map((cat) => (
@@ -343,7 +343,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Pricing */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Pricing</h2>
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">Pricing</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Original Price"
@@ -405,8 +405,8 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
           {/* Discount Preview */}
           {formData.originalPrice && formData.dealPrice && (
-            <div className="mt-4 p-3 bg-brand-primary/10 rounded-xl">
-              <p className="text-sm text-brand-primary">
+            <div className="mt-4 p-3 bg-amber-400/10 rounded-xl">
+              <p className="text-sm text-amber-400">
                 <Sparkle size={16} weight="fill" className="inline mr-1" />
                 {Math.round(
                   ((Number.parseFloat(formData.originalPrice) -
@@ -422,7 +422,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Validity */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Validity Period</h2>
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">Validity Period</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Valid From"
@@ -446,14 +446,14 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Terms and Image */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">
             Additional Details
           </h2>
           <div className="space-y-4">
             <div className="w-full">
               <label
                 htmlFor="termsAndConditions"
-                className="block text-sm font-medium text-text-secondary mb-1.5"
+                className="block text-sm font-medium text-stone-400 mb-1.5"
               >
                 Terms & Conditions
               </label>
@@ -466,16 +466,16 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 rows={3}
                 className={`
                   w-full px-4 py-2.5
-                  bg-glass-bg backdrop-blur-md
+                  bg-stone-900
                   border rounded-xl
-                  text-text-primary placeholder:text-text-muted
+                  text-stone-100 placeholder:text-stone-500
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
                   resize-none
                   ${
                     errors.termsAndConditions
                       ? 'border-red-500/50 focus:border-red-500'
-                      : 'border-glass-border hover:border-glass-border-hover focus:border-brand-primary/50'
+                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
                   }
                 `}
               />
@@ -498,7 +498,7 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
 
         {/* Settings */}
         <Card variant="glass" padding="lg">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Settings</h2>
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">Settings</h2>
           <div className="space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -506,11 +506,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 name="isActive"
                 checked={formData.isActive}
                 onChange={handleChange}
-                className="w-5 h-5 rounded border-glass-border bg-glass-bg text-brand-primary focus:ring-brand-primary/50"
+                className="w-5 h-5 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400/50"
               />
               <div>
-                <p className="font-medium text-text-primary">Active</p>
-                <p className="text-sm text-text-secondary">
+                <p className="font-medium text-stone-100">Active</p>
+                <p className="text-sm text-stone-400">
                   Deal will be visible to customers when active
                 </p>
               </div>
@@ -522,11 +522,11 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
                 name="isFeatured"
                 checked={formData.isFeatured}
                 onChange={handleChange}
-                className="w-5 h-5 rounded border-glass-border bg-glass-bg text-brand-primary focus:ring-brand-primary/50"
+                className="w-5 h-5 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400/50"
               />
               <div>
-                <p className="font-medium text-text-primary">Featured</p>
-                <p className="text-sm text-text-secondary">
+                <p className="font-medium text-stone-100">Featured</p>
+                <p className="text-sm text-stone-400">
                   Featured deals appear at the top of search results
                 </p>
               </div>

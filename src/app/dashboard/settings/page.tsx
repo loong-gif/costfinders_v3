@@ -28,8 +28,8 @@ export default function SettingsPage() {
       <Card variant="glass" padding="lg">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-              <User size={20} weight="duotone" className="text-brand-primary" />
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
+              <User size={20} weight="duotone" className="text-amber-400" />
             </div>
             <div>
               <CardTitle>Profile</CardTitle>
@@ -48,8 +48,8 @@ export default function SettingsPage() {
       <Card variant="glass" padding="lg">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
-              <Bell size={20} weight="duotone" className="text-success-text" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-400/10 flex items-center justify-center">
+              <Bell size={20} weight="duotone" className="text-emerald-400" />
             </div>
             <div>
               <CardTitle>Notifications</CardTitle>
@@ -68,8 +68,8 @@ export default function SettingsPage() {
       <Card variant="glass" padding="lg">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-error/10 flex items-center justify-center">
-              <SignOut size={20} weight="duotone" className="text-error-text" />
+            <div className="w-10 h-10 rounded-xl bg-red-400/10 flex items-center justify-center">
+              <SignOut size={20} weight="duotone" className="text-red-400" />
             </div>
             <div>
               <CardTitle>Account</CardTitle>
@@ -81,12 +81,12 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-glass-border">
+            <div className="flex items-center justify-between py-3 border-b border-stone-800">
               <div>
-                <p className="text-sm font-medium text-text-primary">
+                <p className="text-sm font-medium text-stone-100">
                   Sign out
                 </p>
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-stone-400">
                   Sign out of your account on this device
                 </p>
               </div>
@@ -98,16 +98,16 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between py-3">
               <div>
-                <p className="text-sm font-medium text-text-primary">
+                <p className="text-sm font-medium text-stone-100">
                   Delete account
                 </p>
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-stone-400">
                   Permanently delete your account and all data
                 </p>
               </div>
               <button
                 type="button"
-                className="text-sm text-error-text hover:text-error-text/80 transition-colors flex items-center gap-1.5"
+                className="text-sm text-red-400 hover:text-red-400/80 transition-colors flex items-center gap-1.5"
                 onClick={() =>
                   alert('Contact support@costfinders.com to delete your account')
                 }

@@ -35,13 +35,13 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
   return (
     <Card variant="glass" padding="lg" className="flex flex-col gap-4">
       <div className="flex items-start justify-between">
-        <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-          <Icon size={24} weight="fill" className="text-brand-primary" />
+        <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
+          <Icon size={24} weight="fill" className="text-amber-400" />
         </div>
         {trend && (
           <div
             className={`flex items-center gap-1 text-sm font-medium ${
-              trend.positive ? 'text-success-text' : 'text-error-text'
+              trend.positive ? 'text-emerald-400' : 'text-red-400'
             }`}
           >
             {trend.positive ? <TrendUp size={16} weight="bold" /> : <TrendDown size={16} weight="bold" />}
@@ -50,8 +50,8 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
         )}
       </div>
       <div>
-        <p className="text-3xl font-bold text-text-primary">{value}</p>
-        <p className="text-sm text-text-secondary mt-1">{label}</p>
+        <p className="text-3xl font-bold text-stone-100">{value}</p>
+        <p className="text-sm text-stone-400 mt-1">{label}</p>
       </div>
     </Card>
   )
@@ -185,8 +185,8 @@ export default function AdminReportsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Platform Reports</h1>
-        <p className="text-text-secondary mt-1">Platform-wide performance and analytics</p>
+        <h1 className="text-2xl font-bold text-stone-100">Platform Reports</h1>
+        <p className="text-stone-400 mt-1">Platform-wide performance and analytics</p>
       </div>
 
       {/* Time Period Selector */}
@@ -198,8 +198,8 @@ export default function AdminReportsPage() {
             onClick={() => setTimePeriod(period.value)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
               timePeriod === period.value
-                ? 'bg-brand-primary text-white'
-                : 'bg-glass-bg text-text-secondary hover:bg-glass-bg-hover hover:text-text-primary'
+                ? 'bg-amber-400 text-white'
+                : 'bg-stone-900 text-stone-400 hover:bg-stone-800 hover:text-stone-100'
             }`}
           >
             {period.label}
@@ -209,7 +209,7 @@ export default function AdminReportsPage() {
 
       {/* Platform Health Metrics */}
       <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-4">Platform Health</h2>
+        <h2 className="text-lg font-semibold text-stone-100 mb-4">Platform Health</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map((metric) => (
             <MetricCard
@@ -227,27 +227,27 @@ export default function AdminReportsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Business Activity */}
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Business Activity</h2>
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">Business Activity</h2>
           <Card variant="glass" padding="none">
             {/* Desktop Table View */}
             <div className="hidden sm:block">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-glass-border">
-                    <th className="text-left px-4 py-3 text-sm font-medium text-text-secondary">Metric</th>
-                    <th className="text-right px-4 py-3 text-sm font-medium text-text-secondary">This Period</th>
-                    <th className="text-right px-4 py-3 text-sm font-medium text-text-secondary">Change</th>
+                  <tr className="border-b border-stone-800">
+                    <th className="text-left px-4 py-3 text-sm font-medium text-stone-400">Metric</th>
+                    <th className="text-right px-4 py-3 text-sm font-medium text-stone-400">This Period</th>
+                    <th className="text-right px-4 py-3 text-sm font-medium text-stone-400">Change</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-glass-border">
+                <tbody className="divide-y divide-stone-800">
                   {businessActivity.map((row) => (
-                    <tr key={row.metric} className="hover:bg-glass-bg-hover transition-colors">
-                      <td className="px-4 py-3 text-sm text-text-primary font-medium">{row.metric}</td>
-                      <td className="px-4 py-3 text-sm text-text-primary text-right">{row.thisPeriod}</td>
+                    <tr key={row.metric} className="hover:bg-stone-800 transition-colors">
+                      <td className="px-4 py-3 text-sm text-stone-100 font-medium">{row.metric}</td>
+                      <td className="px-4 py-3 text-sm text-stone-100 text-right">{row.thisPeriod}</td>
                       <td className="px-4 py-3 text-right">
                         <span
                           className={`inline-flex items-center gap-1 text-sm font-medium ${
-                            row.positive ? 'text-success-text' : 'text-error-text'
+                            row.positive ? 'text-emerald-400' : 'text-red-400'
                           }`}
                         >
                           {row.positive ? <ArrowUp size={14} weight="bold" /> : <TrendDown size={14} weight="bold" />}
@@ -261,16 +261,16 @@ export default function AdminReportsPage() {
             </div>
 
             {/* Mobile Card View */}
-            <div className="sm:hidden divide-y divide-glass-border">
+            <div className="sm:hidden divide-y divide-stone-800">
               {businessActivity.map((row) => (
                 <div key={row.metric} className="p-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-text-primary">{row.metric}</p>
-                    <p className="text-lg font-semibold text-text-primary mt-0.5">{row.thisPeriod}</p>
+                    <p className="text-sm font-medium text-stone-100">{row.metric}</p>
+                    <p className="text-lg font-semibold text-stone-100 mt-0.5">{row.thisPeriod}</p>
                   </div>
                   <span
                     className={`inline-flex items-center gap-1 text-sm font-medium ${
-                      row.positive ? 'text-success-text' : 'text-error-text'
+                      row.positive ? 'text-emerald-400' : 'text-red-400'
                     }`}
                   >
                     {row.positive ? <ArrowUp size={14} weight="bold" /> : <TrendDown size={14} weight="bold" />}
@@ -284,18 +284,18 @@ export default function AdminReportsPage() {
 
         {/* Top Performing Categories */}
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Top Performing Categories</h2>
+          <h2 className="text-lg font-semibold text-stone-100 mb-4">Top Performing Categories</h2>
           <Card variant="glass" padding="md">
             <div className="space-y-4">
               {topCategories.map((category) => (
                 <div key={category.name} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-text-primary">{category.name}</span>
-                    <span className="text-sm text-text-secondary">{category.claims} claims</span>
+                    <span className="text-sm font-medium text-stone-100">{category.name}</span>
+                    <span className="text-sm text-stone-400">{category.claims} claims</span>
                   </div>
-                  <div className="h-2 bg-glass-bg rounded-full overflow-hidden">
+                  <div className="h-2 bg-stone-900 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-brand-primary rounded-full transition-all duration-500"
+                      className="h-full bg-amber-400 rounded-full transition-all duration-500"
                       style={{ width: `${category.percentage}%` }}
                     />
                   </div>
@@ -308,27 +308,27 @@ export default function AdminReportsPage() {
 
       {/* Recent Platform Activity */}
       <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-4">Recent Platform Activity</h2>
+        <h2 className="text-lg font-semibold text-stone-100 mb-4">Recent Platform Activity</h2>
         <Card variant="glass" padding="none">
-          <div className="divide-y divide-glass-border">
+          <div className="divide-y divide-stone-800">
             {platformActivities.map((activity) => {
               const IconComponent = getActivityIcon(activity.type)
               return (
                 <div
                   key={activity.id}
-                  className="flex items-center gap-4 p-4 hover:bg-glass-bg-hover transition-colors"
+                  className="flex items-center gap-4 p-4 hover:bg-stone-800 transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-                    <IconComponent size={20} weight="fill" className="text-brand-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                    <IconComponent size={20} weight="fill" className="text-amber-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-text-primary truncate">{activity.description}</p>
+                    <p className="text-sm text-stone-100 truncate">{activity.description}</p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
                     <Badge variant={getActivityBadgeVariant(activity.type)} size="sm">
                       {getActivityLabel(activity.type)}
                     </Badge>
-                    <span className="text-xs text-text-tertiary whitespace-nowrap">{activity.timestamp}</span>
+                    <span className="text-xs text-stone-500 whitespace-nowrap">{activity.timestamp}</span>
                   </div>
                 </div>
               )

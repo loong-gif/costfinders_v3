@@ -57,7 +57,7 @@ export default function MessagesPage() {
   if (!businessId) {
     return (
       <div className="text-center py-12">
-        <p className="text-text-secondary">No business linked to your account.</p>
+        <p className="text-stone-400">No business linked to your account.</p>
       </div>
     )
   }
@@ -96,14 +96,14 @@ export default function MessagesPage() {
           <MagnifyingGlass
             size={20}
             weight="regular"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
           />
           <input
             type="text"
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-glass-bg border border-glass-border rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-primary/50 focus:ring-2 focus:ring-brand-primary/20 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 placeholder:text-stone-500 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/20 transition-all"
           />
         </div>
 
@@ -116,8 +116,8 @@ export default function MessagesPage() {
               type="button"
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
-                  ? 'bg-brand-primary text-white'
-                  : 'bg-glass-bg border border-glass-border text-text-secondary hover:bg-bg-tertiary'
+                  ? 'bg-amber-400 text-white'
+                  : 'bg-stone-900 border border-stone-800 text-stone-400 hover:bg-stone-800'
               }`}
             >
               {tab.label}
@@ -125,8 +125,8 @@ export default function MessagesPage() {
                 <span
                   className={`px-2 py-0.5 rounded-full text-xs ${
                     activeTab === tab.id
-                      ? 'bg-white/20 text-white'
-                      : 'bg-bg-tertiary text-text-muted'
+                      ? 'bg-stone-800 text-white'
+                      : 'bg-stone-800 text-stone-500'
                   }`}
                 >
                   {tab.count}
@@ -141,17 +141,17 @@ export default function MessagesPage() {
       {filteredConversations.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-glass-bg mx-auto mb-4 flex items-center justify-center">
-              <EnvelopeSimple size={32} weight="light" className="text-text-muted" />
+            <div className="w-16 h-16 rounded-full bg-stone-900 mx-auto mb-4 flex items-center justify-center">
+              <EnvelopeSimple size={32} weight="light" className="text-stone-500" />
             </div>
-            <h3 className="text-lg font-semibold text-text-primary mb-2">
+            <h3 className="text-lg font-semibold text-stone-100 mb-2">
               {searchQuery
                 ? 'No conversations found'
                 : activeTab === 'unread'
                   ? 'No unread messages'
                   : 'No conversations yet'}
             </h3>
-            <p className="text-text-secondary text-sm">
+            <p className="text-stone-400 text-sm">
               {searchQuery
                 ? 'Try adjusting your search terms'
                 : activeTab === 'unread'
@@ -161,7 +161,7 @@ export default function MessagesPage() {
           </div>
         </Card>
       ) : (
-        <Card variant="glass" padding="none" className="divide-y divide-glass-border">
+        <Card variant="glass" padding="none" className="divide-y divide-stone-800">
           {filteredConversations.map((conversation) => (
             <ConversationRow
               key={conversation.claim.id}
@@ -181,16 +181,16 @@ function ConversationRow({ conversation }: { conversation: ConversationSummary }
   return (
     <Link
       href={`/business/dashboard/leads/${claim.id}`}
-      className="block hover:bg-bg-tertiary/50 transition-colors"
+      className="block hover:bg-stone-800/50 transition-colors"
     >
       <div className="p-4 flex items-center gap-4">
         {/* Avatar */}
         <div className="relative flex-shrink-0">
-          <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center">
-            <User size={24} weight="fill" className="text-brand-primary" />
+          <div className="w-12 h-12 rounded-full bg-amber-400/10 flex items-center justify-center">
+            <User size={24} weight="fill" className="text-amber-400" />
           </div>
           {hasUnread && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand-primary text-white text-xs font-semibold flex items-center justify-center">
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-white text-xs font-semibold flex items-center justify-center">
               {unreadCount}
             </div>
           )}
@@ -200,31 +200,31 @@ function ConversationRow({ conversation }: { conversation: ConversationSummary }
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-1">
             <span
-              className={`font-medium truncate ${hasUnread ? 'text-text-primary' : 'text-text-secondary'}`}
+              className={`font-medium truncate ${hasUnread ? 'text-stone-100' : 'text-stone-400'}`}
             >
               {getCustomerDisplay(claim.consumerId)}
             </span>
-            <span className="text-xs text-text-muted flex-shrink-0">
+            <span className="text-xs text-stone-500 flex-shrink-0">
               {formatMessageTime(lastMessage.createdAt)}
             </span>
           </div>
 
           <div className="flex items-center gap-2 mb-1.5">
-            <Tag size={14} weight="fill" className="text-text-muted flex-shrink-0" />
-            <span className="text-sm text-text-muted truncate">{dealTitle}</span>
+            <Tag size={14} weight="fill" className="text-stone-500 flex-shrink-0" />
+            <span className="text-sm text-stone-500 truncate">{dealTitle}</span>
           </div>
 
           <div className="flex items-start gap-2">
             <ChatCircle
               size={14}
               weight={hasUnread ? 'fill' : 'regular'}
-              className={`flex-shrink-0 mt-0.5 ${hasUnread ? 'text-brand-primary' : 'text-text-muted'}`}
+              className={`flex-shrink-0 mt-0.5 ${hasUnread ? 'text-amber-400' : 'text-stone-500'}`}
             />
             <p
-              className={`text-sm truncate ${hasUnread ? 'text-text-primary font-medium' : 'text-text-muted'}`}
+              className={`text-sm truncate ${hasUnread ? 'text-stone-100 font-medium' : 'text-stone-500'}`}
             >
               {lastMessage.senderType === 'business' && (
-                <span className="text-text-muted">You: </span>
+                <span className="text-stone-500">You: </span>
               )}
               {truncateMessage(lastMessage.content)}
             </p>

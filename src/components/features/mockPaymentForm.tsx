@@ -110,7 +110,7 @@ function CardBrandIcon({ brand }: { brand: 'visa' | 'mastercard' | 'amex' | 'unk
       </div>
     )
   }
-  return <CreditCard size={20} weight="light" className="text-text-tertiary" />
+  return <CreditCard size={20} weight="light" className="text-stone-500" />
 }
 
 export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false }: MockPaymentFormProps) {
@@ -179,13 +179,13 @@ export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false 
 
       {/* Country */}
       <div>
-        <label className="block text-sm font-medium text-text-secondary mb-1.5">
+        <label className="block text-sm font-medium text-stone-400 mb-1.5">
           Country or region
         </label>
         <select
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="w-full px-4 py-2.5 bg-glass-bg backdrop-blur-md border border-glass-border rounded-xl text-text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50 hover:border-glass-border-hover"
+          className="w-full px-4 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 hover:border-stone-800-hover"
         >
           <option value="US">United States</option>
           <option value="CA">Canada</option>
@@ -198,13 +198,13 @@ export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false 
       {country === 'US' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-text-secondary mb-1.5">
+            <label className="block text-sm font-medium text-stone-400 mb-1.5">
               State
             </label>
             <select
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="w-full px-4 py-2.5 bg-glass-bg backdrop-blur-md border border-glass-border rounded-xl text-text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50 hover:border-glass-border-hover"
+              className="w-full px-4 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 hover:border-stone-800-hover"
               required
             >
               <option value="">Select state</option>
@@ -240,7 +240,7 @@ export function MockPaymentForm({ amount, planName, onSubmit, isLoading = false 
       </div>
 
       {/* Secure Checkout Indicator */}
-      <div className="flex items-center justify-center gap-2 text-xs text-text-tertiary">
+      <div className="flex items-center justify-center gap-2 text-xs text-stone-500">
         <Lock size={14} weight="fill" className="text-green-400" />
         <span>Secure checkout powered by Stripe</span>
       </div>

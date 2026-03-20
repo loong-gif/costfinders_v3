@@ -26,13 +26,13 @@ export default function FavoritesPage() {
       {deals.length === 0 ? (
         /* Empty State */
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-20 h-20 rounded-full bg-bg-tertiary flex items-center justify-center mb-6">
-            <Heart size={40} weight="light" className="text-text-tertiary" />
+          <div className="w-20 h-20 rounded-full bg-stone-800 flex items-center justify-center mb-6">
+            <Heart size={40} weight="light" className="text-stone-500" />
           </div>
-          <h2 className="text-xl font-semibold text-text-primary mb-2">
+          <h2 className="text-xl font-semibold text-stone-100 mb-2">
             No saved deals yet
           </h2>
-          <p className="text-text-secondary mb-6 max-w-md">
+          <p className="text-stone-400 mb-6 max-w-md">
             Browse deals and tap the heart icon to save them for later.
             Your favorites will appear here.
           </p>
@@ -44,7 +44,7 @@ export default function FavoritesPage() {
       ) : (
         /* Deals Grid */
         <div>
-          <p className="text-sm text-text-tertiary mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             {deals.length} saved deal{deals.length !== 1 ? 's' : ''}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

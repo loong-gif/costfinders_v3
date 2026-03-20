@@ -57,16 +57,16 @@ export function LeadPurchaseModal({
       {state === 'confirm' && (
         <div className="space-y-6">
           {/* Package Summary */}
-          <div className="bg-glass-bg rounded-xl p-4">
+          <div className="bg-stone-900 rounded-xl p-4">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-                <Users size={24} weight="fill" className="text-brand-primary" />
+              <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
+                <Users size={24} weight="fill" className="text-amber-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-text-primary">
+                <h3 className="text-lg font-semibold text-stone-100">
                   {selectedPackage.credits} leads
                 </h3>
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-stone-400">
                   ${selectedPackage.pricePerLead.toFixed(2)} per lead
                 </p>
               </div>
@@ -74,15 +74,15 @@ export function LeadPurchaseModal({
 
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-text-secondary">Package price</span>
-                <span className="text-text-primary">${selectedPackage.price.toFixed(2)}</span>
+                <span className="text-stone-400">Package price</span>
+                <span className="text-stone-100">${selectedPackage.price.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-secondary">Leads included</span>
-                <span className="text-text-primary">{selectedPackage.credits} leads</span>
+                <span className="text-stone-400">Leads included</span>
+                <span className="text-stone-100">{selectedPackage.credits} leads</span>
               </div>
               {selectedPackage.savingsPercent > 0 && (
-                <div className="flex justify-between text-success-text">
+                <div className="flex justify-between text-emerald-400">
                   <span>Savings</span>
                   <span>{selectedPackage.savingsPercent}% off</span>
                 </div>
@@ -91,29 +91,29 @@ export function LeadPurchaseModal({
           </div>
 
           {/* Current Balance Info */}
-          <div className="bg-glass-bg rounded-xl p-4">
-            <p className="text-sm text-text-secondary mb-2">After purchase:</p>
+          <div className="bg-stone-900 rounded-xl p-4">
+            <p className="text-sm text-stone-400 mb-2">After purchase:</p>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-text-secondary">Current balance</span>
-              <span className="text-text-primary">{currentBalance.available} leads</span>
+              <span className="text-sm text-stone-400">Current balance</span>
+              <span className="text-stone-100">{currentBalance.available} leads</span>
             </div>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-sm text-text-secondary">New balance</span>
-              <span className="text-lg font-semibold text-brand-primary">
+              <span className="text-sm text-stone-400">New balance</span>
+              <span className="text-lg font-semibold text-amber-400">
                 {currentBalance.available + selectedPackage.credits} leads
               </span>
             </div>
           </div>
 
           {/* Payment Method (Mock) */}
-          <div className="bg-glass-bg rounded-xl p-4">
+          <div className="bg-stone-900 rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <span className="text-xs font-bold text-white italic">VISA</span>
               </div>
               <div>
-                <p className="text-sm font-medium text-text-primary">Visa ending in 4242</p>
-                <p className="text-xs text-text-secondary">Expires 12/27</p>
+                <p className="text-sm font-medium text-stone-100">Visa ending in 4242</p>
+                <p className="text-xs text-stone-400">Expires 12/27</p>
               </div>
             </div>
           </div>
@@ -129,8 +129,8 @@ export function LeadPurchaseModal({
           </div>
 
           {/* Secure Payment Notice */}
-          <div className="flex items-center justify-center gap-2 text-xs text-text-tertiary">
-            <Lock size={14} weight="fill" className="text-success-text" />
+          <div className="flex items-center justify-center gap-2 text-xs text-stone-500">
+            <Lock size={14} weight="fill" className="text-emerald-400" />
             <span>Secure checkout powered by Stripe</span>
           </div>
         </div>
@@ -138,28 +138,28 @@ export function LeadPurchaseModal({
 
       {state === 'processing' && (
         <div className="py-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-brand-primary/10 flex items-center justify-center mx-auto mb-4">
-            <CreditCard size={32} weight="fill" className="text-brand-primary animate-pulse" />
+          <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto mb-4">
+            <CreditCard size={32} weight="fill" className="text-amber-400 animate-pulse" />
           </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">Processing payment</h3>
-          <p className="text-sm text-text-secondary">Please wait while we process your purchase...</p>
+          <h3 className="text-lg font-semibold text-stone-100 mb-2">Processing payment</h3>
+          <p className="text-sm text-stone-400">Please wait while we process your purchase...</p>
         </div>
       )}
 
       {state === 'success' && newBalance && (
         <div className="py-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
-            <Check size={32} weight="bold" className="text-success-text" />
+          <div className="w-16 h-16 rounded-full bg-emerald-400/10 flex items-center justify-center mx-auto mb-4">
+            <Check size={32} weight="bold" className="text-emerald-400" />
           </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-2">Purchase complete!</h3>
-          <p className="text-sm text-text-secondary mb-6">
+          <h3 className="text-lg font-semibold text-stone-100 mb-2">Purchase complete!</h3>
+          <p className="text-sm text-stone-400 mb-6">
             {selectedPackage.credits} leads have been added to your account.
           </p>
 
           {/* New Balance */}
-          <div className="bg-glass-bg rounded-xl p-4 mb-6 inline-block">
-            <p className="text-sm text-text-secondary mb-1">New balance</p>
-            <p className="text-3xl font-bold text-brand-primary">{newBalance.available} leads</p>
+          <div className="bg-stone-900 rounded-xl p-4 mb-6 inline-block">
+            <p className="text-sm text-stone-400 mb-1">New balance</p>
+            <p className="text-3xl font-bold text-amber-400">{newBalance.available} leads</p>
           </div>
 
           <Button variant="primary" onClick={handleClose} className="w-full">

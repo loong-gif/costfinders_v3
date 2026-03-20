@@ -22,12 +22,12 @@ function ToggleSwitch({
 }: ToggleSwitchProps) {
   return (
     <div className="flex items-start gap-4 py-3">
-      <div className="flex-shrink-0 p-2 rounded-lg bg-glass-bg text-brand-primary">
+      <div className="flex-shrink-0 p-2 rounded-lg bg-stone-900 text-amber-400">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-4">
-          <label className="text-sm font-medium text-text-primary cursor-pointer">
+          <label className="text-sm font-medium text-stone-100 cursor-pointer">
             {label}
           </label>
           <button
@@ -39,9 +39,9 @@ function ToggleSwitch({
             className={`
               relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full
               border-2 border-transparent transition-colors duration-200 ease-in-out
-              focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 focus:ring-offset-bg-primary
+              focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-stone-950
               ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-              ${checked ? 'bg-brand-primary' : 'bg-glass-border'}
+              ${checked ? 'bg-amber-400' : 'bg-stone-800'}
             `}
           >
             <span
@@ -54,7 +54,7 @@ function ToggleSwitch({
             />
           </button>
         </div>
-        <p className="mt-1 text-sm text-text-secondary">{description}</p>
+        <p className="mt-1 text-sm text-stone-400">{description}</p>
       </div>
     </div>
   )
@@ -77,7 +77,7 @@ export function AlertPreferences() {
   const isPhoneVerified = !!user.phoneVerifiedAt
 
   return (
-    <div className="space-y-2 divide-y divide-glass-border">
+    <div className="space-y-2 divide-y divide-stone-800">
       <ToggleSwitch
         checked={user.alertsEmail}
         onChange={handleEmailToggle}

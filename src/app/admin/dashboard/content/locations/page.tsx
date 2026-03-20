@@ -143,10 +143,10 @@ export default function LocationsManagementPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">
+            <h1 className="text-2xl font-bold text-stone-100">
               Service Locations
             </h1>
-            <p className="text-text-secondary mt-1">
+            <p className="text-stone-400 mt-1">
               Manage cities and service areas
             </p>
           </div>
@@ -164,7 +164,7 @@ export default function LocationsManagementPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-success/10 border border-success/20 text-success-text px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-emerald-400/10 border border-success/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
           {feedbackMessage}
         </div>
       )}
@@ -172,20 +172,20 @@ export default function LocationsManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.totalCities}</p>
-          <p className="text-sm text-text-secondary">Total Cities</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.totalCities}</p>
+          <p className="text-sm text-stone-400">Total Cities</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.activeCities}</p>
-          <p className="text-sm text-text-secondary">Active Cities</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.activeCities}</p>
+          <p className="text-sm text-stone-400">Active Cities</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.totalAreas}</p>
-          <p className="text-sm text-text-secondary">Total Areas</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.totalAreas}</p>
+          <p className="text-sm text-stone-400">Total Areas</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-text-primary">{stats.activeAreas}</p>
-          <p className="text-sm text-text-secondary">Active Areas</p>
+          <p className="text-2xl font-bold text-stone-100">{stats.activeAreas}</p>
+          <p className="text-sm text-stone-400">Active Areas</p>
         </Card>
       </div>
 
@@ -193,18 +193,18 @@ export default function LocationsManagementPage() {
       {isAddingCity && (
         <Card variant="glass" padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-text-primary">Add New City</h3>
+            <h3 className="text-lg font-semibold text-stone-100">Add New City</h3>
             <button
               type="button"
               onClick={() => setIsAddingCity(false)}
-              className="text-text-muted hover:text-text-secondary"
+              className="text-stone-500 hover:text-stone-400"
             >
               <X size={20} />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 City Name
               </label>
               <input
@@ -214,11 +214,11 @@ export default function LocationsManagementPage() {
                   setCityForm((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="e.g., Chicago"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 State
               </label>
               <input
@@ -228,11 +228,11 @@ export default function LocationsManagementPage() {
                   setCityForm((prev) => ({ ...prev, state: e.target.value }))
                 }
                 placeholder="e.g., Illinois"
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">
+              <label className="block text-sm font-medium text-stone-400 mb-1">
                 State Code
               </label>
               <input
@@ -246,7 +246,7 @@ export default function LocationsManagementPage() {
                 }
                 placeholder="e.g., IL"
                 maxLength={2}
-                className="w-full bg-glass-bg border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function LocationsManagementPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Cities List */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-text-primary">Cities</h2>
+          <h2 className="text-lg font-semibold text-stone-100">Cities</h2>
           <div className="space-y-2">
             {cities.map((city) => {
               const areaCount = getAreasForCity(city.id).length
@@ -284,8 +284,8 @@ export default function LocationsManagementPage() {
                   padding="md"
                   className={`cursor-pointer transition-all ${
                     isSelected
-                      ? 'ring-2 ring-brand-primary/50'
-                      : 'hover:bg-glass-bg-hover'
+                      ? 'ring-2 ring-amber-400/50'
+                      : 'hover:bg-stone-800'
                   }`}
                   onClick={() => setSelectedCityId(city.id)}
                 >
@@ -293,14 +293,14 @@ export default function LocationsManagementPage() {
                     {/* Icon */}
                     <div
                       className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
-                        city.isActive ? 'bg-brand-primary/10' : 'bg-glass-bg'
+                        city.isActive ? 'bg-amber-400/10' : 'bg-stone-900'
                       }`}
                     >
                       <MapPin
                         size={20}
                         weight="light"
                         className={
-                          city.isActive ? 'text-brand-primary' : 'text-text-muted'
+                          city.isActive ? 'text-amber-400' : 'text-stone-500'
                         }
                       />
                     </div>
@@ -310,12 +310,12 @@ export default function LocationsManagementPage() {
                       <div className="flex items-center gap-2">
                         <h3
                           className={`font-semibold ${
-                            city.isActive ? 'text-text-primary' : 'text-text-muted'
+                            city.isActive ? 'text-stone-100' : 'text-stone-500'
                           }`}
                         >
                           {city.name}
                         </h3>
-                        <span className="text-sm text-text-secondary">
+                        <span className="text-sm text-stone-400">
                           {city.stateCode}
                         </span>
                         {!city.isActive && (
@@ -324,7 +324,7 @@ export default function LocationsManagementPage() {
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-text-tertiary">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-stone-500">
                         <span className="flex items-center gap-1">
                           <MapPin size={12} />
                           {areaCount} areas
@@ -349,7 +349,7 @@ export default function LocationsManagementPage() {
                           handleToggleCityStatus(city.id)
                         }}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          city.isActive ? 'bg-brand-primary' : 'bg-glass-bg'
+                          city.isActive ? 'bg-amber-400' : 'bg-stone-900'
                         }`}
                       >
                         <span
@@ -361,7 +361,7 @@ export default function LocationsManagementPage() {
                       <CaretRight
                         size={20}
                         weight="light"
-                        className={`text-text-muted transition-transform ${
+                        className={`text-stone-500 transition-transform ${
                           isSelected ? 'rotate-90' : ''
                         }`}
                       />
@@ -376,7 +376,7 @@ export default function LocationsManagementPage() {
         {/* Areas Panel */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-text-primary">
+            <h2 className="text-lg font-semibold text-stone-100">
               {selectedCity ? `${selectedCity.name} Areas` : 'Select a City'}
             </h2>
             {selectedCity && (
@@ -405,7 +405,7 @@ export default function LocationsManagementPage() {
                         setAreaForm({ name: e.target.value })
                       }
                       placeholder="Area name (e.g., Downtown)"
-                      className="flex-1 bg-glass-bg border border-glass-border rounded-xl px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                      className="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-2 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
                     />
                     <Button variant="primary" size="sm" onClick={handleAddArea}>
                       Add
@@ -433,8 +433,8 @@ export default function LocationsManagementPage() {
                         <div
                           className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                             area.isActive !== false
-                              ? 'bg-brand-primary/10'
-                              : 'bg-glass-bg'
+                              ? 'bg-amber-400/10'
+                              : 'bg-stone-900'
                           }`}
                         >
                           <MapPin
@@ -442,8 +442,8 @@ export default function LocationsManagementPage() {
                             weight="light"
                             className={
                               area.isActive !== false
-                                ? 'text-brand-primary'
-                                : 'text-text-muted'
+                                ? 'text-amber-400'
+                                : 'text-stone-500'
                             }
                           />
                         </div>
@@ -451,13 +451,13 @@ export default function LocationsManagementPage() {
                           <p
                             className={`font-medium ${
                               area.isActive !== false
-                                ? 'text-text-primary'
-                                : 'text-text-muted'
+                                ? 'text-stone-100'
+                                : 'text-stone-500'
                             }`}
                           >
                             {area.name}
                           </p>
-                          <p className="text-xs text-text-tertiary">
+                          <p className="text-xs text-stone-500">
                             {area.radiusMiles} mile radius
                           </p>
                         </div>
@@ -469,8 +469,8 @@ export default function LocationsManagementPage() {
                         }
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                           area.isActive !== false
-                            ? 'bg-brand-primary'
-                            : 'bg-glass-bg'
+                            ? 'bg-amber-400'
+                            : 'bg-stone-900'
                         }`}
                       >
                         <span
@@ -486,10 +486,10 @@ export default function LocationsManagementPage() {
                 ))
               ) : (
                 <Card variant="glass" padding="lg" className="text-center">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-brand-primary/10 flex items-center justify-center mb-3">
-                    <MapPin size={24} weight="light" className="text-brand-primary" />
+                  <div className="w-12 h-12 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-3">
+                    <MapPin size={24} weight="light" className="text-amber-400" />
                   </div>
-                  <p className="text-text-secondary">
+                  <p className="text-stone-400">
                     No areas defined for {selectedCity.name}
                   </p>
                   <Button
@@ -506,10 +506,10 @@ export default function LocationsManagementPage() {
             </div>
           ) : (
             <Card variant="glass" padding="lg" className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-brand-primary/10 flex items-center justify-center mb-3">
-                <MapPin size={24} weight="light" className="text-brand-primary" />
+              <div className="w-12 h-12 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-3">
+                <MapPin size={24} weight="light" className="text-amber-400" />
               </div>
-              <p className="text-text-secondary">
+              <p className="text-stone-400">
                 Select a city to view and manage its service areas
               </p>
             </Card>

@@ -151,7 +151,7 @@ export function CreateBusinessForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Section 1: Business Details */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">
           Business Details
         </h3>
         <div className="space-y-4">
@@ -170,7 +170,7 @@ export function CreateBusinessForm({
           <div className="w-full">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-text-secondary mb-1.5"
+              className="block text-sm font-medium text-stone-400 mb-1.5"
             >
               Description
             </label>
@@ -184,12 +184,12 @@ export function CreateBusinessForm({
               disabled={isLoading}
               className="
                 w-full px-4 py-2.5
-                bg-glass-bg backdrop-blur-md
-                border border-glass-border rounded-xl
-                text-text-primary placeholder:text-text-muted
+                bg-stone-900
+                border border-stone-800 rounded-xl
+                text-stone-100 placeholder:text-stone-500
                 transition-all duration-200
-                hover:border-glass-border-hover
-                focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50
+                hover:border-stone-700
+                focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50
                 disabled:opacity-50 disabled:cursor-not-allowed
                 resize-none
               "
@@ -210,7 +210,7 @@ export function CreateBusinessForm({
 
       {/* Section 2: Location */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">Location</h3>
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">Location</h3>
         <div className="space-y-4">
           <Input
             label="Street address"
@@ -240,9 +240,9 @@ export function CreateBusinessForm({
             <div className="w-full">
               <label
                 htmlFor="state"
-                className="block text-sm font-medium text-text-secondary mb-1.5"
+                className="block text-sm font-medium text-stone-400 mb-1.5"
               >
-                State <span className="text-error-text">*</span>
+                State <span className="text-red-400">*</span>
               </label>
               <select
                 id="state"
@@ -252,16 +252,16 @@ export function CreateBusinessForm({
                 disabled={isLoading}
                 className={`
                   w-full px-4 py-2.5
-                  bg-glass-bg backdrop-blur-md
+                  bg-stone-900
                   border rounded-xl
-                  text-text-primary
+                  text-stone-100
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
                   disabled:opacity-50 disabled:cursor-not-allowed
                   ${
                     errors.state
-                      ? 'border-error/50 focus:border-error'
-                      : 'border-glass-border hover:border-glass-border-hover focus:border-brand-primary/50'
+                      ? 'border-red-400/50 focus:border-red-400'
+                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
                   }
                 `}
               >
@@ -273,7 +273,7 @@ export function CreateBusinessForm({
                 ))}
               </select>
               {errors.state && (
-                <p className="mt-1.5 text-xs text-error-text">{errors.state}</p>
+                <p className="mt-1.5 text-xs text-red-400">{errors.state}</p>
               )}
             </div>
           </div>
@@ -306,7 +306,7 @@ export function CreateBusinessForm({
 
       {/* Section 3: Contact */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">
           Contact Information
         </h3>
         <div className="space-y-4">

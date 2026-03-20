@@ -38,7 +38,7 @@ function CardBrandIcon({ brand }: { brand: PaymentMethod['brand'] }) {
       </div>
     )
   }
-  return <CreditCard size={24} weight="light" className="text-text-tertiary" />
+  return <CreditCard size={24} weight="light" className="text-stone-500" />
 }
 
 function formatExpiry(month: number, year: number): string {
@@ -75,11 +75,11 @@ export function PaymentMethods({
     return (
       <Card variant="glass" padding="lg">
         <div className="text-center py-8">
-          <div className="w-12 h-12 rounded-xl bg-glass-bg flex items-center justify-center mx-auto mb-3">
-            <CreditCard size={24} weight="light" className="text-text-tertiary" />
+          <div className="w-12 h-12 rounded-xl bg-stone-900 flex items-center justify-center mx-auto mb-3">
+            <CreditCard size={24} weight="light" className="text-stone-500" />
           </div>
-          <h3 className="font-medium text-text-primary mb-1">No payment methods</h3>
-          <p className="text-sm text-text-secondary mb-4">
+          <h3 className="font-medium text-stone-100 mb-1">No payment methods</h3>
+          <p className="text-sm text-stone-400 mb-4">
             Add a payment method to manage your subscription.
           </p>
           <Button variant="primary" onClick={onAddMethod}>
@@ -95,7 +95,7 @@ export function PaymentMethods({
     <>
       <Card variant="glass" padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-text-primary">Payment Methods</h3>
+          <h3 className="text-lg font-semibold text-stone-100">Payment Methods</h3>
           <Button variant="secondary" size="sm" onClick={onAddMethod}>
             <Plus size={16} weight="bold" />
             Add New
@@ -109,8 +109,8 @@ export function PaymentMethods({
               className={`
                 p-4 rounded-xl border transition-colors
                 ${method.isDefault
-                  ? 'bg-brand-primary/5 border-brand-primary/20'
-                  : 'bg-glass-bg border-glass-border hover:border-glass-border-hover'
+                  ? 'bg-amber-400/5 border-amber-400/20'
+                  : 'bg-stone-900 border-stone-800 hover:border-stone-700'
                 }
               `}
             >
@@ -121,14 +121,14 @@ export function PaymentMethods({
                 {/* Card Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-text-primary">
+                    <span className="text-sm font-medium text-stone-100">
                       {getBrandName(method.brand)} ending in {method.last4}
                     </span>
                     {method.isDefault && (
                       <Badge variant="brand" size="sm">Default</Badge>
                     )}
                   </div>
-                  <p className="text-xs text-text-tertiary mt-0.5">
+                  <p className="text-xs text-stone-500 mt-0.5">
                     Expires {formatExpiry(method.expMonth, method.expYear)}
                   </p>
                 </div>
@@ -140,7 +140,7 @@ export function PaymentMethods({
                       variant="ghost"
                       size="sm"
                       onClick={() => onSetDefault?.(method.id)}
-                      className="text-text-secondary hover:text-text-primary"
+                      className="text-stone-400 hover:text-stone-100"
                       title="Set as default"
                     >
                       <Star size={16} weight="light" />
@@ -150,7 +150,7 @@ export function PaymentMethods({
                     variant="ghost"
                     size="sm"
                     onClick={() => setDeleteConfirmId(method.id)}
-                    className="text-text-secondary hover:text-error-text"
+                    className="text-stone-400 hover:text-red-400"
                     title="Remove"
                     disabled={method.isDefault && paymentMethods.length === 1}
                   >
@@ -163,7 +163,7 @@ export function PaymentMethods({
         </div>
 
         {/* Info text */}
-        <p className="text-xs text-text-tertiary mt-4">
+        <p className="text-xs text-stone-500 mt-4">
           Your default payment method will be charged for subscription renewals.
         </p>
       </Card>
@@ -176,7 +176,7 @@ export function PaymentMethods({
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             Are you sure you want to remove this payment method? This action cannot be undone.
           </p>
           <div className="flex gap-3">

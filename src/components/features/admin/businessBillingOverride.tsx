@@ -124,8 +124,8 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
       <Card variant="glass" padding="lg">
         <CardHeader className="mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-              <CurrencyDollar size={20} weight="fill" className="text-brand-primary" />
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
+              <CurrencyDollar size={20} weight="fill" className="text-amber-400" />
             </div>
             <div>
               <CardTitle>Billing Override</CardTitle>
@@ -137,28 +137,28 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
         </CardHeader>
 
         {/* Current Status */}
-        <div className="mb-6 p-4 rounded-xl bg-bg-secondary border border-glass-border">
-          <h4 className="text-sm font-medium text-text-secondary mb-3">Current Status</h4>
+        <div className="mb-6 p-4 rounded-xl bg-stone-900 border border-stone-800">
+          <h4 className="text-sm font-medium text-stone-400 mb-3">Current Status</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <p className="text-xs text-text-muted mb-1">Tier</p>
+              <p className="text-xs text-stone-500 mb-1">Tier</p>
               {getTierBadge(business.tier)}
             </div>
             <div>
-              <p className="text-xs text-text-muted mb-1">Business Status</p>
+              <p className="text-xs text-stone-500 mb-1">Business Status</p>
               <Badge variant={business.status === 'active' ? 'success' : 'warning'}>
                 {business.status}
               </Badge>
             </div>
             <div>
-              <p className="text-xs text-text-muted mb-1">Claimed</p>
-              <p className="text-sm text-text-primary">
+              <p className="text-xs text-stone-500 mb-1">Claimed</p>
+              <p className="text-sm text-stone-100">
                 {business.claimedAt ? 'Yes' : 'No'}
               </p>
             </div>
             <div>
-              <p className="text-xs text-text-muted mb-1">Verified</p>
-              <p className="text-sm text-text-primary">
+              <p className="text-xs text-stone-500 mb-1">Verified</p>
+              <p className="text-sm text-stone-100">
                 {business.isVerified ? 'Yes' : 'No'}
               </p>
             </div>
@@ -172,13 +172,13 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
               type="checkbox"
               checked={overrideEnabled}
               onChange={(e) => setOverrideEnabled(e.target.checked)}
-              className="w-5 h-5 rounded border-glass-border bg-glass-bg text-brand-primary focus:ring-brand-primary/50 cursor-pointer"
+              className="w-5 h-5 rounded border-stone-800 bg-stone-900 text-amber-400 focus:ring-amber-400/50 cursor-pointer"
             />
-            <span className="text-sm font-medium text-text-primary">
+            <span className="text-sm font-medium text-stone-100">
               Enable override mode
             </span>
           </label>
-          <p className="text-xs text-text-muted mt-1 ml-8">
+          <p className="text-xs text-stone-500 mt-1 ml-8">
             Toggle to make changes to this business&apos;s billing settings
           </p>
         </div>
@@ -187,7 +187,7 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
           <div className="space-y-6 animate-in fade-in duration-200">
             {/* Tier Assignment */}
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
+              <label className="block text-sm font-medium text-stone-400 mb-2">
                 Tier Assignment
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -200,8 +200,8 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
                       p-3 rounded-xl border text-sm font-medium transition-all
                       ${
                         selectedTier === option.value
-                          ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
-                          : 'border-glass-border bg-glass-bg text-text-secondary hover:border-glass-border-hover'
+                          ? 'border-amber-400 bg-amber-400/10 text-amber-400'
+                          : 'border-stone-800 bg-stone-900 text-stone-400 hover:border-stone-700'
                       }
                     `}
                   >
@@ -213,7 +213,7 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
 
             {/* Billing Status */}
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
+              <label className="block text-sm font-medium text-stone-400 mb-2">
                 Billing Status
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -226,8 +226,8 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
                       p-3 rounded-xl border text-sm font-medium transition-all
                       ${
                         billingStatus === option.value
-                          ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
-                          : 'border-glass-border bg-glass-bg text-text-secondary hover:border-glass-border-hover'
+                          ? 'border-amber-400 bg-amber-400/10 text-amber-400'
+                          : 'border-stone-800 bg-stone-900 text-stone-400 hover:border-stone-700'
                       }
                     `}
                   >
@@ -239,23 +239,23 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
 
             {/* Credit Grant */}
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
+              <label className="block text-sm font-medium text-stone-400 mb-2">
                 Grant Credits
               </label>
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
-                  <Plus size={16} className="text-text-secondary" />
+                  <Plus size={16} className="text-stone-400" />
                   <input
                     type="number"
                     value={creditsToGrant}
                     onChange={(e) => setCreditsToGrant(Number(e.target.value))}
-                    className="w-24 px-3 py-2 bg-glass-bg border border-glass-border rounded-xl text-text-primary focus:border-brand-primary focus:outline-none"
+                    className="w-24 px-3 py-2 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 focus:border-amber-400 focus:outline-none"
                     min={0}
                     placeholder="0"
                   />
-                  <span className="text-sm text-text-secondary">credits</span>
+                  <span className="text-sm text-stone-400">credits</span>
                 </div>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-stone-500">
                   Add bonus credits to this business account
                 </p>
               </div>
@@ -263,24 +263,24 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
 
             {/* Custom Lead Pricing */}
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
+              <label className="block text-sm font-medium text-stone-400 mb-2">
                 Custom Lead Price (Optional)
               </label>
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-secondary">$</span>
+                  <span className="text-stone-400">$</span>
                   <input
                     type="number"
                     value={customLeadPrice}
                     onChange={(e) => setCustomLeadPrice(e.target.value)}
-                    className="w-24 px-3 py-2 bg-glass-bg border border-glass-border rounded-xl text-text-primary focus:border-brand-primary focus:outline-none"
+                    className="w-24 px-3 py-2 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 focus:border-amber-400 focus:outline-none"
                     min={0}
                     step={0.5}
                     placeholder="—"
                   />
-                  <span className="text-sm text-text-secondary">/lead</span>
+                  <span className="text-sm text-stone-400">/lead</span>
                 </div>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-stone-500">
                   Leave empty to use tier default pricing
                 </p>
               </div>
@@ -298,7 +298,7 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-3 pt-4 border-t border-glass-border">
+            <div className="flex items-center gap-3 pt-4 border-t border-stone-800">
               <Button
                 variant="secondary"
                 onClick={() => {
@@ -329,36 +329,36 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <Card variant="glass" padding="lg" className="max-w-md w-full">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-warning/10 flex items-center justify-center">
-                <Warning size={20} weight="fill" className="text-warning-text" />
+              <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
+                <Warning size={20} weight="fill" className="text-amber-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-text-primary">Confirm Override</h3>
-                <p className="text-sm text-text-secondary">
+                <h3 className="text-lg font-semibold text-stone-100">Confirm Override</h3>
+                <p className="text-sm text-stone-400">
                   This action will be logged
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2 mb-6 p-3 rounded-lg bg-bg-secondary">
+            <div className="space-y-2 mb-6 p-3 rounded-lg bg-stone-900">
               <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Tier</span>
-                <span className="text-text-primary">{business.tier} → {selectedTier}</span>
+                <span className="text-stone-400">Tier</span>
+                <span className="text-stone-100">{business.tier} → {selectedTier}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Billing Status</span>
-                <span className="text-text-primary">{billingStatus}</span>
+                <span className="text-stone-400">Billing Status</span>
+                <span className="text-stone-100">{billingStatus}</span>
               </div>
               {creditsToGrant > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-text-secondary">Credits Granted</span>
-                  <span className="text-success-text">+{creditsToGrant}</span>
+                  <span className="text-stone-400">Credits Granted</span>
+                  <span className="text-emerald-400">+{creditsToGrant}</span>
                 </div>
               )}
               {customLeadPrice && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-text-secondary">Custom Lead Price</span>
-                  <span className="text-text-primary">${customLeadPrice}/lead</span>
+                  <span className="text-stone-400">Custom Lead Price</span>
+                  <span className="text-stone-100">${customLeadPrice}/lead</span>
                 </div>
               )}
             </div>
@@ -401,11 +401,11 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
 
         {overrides.length === 0 ? (
           <div className="text-center py-8">
-            <div className="w-12 h-12 mx-auto rounded-full bg-glass-bg flex items-center justify-center mb-3">
-              <Clock size={24} className="text-text-muted" />
+            <div className="w-12 h-12 mx-auto rounded-full bg-stone-900 flex items-center justify-center mb-3">
+              <Clock size={24} className="text-stone-500" />
             </div>
-            <p className="text-text-secondary">No override history</p>
-            <p className="text-sm text-text-muted">
+            <p className="text-stone-400">No override history</p>
+            <p className="text-sm text-stone-500">
               Changes made here will be logged for audit purposes
             </p>
           </div>
@@ -414,52 +414,52 @@ export function BusinessBillingOverride({ business }: BusinessBillingOverridePro
             {overrides.map((override) => (
               <div
                 key={override.id}
-                className="p-4 rounded-xl bg-bg-secondary border border-glass-border"
+                className="p-4 rounded-xl bg-stone-900 border border-stone-800"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-brand-primary/10 flex items-center justify-center">
-                      <User size={12} className="text-brand-primary" />
+                    <div className="w-6 h-6 rounded-full bg-amber-400/10 flex items-center justify-center">
+                      <User size={12} className="text-amber-400" />
                     </div>
-                    <span className="text-sm font-medium text-text-primary">
+                    <span className="text-sm font-medium text-stone-100">
                       Admin Override
                     </span>
                   </div>
-                  <span className="text-xs text-text-muted">
+                  <span className="text-xs text-stone-500">
                     {formatDate(override.createdAt)}
                   </span>
                 </div>
 
                 <div className="space-y-1 ml-8">
                   <div className="flex items-center gap-2 text-sm">
-                    <span className="text-text-secondary">Tier:</span>
-                    <span className="text-text-muted">{override.previousTier}</span>
-                    <span className="text-text-muted">→</span>
-                    <span className="text-text-primary">{override.newTier}</span>
+                    <span className="text-stone-400">Tier:</span>
+                    <span className="text-stone-500">{override.previousTier}</span>
+                    <span className="text-stone-500">→</span>
+                    <span className="text-stone-100">{override.newTier}</span>
                   </div>
 
                   {override.newBillingStatus && (
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-text-secondary">Status:</span>
+                      <span className="text-stone-400">Status:</span>
                       {getBillingStatusBadge(override.newBillingStatus)}
                     </div>
                   )}
 
                   {override.creditsGranted && (
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-text-secondary">Credits:</span>
-                      <span className="text-success-text">+{override.creditsGranted}</span>
+                      <span className="text-stone-400">Credits:</span>
+                      <span className="text-emerald-400">+{override.creditsGranted}</span>
                     </div>
                   )}
 
                   {override.customLeadPrice && (
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-text-secondary">Custom Lead Price:</span>
-                      <span className="text-text-primary">${override.customLeadPrice}/lead</span>
+                      <span className="text-stone-400">Custom Lead Price:</span>
+                      <span className="text-stone-100">${override.customLeadPrice}/lead</span>
                     </div>
                   )}
 
-                  <p className="text-sm text-text-muted mt-2 italic">
+                  <p className="text-sm text-stone-500 mt-2 italic">
                     &quot;{override.reason}&quot;
                   </p>
                 </div>

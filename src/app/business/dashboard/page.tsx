@@ -19,17 +19,17 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
   return (
     <Card variant="glass" padding="lg" className="flex flex-col gap-4">
       <div className="flex items-start justify-between">
-        <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-          <Icon size={24} weight="fill" className="text-brand-primary" />
+        <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
+          <Icon size={24} weight="fill" className="text-amber-400" />
         </div>
         {trend && (
           <div
             className={`flex items-center gap-1 text-sm font-medium ${
               trend.direction === 'up'
-                ? 'text-success-text'
+                ? 'text-emerald-400'
                 : trend.direction === 'down'
-                  ? 'text-error-text'
-                  : 'text-text-secondary'
+                  ? 'text-red-400'
+                  : 'text-stone-400'
             }`}
           >
             {trend.direction === 'up' && <TrendUp size={16} weight="bold" />}
@@ -39,8 +39,8 @@ function MetricCard({ icon: Icon, value, label, trend }: MetricCardProps) {
         )}
       </div>
       <div>
-        <p className="text-3xl font-bold text-text-primary">{value}</p>
-        <p className="text-sm text-text-secondary mt-1">{label}</p>
+        <p className="text-3xl font-bold text-stone-100">{value}</p>
+        <p className="text-sm text-stone-400 mt-1">{label}</p>
       </div>
     </Card>
   )
@@ -82,10 +82,10 @@ export default function BusinessDashboardPage() {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">
+        <h1 className="text-2xl font-bold text-stone-100">
           Welcome back{business?.name ? `, ${business.name}` : ''}
         </h1>
-        <p className="text-text-secondary mt-1">
+        <p className="text-stone-400 mt-1">
           Here&apos;s an overview of your business performance
         </p>
       </div>
@@ -105,38 +105,38 @@ export default function BusinessDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-stone-100 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Card variant="glass" padding="md" hover className="group">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors">
-                <Tag size={20} weight="fill" className="text-brand-primary" />
+              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                <Tag size={20} weight="fill" className="text-amber-400" />
               </div>
               <div>
-                <p className="font-medium text-text-primary">Create New Deal</p>
-                <p className="text-sm text-text-secondary">Add a special offer</p>
+                <p className="font-medium text-stone-100">Create New Deal</p>
+                <p className="text-sm text-stone-400">Add a special offer</p>
               </div>
             </div>
           </Card>
           <Card variant="glass" padding="md" hover className="group">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors">
-                <Users size={20} weight="fill" className="text-brand-primary" />
+              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                <Users size={20} weight="fill" className="text-amber-400" />
               </div>
               <div>
-                <p className="font-medium text-text-primary">View Leads</p>
-                <p className="text-sm text-text-secondary">12 new this week</p>
+                <p className="font-medium text-stone-100">View Leads</p>
+                <p className="text-sm text-stone-400">12 new this week</p>
               </div>
             </div>
           </Card>
           <Card variant="glass" padding="md" hover className="group">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors">
-                <ChatCircle size={20} weight="fill" className="text-brand-primary" />
+              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                <ChatCircle size={20} weight="fill" className="text-amber-400" />
               </div>
               <div>
-                <p className="font-medium text-text-primary">Reply to Messages</p>
-                <p className="text-sm text-text-secondary">3 awaiting response</p>
+                <p className="font-medium text-stone-100">Reply to Messages</p>
+                <p className="text-sm text-stone-400">3 awaiting response</p>
               </div>
             </div>
           </Card>

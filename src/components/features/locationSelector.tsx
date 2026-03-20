@@ -55,12 +55,12 @@ export function LocationSelector({
         className={`
           w-full flex items-center justify-center gap-2
           px-4 py-3
-          bg-brand-primary/10 hover:bg-brand-primary/20
-          border border-brand-primary/30 rounded-xl
-          text-brand-primary font-medium
+          bg-amber-400/10 hover:bg-amber-400/20
+          border border-amber-400/30 rounded-xl
+          text-amber-400 font-medium
           transition-all duration-200
           disabled:opacity-50 disabled:cursor-not-allowed
-          focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+          focus:outline-none focus:ring-2 focus:ring-amber-400/50
           ${compact ? 'py-2.5 text-sm' : ''}
         `}
       >
@@ -79,23 +79,23 @@ export function LocationSelector({
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-start gap-2 px-3 py-2 bg-error/10 border border-error/20 rounded-lg">
+        <div className="flex items-start gap-2 px-3 py-2 bg-red-400/10 border border-red-400/20 rounded-lg">
           <WarningCircle
             size={18}
             weight="fill"
-            className="text-error-text flex-shrink-0 mt-0.5"
+            className="text-red-400 flex-shrink-0 mt-0.5"
           />
-          <p className="text-sm text-error-text">{error}</p>
+          <p className="text-sm text-red-400">{error}</p>
         </div>
       )}
 
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-glass-border" />
-        <span className="text-xs text-text-tertiary uppercase tracking-wider">
+        <div className="flex-1 h-px bg-stone-800" />
+        <span className="text-xs text-stone-500 uppercase tracking-wider">
           or
         </span>
-        <div className="flex-1 h-px bg-glass-border" />
+        <div className="flex-1 h-px bg-stone-800" />
       </div>
 
       {/* City Picker */}
@@ -109,7 +109,7 @@ export function LocationSelector({
       {/* Area Filter - Only show if enabled and city is selected */}
       {showAreaFilter && current.city && areas.length > 0 && (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-text-secondary">Filter by area:</span>
+          <span className="text-sm text-stone-400">Filter by area:</span>
           <AreaFilter
             areas={areas}
             selectedArea={current.area}
@@ -120,7 +120,7 @@ export function LocationSelector({
 
       {/* Current Selection Info */}
       {current.type === 'detected' && current.coordinates && (
-        <p className="text-xs text-text-tertiary text-center">
+        <p className="text-xs text-stone-500 text-center">
           Detected nearest city based on your coordinates
         </p>
       )}

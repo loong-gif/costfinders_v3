@@ -34,7 +34,7 @@ export function AuthenticatedDashboardLayout({
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="animate-spin h-8 w-8 text-brand-primary"
+            className="animate-spin h-8 w-8 text-amber-400"
             viewBox="0 0 24 24"
           >
             <title>Loading</title>
@@ -53,7 +53,7 @@ export function AuthenticatedDashboardLayout({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
             />
           </svg>
-          <p className="text-text-secondary">Loading...</p>
+          <p className="text-stone-400">Loading...</p>
         </div>
       </div>
     )

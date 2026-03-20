@@ -17,8 +17,8 @@ export function LeadPackagesGrid({
 }: LeadPackagesGridProps) {
   return (
     <div>
-      <h2 className="text-xl font-bold text-text-primary mb-2">Buy more leads</h2>
-      <p className="text-text-secondary mb-6">
+      <h2 className="text-xl font-bold text-stone-100 mb-2">Buy more leads</h2>
+      <p className="text-stone-400 mb-6">
         Purchase lead packages to save on per-lead costs
       </p>
 
@@ -28,12 +28,12 @@ export function LeadPackagesGrid({
             key={pkg.id}
             variant="glass"
             padding="none"
-            className={`relative overflow-hidden ${pkg.isBestValue ? 'ring-2 ring-brand-primary' : ''}`}
+            className={`relative overflow-hidden ${pkg.isBestValue ? 'ring-2 ring-amber-400' : ''}`}
           >
             {/* Best Value Badge */}
             {pkg.isBestValue && (
               <div className="absolute top-0 right-0">
-                <div className="bg-brand-primary text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1">
+                <div className="bg-amber-400 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1">
                   <Star size={12} weight="fill" />
                   Best value
                 </div>
@@ -43,14 +43,14 @@ export function LeadPackagesGrid({
             <div className="p-5">
               {/* Lead Amount */}
               <div className="text-center mb-4">
-                <p className="text-3xl font-bold text-text-primary">{pkg.credits}</p>
-                <p className="text-sm text-text-secondary">leads</p>
+                <p className="text-3xl font-bold text-stone-100">{pkg.credits}</p>
+                <p className="text-sm text-stone-400">leads</p>
               </div>
 
               {/* Price */}
               <div className="text-center mb-4">
-                <p className="text-2xl font-bold text-text-primary">${pkg.price}</p>
-                <p className="text-sm text-text-muted">
+                <p className="text-2xl font-bold text-stone-100">${pkg.price}</p>
+                <p className="text-sm text-stone-500">
                   ${pkg.pricePerLead.toFixed(2)} per lead
                 </p>
               </div>

@@ -164,14 +164,14 @@ export function ClaimBusinessFlow({
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-              <Buildings size={32} weight="light" className="text-brand-primary" />
+            <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+              <Buildings size={32} weight="light" className="text-amber-400" />
             </div>
           </div>
-          <h2 className="text-xl font-semibold text-text-primary">
+          <h2 className="text-xl font-semibold text-stone-100">
             Is this your business?
           </h2>
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             Confirm the details below to claim this profile
           </p>
         </div>
@@ -179,11 +179,11 @@ export function ClaimBusinessFlow({
         {/* Business details card */}
         <Card className="p-6 space-y-4">
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold text-text-primary">
+            <h3 className="text-lg font-semibold text-stone-100">
               {business.name}
             </h3>
             {business.description && (
-              <p className="text-sm text-text-secondary line-clamp-2">
+              <p className="text-sm text-stone-400 line-clamp-2">
                 {business.description}
               </p>
             )}
@@ -191,8 +191,8 @@ export function ClaimBusinessFlow({
 
           <div className="space-y-3 text-sm">
             <div className="flex items-start gap-3">
-              <MapPin size={18} weight="light" className="text-text-tertiary mt-0.5" />
-              <div className="text-text-secondary">
+              <MapPin size={18} weight="light" className="text-stone-500 mt-0.5" />
+              <div className="text-stone-400">
                 <p>{business.address}</p>
                 <p>
                   {business.city}, {business.state} {business.zipCode}
@@ -201,13 +201,13 @@ export function ClaimBusinessFlow({
             </div>
 
             <div className="flex items-center gap-3">
-              <Phone size={18} weight="light" className="text-text-tertiary" />
-              <span className="text-text-secondary">{business.phone}</span>
+              <Phone size={18} weight="light" className="text-stone-500" />
+              <span className="text-stone-400">{business.phone}</span>
             </div>
 
             <div className="flex items-center gap-3">
-              <EnvelopeSimple size={18} weight="light" className="text-text-tertiary" />
-              <span className="text-text-secondary">{business.email}</span>
+              <EnvelopeSimple size={18} weight="light" className="text-stone-500" />
+              <span className="text-stone-400">{business.email}</span>
             </div>
           </div>
         </Card>
@@ -218,12 +218,12 @@ export function ClaimBusinessFlow({
           <ArrowRight size={20} weight="light" className="ml-2" />
         </Button>
 
-        <p className="text-center text-sm text-text-tertiary">
+        <p className="text-center text-sm text-stone-500">
           Not your business?{' '}
           <button
             type="button"
             onClick={() => router.back()}
-            className="text-brand-primary hover:text-brand-secondary transition-colors"
+            className="text-amber-400 hover:text-amber-300 transition-colors"
           >
             Go back
           </button>
@@ -238,10 +238,10 @@ export function ClaimBusinessFlow({
       <div className="space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h2 className="text-xl font-semibold text-text-primary">
+          <h2 className="text-xl font-semibold text-stone-100">
             {authView === 'signUp' ? 'Create your account' : 'Sign in to continue'}
           </h2>
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             {authView === 'signUp'
               ? 'Create a business owner account to claim your profile'
               : 'Sign in to your business owner account'}
@@ -308,7 +308,7 @@ export function ClaimBusinessFlow({
           )}
 
           {state.error && (
-            <p className="text-sm text-error-text bg-error/10 px-3 py-2 rounded-lg">
+            <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">
               {state.error}
             </p>
           )}
@@ -326,14 +326,14 @@ export function ClaimBusinessFlow({
         </form>
 
         {/* Switch auth view */}
-        <p className="text-center text-sm text-text-secondary">
+        <p className="text-center text-sm text-stone-400">
           {authView === 'signUp' ? (
             <>
               Already have a business account?{' '}
               <button
                 type="button"
                 onClick={() => setAuthView('signIn')}
-                className="text-brand-primary hover:text-brand-secondary transition-colors font-medium"
+                className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
               >
                 Sign in
               </button>
@@ -344,7 +344,7 @@ export function ClaimBusinessFlow({
               <button
                 type="button"
                 onClick={() => setAuthView('signUp')}
-                className="text-brand-primary hover:text-brand-secondary transition-colors font-medium"
+                className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
               >
                 Create one
               </button>
@@ -364,14 +364,14 @@ export function ClaimBusinessFlow({
           {/* Header */}
           <div className="text-center space-y-2">
             <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-                <Shield size={32} weight="light" className="text-brand-primary" />
+              <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
+                <Shield size={32} weight="light" className="text-amber-400" />
               </div>
             </div>
-            <h2 className="text-xl font-semibold text-text-primary">
+            <h2 className="text-xl font-semibold text-stone-100">
               Verify your ownership
             </h2>
-            <p className="text-text-secondary">
+            <p className="text-stone-400">
               We need to verify you own {business.name}
             </p>
           </div>
@@ -381,15 +381,15 @@ export function ClaimBusinessFlow({
             <button
               type="button"
               onClick={() => setVerifyMethod('email')}
-              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-brand-primary transition-colors text-left group"
+              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-400 transition-colors text-left group"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors">
-                  <EnvelopeSimple size={24} weight="light" className="text-brand-primary" />
+                <div className="w-12 h-12 rounded-full bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                  <EnvelopeSimple size={24} weight="light" className="text-amber-400" />
                 </div>
                 <div>
-                  <p className="font-medium text-text-primary">Verify via email</p>
-                  <p className="text-sm text-text-secondary">
+                  <p className="font-medium text-stone-100">Verify via email</p>
+                  <p className="text-sm text-stone-400">
                     I have access to {business.email}
                   </p>
                 </div>
@@ -399,15 +399,15 @@ export function ClaimBusinessFlow({
             <button
               type="button"
               onClick={() => setVerifyMethod('phone')}
-              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-brand-primary transition-colors text-left group"
+              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-400 transition-colors text-left group"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors">
-                  <Phone size={24} weight="light" className="text-brand-primary" />
+                <div className="w-12 h-12 rounded-full bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                  <Phone size={24} weight="light" className="text-amber-400" />
                 </div>
                 <div>
-                  <p className="font-medium text-text-primary">Verify via phone</p>
-                  <p className="text-sm text-text-secondary">
+                  <p className="font-medium text-stone-100">Verify via phone</p>
+                  <p className="text-sm text-stone-400">
                     Call {business.phone} for verification code
                   </p>
                 </div>
@@ -424,18 +424,18 @@ export function ClaimBusinessFlow({
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-amber-400/20 flex items-center justify-center">
               {verifyMethod === 'email' ? (
-                <EnvelopeSimple size={32} weight="light" className="text-brand-primary" />
+                <EnvelopeSimple size={32} weight="light" className="text-amber-400" />
               ) : (
-                <Phone size={32} weight="light" className="text-brand-primary" />
+                <Phone size={32} weight="light" className="text-amber-400" />
               )}
             </div>
           </div>
-          <h2 className="text-xl font-semibold text-text-primary">
+          <h2 className="text-xl font-semibold text-stone-100">
             Enter verification code
           </h2>
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             {verifyMethod === 'email'
               ? `We sent a code to ${business.email}`
               : `We called ${business.phone} with your code`}
@@ -474,7 +474,7 @@ export function ClaimBusinessFlow({
         <button
           type="button"
           onClick={() => setVerifyMethod(null)}
-          className="w-full text-center text-sm text-text-tertiary hover:text-text-secondary transition-colors"
+          className="w-full text-center text-sm text-stone-500 hover:text-stone-400 transition-colors"
         >
           Choose a different verification method
         </button>
@@ -487,30 +487,30 @@ export function ClaimBusinessFlow({
     <div className="space-y-6 text-center">
       {/* Success icon */}
       <div className="flex justify-center">
-        <div className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center">
-          <CheckCircle size={48} weight="fill" className="text-success-text" />
+        <div className="w-20 h-20 rounded-full bg-emerald-400/20 flex items-center justify-center">
+          <CheckCircle size={48} weight="fill" className="text-emerald-400" />
         </div>
       </div>
 
       {/* Success message */}
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold text-text-primary">
+        <h2 className="text-xl font-semibold text-stone-100">
           Claim submitted!
         </h2>
-        <p className="text-text-secondary">
-          Your claim for <span className="font-medium text-text-primary">{business.name}</span> is being reviewed.
+        <p className="text-stone-400">
+          Your claim for <span className="font-medium text-stone-100">{business.name}</span> is being reviewed.
         </p>
       </div>
 
       {/* Info card */}
       <Card className="p-4 text-left">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-            <Shield size={20} weight="light" className="text-brand-primary" />
+          <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+            <Shield size={20} weight="light" className="text-amber-400" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-medium text-text-primary">What happens next?</p>
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm font-medium text-stone-100">What happens next?</p>
+            <p className="text-sm text-stone-400">
               We&apos;ll verify your ownership and notify you within 24-48 hours.
               Once approved, you&apos;ll have full access to manage your business profile.
             </p>

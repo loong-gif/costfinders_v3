@@ -33,18 +33,18 @@ export default function SettingsPage() {
           const Icon = link.icon
           return (
             <Link key={link.title} href={link.href}>
-              <Card className="p-5 transition-all duration-200 hover:bg-glass-bg-hover cursor-pointer">
+              <Card className="p-5 transition-all duration-200 hover:bg-stone-800 cursor-pointer">
                 <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-                    <Icon size={24} weight="light" className="text-brand-primary" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center">
+                    <Icon size={24} weight="light" className="text-amber-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-text-primary">{link.title}</h3>
-                    <p className="text-sm text-text-secondary mt-0.5">
+                    <h3 className="font-semibold text-stone-100">{link.title}</h3>
+                    <p className="text-sm text-stone-400 mt-0.5">
                       {link.description}
                     </p>
                   </div>
-                  <CaretRight size={20} weight="light" className="text-text-muted" />
+                  <CaretRight size={20} weight="light" className="text-stone-500" />
                 </div>
               </Card>
             </Link>

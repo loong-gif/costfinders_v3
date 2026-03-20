@@ -107,14 +107,14 @@ export function DealModerationCard({
       {/* Header with status */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-            <Tag size={20} weight="fill" className="text-brand-primary" />
+          <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
+            <Tag size={20} weight="fill" className="text-amber-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-text-primary">{deal.title}</h3>
+            <h3 className="font-semibold text-stone-100">{deal.title}</h3>
             <div className="flex items-center gap-2 mt-1">
-              <Storefront size={14} className="text-text-tertiary" />
-              <span className="text-sm text-text-secondary">
+              <Storefront size={14} className="text-stone-500" />
+              <span className="text-sm text-stone-400">
                 {business?.name || 'Unknown Business'}
               </span>
             </div>
@@ -136,19 +136,19 @@ export function DealModerationCard({
           </Badge>
         </div>
 
-        <p className="text-sm text-text-secondary line-clamp-2">{deal.description}</p>
+        <p className="text-sm text-stone-400 line-clamp-2">{deal.description}</p>
 
         <div className="flex items-center gap-4 text-sm">
           <div>
-            <span className="text-text-tertiary">Price: </span>
-            <span className="text-text-primary font-medium">{formatPrice(deal)}</span>
-            <span className="text-text-tertiary ml-2 line-through">
+            <span className="text-stone-500">Price: </span>
+            <span className="text-stone-100 font-medium">{formatPrice(deal)}</span>
+            <span className="text-stone-500 ml-2 line-through">
               ${deal.originalPrice.toLocaleString()}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-sm text-text-tertiary">
+        <div className="flex items-center gap-4 text-sm text-stone-500">
           <div className="flex items-center gap-1">
             <CalendarBlank size={14} />
             <span>Submitted: {formatDate(deal.createdAt)}</span>
@@ -159,7 +159,7 @@ export function DealModerationCard({
         </div>
 
         {deal.termsAndConditions && (
-          <div className="text-xs text-text-tertiary bg-glass-bg rounded-lg p-2">
+          <div className="text-xs text-stone-500 bg-stone-900 rounded-lg p-2">
             <span className="font-medium">Terms: </span>
             {deal.termsAndConditions}
           </div>
@@ -170,7 +170,7 @@ export function DealModerationCard({
       {deal.moderationNotes && (
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
           <p className="text-sm text-amber-400 font-medium">Moderation Notes:</p>
-          <p className="text-sm text-text-secondary mt-1">{deal.moderationNotes}</p>
+          <p className="text-sm text-stone-400 mt-1">{deal.moderationNotes}</p>
         </div>
       )}
 
@@ -181,7 +181,7 @@ export function DealModerationCard({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Describe what changes are needed..."
-            className="w-full bg-glass-bg border border-glass-border rounded-xl p-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand-primary/50 resize-none"
+            className="w-full bg-stone-900 border border-stone-800 rounded-xl p-3 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 resize-none"
             rows={3}
           />
           <div className="flex justify-end gap-2">
@@ -211,7 +211,7 @@ export function DealModerationCard({
 
       {/* Action buttons */}
       {isActionable && !showNotesInput && (
-        <div className="flex items-center gap-2 pt-2 border-t border-glass-border">
+        <div className="flex items-center gap-2 pt-2 border-t border-stone-800">
           <Button
             variant="primary"
             size="sm"

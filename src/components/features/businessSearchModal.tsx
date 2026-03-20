@@ -91,7 +91,7 @@ export function BusinessSearchModal({
           <MagnifyingGlass
             size={20}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 pointer-events-none"
           />
           <Input
             type="text"
@@ -110,9 +110,9 @@ export function BusinessSearchModal({
               <MagnifyingGlass
                 size={48}
                 weight="light"
-                className="text-text-muted mb-4"
+                className="text-stone-500 mb-4"
               />
-              <p className="text-text-secondary">
+              <p className="text-stone-400">
                 Start typing to search for your business
               </p>
             </div>
@@ -121,9 +121,9 @@ export function BusinessSearchModal({
               <Buildings
                 size={48}
                 weight="light"
-                className="text-text-muted mb-4"
+                className="text-stone-500 mb-4"
               />
-              <p className="text-text-secondary mb-4">
+              <p className="text-stone-400 mb-4">
                 No businesses found matching "{debouncedQuery}"
               </p>
               <Button variant="primary" onClick={onCreateNew}>
@@ -138,20 +138,20 @@ export function BusinessSearchModal({
                 return (
                   <div
                     key={business.id}
-                    className="p-4 rounded-xl border border-glass-border bg-glass-bg hover:bg-glass-bg-hover transition-colors"
+                    className="p-4 rounded-xl border border-stone-800 bg-stone-900 hover:bg-stone-800 transition-colors"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-medium text-text-primary truncate">
+                          <h3 className="font-medium text-stone-100 truncate">
                             {business.name}
                           </h3>
                           {getTierBadge(business.tier)}
                         </div>
-                        <p className="text-sm text-text-secondary">
+                        <p className="text-sm text-stone-400">
                           {business.address}
                         </p>
-                        <p className="text-sm text-text-tertiary">
+                        <p className="text-sm text-stone-500">
                           {business.city}, {business.state}
                         </p>
                       </div>
@@ -179,13 +179,13 @@ export function BusinessSearchModal({
         </div>
 
         {/* Footer */}
-        <div className="pt-4 border-t border-glass-border">
-          <p className="text-sm text-text-tertiary text-center">
+        <div className="pt-4 border-t border-stone-800">
+          <p className="text-sm text-stone-500 text-center">
             Don't see your business?{' '}
             <button
               type="button"
               onClick={onCreateNew}
-              className="text-brand-primary hover:underline"
+              className="text-amber-400 hover:underline"
             >
               Create a new listing
             </button>

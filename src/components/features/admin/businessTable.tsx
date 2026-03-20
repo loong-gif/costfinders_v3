@@ -94,32 +94,32 @@ function ActionsDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-glass-bg-hover transition-colors"
+        className="p-2 rounded-lg hover:bg-stone-800 transition-colors"
         aria-label="Actions"
       >
-        <DotsThreeVertical size={20} weight="bold" className="text-text-secondary" />
+        <DotsThreeVertical size={20} weight="bold" className="text-stone-400" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-bg-secondary border border-glass-border rounded-xl shadow-elevated z-50 overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 w-48 bg-stone-900 border border-stone-800 rounded-xl shadow-elevated z-50 overflow-hidden">
           <button
             type="button"
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-text-primary hover:bg-glass-bg-hover transition-colors text-left"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-stone-100 hover:bg-stone-800 transition-colors text-left"
             onClick={() => {
               setIsOpen(false)
               // View details placeholder
             }}
           >
-            <Eye size={18} className="text-text-secondary" />
+            <Eye size={18} className="text-stone-400" />
             View Details
           </button>
 
           <Link
             href={`/admin/dashboard/monetization/business/${business.id}`}
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-text-primary hover:bg-glass-bg-hover transition-colors text-left"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-stone-100 hover:bg-stone-800 transition-colors text-left"
             onClick={() => setIsOpen(false)}
           >
-            <CurrencyDollar size={18} className="text-text-secondary" />
+            <CurrencyDollar size={18} className="text-stone-400" />
             Manage Billing
           </Link>
 
@@ -127,27 +127,27 @@ function ActionsDropdown({
           <div className="relative">
             <button
               type="button"
-              className="w-full flex items-center justify-between px-4 py-3 text-sm text-text-primary hover:bg-glass-bg-hover transition-colors text-left"
+              className="w-full flex items-center justify-between px-4 py-3 text-sm text-stone-100 hover:bg-stone-800 transition-colors text-left"
               onClick={() => setShowTierMenu(!showTierMenu)}
             >
               <span className="flex items-center gap-3">
                 {business.tier === 'paid' ? (
-                  <ArrowDown size={18} className="text-text-secondary" />
+                  <ArrowDown size={18} className="text-stone-400" />
                 ) : (
-                  <ArrowUp size={18} className="text-text-secondary" />
+                  <ArrowUp size={18} className="text-stone-400" />
                 )}
                 Change Tier
               </span>
             </button>
             {showTierMenu && (
-              <div className="border-t border-glass-border bg-bg-tertiary">
+              <div className="border-t border-stone-800 bg-stone-800">
                 {tierOptions
                   .filter((t) => t.value !== business.tier)
                   .map((option) => (
                     <button
                       key={option.value}
                       type="button"
-                      className="w-full flex items-center gap-3 px-6 py-2.5 text-sm text-text-secondary hover:bg-glass-bg-hover transition-colors text-left"
+                      className="w-full flex items-center gap-3 px-6 py-2.5 text-sm text-stone-400 hover:bg-stone-800 transition-colors text-left"
                       onClick={() => {
                         onTierChange(business.id, option.value)
                         setIsOpen(false)
@@ -164,7 +164,7 @@ function ActionsDropdown({
           {business.status === 'active' ? (
             <button
               type="button"
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-error-text hover:bg-glass-bg-hover transition-colors text-left border-t border-glass-border"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-stone-800 transition-colors text-left border-t border-stone-800"
               onClick={() => {
                 onStatusChange(business.id, 'suspended')
                 setIsOpen(false)
@@ -176,7 +176,7 @@ function ActionsDropdown({
           ) : (
             <button
               type="button"
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-success-text hover:bg-glass-bg-hover transition-colors text-left border-t border-glass-border"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-emerald-400 hover:bg-stone-800 transition-colors text-left border-t border-stone-800"
               onClick={() => {
                 onStatusChange(business.id, 'active')
                 setIsOpen(false)
@@ -200,13 +200,13 @@ export function BusinessTable({
   if (businesses.length === 0) {
     return (
       <Card variant="glass" padding="lg" className="text-center py-12">
-        <div className="w-16 h-16 mx-auto rounded-full bg-brand-primary/10 flex items-center justify-center mb-4">
-          <Storefront size={32} weight="light" className="text-brand-primary" />
+        <div className="w-16 h-16 mx-auto rounded-full bg-amber-400/10 flex items-center justify-center mb-4">
+          <Storefront size={32} weight="light" className="text-amber-400" />
         </div>
-        <h3 className="text-lg font-semibold text-text-primary mb-2">
+        <h3 className="text-lg font-semibold text-stone-100 mb-2">
           No businesses found
         </h3>
-        <p className="text-text-secondary">
+        <p className="text-stone-400">
           Try adjusting your search or filter criteria
         </p>
       </Card>
@@ -219,70 +219,70 @@ export function BusinessTable({
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-glass-border">
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+            <tr className="border-b border-stone-800">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Business
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Location
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Tier
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Status
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Deals
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Rating
               </th>
-              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-left text-sm font-medium text-stone-400 px-6 py-4">
                 Claimed
               </th>
-              <th className="text-right text-sm font-medium text-text-secondary px-6 py-4">
+              <th className="text-right text-sm font-medium text-stone-400 px-6 py-4">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-glass-border">
+          <tbody className="divide-y divide-stone-800">
             {businesses.map((business) => {
               const dealsCount = getDealsForBusiness(business.id).length
               return (
                 <tr
                   key={business.id}
-                  className="hover:bg-glass-bg-hover transition-colors"
+                  className="hover:bg-stone-800 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-brand-primary/10 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center">
                         <Storefront
                           size={16}
                           weight="fill"
-                          className="text-brand-primary"
+                          className="text-amber-400"
                         />
                       </div>
-                      <span className="text-sm font-medium text-text-primary">
+                      <span className="text-sm font-medium text-stone-100">
                         {business.name}
                       </span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-sm text-text-secondary">{business.city}</span>
+                    <span className="text-sm text-stone-400">{business.city}</span>
                   </td>
                   <td className="px-6 py-4">{getTierBadge(business.tier)}</td>
                   <td className="px-6 py-4">{getStatusBadge(business.status)}</td>
                   <td className="px-6 py-4">
-                    <span className="text-sm text-text-primary">{dealsCount}</span>
+                    <span className="text-sm text-stone-100">{dealsCount}</span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1.5">
-                      <Star size={14} weight="fill" className="text-warning-text" />
-                      <span className="text-sm text-text-primary">
+                      <Star size={14} weight="fill" className="text-amber-400" />
+                      <span className="text-sm text-stone-100">
                         {business.rating.toFixed(1)}
                       </span>
-                      <span className="text-xs text-text-tertiary">
+                      <span className="text-xs text-stone-500">
                         ({business.reviewCount})
                       </span>
                     </div>
@@ -290,13 +290,13 @@ export function BusinessTable({
                   <td className="px-6 py-4">
                     {business.claimedAt ? (
                       <div>
-                        <span className="text-sm text-success-text">Yes</span>
-                        <p className="text-xs text-text-tertiary">
+                        <span className="text-sm text-emerald-400">Yes</span>
+                        <p className="text-xs text-stone-500">
                           {formatDate(business.claimedAt)}
                         </p>
                       </div>
                     ) : (
-                      <span className="text-sm text-text-tertiary">No</span>
+                      <span className="text-sm text-stone-500">No</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -314,19 +314,19 @@ export function BusinessTable({
       </div>
 
       {/* Mobile Card List */}
-      <div className="lg:hidden divide-y divide-glass-border">
+      <div className="lg:hidden divide-y divide-stone-800">
         {businesses.map((business) => {
           const dealsCount = getDealsForBusiness(business.id).length
           return (
             <div key={business.id} className="p-4 space-y-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center">
-                    <Storefront size={20} weight="fill" className="text-brand-primary" />
+                  <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
+                    <Storefront size={20} weight="fill" className="text-amber-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-text-primary">{business.name}</p>
-                    <p className="text-sm text-text-secondary">{business.city}</p>
+                    <p className="font-medium text-stone-100">{business.name}</p>
+                    <p className="text-sm text-stone-400">{business.city}</p>
                   </div>
                 </div>
                 <ActionsDropdown
@@ -343,28 +343,28 @@ export function BusinessTable({
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-text-tertiary">Deals: </span>
-                  <span className="text-text-primary">{dealsCount}</span>
+                  <span className="text-stone-500">Deals: </span>
+                  <span className="text-stone-100">{dealsCount}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Star size={14} weight="fill" className="text-warning-text" />
-                  <span className="text-text-primary">
+                  <Star size={14} weight="fill" className="text-amber-400" />
+                  <span className="text-stone-100">
                     {business.rating.toFixed(1)}
                   </span>
-                  <span className="text-xs text-text-tertiary">
+                  <span className="text-xs text-stone-500">
                     ({business.reviewCount})
                   </span>
                 </div>
               </div>
 
               <div className="text-sm">
-                <span className="text-text-tertiary">Claimed: </span>
+                <span className="text-stone-500">Claimed: </span>
                 {business.claimedAt ? (
                   <span className="text-green-400">
                     Yes ({formatDate(business.claimedAt)})
                   </span>
                 ) : (
-                  <span className="text-text-tertiary">No</span>
+                  <span className="text-stone-500">No</span>
                 )}
               </div>
             </div>

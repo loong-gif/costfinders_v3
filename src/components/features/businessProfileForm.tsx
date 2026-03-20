@@ -201,7 +201,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <svg className="animate-spin h-8 w-8 text-brand-primary" viewBox="0 0 24 24">
+        <svg className="animate-spin h-8 w-8 text-amber-400" viewBox="0 0 24 24">
           <circle
             className="opacity-25"
             cx="12"
@@ -224,7 +224,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
   if (!business) {
     return (
       <Card className="p-6">
-        <p className="text-text-secondary text-center">Business not found</p>
+        <p className="text-stone-400 text-center">Business not found</p>
       </Card>
     )
   }
@@ -233,7 +233,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Section 1: Business Info */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">
           Business Information
         </h3>
         <div className="space-y-4">
@@ -252,7 +252,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
           <div className="w-full">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-text-secondary mb-1.5"
+              className="block text-sm font-medium text-stone-400 mb-1.5"
             >
               Description
             </label>
@@ -266,12 +266,12 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
               disabled={isSaving}
               className="
                 w-full px-4 py-2.5
-                bg-glass-bg backdrop-blur-md
-                border border-glass-border rounded-xl
-                text-text-primary placeholder:text-text-muted
+                bg-stone-900
+                border border-stone-800 rounded-xl
+                text-stone-100 placeholder:text-stone-500
                 transition-all duration-200
-                hover:border-glass-border-hover
-                focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary/50
+                hover:border-stone-700
+                focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50
                 disabled:opacity-50 disabled:cursor-not-allowed
                 resize-none
               "
@@ -289,11 +289,11 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
           />
           {formData.logoUrl && (
             <div className="flex items-center gap-3">
-              <span className="text-sm text-text-secondary">Preview:</span>
+              <span className="text-sm text-stone-400">Preview:</span>
               <img
                 src={formData.logoUrl}
                 alt="Logo preview"
-                className="h-12 w-12 object-cover rounded-lg border border-glass-border"
+                className="h-12 w-12 object-cover rounded-lg border border-stone-800"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none'
                 }}
@@ -312,11 +312,11 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
           />
           {formData.coverImageUrl && (
             <div className="flex flex-col gap-2">
-              <span className="text-sm text-text-secondary">Preview:</span>
+              <span className="text-sm text-stone-400">Preview:</span>
               <img
                 src={formData.coverImageUrl}
                 alt="Cover preview"
-                className="h-32 w-full object-cover rounded-lg border border-glass-border"
+                className="h-32 w-full object-cover rounded-lg border border-stone-800"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none'
                 }}
@@ -328,7 +328,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
 
       {/* Section 2: Location */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">Location</h3>
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">Location</h3>
         <div className="space-y-4">
           <Input
             label="Street address"
@@ -358,9 +358,9 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
             <div className="w-full">
               <label
                 htmlFor="state"
-                className="block text-sm font-medium text-text-secondary mb-1.5"
+                className="block text-sm font-medium text-stone-400 mb-1.5"
               >
-                State <span className="text-error-text">*</span>
+                State <span className="text-red-400">*</span>
               </label>
               <select
                 id="state"
@@ -370,16 +370,16 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
                 disabled={isSaving}
                 className={`
                   w-full px-4 py-2.5
-                  bg-glass-bg backdrop-blur-md
+                  bg-stone-900
                   border rounded-xl
-                  text-text-primary
+                  text-stone-100
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-brand-primary/50
+                  focus:outline-none focus:ring-2 focus:ring-amber-400/50
                   disabled:opacity-50 disabled:cursor-not-allowed
                   ${
                     errors.state
-                      ? 'border-error/50 focus:border-error'
-                      : 'border-glass-border hover:border-glass-border-hover focus:border-brand-primary/50'
+                      ? 'border-red-400/50 focus:border-red-400'
+                      : 'border-stone-800 hover:border-stone-700 focus:border-amber-400/50'
                   }
                 `}
               >
@@ -391,7 +391,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
                 ))}
               </select>
               {errors.state && (
-                <p className="mt-1.5 text-xs text-error-text">{errors.state}</p>
+                <p className="mt-1.5 text-xs text-red-400">{errors.state}</p>
               )}
             </div>
           </div>
@@ -424,7 +424,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
 
       {/* Section 3: Contact */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">
+        <h3 className="text-lg font-semibold text-stone-100 mb-4">
           Contact Information
         </h3>
         <div className="space-y-4">
@@ -475,7 +475,7 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
           Save Changes
         </Button>
         {saveMessage && (
-          <span className="text-sm text-success-text flex items-center gap-1">
+          <span className="text-sm text-emerald-400 flex items-center gap-1">
             <CheckCircle size={16} weight="fill" />
             {saveMessage}
           </span>

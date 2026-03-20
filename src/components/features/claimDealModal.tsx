@@ -100,13 +100,13 @@ export function ClaimDealModal({
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-text-primary">
+          <h2 className="text-xl font-bold text-stone-100">
             {isSuccess ? 'Claim Submitted!' : 'Claim This Deal'}
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+            className="p-2 text-stone-400 hover:text-stone-100 transition-colors"
           >
             <X size={20} weight="bold" />
           </button>
@@ -115,13 +115,13 @@ export function ClaimDealModal({
         {isSuccess ? (
           /* Success State */
           <div className="flex flex-col items-center text-center py-8">
-            <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mb-6">
-              <CheckCircle size={48} weight="fill" className="text-success-text" />
+            <div className="w-20 h-20 rounded-full bg-emerald-400/10 flex items-center justify-center mb-6">
+              <CheckCircle size={48} weight="fill" className="text-emerald-400" />
             </div>
-            <h3 className="text-lg font-semibold text-text-primary mb-2">
+            <h3 className="text-lg font-semibold text-stone-100 mb-2">
               Claim submitted!
             </h3>
-            <p className="text-text-secondary mb-6">
+            <p className="text-stone-400 mb-6">
               The business will contact you soon to confirm your appointment.
             </p>
             <Button onClick={handleClose} variant="secondary">
@@ -132,16 +132,16 @@ export function ClaimDealModal({
           /* Form */
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Deal Title */}
-            <div className="p-3 bg-bg-tertiary rounded-xl">
-              <p className="text-sm text-text-secondary">Deal:</p>
-              <p className="font-medium text-text-primary">{dealTitle}</p>
+            <div className="p-3 bg-stone-800 rounded-xl">
+              <p className="text-sm text-stone-400">Deal:</p>
+              <p className="font-medium text-stone-100">{dealTitle}</p>
             </div>
 
             {/* Preferred Date */}
             <div>
               <label
                 htmlFor="preferredDate"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-medium text-stone-400 mb-2"
               >
                 Preferred Date (optional)
               </label>
@@ -158,7 +158,7 @@ export function ClaimDealModal({
             <div>
               <label
                 htmlFor="preferredTime"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-medium text-stone-400 mb-2"
               >
                 Preferred Time (optional)
               </label>
@@ -168,7 +168,7 @@ export function ClaimDealModal({
                 onChange={(e) =>
                   setPreferredTime(e.target.value as TimePreference)
                 }
-                className="w-full px-4 py-3 bg-bg-secondary border border-glass-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all duration-200"
+                className="w-full px-4 py-3 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all duration-200"
               >
                 {timeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -182,7 +182,7 @@ export function ClaimDealModal({
             <div>
               <label
                 htmlFor="notes"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-medium text-stone-400 mb-2"
               >
                 Message to Business (optional)
               </label>
@@ -192,16 +192,16 @@ export function ClaimDealModal({
                 onChange={(e) => setNotes(e.target.value.slice(0, 500))}
                 placeholder="Any special requests or questions?"
                 rows={3}
-                className="w-full px-4 py-3 bg-bg-secondary border border-glass-border rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all duration-200 resize-none"
+                className="w-full px-4 py-3 bg-stone-900 border border-stone-800 rounded-xl text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all duration-200 resize-none"
               />
-              <p className="text-xs text-text-muted mt-1 text-right">
+              <p className="text-xs text-stone-500 mt-1 text-right">
                 {notes.length}/500
               </p>
             </div>
 
             {/* Error */}
             {error && (
-              <p className="text-sm text-error-text bg-error/10 px-3 py-2 rounded-lg">
+              <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">
                 {error}
               </p>
             )}

@@ -138,15 +138,15 @@ export function DealList({ businessId }: DealListProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Deals</h1>
-          <p className="text-text-secondary mt-1">
+          <h1 className="text-2xl font-bold text-stone-100">Deals</h1>
+          <p className="text-stone-400 mt-1">
             Manage your special offers and promotions
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/business/dashboard/deals/sponsored">
             <Button variant="secondary">
-              <Rocket size={18} weight="fill" className="text-brand-primary" />
+              <Rocket size={18} weight="fill" className="text-amber-400" />
               Sponsored
               {sponsoredCount > 0 && (
                 <Badge variant="brand" size="sm" className="ml-1">
@@ -177,8 +177,8 @@ export function DealList({ businessId }: DealListProps) {
                   px-4 py-2 rounded-xl text-sm font-medium transition-all
                   ${
                     activeTab === tab
-                      ? 'bg-brand-primary text-white'
-                      : 'bg-glass-bg text-text-secondary hover:text-text-primary hover:bg-glass-bg-hover'
+                      ? 'bg-amber-400 text-white'
+                      : 'bg-stone-900 text-stone-400 hover:text-stone-100 hover:bg-stone-800'
                   }
                 `}
                 type="button"
@@ -194,7 +194,7 @@ export function DealList({ businessId }: DealListProps) {
               <MagnifyingGlass
                 size={20}
                 weight="light"
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
               />
               <Input
                 type="text"
@@ -212,11 +212,11 @@ export function DealList({ businessId }: DealListProps) {
       {filteredDeals.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
-            <Tag size={48} weight="light" className="mx-auto text-text-tertiary mb-4" />
-            <h3 className="text-lg font-medium text-text-primary mb-2">
+            <Tag size={48} weight="light" className="mx-auto text-stone-500 mb-4" />
+            <h3 className="text-lg font-medium text-stone-100 mb-2">
               {searchQuery ? 'No deals found' : 'No deals yet'}
             </h3>
-            <p className="text-text-secondary mb-6">
+            <p className="text-stone-400 mb-6">
               {searchQuery
                 ? 'Try adjusting your search query'
                 : 'Create your first deal to start attracting customers'}
@@ -237,41 +237,41 @@ export function DealList({ businessId }: DealListProps) {
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-glass-border">
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">
+                <tr className="border-b border-stone-800">
+                  <th className="text-left px-6 py-4 text-sm font-medium text-stone-400">
                     Deal
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">
+                  <th className="text-left px-6 py-4 text-sm font-medium text-stone-400">
                     Category
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">
+                  <th className="text-left px-6 py-4 text-sm font-medium text-stone-400">
                     Price
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">
+                  <th className="text-left px-6 py-4 text-sm font-medium text-stone-400">
                     Status
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">
+                  <th className="text-left px-6 py-4 text-sm font-medium text-stone-400">
                     Performance
                   </th>
-                  <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">
+                  <th className="text-right px-6 py-4 text-sm font-medium text-stone-400">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-glass-border">
+              <tbody className="divide-y divide-stone-800">
                 {filteredDeals.map((deal) => (
                   <tr
                     key={deal.id}
-                    className="hover:bg-glass-bg/50 transition-colors"
+                    className="hover:bg-stone-800/50 transition-colors"
                   >
                     {/* Deal Title */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-                          <Tag size={20} weight="fill" className="text-brand-primary" />
+                        <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                          <Tag size={20} weight="fill" className="text-amber-400" />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-text-primary truncate">
+                          <p className="font-medium text-stone-100 truncate">
                             {deal.title}
                           </p>
                           <div className="flex items-center gap-1.5 mt-0.5">
@@ -301,10 +301,10 @@ export function DealList({ businessId }: DealListProps) {
                     {/* Price */}
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-brand-primary">
+                        <p className="font-medium text-amber-400">
                           {formatPrice(deal.dealPrice, deal.unit)}
                         </p>
-                        <p className="text-sm text-text-tertiary line-through">
+                        <p className="text-sm text-stone-500 line-through">
                           {formatPrice(deal.originalPrice, deal.unit)}
                         </p>
                       </div>
@@ -323,11 +323,11 @@ export function DealList({ businessId }: DealListProps) {
                     {/* Performance */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-text-secondary">
+                        <div className="flex items-center gap-1 text-stone-400">
                           <Users size={16} weight="fill" />
                           <span>{deal.claimCount}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-text-secondary">
+                        <div className="flex items-center gap-1 text-stone-400">
                           <Eye size={16} weight="fill" />
                           <span>{deal.viewCount.toLocaleString()}</span>
                         </div>
@@ -344,7 +344,7 @@ export function DealList({ businessId }: DealListProps) {
                             size="sm"
                             onClick={() => handleBoostClick(deal)}
                             title="Boost this deal"
-                            className="text-brand-primary hover:text-brand-secondary hover:bg-brand-primary/10"
+                            className="text-amber-400 hover:text-amber-300 hover:bg-amber-400/10"
                           >
                             <Rocket size={18} weight="light" />
                           </Button>
@@ -383,17 +383,17 @@ export function DealList({ businessId }: DealListProps) {
           </div>
 
           {/* Mobile Card View */}
-          <div className="md:hidden divide-y divide-glass-border">
+          <div className="md:hidden divide-y divide-stone-800">
             {filteredDeals.map((deal) => (
               <div key={deal.id} className="p-4">
                 {/* Header: Title + Status */}
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Tag size={20} weight="fill" className="text-brand-primary" />
+                    <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                      <Tag size={20} weight="fill" className="text-amber-400" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-medium text-text-primary truncate">{deal.title}</p>
+                      <p className="font-medium text-stone-100 truncate">{deal.title}</p>
                       <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                         <Badge variant="default" size="sm">
                           {categoryLabels[deal.category]}
@@ -418,21 +418,21 @@ export function DealList({ businessId }: DealListProps) {
                 </div>
 
                 {/* Middle: Price + Performance */}
-                <div className="flex items-center justify-between mb-3 py-3 border-t border-b border-glass-border">
+                <div className="flex items-center justify-between mb-3 py-3 border-t border-b border-stone-800">
                   <div>
-                    <p className="font-medium text-brand-primary">
+                    <p className="font-medium text-amber-400">
                       {formatPrice(deal.dealPrice, deal.unit)}
                     </p>
-                    <p className="text-sm text-text-tertiary line-through">
+                    <p className="text-sm text-stone-500 line-through">
                       {formatPrice(deal.originalPrice, deal.unit)}
                     </p>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-text-secondary">
+                    <div className="flex items-center gap-1 text-stone-400">
                       <Users size={16} weight="fill" />
                       <span>{deal.claimCount}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-text-secondary">
+                    <div className="flex items-center gap-1 text-stone-400">
                       <Eye size={16} weight="fill" />
                       <span>{deal.viewCount.toLocaleString()}</span>
                     </div>
@@ -447,7 +447,7 @@ export function DealList({ businessId }: DealListProps) {
                       size="sm"
                       onClick={() => handleBoostClick(deal)}
                       title="Boost this deal"
-                      className="text-brand-primary hover:text-brand-secondary hover:bg-brand-primary/10"
+                      className="text-amber-400 hover:text-amber-300 hover:bg-amber-400/10"
                     >
                       <Rocket size={18} weight="light" />
                     </Button>
@@ -495,9 +495,9 @@ export function DealList({ businessId }: DealListProps) {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-text-secondary">
+          <p className="text-stone-400">
             Are you sure you want to delete{' '}
-            <span className="font-medium text-text-primary">
+            <span className="font-medium text-stone-100">
               {dealToDelete?.title}
             </span>
             ? This action cannot be undone.

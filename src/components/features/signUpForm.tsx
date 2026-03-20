@@ -137,7 +137,7 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
       />
 
       {state.error && (
-        <p className="text-sm text-error-text bg-error/10 px-3 py-2 rounded-lg">
+        <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">
           {state.error}
         </p>
       )}
@@ -153,12 +153,12 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
       </Button>
 
       {onSwitchToSignIn && (
-        <p className="text-center text-sm text-text-secondary">
+        <p className="text-center text-sm text-stone-400">
           Already have an account?{' '}
           <button
             type="button"
             onClick={onSwitchToSignIn}
-            className="text-brand-primary hover:text-brand-secondary transition-colors font-medium"
+            className="text-amber-400 hover:text-amber-300 transition-colors font-medium"
           >
             Sign in
           </button>
