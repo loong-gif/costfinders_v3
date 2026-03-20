@@ -5,7 +5,6 @@ import { OrganizationSchema, WebsiteSchema } from '@/components/seo'
 import { AuthProvider } from '@/lib/context/authContext'
 import { BusinessAuthProvider } from '@/lib/context/businessAuthContext'
 import { ClaimsProvider } from '@/lib/context/claimsContext'
-import { LocationProvider } from '@/lib/context/locationContext'
 import './globals.css'
 
 const sora = Sora({
@@ -68,16 +67,14 @@ export default function RootLayout({
       >
         <WebsiteSchema />
         <OrganizationSchema />
-        <LocationProvider>
-          <AuthProvider>
-            <BusinessAuthProvider>
-              <ClaimsProvider>
-                <GlobalHeader />
-                {children}
-              </ClaimsProvider>
-            </BusinessAuthProvider>
-          </AuthProvider>
-        </LocationProvider>
+        <AuthProvider>
+          <BusinessAuthProvider>
+            <ClaimsProvider>
+              <GlobalHeader />
+              {children}
+            </ClaimsProvider>
+          </BusinessAuthProvider>
+        </AuthProvider>
       </body>
     </html>
   )

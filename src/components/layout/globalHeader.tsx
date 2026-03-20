@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { AuthModal } from '@/components/features/authModal'
-import { LocationDisplay } from '@/components/layout/locationDisplay'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
 
@@ -53,9 +52,8 @@ export function GlobalHeader() {
             </span>
           </Link>
 
-          {/* Right side: Location + Auth */}
+          {/* Right side: Auth */}
           <div className="flex items-center gap-4">
-            <LocationDisplay />
 
             {state.isAuthenticated ? (
               <Link href="/dashboard">
