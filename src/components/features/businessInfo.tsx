@@ -5,159 +5,138 @@ import {
   Clock,
   Globe,
   MapPin,
-  Phone,
   Star,
 } from '@phosphor-icons/react'
-import { useState } from 'react'
-import { ClaimDealModal } from '@/components/features/claimDealModal'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import type { RevealedBusiness } from '@/lib/actions/claims'
 import { useClaims } from '@/lib/context/claimsContext'
-import type { Business } from '@/types/business'
 import type { Deal } from '@/types/deal'
 
 interface BusinessInfoProps {
-  business: Business
+  business: RevealedBusiness
   deal: Deal
 }
 
 export function BusinessInfo({ business, deal }: BusinessInfoProps) {
   const { getClaimByDealId } = useClaims()
-  const [isClaimModalOpen, setIsClaimModalOpen] = useState(false)
 
   const existingClaim = getClaimByDealId(deal.id)
 
-  const handleClaimClick = () => {
-    setIsClaimModalOpen(true)
-  }
-
-  const handleClaimClose = () => {
-    setIsClaimModalOpen(false)
-  }
+  // Build display values from Supabase shape
+  const rating = business.score
+  const reviewCount = business.review_count ?? 0
+  const websiteUrl = business.website ?? business.website_clean
+  const websiteDisplay = business.website_clean ?? business.website
 
   return (
-    <>
-      <Card variant="glass" padding="lg">
-        <div className="space-y-4">
-          {/* Business Name & Verified Badge */}
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="text-xl font-semibold text-[#451a03]">
-              {business.name}
-            </h3>
-            {business.tier === 'paid' && (
-              <div className="flex items-center gap-1 text-amber-800 shrink-0">
-                <CheckCircle size={18} weight="fill" />
-                <span className="text-xs font-medium">Verified</span>
-              </div>
-            )}
-          </div>
+    <Card variant="glass" padding="lg">
+      <div className="space-y-4">
+        {/* Business Name */}
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-xl font-semibold text-[#451a03]">
+            {business.name}
+          </h3>
+        </div>
 
-          {/* Rating */}
+        {/* Rating */}
+        {rating != null && (
           <div className="flex items-center gap-1.5">
             <Star size={16} weight="fill" className="text-amber-800" />
             <span className="text-sm text-[#78350f]">
-              {business.rating.toFixed(1)} ({business.reviewCount} reviews)
+              {rating.toFixed(1)} ({reviewCount} reviews)
             </span>
           </div>
+        )}
 
-          {/* Contact Info */}
-          <div className="space-y-3 pt-2 border-t border-[#d4c4b0]">
-            {/* Address */}
+        {/* Contact Info */}
+        <div className="space-y-3 pt-2 border-t border-[#d4c4b0]">
+          {/* Address */}
+          {business.address && (
             <div className="flex items-start gap-2">
-              <MapPin size={18} className="text-[#92400e] mt-0.5 shrink-0" />
+              <MapPin
+                size={18}
+                className="text-[#92400e] mt-0.5 shrink-0"
+              />
               <span className="text-sm text-[#78350f]">
                 {business.address}
-                <br />
-                {business.city}, {business.state} {business.zipCode}
+                {business.city && (
+                  <>
+                    <br />
+                    {business.city}
+                  </>
+                )}
               </span>
             </div>
+          )}
 
-            {/* Phone */}
+          {/* Website */}
+          {websiteUrl ? (
             <div className="flex items-center gap-2">
-              <Phone size={18} className="text-[#92400e] shrink-0" />
+              <Globe size={18} className="text-[#92400e] shrink-0" />
               <a
-                href={`tel:${business.phone.replace(/\D/g, '')}`}
-                className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
+                href={
+                  websiteUrl.startsWith('http')
+                    ? websiteUrl
+                    : `https://${websiteUrl}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors truncate"
               >
-                {business.phone}
+                {websiteDisplay
+                  ? websiteDisplay.replace(/^https?:\/\//, '')
+                  : websiteUrl.replace(/^https?:\/\//, '')}
               </a>
             </div>
-
-            {/* Website */}
-            {business.website && (
-              <div className="flex items-center gap-2">
-                <Globe size={18} className="text-[#92400e] shrink-0" />
-                <a
-                  href={business.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors truncate"
-                >
-                  {business.website.replace(/^https?:\/\//, '')}
-                </a>
-              </div>
-            )}
-          </div>
-
-          {/* Claim Button or Already Claimed State */}
-          {existingClaim ? (
-            <div className="mt-2 space-y-3">
-              <div className="p-3 bg-emerald-600/10 rounded-xl">
-                <div className="flex items-center gap-2">
-                  <CheckCircle
-                    size={20}
-                    weight="fill"
-                    className="text-emerald-600"
-                  />
-                  <span className="text-sm font-medium text-emerald-600">
-                    Deal Claimed
-                  </span>
-                </div>
-              </div>
-              <div className="p-3 bg-[#faf5ee] rounded-xl">
-                <div className="flex items-center gap-2 text-sm">
-                  <Clock
-                    size={16}
-                    weight="regular"
-                    className="text-[#92400e]"
-                  />
-                  <span className="text-[#78350f]">
-                    Status:{' '}
-                    <span className="text-[#451a03] capitalize">
-                      {existingClaim.status}
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <Button
-                variant="secondary"
-                size="md"
-                className="w-full"
-                onClick={() => (window.location.href = '/dashboard/claims')}
-              >
-                View My Claims
-              </Button>
-            </div>
           ) : (
-            <Button
-              size="lg"
-              className="w-full mt-2"
-              onClick={handleClaimClick}
-              type="button"
-            >
-              Claim This Deal
-            </Button>
+            <p className="text-sm text-[#92400e] italic">
+              Contact via deal details
+            </p>
           )}
         </div>
-      </Card>
 
-      <ClaimDealModal
-        isOpen={isClaimModalOpen}
-        onClose={handleClaimClose}
-        dealId={deal.id}
-        businessId={business.id}
-        dealTitle={deal.title}
-      />
-    </>
+        {/* Claim Status */}
+        {existingClaim && (
+          <div className="mt-2 space-y-3">
+            <div className="p-3 bg-emerald-600/10 rounded-xl">
+              <div className="flex items-center gap-2">
+                <CheckCircle
+                  size={20}
+                  weight="fill"
+                  className="text-emerald-600"
+                />
+                <span className="text-sm font-medium text-emerald-600">
+                  Deal Claimed
+                </span>
+              </div>
+            </div>
+            <div className="p-3 bg-[#faf5ee] rounded-xl">
+              <div className="flex items-center gap-2 text-sm">
+                <Clock
+                  size={16}
+                  weight="regular"
+                  className="text-[#92400e]"
+                />
+                <span className="text-[#78350f]">
+                  Status:{' '}
+                  <span className="text-[#451a03] capitalize">
+                    {existingClaim.status}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <Button
+              variant="secondary"
+              size="md"
+              className="w-full"
+              onClick={() => (window.location.href = '/dashboard/claims')}
+            >
+              View My Claims
+            </Button>
+          </div>
+        )}
+      </div>
+    </Card>
   )
 }

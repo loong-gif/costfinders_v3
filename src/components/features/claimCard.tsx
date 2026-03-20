@@ -1,20 +1,23 @@
 'use client'
 
 import {
+  ArrowRight,
   Calendar,
   ChatCircle,
   CheckCircle,
   Clock,
-  MapPin,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
 import { Card } from '@/components/ui/card'
-import { getAnonymousDealById, getBusinessById } from '@/lib/mock-data'
 import type { Claim } from '@/types/claim'
 
 interface ClaimCardProps {
   claim: Claim
+  /** Optional deal title — provided when the parent has enriched claim data. */
+  dealTitle?: string
+  /** Optional business name — provided when the parent has enriched claim data. */
+  businessName?: string
 }
 
 function formatRelativeTime(dateString: string): string {
@@ -40,26 +43,8 @@ function formatDate(dateString: string): string {
   })
 }
 
-export function ClaimCard({ claim }: ClaimCardProps) {
-  const deal = getAnonymousDealById(claim.dealId)
-  const business = getBusinessById(claim.businessId)
-
-  // Handle edge case: deal was deleted
-  if (!deal) {
-    return (
-      <Card variant="glass" padding="md">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[#78350f] text-sm">Deal no longer available</p>
-            <p className="text-[#92400e] text-xs mt-1">
-              Claimed {formatRelativeTime(claim.createdAt)}
-            </p>
-          </div>
-          <ClaimStatusBadge status={claim.status} />
-        </div>
-      </Card>
-    )
-  }
+export function ClaimCard({ claim, dealTitle, businessName }: ClaimCardProps) {
+  const displayTitle = dealTitle ?? `Deal #${claim.dealId}`
 
   return (
     <Card
@@ -72,20 +57,14 @@ export function ClaimCard({ claim }: ClaimCardProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <Link
-              href={`/deals/${deal.id}`}
-              className="text-lg font-semibold text-[#451a03] hover:text-amber-800 transition-colors line-clamp-2"
+              href={`/deals/${claim.dealId}`}
+              className="text-lg font-semibold text-[#451a03] hover:text-amber-800 transition-colors line-clamp-2 inline-flex items-center gap-1.5"
             >
-              {deal.title}
+              {displayTitle}
+              <ArrowRight size={16} weight="bold" className="shrink-0" />
             </Link>
-            {business && (
-              <div className="flex items-center gap-1.5 mt-1">
-                <MapPin
-                  size={14}
-                  weight="fill"
-                  className="text-[#92400e] shrink-0"
-                />
-                <span className="text-sm text-[#78350f]">{business.name}</span>
-              </div>
+            {businessName && (
+              <p className="text-sm text-[#78350f] mt-1">{businessName}</p>
             )}
           </div>
           <ClaimStatusBadge status={claim.status} size="md" />

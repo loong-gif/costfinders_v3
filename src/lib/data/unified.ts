@@ -78,6 +78,25 @@ export async function getDealById(id: string) {
   return offer ? offerToAnonymousDeal(offer) : null
 }
 
+/**
+ * Fetch a deal by ID and include the business_id from the raw offer.
+ * Used by the deal detail page to pass businessId to DealSidebar/ClaimCTA.
+ */
+export async function getDealWithBusinessId(id: string) {
+  const numericId = Number(id)
+  if (Number.isNaN(numericId)) return null
+
+  const { getOfferById } = await import('./offers')
+  const offer = await getOfferById(numericId)
+  if (!offer) return null
+
+  const anonymousDeal = offerToAnonymousDeal(offer)
+  return {
+    ...anonymousDeal,
+    businessId: offer.business_id ? String(offer.business_id) : '',
+  }
+}
+
 export async function getDealsForCitySlug(citySlug: string) {
   const cityName = await getCityNameFromSlug(citySlug)
   if (!cityName) return []

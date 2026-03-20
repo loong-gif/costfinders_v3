@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
-import { useClaims } from '@/lib/context/claimsContext'
+import { createClaimAction } from '@/lib/actions/claims'
 
 interface ClaimDealModalProps {
   isOpen: boolean
@@ -13,6 +13,7 @@ interface ClaimDealModalProps {
   dealId: string
   businessId: string
   dealTitle: string
+  onSuccess?: () => void
 }
 
 type TimePreference = 'morning' | 'afternoon' | 'evening' | 'flexible'
@@ -30,10 +31,11 @@ export function ClaimDealModal({
   dealId,
   businessId,
   dealTitle,
+  onSuccess,
 }: ClaimDealModalProps) {
-  const { createClaim } = useClaims()
   const [preferredDate, setPreferredDate] = useState('')
-  const [preferredTime, setPreferredTime] = useState<TimePreference>('flexible')
+  const [preferredTime, setPreferredTime] =
+    useState<TimePreference>('flexible')
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -57,19 +59,28 @@ export function ClaimDealModal({
     setIsSubmitting(true)
 
     try {
-      await createClaim(
-        dealId,
-        businessId,
+      const result = await createClaimAction(
+        Number(dealId),
+        Number(businessId),
         preferredDate || undefined,
         preferredTime !== 'flexible' ? preferredTime : undefined,
         notes.trim() || undefined,
       )
 
+      if (!result.success) {
+        // Surface user-friendly message; fall back to error code
+        setError(
+          result.message ?? result.error ?? 'Failed to submit claim. Please try again.',
+        )
+        return
+      }
+
       setIsSuccess(true)
 
-      // Auto-close after 3 seconds
+      // Auto-close after 3 seconds and notify parent
       setTimeout(() => {
         handleClose()
+        onSuccess?.()
       }, 3000)
     } catch {
       setError('Failed to submit claim. Please try again.')

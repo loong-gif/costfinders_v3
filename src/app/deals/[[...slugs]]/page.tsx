@@ -8,6 +8,7 @@ import {
   getDealById,
   getDealCountForCitySlug,
   getDealCountForTreatmentAndCity,
+  getDealWithBusinessId,
   getDealsForCitySlug,
   getDealsForTreatmentAndCity,
   getMinPriceForCitySlug,
@@ -249,17 +250,14 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
     }
 
     case 'deal': {
-      const deal = await getDealById(route.dealId)
-      if (!deal) {
+      const dealWithBiz = await getDealWithBusinessId(route.dealId)
+      if (!dealWithBiz) {
         notFound()
       }
-      // Construct a Deal-compatible object for DealSidebar
-      // The unified layer returns AnonymousDeal shape; add businessId for Deal type
-      const fullDeal = {
-        ...deal,
-        businessId: route.dealId, // Supabase offer ID as reference
-      }
-      return <DealDetailPage deal={deal} fullDeal={fullDeal} />
+      // dealWithBiz has all AnonymousDeal fields + businessId from the raw offer
+      const { businessId, ...anonymousDeal } = dealWithBiz
+      const fullDeal = { ...anonymousDeal, businessId }
+      return <DealDetailPage deal={anonymousDeal} fullDeal={fullDeal} />
     }
     default:
       notFound()

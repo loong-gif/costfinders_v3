@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { sendClaimNotificationEmail } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ClaimStatus } from '@/types/claim'
 
@@ -29,6 +30,7 @@ export interface ClaimRow {
 interface ClaimResult {
   success: boolean
   error?: string
+  message?: string
   claimId?: string
 }
 
@@ -60,11 +62,16 @@ const ACTIVE_STATUSES: ClaimStatus[] = ['pending', 'contacted', 'booked']
 
 /**
  * Create a new claim on a deal.
- * Enforces a server-side limit of MAX_ACTIVE_CLAIMS active claims per consumer.
+ *
+ * Enforces:
+ * - Server-side limit of MAX_ACTIVE_CLAIMS active claims per consumer
+ * - Duplicate prevention (application-level + DB unique constraint fallback)
+ * - Server-side business_id derivation from promo_offer_master (ignores client value)
+ * - Best-effort email notification after successful insert
  */
 export async function createClaimAction(
   dealId: number,
-  businessId: number,
+  _businessId: number,
   preferredDate?: string,
   preferredTime?: string,
   notes?: string,
@@ -79,12 +86,30 @@ export async function createClaimAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    // --- Spam prevention: count active claims ---
+    // --- Derive business_id server-side (don't trust client) ---
+    const { data: offer, error: offerError } = await supabase
+      .from('promo_offer_master')
+      .select('business_id, service_name, source_name')
+      .eq('id', dealId)
+      .single()
+
+    if (offerError || !offer?.business_id) {
+      return {
+        success: false,
+        error: 'deal_not_found',
+        message: 'Deal not found.',
+      }
+    }
+
+    const businessId = offer.business_id
+
+    // --- Spam prevention: count active (non-expired) claims ---
     const { count, error: countError } = await supabase
       .from('claims')
       .select('id', { count: 'exact', head: true })
       .eq('consumer_id', user.id)
       .in('status', ACTIVE_STATUSES)
+      .gte('expires_at', new Date().toISOString())
 
     if (countError) {
       return { success: false, error: countError.message }
@@ -93,17 +118,19 @@ export async function createClaimAction(
     if ((count ?? 0) >= MAX_ACTIVE_CLAIMS) {
       return {
         success: false,
-        error: `You already have ${MAX_ACTIVE_CLAIMS} active claims. Please wait for existing claims to be resolved before creating new ones.`,
+        error: 'limit_reached',
+        message: 'You can have up to 3 active deals claimed at a time.',
       }
     }
 
-    // --- Check for duplicate claim on the same deal ---
+    // --- Application-level duplicate check (exclude expired) ---
     const { data: existing, error: existingError } = await supabase
       .from('claims')
       .select('id')
       .eq('consumer_id', user.id)
       .eq('deal_id', dealId)
       .in('status', ACTIVE_STATUSES)
+      .gte('expires_at', new Date().toISOString())
       .limit(1)
 
     if (existingError) {
@@ -113,7 +140,8 @@ export async function createClaimAction(
     if (existing && existing.length > 0) {
       return {
         success: false,
-        error: 'You already have an active claim for this deal.',
+        error: 'already_claimed',
+        message: "You've already claimed this deal.",
       }
     }
 
@@ -141,11 +169,41 @@ export async function createClaimAction(
       .single()
 
     if (error) {
+      // Handle DB-level unique constraint violation (fallback for race conditions)
+      if (error.code === '23505') {
+        return {
+          success: false,
+          error: 'already_claimed',
+          message: "You've already claimed this deal.",
+        }
+      }
       return { success: false, error: error.message }
     }
 
     revalidatePath('/account/claims')
     revalidatePath('/deals')
+
+    // --- Best-effort notification (claim succeeds even if email fails) ---
+    // Fetch business name/city for the notification
+    const { data: business } = await supabase
+      .from('master_business_info')
+      .select('name, city')
+      .eq('business_id', businessId)
+      .single()
+
+    sendClaimNotificationEmail({
+      consumerName: user.user_metadata?.full_name ?? user.email ?? 'Unknown',
+      consumerEmail: user.email ?? '',
+      dealTitle: offer.service_name ?? offer.source_name ?? `Deal #${dealId}`,
+      businessName: business?.name ?? `Business #${businessId}`,
+      businessCity: business?.city ?? '',
+      preferredDate,
+      preferredTime,
+      notes,
+    }).catch((err) => {
+      // Swallow error — notification is best-effort
+      console.error('[createClaimAction] notification failed:', err)
+    })
 
     return { success: true, claimId: data.id }
   } catch {
@@ -223,6 +281,10 @@ export async function getClaimByIdAction(
 /**
  * Fetch the active claim for a specific deal (if any).
  * Useful for showing "Already claimed" state on deal cards.
+ *
+ * Filters out expired claims (expires_at in the past) so they don't block
+ * re-claiming. This serves as an application-level fallback until the
+ * pg_cron job is set up to automatically transition expired claims.
  */
 export async function getClaimByDealIdAction(
   dealId: number,
@@ -243,6 +305,7 @@ export async function getClaimByDealIdAction(
       .eq('consumer_id', user.id)
       .eq('deal_id', dealId)
       .in('status', ACTIVE_STATUSES)
+      .gte('expires_at', new Date().toISOString()) // exclude expired claims
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle()
@@ -258,6 +321,92 @@ export async function getClaimByDealIdAction(
     return { success: true, claim: data as ClaimRow }
   } catch {
     return { success: false, error: 'An unexpected error occurred.' }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Business Reveal
+// ---------------------------------------------------------------------------
+
+/** Statuses that grant access to business details after claiming. */
+const REVEAL_STATUSES: ClaimStatus[] = [
+  'pending',
+  'contacted',
+  'booked',
+  'completed',
+]
+
+export interface RevealedBusiness {
+  business_id: number
+  name: string
+  address: string | null
+  city: string | null
+  website_clean: string | null
+  website: string | null
+  score: number | null
+  review_count: number | null
+}
+
+interface BusinessRevealResult {
+  revealed: boolean
+  business?: RevealedBusiness
+}
+
+/**
+ * Check if the current user has an active claim on a deal. If so, return the
+ * associated business details from `master_business_info`.
+ *
+ * Active claim = status IN (pending, contacted, booked, completed).
+ * Being authenticated alone is NOT enough — the user must have claimed the deal.
+ */
+export async function getBusinessRevealAction(
+  dealId: number,
+): Promise<BusinessRevealResult> {
+  try {
+    const supabase = await createSupabaseServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      return { revealed: false }
+    }
+
+    // Check for an active claim on this deal (exclude expired)
+    const { data: claim, error: claimError } = await supabase
+      .from('claims')
+      .select('business_id')
+      .eq('consumer_id', user.id)
+      .eq('deal_id', dealId)
+      .in('status', REVEAL_STATUSES)
+      .gte('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (claimError || !claim) {
+      return { revealed: false }
+    }
+
+    // Fetch business details
+    const { data: business, error: bizError } = await supabase
+      .from('master_business_info')
+      .select(
+        'business_id, name, address, city, website_clean, website, score, review_count',
+      )
+      .eq('business_id', claim.business_id)
+      .single()
+
+    if (bizError || !business) {
+      return { revealed: false }
+    }
+
+    return {
+      revealed: true,
+      business: business as RevealedBusiness,
+    }
+  } catch {
+    return { revealed: false }
   }
 }
 
