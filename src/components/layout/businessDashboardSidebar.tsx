@@ -10,6 +10,7 @@ import {
   Tag,
   Users,
 } from '@phosphor-icons/react'
+import { NotificationBell } from '@/components/patterns/notificationBell'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { BaseSidebar, type NavItem } from './baseSidebar'
 
@@ -53,6 +54,7 @@ export function BusinessDashboardSidebar() {
       }
       onSignOut={signOut}
       mobileNavCount={4}
+      extraActions={<NotificationBell />}
     />
   )
 }

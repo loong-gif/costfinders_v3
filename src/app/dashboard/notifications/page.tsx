@@ -9,21 +9,14 @@ import {
   Tag,
   XCircle,
 } from '@phosphor-icons/react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  getNotificationsAction,
+  markAllReadAction,
+  markAsReadAction,
+} from '@/lib/actions/notification-actions'
 import type { NotificationRow } from '@/lib/actions/notification-actions'
-
-// ---------------------------------------------------------------------------
-// Props
-// ---------------------------------------------------------------------------
-
-interface NotificationPanelProps {
-  notifications: NotificationRow[]
-  isLoading: boolean
-  onMarkAsRead: (id: string) => void
-  onMarkAllRead: () => void
-  onClose: () => void
-}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -57,20 +50,20 @@ function getTypeIcon(type: string) {
   switch (type) {
     case 'claim':
     case 'claim_submitted':
-      return <Tag size={18} weight="fill" className="text-amber-700" />
+      return <Tag size={20} weight="fill" className="text-amber-700" />
     case 'approval':
     case 'claim_approved':
       return (
-        <CheckCircle size={18} weight="fill" className="text-emerald-600" />
+        <CheckCircle size={20} weight="fill" className="text-emerald-600" />
       )
     case 'rejection':
     case 'claim_rejected':
-      return <XCircle size={18} weight="fill" className="text-red-500" />
+      return <XCircle size={20} weight="fill" className="text-red-500" />
     case 'deal':
     case 'new_deal':
-      return <Storefront size={18} weight="fill" className="text-amber-800" />
+      return <Storefront size={20} weight="fill" className="text-amber-800" />
     default:
-      return <Bell size={18} weight="fill" className="text-amber-700" />
+      return <Bell size={20} weight="fill" className="text-amber-700" />
   }
 }
 
@@ -78,69 +71,110 @@ function getTypeIcon(type: string) {
 // Component
 // ---------------------------------------------------------------------------
 
-export function NotificationPanel({
-  notifications,
-  isLoading,
-  onMarkAsRead,
-  onMarkAllRead,
-  onClose,
-}: NotificationPanelProps) {
+export default function NotificationsPage() {
   const router = useRouter()
+  const [notifications, setNotifications] = useState<NotificationRow[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const hasUnread = notifications.some((n) => !n.is_read)
 
+  const loadNotifications = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const result = await getNotificationsAction(50)
+      if (result.success && result.notifications) {
+        setNotifications(result.notifications)
+      }
+    } catch {
+      // Keep empty state on error
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadNotifications()
+  }, [loadNotifications])
+
+  const handleMarkAsRead = async (id: string) => {
+    // Optimistic update
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
+    )
+    try {
+      await markAsReadAction(id)
+    } catch {
+      loadNotifications()
+    }
+  }
+
+  const handleMarkAllRead = async () => {
+    // Optimistic update
+    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })))
+    try {
+      await markAllReadAction()
+    } catch {
+      loadNotifications()
+    }
+  }
+
   const handleItemClick = (notification: NotificationRow) => {
     if (!notification.is_read) {
-      onMarkAsRead(notification.id)
+      handleMarkAsRead(notification.id)
     }
     if (notification.link) {
       router.push(notification.link)
-      onClose()
     }
   }
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-80 bg-[#faf5ee] border border-[#d4c4b0] rounded-xl shadow-lg z-50 overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#d4c4b0]">
-        <h3 className="text-sm font-semibold text-[#451a03]">Notifications</h3>
+    <div className="space-y-6">
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center">
+            <Bell size={20} weight="duotone" className="text-amber-800" />
+          </div>
+          <h1 className="text-xl font-bold text-[#451a03]">Notifications</h1>
+        </div>
+
         {hasUnread && (
           <button
             type="button"
-            onClick={onMarkAllRead}
-            className="text-xs text-amber-800 hover:text-[#451a03] transition-colors cursor-pointer"
+            onClick={handleMarkAllRead}
+            className="text-sm font-medium text-amber-800 hover:text-[#451a03] transition-colors cursor-pointer"
           >
-            Mark all read
+            Mark all as read
           </button>
         )}
       </div>
 
-      {/* Body */}
-      <div className="max-h-96 overflow-y-auto">
+      {/* Notification list */}
+      <div className="bg-[#faf5ee] border border-[#d4c4b0] rounded-2xl overflow-hidden">
         {isLoading ? (
-          <div className="flex items-center justify-center py-10">
+          <div className="flex items-center justify-center py-16">
             <CircleNotch
-              size={24}
+              size={28}
               weight="bold"
               className="text-amber-800 animate-spin"
             />
           </div>
         ) : notifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-10 gap-2">
-            <Bell size={32} weight="light" className="text-[#78350f]/40" />
+          <div className="flex flex-col items-center justify-center py-16 gap-3">
+            <Bell size={40} weight="light" className="text-[#78350f]/30" />
             <p className="text-sm text-[#78350f]/60">No notifications yet</p>
           </div>
         ) : (
-          <ul>
+          <ul className="divide-y divide-[#d4c4b0]/50">
             {notifications.map((notification) => (
               <li key={notification.id} className="relative group">
                 <button
                   type="button"
                   onClick={() => handleItemClick(notification)}
-                  className={`w-full text-left px-4 py-3 flex gap-3 hover:bg-amber-800/5 transition-colors cursor-pointer ${
+                  className={`w-full text-left px-5 py-4 flex gap-4 hover:bg-amber-800/5 transition-colors cursor-pointer ${
                     !notification.is_read
-                      ? 'border-l-2 border-l-amber-800 bg-amber-800/[0.03]'
-                      : 'border-l-2 border-l-transparent'
+                      ? 'border-l-3 border-l-amber-800 bg-amber-800/[0.03]'
+                      : 'border-l-3 border-l-transparent'
                   }`}
                 >
                   {/* Icon */}
@@ -160,11 +194,11 @@ export function NotificationPanel({
                       {notification.title}
                     </p>
                     {notification.body && (
-                      <p className="text-xs text-[#78350f]/70 mt-0.5 line-clamp-2">
+                      <p className="text-sm text-[#78350f]/70 mt-1">
                         {notification.body}
                       </p>
                     )}
-                    <p className="text-[11px] text-[#78350f]/50 mt-1">
+                    <p className="text-xs text-[#78350f]/50 mt-1.5">
                       {getRelativeTime(notification.created_at)}
                     </p>
                   </div>
@@ -176,29 +210,18 @@ export function NotificationPanel({
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation()
-                      onMarkAsRead(notification.id)
+                      handleMarkAsRead(notification.id)
                     }}
-                    className="absolute top-2 right-2 p-1 rounded-md text-[#78350f]/40 hover:text-amber-800 hover:bg-amber-800/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                    className="absolute top-3 right-3 p-1.5 rounded-lg text-[#78350f]/40 hover:text-amber-800 hover:bg-amber-800/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
                     aria-label="Mark as read"
                   >
-                    <Check size={14} weight="bold" />
+                    <Check size={16} weight="bold" />
                   </button>
                 )}
               </li>
             ))}
           </ul>
         )}
-      </div>
-
-      {/* View all link */}
-      <div className="border-t border-[#d4c4b0]">
-        <Link
-          href="/dashboard/notifications"
-          onClick={onClose}
-          className="block text-center text-xs font-medium text-amber-800 hover:text-[#451a03] py-2.5 transition-colors"
-        >
-          View all notifications
-        </Link>
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ import {
   Tag,
   Users,
 } from '@phosphor-icons/react'
+import { NotificationBell } from '@/components/patterns/notificationBell'
 import { useAdminAuth } from '@/lib/context/adminAuthContext'
 import { BaseSidebar, type NavItem } from './baseSidebar'
 
@@ -53,6 +54,7 @@ export function AdminDashboardSidebar() {
       }
       onSignOut={signOut}
       mobileNavCount={4}
+      extraActions={<NotificationBell />}
     />
   )
 }

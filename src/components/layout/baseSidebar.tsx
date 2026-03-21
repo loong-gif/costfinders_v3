@@ -21,6 +21,8 @@ export interface BaseSidebarProps {
   } | null
   onSignOut: () => void
   mobileNavCount?: number // defaults to 4 (reserving 1 slot for "More" when needed)
+  /** Optional slot rendered above the user section (e.g. NotificationBell) */
+  extraActions?: React.ReactNode
 }
 
 export function BaseSidebar({
@@ -29,6 +31,7 @@ export function BaseSidebar({
   user,
   onSignOut,
   mobileNavCount = 4,
+  extraActions,
 }: BaseSidebarProps) {
   const pathname = usePathname()
   const [moreMenuOpen, setMoreMenuOpen] = useState(false)
@@ -96,6 +99,13 @@ export function BaseSidebar({
             )
           })}
         </nav>
+
+        {/* Extra actions (e.g. notifications) */}
+        {extraActions && (
+          <div className="py-2 border-t border-[#d4c4b0] flex flex-col items-center">
+            {extraActions}
+          </div>
+        )}
 
         {/* User Section */}
         <div className="py-4 border-t border-[#d4c4b0] space-y-2 flex flex-col items-center">

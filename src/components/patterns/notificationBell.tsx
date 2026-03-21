@@ -3,11 +3,9 @@
 import { Bell } from '@phosphor-icons/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NotificationPanel } from '@/components/patterns/notificationPanel'
-import { useAuth } from '@/lib/context/authContext'
 import { useNotifications } from '@/lib/hooks/useNotifications'
 
 export function NotificationBell() {
-  const { state } = useAuth()
   const {
     unreadCount,
     notifications,
@@ -19,11 +17,6 @@ export function NotificationBell() {
 
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  // Only render when authenticated
-  if (!state.isAuthenticated) {
-    return null
-  }
 
   const handleToggle = () => {
     const willOpen = !isOpen
