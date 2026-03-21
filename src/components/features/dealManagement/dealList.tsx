@@ -1,19 +1,15 @@
 'use client'
 
 import {
-  Eye,
   MagnifyingGlass,
-  Pause,
   PencilSimple,
-  Play,
   Plus,
   Rocket,
   Tag,
   Trash,
-  Users,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SponsoredDealConfig } from '@/components/features/sponsoredDealConfig'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,28 +17,17 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import {
-  deleteDeal,
-  getDealsForBusiness,
-  toggleDealStatus,
-} from '@/lib/mock-data/deals'
+  deleteDealAction,
+  getDealsForBusinessAction,
+} from '@/lib/actions/deal-management'
 import {
   createBoost,
-  getActiveBoostForDeal,
   getActiveBoosts,
-  isDealEligibleForSponsorship,
 } from '@/lib/mock-data/sponsorship'
-import type { Deal, TreatmentCategory } from '@/types/deal'
+import type { Deal } from '@/types/deal'
+import type { Offer } from '@/types/supabase'
 
-type FilterTab = 'all' | 'active' | 'paused'
-
-const categoryLabels: Record<TreatmentCategory, string> = {
-  botox: 'Botox',
-  fillers: 'Fillers',
-  facials: 'Facials',
-  laser: 'Laser',
-  body: 'Body',
-  skincare: 'Skincare',
-}
+type FilterTab = 'all'
 
 interface DealListProps {
   businessId: string
@@ -52,71 +37,78 @@ export function DealList({ businessId }: DealListProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [dealToDelete, setDealToDelete] = useState<Deal | null>(null)
+  const [dealToDelete, setDealToDelete] = useState<Offer | null>(null)
   const [boostModalOpen, setBoostModalOpen] = useState(false)
   const [dealToBoost, setDealToBoost] = useState<Deal | null>(null)
-  const [_refreshKey, setRefreshKey] = useState(0)
+  const [allDeals, setAllDeals] = useState<Offer[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  // Get deals for this business
-  const allDeals = useMemo(() => {
-    return getDealsForBusiness(businessId)
+  // Load deals from Supabase
+  const loadDeals = useCallback(async () => {
+    setIsLoading(true)
+    setLoadError(null)
+    const result = await getDealsForBusinessAction(Number(businessId))
+    if (result.success && result.deals) {
+      setAllDeals(result.deals)
+    } else {
+      setLoadError(result.error ?? 'Failed to load deals.')
+    }
+    setIsLoading(false)
   }, [businessId])
 
-  // Filter deals based on tab and search
+  useEffect(() => {
+    loadDeals()
+  }, [loadDeals])
+
+  // Filter deals based on search
   const filteredDeals = useMemo(() => {
     let filtered = allDeals
-
-    // Filter by status
-    if (activeTab === 'active') {
-      filtered = filtered.filter((deal) => deal.isActive)
-    } else if (activeTab === 'paused') {
-      filtered = filtered.filter((deal) => !deal.isActive)
-    }
 
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(
         (deal) =>
-          deal.title.toLowerCase().includes(query) ||
-          deal.category.toLowerCase().includes(query),
+          (deal.service_name ?? '').toLowerCase().includes(query) ||
+          (deal.service_category ?? '').toLowerCase().includes(query),
       )
     }
 
     return filtered
-  }, [allDeals, activeTab, searchQuery])
+  }, [allDeals, searchQuery])
 
   // Tab counts
   const tabCounts = useMemo(() => {
     return {
       all: allDeals.length,
-      active: allDeals.filter((d) => d.isActive).length,
-      paused: allDeals.filter((d) => !d.isActive).length,
     }
   }, [allDeals])
 
-  // Count sponsored deals
+  // Count sponsored deals (stays mock)
   const sponsoredCount = useMemo(() => {
     return getActiveBoosts(businessId).length
   }, [businessId])
 
-  const handleToggleStatus = (deal: Deal) => {
-    toggleDealStatus(deal.id)
-    setRefreshKey((k) => k + 1)
-  }
-
-  const handleDeleteClick = (deal: Deal) => {
+  const handleDeleteClick = (deal: Offer) => {
     setDealToDelete(deal)
     setDeleteModalOpen(true)
   }
 
-  const handleConfirmDelete = () => {
-    if (dealToDelete) {
-      deleteDeal(dealToDelete.id)
-      setRefreshKey((k) => k + 1)
-      setDeleteModalOpen(false)
-      setDealToDelete(null)
+  const handleConfirmDelete = async () => {
+    if (!dealToDelete) return
+    setIsDeleting(true)
+    const result = await deleteDealAction(
+      dealToDelete.id,
+      Number(businessId),
+    )
+    if (result.success) {
+      setAllDeals((prev) => prev.filter((d) => d.id !== dealToDelete.id))
     }
+    setIsDeleting(false)
+    setDeleteModalOpen(false)
+    setDealToDelete(null)
   }
 
   const handleBoostClick = (deal: Deal) => {
@@ -129,12 +121,42 @@ export function DealList({ businessId }: DealListProps) {
       createBoost(dealToBoost.id, boostOptionId)
       setBoostModalOpen(false)
       setDealToBoost(null)
-      setRefreshKey((k) => k + 1)
     }
   }
 
-  const formatPrice = (price: number, unit: string) => {
-    return `$${price.toFixed(price % 1 === 0 ? 0 : 2)} ${unit}`
+  const formatPrice = (price: number | null, unit: string | null) => {
+    if (price == null) return '\u2014'
+    return `$${price.toFixed(price % 1 === 0 ? 0 : 2)}${unit ? ` ${unit}` : ''}`
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <div className="flex flex-col items-center gap-4">
+          <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          <p className="text-[#78350f]">Loading deals...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (loadError) {
+    return (
+      <Card variant="glass" padding="lg">
+        <div className="text-center py-12">
+          <h3 className="text-lg font-medium text-[#451a03] mb-2">
+            Failed to load deals
+          </h3>
+          <p className="text-[#78350f] mb-6">{loadError}</p>
+          <Button onClick={loadDeals}>Retry</Button>
+        </div>
+      </Card>
+    )
   }
 
   return (
@@ -173,7 +195,7 @@ export function DealList({ businessId }: DealListProps) {
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Filter Tabs */}
           <div className="flex gap-2">
-            {(['all', 'active', 'paused'] as FilterTab[]).map((tab) => (
+            {(['all'] as FilterTab[]).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -187,7 +209,7 @@ export function DealList({ businessId }: DealListProps) {
                 `}
                 type="button"
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)} ({tabCounts[tab]})
+                All ({tabCounts[tab]})
               </button>
             ))}
           </div>
@@ -256,10 +278,7 @@ export function DealList({ businessId }: DealListProps) {
                     Price
                   </th>
                   <th className="text-left px-6 py-4 text-sm font-medium text-[#78350f]">
-                    Status
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-[#78350f]">
-                    Performance
+                    Discount
                   </th>
                   <th className="text-right px-6 py-4 text-sm font-medium text-[#78350f]">
                     Actions
@@ -284,87 +303,61 @@ export function DealList({ businessId }: DealListProps) {
                         </div>
                         <div className="min-w-0">
                           <p className="font-medium text-[#451a03] truncate">
-                            {deal.title}
+                            {deal.service_name ?? 'Untitled Deal'}
                           </p>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            {deal.isFeatured && (
-                              <Badge variant="brand" size="sm">
-                                Featured
-                              </Badge>
-                            )}
-                            {getActiveBoostForDeal(deal.id) && (
-                              <Badge variant="info" size="sm">
-                                <Rocket
-                                  size={10}
-                                  weight="fill"
-                                  className="mr-0.5"
-                                />
-                                Boosted
-                              </Badge>
-                            )}
-                          </div>
+                          {deal.template_type && (
+                            <p className="text-xs text-[#92400e] mt-0.5">
+                              {deal.template_type}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </td>
 
                     {/* Category */}
                     <td className="px-6 py-4">
-                      <Badge variant="default" size="sm">
-                        {categoryLabels[deal.category]}
-                      </Badge>
+                      {deal.service_category ? (
+                        <Badge variant="default" size="sm">
+                          {deal.service_category}
+                        </Badge>
+                      ) : (
+                        <span className="text-sm text-[#92400e]">{'\u2014'}</span>
+                      )}
                     </td>
 
                     {/* Price */}
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-amber-800">
-                          {formatPrice(deal.dealPrice, deal.unit)}
-                        </p>
-                        <p className="text-sm text-[#92400e] line-through">
-                          {formatPrice(deal.originalPrice, deal.unit)}
-                        </p>
+                        {deal.discount_price != null && (
+                          <p className="font-medium text-amber-800">
+                            {formatPrice(deal.discount_price, deal.unit_type)}
+                          </p>
+                        )}
+                        {deal.original_price != null && (
+                          <p className="text-sm text-[#92400e] line-through">
+                            {formatPrice(deal.original_price, deal.unit_type)}
+                          </p>
+                        )}
+                        {deal.discount_price == null && deal.original_price == null && (
+                          <span className="text-sm text-[#92400e]">{'\u2014'}</span>
+                        )}
                       </div>
                     </td>
 
-                    {/* Status */}
+                    {/* Discount */}
                     <td className="px-6 py-4">
-                      <Badge
-                        variant={deal.isActive ? 'success' : 'warning'}
-                        size="sm"
-                      >
-                        {deal.isActive ? 'Active' : 'Paused'}
-                      </Badge>
-                    </td>
-
-                    {/* Performance */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-[#78350f]">
-                          <Users size={16} weight="fill" />
-                          <span>{deal.claimCount}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[#78350f]">
-                          <Eye size={16} weight="fill" />
-                          <span>{deal.viewCount.toLocaleString()}</span>
-                        </div>
-                      </div>
+                      {deal.discount_percent != null ? (
+                        <Badge variant="brand" size="sm">
+                          {Math.round(deal.discount_percent)}% off
+                        </Badge>
+                      ) : (
+                        <span className="text-sm text-[#92400e]">{'\u2014'}</span>
+                      )}
                     </td>
 
                     {/* Actions */}
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
-                        {/* Boost Action - only for eligible deals */}
-                        {isDealEligibleForSponsorship(deal) && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleBoostClick(deal)}
-                            title="Boost this deal"
-                            className="text-amber-800 hover:text-[var(--color-accent-hover)] hover:bg-[var(--color-accent)]/8"
-                          >
-                            <Rocket size={18} weight="light" />
-                          </Button>
-                        )}
                         <Link
                           href={`/business/dashboard/deals/${deal.id}/edit`}
                         >
@@ -372,18 +365,6 @@ export function DealList({ businessId }: DealListProps) {
                             <PencilSimple size={18} weight="light" />
                           </Button>
                         </Link>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleToggleStatus(deal)}
-                          title={deal.isActive ? 'Pause deal' : 'Activate deal'}
-                        >
-                          {deal.isActive ? (
-                            <Pause size={18} weight="light" />
-                          ) : (
-                            <Play size={18} weight="light" />
-                          )}
-                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -404,7 +385,7 @@ export function DealList({ businessId }: DealListProps) {
           <div className="md:hidden divide-y divide-[#d4c4b0]">
             {filteredDeals.map((deal) => (
               <div key={deal.id} className="p-4">
-                {/* Header: Title + Status */}
+                {/* Header: Title + Category */}
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
@@ -412,91 +393,51 @@ export function DealList({ businessId }: DealListProps) {
                     </div>
                     <div className="min-w-0">
                       <p className="font-medium text-[#451a03] truncate">
-                        {deal.title}
+                        {deal.service_name ?? 'Untitled Deal'}
                       </p>
                       <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                        <Badge variant="default" size="sm">
-                          {categoryLabels[deal.category]}
-                        </Badge>
-                        {deal.isFeatured && (
-                          <Badge variant="brand" size="sm">
-                            Featured
-                          </Badge>
-                        )}
-                        {getActiveBoostForDeal(deal.id) && (
-                          <Badge variant="info" size="sm">
-                            <Rocket
-                              size={10}
-                              weight="fill"
-                              className="mr-0.5"
-                            />
-                            Boosted
+                        {deal.service_category && (
+                          <Badge variant="default" size="sm">
+                            {deal.service_category}
                           </Badge>
                         )}
                       </div>
                     </div>
                   </div>
-                  <Badge
-                    variant={deal.isActive ? 'success' : 'warning'}
-                    size="sm"
-                    className="flex-shrink-0"
-                  >
-                    {deal.isActive ? 'Active' : 'Paused'}
-                  </Badge>
+                  {deal.discount_percent != null && (
+                    <Badge
+                      variant="brand"
+                      size="sm"
+                      className="flex-shrink-0"
+                    >
+                      {Math.round(deal.discount_percent)}% off
+                    </Badge>
+                  )}
                 </div>
 
-                {/* Middle: Price + Performance */}
+                {/* Middle: Price */}
                 <div className="flex items-center justify-between mb-3 py-3 border-t border-b border-[#d4c4b0]">
                   <div>
-                    <p className="font-medium text-amber-800">
-                      {formatPrice(deal.dealPrice, deal.unit)}
-                    </p>
-                    <p className="text-sm text-[#92400e] line-through">
-                      {formatPrice(deal.originalPrice, deal.unit)}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-[#78350f]">
-                      <Users size={16} weight="fill" />
-                      <span>{deal.claimCount}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[#78350f]">
-                      <Eye size={16} weight="fill" />
-                      <span>{deal.viewCount.toLocaleString()}</span>
-                    </div>
+                    {deal.discount_price != null && (
+                      <p className="font-medium text-amber-800">
+                        {formatPrice(deal.discount_price, deal.unit_type)}
+                      </p>
+                    )}
+                    {deal.original_price != null && (
+                      <p className="text-sm text-[#92400e] line-through">
+                        {formatPrice(deal.original_price, deal.unit_type)}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 {/* Footer: Actions */}
                 <div className="flex items-center justify-end gap-2">
-                  {isDealEligibleForSponsorship(deal) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleBoostClick(deal)}
-                      title="Boost this deal"
-                      className="text-amber-800 hover:text-[var(--color-accent-hover)] hover:bg-[var(--color-accent)]/8"
-                    >
-                      <Rocket size={18} weight="light" />
-                    </Button>
-                  )}
                   <Link href={`/business/dashboard/deals/${deal.id}/edit`}>
                     <Button variant="ghost" size="sm">
                       <PencilSimple size={18} weight="light" />
                     </Button>
                   </Link>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleToggleStatus(deal)}
-                    title={deal.isActive ? 'Pause deal' : 'Activate deal'}
-                  >
-                    {deal.isActive ? (
-                      <Pause size={18} weight="light" />
-                    ) : (
-                      <Play size={18} weight="light" />
-                    )}
-                  </Button>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -526,7 +467,7 @@ export function DealList({ businessId }: DealListProps) {
           <p className="text-[#78350f]">
             Are you sure you want to delete{' '}
             <span className="font-medium text-[#451a03]">
-              {dealToDelete?.title}
+              {dealToDelete?.service_name ?? 'this deal'}
             </span>
             ? This action cannot be undone.
           </p>
@@ -540,7 +481,7 @@ export function DealList({ businessId }: DealListProps) {
             >
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleConfirmDelete}>
+            <Button variant="danger" onClick={handleConfirmDelete} isLoading={isDeleting}>
               Delete
             </Button>
           </div>
