@@ -242,3 +242,57 @@ export function buildTreatmentServiceSchema(
     },
   }
 }
+
+/**
+ * Build Article + AggregateOffer schema for pricing guide pages.
+ * Targets rich results for pricing-related searches.
+ */
+export function buildPricingGuideSchema(
+  treatmentName: string,
+  cityName: string,
+  state: string,
+  slug: string,
+  stats: {
+    dealCount: number
+    minPrice?: number | null
+    maxPrice?: number | null
+    avgPrice?: number | null
+    providerCount: number
+  },
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${treatmentName} Pricing Guide — ${cityName}, ${state}`,
+    description: `Comprehensive pricing guide for ${treatmentName.toLowerCase()} treatments in ${cityName}, ${state}. Compare prices from ${stats.providerCount} verified providers.`,
+    url: `${SITE_CONFIG.url}/guides/${slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_CONFIG.name,
+      url: SITE_CONFIG.url,
+    },
+    about: {
+      '@type': 'Service',
+      name: `${treatmentName} Treatments`,
+      serviceType: treatmentName,
+      areaServed: {
+        '@type': 'City',
+        name: cityName,
+        containedInPlace: {
+          '@type': 'State',
+          name: state,
+        },
+      },
+      ...(stats.minPrice != null &&
+        stats.maxPrice != null && {
+          offers: {
+            '@type': 'AggregateOffer',
+            lowPrice: stats.minPrice,
+            highPrice: stats.maxPrice,
+            priceCurrency: 'USD',
+            offerCount: stats.dealCount,
+          },
+        }),
+    },
+  }
+}

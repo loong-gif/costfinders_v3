@@ -1,0 +1,116 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "oklahoma-city",
+  "cityLabel": "Oklahoma City",
+  "state": "Oklahoma",
+  "stateCode": "OK",
+  "generatedAt": "2026-03-21",
+  "howPricingWorks": {
+    "intro": "Oklahoma City stands out as one of the most diverse Botox pricing markets in the country. With 32 tracked deals across 5 providers, OKC patients have access to nearly every pricing model — from standard per-unit rates to memberships, discount programs, and per-area flat fees. The city's strong membership culture means many clinics offer tiered monthly plans that bundle Botox with other aesthetic services, giving regular patients significant long-term savings.",
+    "pricingModels": [
+      {
+        "name": "Membership Per-Unit Pricing",
+        "description": "The most popular model in OKC. Clinics offer monthly memberships (ranging from $60–$295/month) that include discounted per-unit Botox rates. Members typically pay $9–$12/unit compared to $11–$18/unit for walk-in patients. Multiple providers including Longevity, LouLou Med Spa, and Aesthetic Center of Excellence offer membership tiers.",
+        "typicalRange": "$9–$12 per unit (avg $10/unit, 11 deals across 5 providers)"
+      },
+      {
+        "name": "Fixed Per-Unit Pricing",
+        "description": "Standard pricing without a membership commitment. You pay a set rate per unit and can visit any time without ongoing fees. Rates are higher than membership pricing but still well below coastal markets.",
+        "typicalRange": "$4–$18 per unit (avg $11/unit, 9 deals)"
+      },
+      {
+        "name": "Discount Per-Unit Pricing",
+        "description": "Promotional or limited-time per-unit rates offered through seasonal deals, new patient specials, or loyalty programs. These represent the lowest per-unit costs in the market.",
+        "typicalRange": "$6–$13 per unit (avg $9/unit, 7 deals)"
+      },
+      {
+        "name": "Per-Area Pricing",
+        "description": "A flat fee covers one treatment zone regardless of units used. Less common in OKC but available at select providers for patients who prefer predictable costs.",
+        "typicalRange": "$50–$150 per area (3 deals)"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Oklahoma City's Botox pricing reflects the city's position as one of the most affordable major metros in the United States, combined with a rapidly growing aesthetic services market driven by millennial demand.",
+    "factors": [
+      {
+        "factor": "Lowest Cost of Living Among Large Cities",
+        "explanation": "OKC's cost of living index is 81.9, making it 18% below the national average — the lowest among US cities with populations over 500,000. This directly reduces provider overhead for rent, staffing, and insurance, enabling per-unit Botox rates that are 15–25% below coastal markets."
+      },
+      {
+        "factor": "Membership Model Competition",
+        "explanation": "OKC has unusually strong membership adoption among medspa providers. With 5 providers offering membership tiers, clinics compete on membership value rather than just per-unit price. This drives down the effective cost for loyal patients and creates pressure for non-membership pricing to stay competitive."
+      },
+      {
+        "factor": "Growing Millennial Demographic",
+        "explanation": "Oklahoma City ranks #8 nationally for educated millennial growth. This younger demographic drives demand for preventive Botox (sometimes called 'baby Botox'), which uses fewer units at lower total costs. Providers are adjusting their offerings to capture this cost-conscious but aesthetically motivated segment."
+      },
+      {
+        "factor": "National Network Consolidation",
+        "explanation": "H-MD Medical Spa in OKC joined Advanced Medaesthetic Partners, a national network, in 2024. National networks often negotiate better pricing on Botox supply from Allergan, and those savings can be partially passed through to patients. This also raises the bar for independent providers to remain price-competitive."
+      },
+      {
+        "factor": "Provider Density and Variety",
+        "explanation": "With 5 distinct providers tracked and 32 deals available, OKC offers patients real pricing diversity. Competition among Longevity, Aesthetic Center of Excellence, Restorative Injectables, LouLou Med Spa, and others creates downward pricing pressure that benefits consumers."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "OKC's pricing is already among the most affordable in the nation, but the city's rich variety of deal types means savvy patients can save even more — especially through memberships and discount programs.",
+    "tips": [
+      {
+        "tip": "Join a membership plan if you treat more than once a year",
+        "detail": "At $10/unit for members vs $11/unit for non-members, the savings add up fast. A typical 40-unit treatment saves $40 per visit as a member. With memberships starting as low as $60/month at some OKC clinics, the math works out if you're getting Botox plus any other aesthetic services regularly."
+      },
+      {
+        "tip": "Stack discount deals with loyalty programs",
+        "detail": "OKC has 7 active discount deals averaging $9/unit. Combine these with Allergan's Alle rewards program and you can effectively bring your per-unit cost below $8 — approaching half the national average."
+      },
+      {
+        "tip": "Compare membership tiers across providers",
+        "detail": "OKC memberships range from $60 to $295/month across providers. Lower tiers may offer $12/unit Botox while premium tiers drop to $9/unit. Calculate your annual Botox usage and compare total costs across tiers before committing."
+      },
+      {
+        "tip": "Consider per-area pricing for high-unit zones",
+        "detail": "If a treatment area typically requires 30+ units, a flat per-area rate of $50–$150 could save significantly compared to paying per-unit. This is especially true at the higher end of OKC's per-unit range ($14–$18)."
+      },
+      {
+        "tip": "Watch for new patient promotions",
+        "detail": "OKC's competitive provider landscape means many clinics offer first-visit discounts or introductory pricing. Shopping your first treatment across 2–3 providers and then settling on the best value-to-experience ratio is a practical strategy in this market."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 15,
+    "comparisonText": "Oklahoma City's average Botox price of $10–$11 per unit sits 27–33% below the national average of $15 per unit. This makes OKC one of the most affordable major metro markets for Botox in the country. The gap widens further for membership patients, who can access rates as low as $9/unit — 40% below the national average. OKC's extremely low cost of living (18% below average) and competitive multi-provider market are the primary drivers of this affordability advantage."
+  },
+  "faqs": [
+    {
+      "question": "Is a medspa membership worth it in Oklahoma City?",
+      "answer": "For most regular Botox patients, yes. OKC memberships typically save $1–$3 per unit compared to walk-in rates. If you get 40–60 units every 3–4 months, that's $120–$540 in annual savings on Botox alone — not counting discounts on other services included in most membership tiers."
+    },
+    {
+      "question": "Why does Oklahoma City have so many different Botox pricing models?",
+      "answer": "OKC's market maturity and competitive provider landscape have driven clinics to differentiate through pricing structure, not just price level. The membership model has become particularly popular because it creates recurring revenue for providers while giving patients lower per-unit costs — a win-win that has pushed other clinics to offer their own versions."
+    },
+    {
+      "question": "How does OKC's Botox pricing compare to Dallas or Houston?",
+      "answer": "OKC is typically 15–25% cheaper than Dallas and Houston. While Texas metros have higher costs of living and denser luxury medspa markets, OKC's lower overhead and strong competition keep pricing notably below its regional neighbors."
+    },
+    {
+      "question": "What should I look for when choosing a Botox provider in OKC?",
+      "answer": "Beyond price, evaluate the provider's injector credentials, before-and-after photos, and consultation process. OKC has both independent boutique practices and providers backed by national networks — both can deliver excellent results. Ask about their approach to natural-looking results and how they determine your unit count."
+    },
+    {
+      "question": "Can I get 'baby Botox' (preventive Botox) in Oklahoma City?",
+      "answer": "Yes, and OKC's low per-unit pricing makes it especially accessible. Baby Botox typically uses 10–20 units at lower doses for subtle prevention. At OKC's average of $10/unit, a preventive treatment could cost as little as $100–$200 per session — making it approachable for the city's growing millennial population."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 81.9,
+    "medspaDensity": "medium",
+    "demographicNotes": "Oklahoma City has a population of 727,000 with a median age of 35.1 and median household income of $68,656. The city ranks #8 nationally for educated millennial growth, driving increasing demand for aesthetic services including preventive Botox among younger patients.",
+    "competitionNotes": "OKC has the most diverse Botox pricing landscape among the tracked cities with 32 deals across 5 providers. The membership model is particularly well-established, with multiple tiered offerings from providers like Longevity, Aesthetic Center of Excellence, Restorative Injectables, and LouLou Med Spa. H-MD Medical Spa's 2024 entry into the Advanced Medaesthetic Partners national network signals further market maturation."
+  }
+}

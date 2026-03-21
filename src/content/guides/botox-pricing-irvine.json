@@ -1,0 +1,116 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "irvine",
+  "cityLabel": "Irvine",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-03-21",
+  "howPricingWorks": {
+    "intro": "Irvine sits at the heart of Orange County — one of the densest medspa markets in the United States with over 550 medspas countywide. Despite premium coastal pricing, intense competition among providers has created a surprisingly deal-rich environment. Bundle pricing is particularly popular here, with providers packaging Botox alongside other neurotoxins or complementary treatments to win patient loyalty in a saturated market.",
+    "pricingModels": [
+      {
+        "name": "Fixed Per-Unit Pricing",
+        "description": "The most common model in Irvine. A set price per unit with no membership or package required. Irvine's fixed per-unit rates reflect the premium Orange County market but competition among 550+ area medspas keeps pricing from reaching the extremes seen in Beverly Hills or Manhattan.",
+        "typicalRange": "$4–$15 per unit (avg $12/unit, 10 deals across 4 providers)"
+      },
+      {
+        "name": "Bundle Per-Unit Pricing",
+        "description": "A distinctly popular model in Irvine. Providers package Botox units into pre-set bundles — often combining with Dysport, Jeuveau, or skincare treatments — at a reduced per-unit rate. This model reflects OC's multi-brand neurotoxin culture where patients have access to Botox, Dysport, Jeuveau, and Daxxify.",
+        "typicalRange": "$4–$13 per unit (avg $8/unit, 9 deals across 2 providers)"
+      },
+      {
+        "name": "Per-Area Pricing",
+        "description": "A flat rate for treating one facial zone. Less common than per-unit models in Irvine but available at select providers, often for first-time patients who want a predictable cost.",
+        "typicalRange": "$100–$200 per area (2 deals)"
+      },
+      {
+        "name": "Per-Treatment Pricing",
+        "description": "A single all-inclusive fee for a complete Botox session covering multiple areas. This premium model targets patients who want a simplified, concierge-style experience without counting units.",
+        "typicalRange": "$200–$979 per treatment (2 deals)"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Irvine's Botox market is shaped by the intersection of Orange County's premium real estate costs, exceptionally high household incomes, a culturally diverse population with strong beauty standards, and fierce competition among hundreds of medspa providers.",
+    "factors": [
+      {
+        "factor": "Orange County's Extreme Medspa Density",
+        "explanation": "With 550+ medspas in Orange County, Irvine patients have enormous choice. This density forces providers to compete aggressively on both price and value-adds. It is why bundle pricing — which offers lower per-unit costs in exchange for larger commitments — has become so prevalent in this market."
+      },
+      {
+        "factor": "High Household Income",
+        "explanation": "Irvine's median household income exceeds $116,000 — roughly double the national median. While this supports premium pricing, it also means patients are sophisticated consumers who compare options carefully. The result is a market where providers cannot simply charge high prices; they must justify their rates with service quality and results."
+      },
+      {
+        "factor": "K-Beauty and Asian Aesthetic Influence",
+        "explanation": "Irvine has a significant Korean and Asian population that has brought K-beauty standards — emphasizing subtle enhancements, 'glass skin,' and natural-looking results — into the local medspa culture. This influences treatment approaches (often using fewer units for a softer effect) and has expanded the market for neurotoxin alternatives like Jeuveau and Daxxify alongside traditional Botox."
+      },
+      {
+        "factor": "Multi-Brand Neurotoxin Competition",
+        "explanation": "Unlike many markets where Botox dominates, Irvine providers commonly offer Botox, Dysport, Jeuveau, and Daxxify. This product competition gives patients leverage to negotiate and creates pricing pressure across all neurotoxin brands, keeping Botox prices more competitive than they would be in a less diverse product market."
+      },
+      {
+        "factor": "Cost of Living Premium",
+        "explanation": "Irvine's cost of living is approximately 60% above the national average. Provider overhead — including rent, insurance, and staffing — is substantially higher than non-coastal markets. This floor on operating costs explains why even competitive Irvine pricing tends to be above Midwest or Southwest markets."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Irvine's highly competitive medspa market means deals are abundant — the key is knowing which pricing model gives you the best value based on your treatment frequency and unit needs.",
+    "tips": [
+      {
+        "tip": "Take advantage of bundle pricing",
+        "detail": "Bundle deals in Irvine average $8/unit compared to $12/unit for standard fixed pricing — a 33% savings. If you know you'll need 40+ units, buying a bundle package can save $160 or more per treatment. Two providers currently offer bundle deals with 9 options available."
+      },
+      {
+        "tip": "Compare across neurotoxin brands",
+        "detail": "Irvine providers often offer Dysport or Jeuveau at lower price points than Botox for similar results. Ask your provider about alternatives — Dysport typically requires more units but at a lower per-unit cost, which can sometimes result in a lower total treatment price."
+      },
+      {
+        "tip": "Avoid per-treatment pricing unless you need full-face coverage",
+        "detail": "Per-treatment rates in Irvine range from $200–$979. For a single-area treatment needing 20–30 units, per-unit pricing at $8–$12/unit ($160–$360) is almost always cheaper. Reserve per-treatment pricing only for comprehensive multi-area sessions."
+      },
+      {
+        "tip": "Look for new patient specials at competing medspas",
+        "detail": "In a market with 550+ medspas, new patient acquisition is intensely competitive. Many Irvine clinics offer first-visit rates significantly below their standard pricing. Use introductory appointments to evaluate providers before committing to ongoing care."
+      },
+      {
+        "tip": "Book mid-week appointments",
+        "detail": "Some Irvine medspas offer weekday-only pricing that is lower than weekend rates. Since OC's working population is busy during the week, clinics incentivize Tuesday–Thursday appointments to fill their schedules."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 15,
+    "comparisonText": "Irvine's fixed per-unit pricing averages $12/unit — 20% below the national average of $15/unit despite being in one of the highest cost-of-living areas in the country. Bundle pricing drops even further to $8/unit average, rivaling pricing in much lower-cost markets. This counterintuitive affordability is driven entirely by the extreme competition among Orange County's 550+ medspas — proof that market density can override cost-of-living effects on consumer pricing."
+  },
+  "faqs": [
+    {
+      "question": "Why are Botox bundles so popular in Irvine?",
+      "answer": "Orange County's hyper-competitive medspa market pushes providers to lock in patient loyalty. Bundles offer lower per-unit pricing in exchange for a larger upfront commitment, which guarantees providers recurring business. For patients, bundles average $8/unit vs $12/unit for standard pricing — a meaningful savings in a premium market."
+    },
+    {
+      "question": "Should I consider Dysport or Jeuveau instead of Botox in Irvine?",
+      "answer": "Possibly. Irvine is a hub for multi-brand neurotoxin offerings. Dysport and Jeuveau are FDA-approved alternatives that may be priced lower per unit. The key difference is in dosing — Dysport typically requires 2.5–3x more units than Botox for the same effect. Do the total-cost math with your provider rather than just comparing per-unit prices."
+    },
+    {
+      "question": "How does K-beauty culture influence Botox treatments in Irvine?",
+      "answer": "Irvine's significant Korean and Asian population has popularized subtle, natural-looking aesthetic treatments. Many local injectors specialize in the 'less is more' approach — using fewer units for a softer effect rather than a frozen look. This can actually reduce your per-treatment cost while achieving the currently trending natural aesthetic."
+    },
+    {
+      "question": "Is it worth driving to Irvine from other OC cities for better Botox pricing?",
+      "answer": "Irvine's 23 tracked deals and 4+ providers offer strong pricing competition. Compared to Newport Beach or Laguna Beach where luxury positioning drives higher prices, Irvine's rates are often 10–25% lower for the same products. The drive is typically worth it for patients in adjacent cities."
+    },
+    {
+      "question": "What is the price range for full-face Botox in Irvine?",
+      "answer": "A comprehensive treatment covering forehead, frown lines, and crow's feet typically requires 50–70 units. At Irvine's bundle rate of $8/unit, that's $400–$560. At the fixed rate average of $12/unit, expect $600–$840. Per-treatment all-inclusive deals range from $200–$979 depending on the provider and scope."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 160,
+    "medspaDensity": "high",
+    "demographicNotes": "Irvine has a median household income exceeding $116,000 with a highly educated, diverse population. The city's significant Korean and Asian American community has created strong demand for aesthetic services influenced by K-beauty standards emphasizing subtle, natural enhancements and 'glass skin' aesthetics.",
+    "competitionNotes": "Irvine benefits from Orange County's position as one of the densest medspa markets in the United States with 550+ medspas countywide. This extreme density drives aggressive competition, making bundle pricing uniquely popular — 9 of 23 tracked deals are bundles. The market also features multi-brand neurotoxin competition with Botox, Dysport, Jeuveau, and Daxxify all widely available."
+  }
+}

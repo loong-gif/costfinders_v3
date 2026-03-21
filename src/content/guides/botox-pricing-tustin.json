@@ -1,0 +1,111 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "tustin",
+  "cityLabel": "Tustin",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-03-21",
+  "howPricingWorks": {
+    "intro": "Tustin occupies a sweet spot in the Orange County medspa landscape — adjacent to Irvine's premium market but with slightly more accessible pricing. The city's 6 tracked deals split between membership models and fixed per-unit rates, reflecting a market where boutique practices coexist with providers benefiting from OC's broader competitive dynamics. Old Town Tustin's growing wellness corridor has attracted new practices that bring fresh pricing approaches to the area.",
+    "pricingModels": [
+      {
+        "name": "Membership Per-Unit Pricing",
+        "description": "The leading pricing model in Tustin. Monthly membership plans offer committed patients a discounted per-unit rate. This model works well in Tustin's boutique-oriented market where practices prioritize long-term patient relationships over high-volume transactional visits.",
+        "typicalRange": "$12–$14 per unit (avg $13/unit, 3 deals)"
+      },
+      {
+        "name": "Fixed Per-Unit Pricing",
+        "description": "Standard per-unit pricing available without any membership commitment. Tustin's fixed rates are competitive with neighboring cities, positioned between Irvine's premium market and Santa Ana's value-driven pricing.",
+        "typicalRange": "$6–$11 per unit (avg $9/unit, 2 deals)"
+      },
+      {
+        "name": "Bundle Package",
+        "description": "A pre-set package combining Botox with other treatments or a fixed number of units at a discounted total price. Less common in Tustin but available for patients who want a comprehensive aesthetic session.",
+        "typicalRange": "~$699 per package (1 deal)"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Tustin's Botox pricing is influenced by its geographic position within Orange County — close enough to benefit from OC's competitive dynamics while maintaining a distinct market identity shaped by a more neighborhood-focused patient base.",
+    "factors": [
+      {
+        "factor": "Spillover from Irvine's Dense Market",
+        "explanation": "Irvine, directly adjacent to Tustin, has dozens of medspas competing aggressively. Tustin providers must price competitively with Irvine options just minutes away. This proximity effect keeps Tustin pricing grounded even though the local market has fewer providers."
+      },
+      {
+        "factor": "Boutique Practice Model",
+        "explanation": "Tustin's medspa scene leans toward smaller, boutique practices rather than large-volume clinics. These practices typically offer more personalized service and build relationships through memberships — which is why 3 of 6 tracked deals are membership-based. The trade-off is that membership per-unit rates ($12–$14) are slightly higher than Irvine's bundle rates."
+      },
+      {
+        "factor": "Old Town Tustin Wellness Growth",
+        "explanation": "The Old Town Tustin area has seen a growing concentration of wellness and aesthetic businesses. As this corridor develops, new entrants compete for local patients by offering introductory pricing and competitive fixed rates, contributing to the $6–$11 range on non-membership deals."
+      },
+      {
+        "factor": "Income Demographics",
+        "explanation": "Tustin's median household income of approximately $93,000 is above the national median but below neighboring Irvine ($116,000+). This positions Tustin providers to offer slightly more accessible pricing while still serving a demographic that values quality aesthetic services."
+      },
+      {
+        "factor": "Mix of Boutique and Chain Providers",
+        "explanation": "Tustin has both independent practices and locations affiliated with larger groups. Chain-affiliated providers can leverage bulk purchasing to offer lower per-unit rates, while independents differentiate on personalized care. This mix creates pricing diversity in a relatively small market."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "With only 6 tracked deals, Tustin's market is smaller than neighboring Irvine — but that does not mean savings are unavailable. The key is understanding whether your treatment frequency justifies a membership or whether fixed-rate and bundle deals offer better value.",
+    "tips": [
+      {
+        "tip": "Weigh membership vs. fixed pricing carefully",
+        "detail": "Tustin's membership rates average $13/unit while fixed rates average $9/unit. At first glance, fixed pricing appears cheaper — but memberships may include additional perks like discounted fillers, skincare products, or priority booking. Calculate your total annual aesthetic spend, not just Botox, before deciding."
+      },
+      {
+        "tip": "Consider the $699 bundle for comprehensive treatments",
+        "detail": "If you need a full-face Botox treatment (50–70 units), the $699 bundle package could be competitive with per-unit pricing at $12–$14/unit (which would total $600–$980). The bundle may also include complementary services that add value beyond just Botox."
+      },
+      {
+        "tip": "Compare with adjacent Irvine providers",
+        "detail": "Irvine is minutes away and has 23 tracked deals with bundle pricing averaging $8/unit. For per-unit savings alone, Irvine bundles may beat Tustin's membership rates. However, factor in Tustin's potentially more personalized boutique experience when making your decision."
+      },
+      {
+        "tip": "Ask about new patient rates",
+        "detail": "Tustin's fixed pricing starts as low as $6/unit, which likely represents introductory or promotional rates. If you are new to a provider, specifically ask about first-visit pricing before being quoted standard or membership rates."
+      },
+      {
+        "tip": "Stack manufacturer savings programs",
+        "detail": "Regardless of which Tustin provider you choose, enroll in Allergan's Alle loyalty program. Points earned on each Botox treatment can be redeemed for future savings, effectively reducing your per-unit cost by $1–$2 over time."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 15,
+    "comparisonText": "Tustin's pricing presents two tiers: membership patients pay an average of $13/unit (13% below the national average), while non-member fixed pricing averages $9/unit (40% below the national average). Even Tustin's membership pricing sits comfortably below the national benchmark, which is notable for a city in Orange County where the cost of living runs 50–60% above the national average. The competitive pressure from neighboring Irvine's massive medspa market is the primary force keeping Tustin pricing patient-friendly."
+  },
+  "faqs": [
+    {
+      "question": "How does Tustin's Botox pricing compare to neighboring Irvine?",
+      "answer": "Tustin's fixed per-unit rates ($6–$11, avg $9) are comparable to Irvine's bundle rates ($4–$13, avg $8). However, Tustin's membership pricing ($12–$14, avg $13) runs slightly higher than Irvine's fixed rates ($4–$15, avg $12). The trade-off is often a more intimate, boutique experience in Tustin vs. higher-volume practices in Irvine."
+    },
+    {
+      "question": "Are Tustin medspa memberships cancellable?",
+      "answer": "Policies vary by provider. Most Tustin memberships have a minimum commitment of 3–6 months before you can cancel without penalty. Ask about cancellation terms upfront and whether unused benefits roll over. Some clinics allow month-to-month after the initial commitment period."
+    },
+    {
+      "question": "What is the Old Town Tustin wellness corridor?",
+      "answer": "Old Town Tustin is a historic district that has attracted a growing concentration of wellness, aesthetics, and self-care businesses. Several medspa and aesthetic practices have opened in this area, creating a walkable wellness destination. The competitive density in this corridor can work in patients' favor for pricing."
+    },
+    {
+      "question": "Is the $699 Botox bundle in Tustin a good deal?",
+      "answer": "It depends on what is included and how many units you need. If the bundle covers a full-face treatment of 50–60 units, that works out to $11.65–$13.98/unit — comparable to membership rates. If it includes additional services like skincare or a complementary treatment, the value improves significantly. Ask the provider exactly what the bundle includes before purchasing."
+    },
+    {
+      "question": "Do Tustin providers offer Botox alternatives like Dysport?",
+      "answer": "Some do, benefiting from Orange County's broader multi-brand neurotoxin culture. However, Tustin's smaller market has fewer providers offering the full range of alternatives (Dysport, Jeuveau, Daxxify) compared to Irvine. If you specifically want an alternative neurotoxin, check with individual providers about their product offerings before booking."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 155,
+    "medspaDensity": "medium",
+    "demographicNotes": "Tustin has a median household income of approximately $93,000, positioned between the higher-income Irvine market and the more affordable Santa Ana market. The city benefits from Orange County's overall affluence while maintaining a more neighborhood-focused, accessible character.",
+    "competitionNotes": "Tustin's 6 tracked deals across a smaller provider base reflect a boutique-oriented market. The city benefits from competitive spillover from adjacent Irvine (23 deals, 550+ OC medspas) which keeps pricing grounded. Membership models are prominent with 3 of 6 deals structured as memberships, suggesting providers prioritize recurring patient relationships over volume."
+  }
+}

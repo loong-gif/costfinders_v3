@@ -2,6 +2,7 @@
 
 import {
   ArrowLeft,
+  BookOpen,
   Buildings,
   CaretRight,
   MapPin,
@@ -115,6 +116,14 @@ export function TreatmentCityPage({
               <Buildings size={16} weight="fill" className="text-blue-600" />
               <span>{businessCount} providers</span>
             </div>
+            <Link
+              href={`/guides/${treatmentSlug}-pricing-${citySlug}`}
+              className="flex items-center gap-1.5 text-amber-800 hover:text-amber-900 transition-colors"
+            >
+              <BookOpen size={16} weight="fill" />
+              <span>Pricing guide</span>
+              <CaretRight size={12} weight="bold" />
+            </Link>
           </div>
         </div>
 

@@ -333,3 +333,62 @@ export function generateTreatmentCityMetadata(
     },
   }
 }
+
+// SEO Pricing Guide Metadata
+
+/**
+ * Generate metadata for pricing guide pages
+ * Target keywords: "[treatment] pricing [city]", "how much does [treatment] cost in [city]"
+ */
+export function generateGuideMetadata(
+  treatmentName: string,
+  treatmentSlug: string,
+  cityName: string,
+  citySlug: string,
+  stateCode: string,
+  stats: {
+    dealCount: number
+    minPrice?: number | null
+    maxPrice?: number | null
+    avgPrice?: number | null
+  },
+): Metadata {
+  const priceText = stats.avgPrice ? ` — avg $${stats.avgPrice}` : ''
+  const rangeText =
+    stats.minPrice && stats.maxPrice
+      ? ` from $${stats.minPrice}–$${stats.maxPrice}`
+      : ''
+  const title = `${treatmentName} Pricing in ${cityName}, ${stateCode} (2026) — Cost Guide`
+  const description = `How much does ${treatmentName.toLowerCase()} cost in ${cityName}? Compare ${stats.dealCount} verified deals${rangeText}. Understand per-unit vs per-area pricing, what affects cost, and how to save${priceText}.`
+  const canonicalPath = `/guides/${treatmentSlug}-pricing-${citySlug}`
+
+  return {
+    title,
+    description,
+    keywords: [
+      `${treatmentName.toLowerCase()} pricing ${cityName.toLowerCase()}`,
+      `${treatmentName.toLowerCase()} cost ${cityName.toLowerCase()}`,
+      `how much does ${treatmentName.toLowerCase()} cost in ${cityName.toLowerCase()}`,
+      `${treatmentName.toLowerCase()} ${cityName.toLowerCase()} prices`,
+      `${treatmentName.toLowerCase()} deals ${cityName.toLowerCase()}`,
+      `medspa pricing ${cityName.toLowerCase()}`,
+    ],
+    openGraph: {
+      title,
+      description,
+      url: buildCanonicalUrl(canonicalPath),
+      siteName: SITE_CONFIG.name,
+      type: 'article',
+      locale: 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      site: SITE_CONFIG.social.twitter,
+    },
+    alternates: {
+      canonical: buildCanonicalUrl(canonicalPath),
+    },
+  }
+}

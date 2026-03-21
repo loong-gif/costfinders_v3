@@ -12,6 +12,7 @@ import { getAllDealIds } from '@/lib/mock-data/deals'
 import { getAllNeighborhoodsWithCityAndState } from '@/lib/mock-data/neighborhoods'
 import { getAllProvidersWithCityAndState } from '@/lib/mock-data/providers'
 import { getStates } from '@/lib/mock-data/states'
+import { getAvailableGuides } from '@/lib/data/guide-content'
 
 /**
  * Sitemap Configuration
@@ -196,8 +197,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
 
   // ═══════════════════════════════════════════════════════════════════
+  // Section 11: Pricing Guide Pages
+  // Count: ~10 URLs (5 Botox + 5 Fillers across top cities)
+  // Route: /guides/[slug] (e.g., /guides/botox-pricing-tucson)
+  // Target keywords: "[treatment] pricing [city]"
+  // ═══════════════════════════════════════════════════════════════════
+  const guides = getAvailableGuides()
+  const guidePages: MetadataRoute.Sitemap = guides.map((guide) => ({
+    url: `${baseUrl}/guides/${guide.slug}`,
+    lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
+    changeFrequency: 'monthly',
+    priority: 0.85,
+  }))
+
+  // ═══════════════════════════════════════════════════════════════════
   // Combine All Sections
-  // Total: ~131 URLs (well under 50,000 limit)
+  // Total: ~141 URLs (well under 50,000 limit)
   // ═══════════════════════════════════════════════════════════════════
   const allUrls = [
     ...staticPages, // 2 URLs
@@ -210,6 +225,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryStatePages, // 24 URLs
     ...cityDealsPages, // 6 URLs
     ...treatmentCityPages, // 36 URLs
+    ...guidePages, // ~10 URLs
   ]
 
   return allUrls
