@@ -130,6 +130,20 @@ export function DealList({ businessId }: DealListProps) {
     return `$${price.toFixed(price % 1 === 0 ? 0 : 2)}${unit ? ` ${unit}` : ''}`
   }
 
+  const getModerationBadge = (status: string | null) => {
+    switch (status) {
+      case 'pending_review':
+        return <Badge variant="warning" size="sm">Under Review</Badge>
+      case 'rejected':
+        return <Badge variant="error" size="sm">Rejected</Badge>
+      case 'changes_requested':
+        return <Badge variant="warning" size="sm">Changes Needed</Badge>
+      case 'approved':
+      default:
+        return <Badge variant="success" size="sm">Active</Badge>
+    }
+  }
+
   // Loading state
   if (isLoading) {
     return (
@@ -281,6 +295,9 @@ export function DealList({ businessId }: DealListProps) {
                   <th className="text-left px-6 py-4 text-sm font-medium text-[#78350f]">
                     Discount
                   </th>
+                  <th className="text-left px-6 py-4 text-sm font-medium text-[#78350f]">
+                    Status
+                  </th>
                   <th className="text-right px-6 py-4 text-sm font-medium text-[#78350f]">
                     Actions
                   </th>
@@ -354,6 +371,11 @@ export function DealList({ businessId }: DealListProps) {
                       ) : (
                         <span className="text-sm text-[#92400e]">—</span>
                       )}
+                    </td>
+
+                    {/* Status */}
+                    <td className="px-6 py-4">
+                      {getModerationBadge(deal.moderation_status)}
                     </td>
 
                     {/* Actions */}

@@ -178,8 +178,17 @@ export function BusinessAuthProvider({
       }
     })
 
+    // Re-hydrate when tab becomes visible (e.g., after admin approves claim)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        hydrateUser()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
       subscription.unsubscribe()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [hydrateUser])
 
