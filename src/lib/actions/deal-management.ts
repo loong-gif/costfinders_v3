@@ -175,6 +175,7 @@ export async function createDealAction(
     const insertPayload: Record<string, unknown> = {
       business_id: businessId,
       service_name: stripHtml(data.service_name.trim()),
+      moderation_status: 'pending_review',
     }
 
     if (data.service_category) {

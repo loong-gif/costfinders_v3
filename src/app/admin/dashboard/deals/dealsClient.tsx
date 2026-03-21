@@ -5,6 +5,11 @@ import { useCallback, useMemo, useState } from 'react'
 import { DealModerationCard } from '@/components/features/dealModeration/dealModerationCard'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import {
+  approveDealAction,
+  rejectDealAction,
+  requestDealChangesAction,
+} from '@/lib/actions/admin-deal-moderation'
 import type { Deal, ModerationStatus } from '@/types/deal'
 
 type FilterTab = 'all' | ModerationStatus
@@ -79,8 +84,10 @@ export function DealModerationClient({
   }, [deals])
 
   const handleApprove = useCallback(
-    (dealId: string) => {
-      // Client-side optimistic update (no Supabase write yet)
+    async (dealId: string) => {
+      const deal = deals.find((d) => d.id === dealId)
+
+      // Optimistic update
       setDeals((prev) =>
         prev.map((d) =>
           d.id === dealId
@@ -93,15 +100,31 @@ export function DealModerationClient({
             : d,
         ),
       )
-      const deal = deals.find((d) => d.id === dealId)
+
+      const result = await approveDealAction(Number(dealId))
+      if (!result.success) {
+        // Revert on failure
+        setDeals((prev) =>
+          prev.map((d) =>
+            d.id === dealId
+              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              : d,
+          ),
+        )
+        showFeedback(`Failed to approve: ${result.error}`)
+        return
+      }
+
       showFeedback(`Deal "${deal?.title ?? dealId}" has been approved`)
     },
     [deals, showFeedback],
   )
 
   const handleReject = useCallback(
-    (dealId: string) => {
-      // Client-side optimistic update (no Supabase write yet)
+    async (dealId: string) => {
+      const deal = deals.find((d) => d.id === dealId)
+
+      // Optimistic update
       setDeals((prev) =>
         prev.map((d) =>
           d.id === dealId
@@ -113,15 +136,31 @@ export function DealModerationClient({
             : d,
         ),
       )
-      const deal = deals.find((d) => d.id === dealId)
+
+      const result = await rejectDealAction(Number(dealId))
+      if (!result.success) {
+        // Revert on failure
+        setDeals((prev) =>
+          prev.map((d) =>
+            d.id === dealId
+              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              : d,
+          ),
+        )
+        showFeedback(`Failed to reject: ${result.error}`)
+        return
+      }
+
       showFeedback(`Deal "${deal?.title ?? dealId}" has been rejected`)
     },
     [deals, showFeedback],
   )
 
   const handleRequestChanges = useCallback(
-    (dealId: string, notes: string) => {
-      // Client-side optimistic update (no Supabase write yet)
+    async (dealId: string, notes: string) => {
+      const deal = deals.find((d) => d.id === dealId)
+
+      // Optimistic update
       setDeals((prev) =>
         prev.map((d) =>
           d.id === dealId
@@ -134,7 +173,21 @@ export function DealModerationClient({
             : d,
         ),
       )
-      const deal = deals.find((d) => d.id === dealId)
+
+      const result = await requestDealChangesAction(Number(dealId), notes)
+      if (!result.success) {
+        // Revert on failure
+        setDeals((prev) =>
+          prev.map((d) =>
+            d.id === dealId
+              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              : d,
+          ),
+        )
+        showFeedback(`Failed to request changes: ${result.error}`)
+        return
+      }
+
       showFeedback(`Changes requested for "${deal?.title ?? dealId}"`)
     },
     [deals, showFeedback],

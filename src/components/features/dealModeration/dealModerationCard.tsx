@@ -12,7 +12,6 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { getBusinessById } from '@/lib/mock-data/businesses'
 import type { Deal, ModerationStatus } from '@/types/deal'
 
 interface DealModerationCardProps {
@@ -76,7 +75,6 @@ export function DealModerationCard({
   const [notes, setNotes] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const business = getBusinessById(deal.businessId)
   const moderationStatus = deal.moderationStatus || 'pending_review'
 
   const handleApprove = async () => {
@@ -118,7 +116,7 @@ export function DealModerationCard({
             <div className="flex items-center gap-2 mt-1">
               <Storefront size={14} className="text-[#92400e]" />
               <span className="text-sm text-[#78350f]">
-                {business?.name || 'Unknown Business'}
+                {deal.businessName || 'Unknown Business'}
               </span>
             </div>
           </div>
