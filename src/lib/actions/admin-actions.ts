@@ -1,6 +1,12 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import {
+  claimApprovalEmail,
+  claimRejectionEmail,
+} from '@/lib/email/templates'
+import { createNotificationAction } from '@/lib/actions/notification-actions'
+import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
@@ -145,6 +151,39 @@ export async function approveClaimAction(
     }
 
     revalidatePath('/admin/dashboard/businesses')
+
+    // --- Best-effort notifications for business owner ---
+    createNotificationAction(
+      profileId,
+      'claim_approved',
+      'Business claim approved',
+      'Your business claim has been approved. You now have full dashboard access.',
+      '/business/dashboard',
+    ).catch(() => {})
+
+    // Fetch profile email + name for the email notification
+    const { data: profile } = await supabase
+      .from('business_profiles')
+      .select('email, first_name, business_id')
+      .eq('id', profileId)
+      .single()
+
+    if (profile?.email) {
+      const ownerName = profile.first_name ?? 'there'
+      // Get business name for the email
+      let businessName = 'your business'
+      if (profile.business_id) {
+        const { data: biz } = await supabase
+          .from('master_business_info')
+          .select('name')
+          .eq('business_id', profile.business_id)
+          .single()
+        if (biz?.name) businessName = biz.name
+      }
+      const { subject, html } = claimApprovalEmail(ownerName, businessName)
+      sendEmailAction(profile.email, subject, html).catch(() => {})
+    }
+
     return { success: true }
   } catch (err) {
     const message =
@@ -174,6 +213,38 @@ export async function rejectClaimAction(
     }
 
     revalidatePath('/admin/dashboard/businesses')
+
+    // --- Best-effort notifications for business owner ---
+    createNotificationAction(
+      profileId,
+      'claim_rejected',
+      'Business claim not approved',
+      'Unfortunately, your business claim was not approved. Please contact support for more information.',
+      '/business',
+    ).catch(() => {})
+
+    // Fetch profile email + name for the email notification
+    const { data: profile } = await supabase
+      .from('business_profiles')
+      .select('email, first_name, business_id')
+      .eq('id', profileId)
+      .single()
+
+    if (profile?.email) {
+      const ownerName = profile.first_name ?? 'there'
+      let businessName = 'your business'
+      if (profile.business_id) {
+        const { data: biz } = await supabase
+          .from('master_business_info')
+          .select('name')
+          .eq('business_id', profile.business_id)
+          .single()
+        if (biz?.name) businessName = biz.name
+      }
+      const { subject, html } = claimRejectionEmail(ownerName, businessName)
+      sendEmailAction(profile.email, subject, html).catch(() => {})
+    }
+
     return { success: true }
   } catch (err) {
     const message =

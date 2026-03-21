@@ -116,6 +116,57 @@ export async function sendClaimNotificationEmail(
 }
 
 // ---------------------------------------------------------------------------
+// Generic Email Sender
+// ---------------------------------------------------------------------------
+
+/**
+ * Send an email via Resend REST API.
+ *
+ * Best-effort — callers should wrap in `.catch()` so failures never break
+ * the primary operation.
+ */
+export async function sendEmailAction(
+  to: string,
+  subject: string,
+  html: string,
+): Promise<{ success: boolean; error?: string }> {
+  if (!RESEND_API_KEY) {
+    console.log(
+      '[notifications] RESEND_API_KEY not configured — logging email:',
+    )
+    console.log(`  To: ${to}\n  Subject: ${subject}`)
+    return { success: true }
+  }
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'CostFinders <notifications@costfinders.com>',
+        to: [to],
+        subject,
+        html,
+      }),
+    })
+
+    if (!response.ok) {
+      const body = await response.text()
+      console.error('[notifications] Resend API error:', response.status, body)
+      return { success: false, error: `Resend API ${response.status}` }
+    }
+
+    return { success: true }
+  } catch (err) {
+    console.error('[notifications] Failed to send email:', err)
+    return { success: false, error: String(err) }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 

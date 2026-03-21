@@ -1,7 +1,12 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { sendClaimNotificationEmail } from '@/lib/actions/notifications'
+import { claimConfirmationEmail } from '@/lib/email/templates'
+import { createNotificationAction } from '@/lib/actions/notification-actions'
+import {
+  sendClaimNotificationEmail,
+  sendEmailAction,
+} from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ClaimStatus } from '@/types/claim'
 
@@ -204,6 +209,29 @@ export async function createClaimAction(
       // Swallow error — notification is best-effort
       console.error('[createClaimAction] notification failed:', err)
     })
+
+    // --- Best-effort in-app notification for consumer ---
+    const dealTitle = offer.service_name ?? `Deal #${dealId}`
+
+    createNotificationAction(
+      user.id,
+      'claim_created',
+      'Claim submitted',
+      `Your claim for ${dealTitle} has been submitted.`,
+      '/dashboard/claims',
+    ).catch(() => {})
+
+    // --- Best-effort confirmation email to consumer ---
+    if (user.email) {
+      const consumerName =
+        user.user_metadata?.full_name ?? user.email
+      const { subject, html } = claimConfirmationEmail(
+        consumerName,
+        dealTitle,
+        business?.city ?? '',
+      )
+      sendEmailAction(user.email, subject, html).catch(() => {})
+    }
 
     return { success: true, claimId: data.id }
   } catch {
