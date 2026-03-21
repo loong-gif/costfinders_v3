@@ -3,24 +3,24 @@
 import {
   Calendar,
   Clock,
-  Coins,
   CurrencyDollar,
   Envelope,
   MagnifyingGlass,
+  SpinnerGap,
   Tag,
   Users,
+  WarningCircle,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import {
-  getBusinessCredits,
-  getClaimsForBusiness,
-  getDealByIdDynamic as getDealById,
-} from '@/lib/mock-data'
-import type { Claim } from '@/types/claim'
+import { getClaimsForBusinessAction } from '@/lib/actions/business-claims'
+import type { ClaimRow } from '@/lib/actions/claims'
+import { getOfferById } from '@/lib/data/offers'
+import type { ClaimStatus } from '@/types/claim'
+import type { Offer } from '@/types/supabase'
 
 type FilterTab = 'all' | 'pending' | 'active' | 'completed' | 'cancelled'
 
@@ -54,12 +54,11 @@ function formatDate(dateString: string): string {
 }
 
 function getCustomerDisplay(consumerId: string): string {
-  // Extract number from consumer ID for display
-  const num = consumerId.replace(/\D/g, '')
-  return `Customer #${num || consumerId.slice(-3)}`
+  // Show a short hash of the consumer UUID for display
+  return `Customer #${consumerId.slice(-4).toUpperCase()}`
 }
 
-function getTabFilter(tab: FilterTab): (claim: Claim) => boolean {
+function getTabFilter(tab: FilterTab): (claim: ClaimRow) => boolean {
   switch (tab) {
     case 'pending':
       return (c) => c.status === 'pending'
@@ -77,17 +76,46 @@ function getTabFilter(tab: FilterTab): (claim: Claim) => boolean {
 export function LeadList({ businessId }: LeadListProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
+  const [allClaims, setAllClaims] = useState<ClaimRow[]>([])
+  const [dealMap, setDealMap] = useState<Record<number, Offer | null>>({})
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Get current credits
-  const credits = getBusinessCredits()
+  // Load claims from Supabase
+  const loadClaims = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
 
-  // Get claims for this business
-  const allClaims = useMemo(() => {
-    return getClaimsForBusiness(businessId).sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    const result = await getClaimsForBusinessAction(Number(businessId))
+
+    if (!result.success) {
+      setError(result.error ?? 'Failed to load leads')
+      setIsLoading(false)
+      return
+    }
+
+    const claims = result.claims ?? []
+    setAllClaims(claims)
+
+    // Fetch deal info for each unique deal_id
+    const uniqueDealIds = [...new Set(claims.map((c) => c.deal_id))]
+    const dealEntries = await Promise.all(
+      uniqueDealIds.map(async (dealId) => {
+        try {
+          const offer = await getOfferById(dealId)
+          return [dealId, offer] as const
+        } catch {
+          return [dealId, null] as const
+        }
+      }),
     )
+    setDealMap(Object.fromEntries(dealEntries))
+    setIsLoading(false)
   }, [businessId])
+
+  useEffect(() => {
+    loadClaims()
+  }, [loadClaims])
 
   // Filter claims based on tab and search
   const filteredClaims = useMemo(() => {
@@ -97,16 +125,18 @@ export function LeadList({ businessId }: LeadListProps) {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter((claim) => {
-        const deal = getDealById(claim.dealId)
+        const deal = dealMap[claim.deal_id]
+        const dealTitle =
+          deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
         return (
-          deal?.title.toLowerCase().includes(query) ||
-          getCustomerDisplay(claim.consumerId).toLowerCase().includes(query)
+          dealTitle.toLowerCase().includes(query) ||
+          getCustomerDisplay(claim.consumer_id).toLowerCase().includes(query)
         )
       })
     }
 
     return filtered
-  }, [allClaims, activeTab, searchQuery])
+  }, [allClaims, activeTab, searchQuery, dealMap])
 
   // Tab counts
   const tabCounts = useMemo(() => {
@@ -131,6 +161,57 @@ export function LeadList({ businessId }: LeadListProps) {
     { id: 'cancelled', label: 'Cancelled' },
   ]
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
+          <p className="text-[#78350f] mt-1">
+            Manage customer inquiries and bookings
+          </p>
+        </div>
+        <Card variant="glass" padding="lg">
+          <div className="text-center py-12">
+            <SpinnerGap
+              size={48}
+              weight="light"
+              className="mx-auto text-[#92400e] mb-4 animate-spin"
+            />
+            <p className="text-[#78350f]">Loading leads...</p>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
+          <p className="text-[#78350f] mt-1">
+            Manage customer inquiries and bookings
+          </p>
+        </div>
+        <Card variant="glass" padding="lg">
+          <div className="text-center py-12">
+            <WarningCircle
+              size={48}
+              weight="light"
+              className="mx-auto text-amber-800 mb-4"
+            />
+            <h3 className="text-lg font-medium text-[#451a03] mb-2">
+              Unable to load leads
+            </h3>
+            <p className="text-[#78350f] max-w-sm mx-auto">{error}</p>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -142,19 +223,6 @@ export function LeadList({ businessId }: LeadListProps) {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {/* Credits Indicator */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl">
-            <Coins
-              size={18}
-              weight="fill"
-              className={
-                credits.available < 5 ? 'text-amber-800' : 'text-amber-800'
-              }
-            />
-            <span className="text-sm font-medium text-[#451a03]">
-              {credits.available} Credits
-            </span>
-          </div>
           {/* View Pricing Link */}
           <Link
             href="/business/dashboard/leads/pricing"
@@ -242,7 +310,9 @@ export function LeadList({ businessId }: LeadListProps) {
       ) : (
         <div className="space-y-4">
           {filteredClaims.map((claim) => {
-            const deal = getDealById(claim.dealId)
+            const deal = dealMap[claim.deal_id]
+            const dealTitle =
+              deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
 
             return (
               <Link
@@ -267,25 +337,23 @@ export function LeadList({ businessId }: LeadListProps) {
                         </div>
                         <div className="min-w-0">
                           <p className="font-medium text-[#451a03]">
-                            {getCustomerDisplay(claim.consumerId)}
+                            {getCustomerDisplay(claim.consumer_id)}
                           </p>
-                          {deal && (
-                            <div className="flex items-center gap-1.5 text-sm text-[#78350f]">
-                              <Tag
-                                size={14}
-                                weight="fill"
-                                className="text-[#92400e] flex-shrink-0"
-                              />
-                              <span className="truncate">{deal.title}</span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-1.5 text-sm text-[#78350f]">
+                            <Tag
+                              size={14}
+                              weight="fill"
+                              className="text-[#92400e] flex-shrink-0"
+                            />
+                            <span className="truncate">{dealTitle}</span>
+                          </div>
                         </div>
                       </div>
 
                       {/* Preferred Date/Time */}
-                      {(claim.preferredDate || claim.preferredTime) && (
+                      {(claim.preferred_date || claim.preferred_time) && (
                         <div className="flex items-center gap-4 text-sm text-[#78350f] ml-13">
-                          {claim.preferredDate && (
+                          {claim.preferred_date && (
                             <div className="flex items-center gap-1.5">
                               <Calendar
                                 size={14}
@@ -293,18 +361,18 @@ export function LeadList({ businessId }: LeadListProps) {
                                 className="text-[#92400e]"
                               />
                               <span>
-                                Requested: {formatDate(claim.preferredDate)}
+                                Requested: {formatDate(claim.preferred_date)}
                               </span>
                             </div>
                           )}
-                          {claim.preferredTime && (
+                          {claim.preferred_time && (
                             <div className="flex items-center gap-1.5">
                               <Clock
                                 size={14}
                                 weight="regular"
                                 className="text-[#92400e]"
                               />
-                              <span>{claim.preferredTime}</span>
+                              <span>{claim.preferred_time}</span>
                             </div>
                           )}
                         </div>
@@ -313,9 +381,9 @@ export function LeadList({ businessId }: LeadListProps) {
 
                     {/* Status & Created Date */}
                     <div className="flex items-center gap-4 sm:flex-col sm:items-end sm:gap-2">
-                      <ClaimStatusBadge status={claim.status} size="md" />
+                      <ClaimStatusBadge status={claim.status as ClaimStatus} size="md" />
                       <p className="text-sm text-[#92400e]">
-                        {formatRelativeTime(claim.createdAt)}
+                        {formatRelativeTime(claim.created_at)}
                       </p>
                     </div>
                   </div>
