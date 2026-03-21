@@ -5,17 +5,18 @@ import {
   Clock,
   MagnifyingGlass,
   Prohibit,
+  Spinner,
   Users,
 } from '@phosphor-icons/react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ConsumerTable } from '@/components/features/admin/consumerTable'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  getAllConsumers,
-  updateConsumerStatus,
-} from '@/lib/mock-data/consumers'
-import type { ConsumerStatus, VerificationStatus } from '@/types/consumer'
+  getConsumersAction,
+  updateConsumerStatusAction,
+} from '@/lib/actions/admin-user-actions'
+import type { Profile } from '@/lib/actions/profile'
 
 type FilterTab = 'all' | 'verified' | 'unverified' | 'suspended'
 
@@ -59,7 +60,7 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
   )
 }
 
-function isVerified(status: VerificationStatus): boolean {
+function isVerified(status: string): boolean {
   return (
     status === 'fully_verified' ||
     status === 'email_verified' ||
@@ -68,10 +69,24 @@ function isVerified(status: VerificationStatus): boolean {
 }
 
 export default function UsersManagementPage() {
-  const [consumers, setConsumers] = useState(() => getAllConsumers())
+  const [consumers, setConsumers] = useState<Profile[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState<FilterTab>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
+
+  // Load consumers from Supabase
+  const loadConsumers = useCallback(async () => {
+    const result = await getConsumersAction()
+    if (result.success && result.consumers) {
+      setConsumers(result.consumers)
+    }
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    loadConsumers()
+  }, [loadConsumers])
 
   // Show feedback briefly then clear
   const showFeedback = useCallback((message: string) => {
@@ -87,12 +102,13 @@ export default function UsersManagementPage() {
     switch (activeFilter) {
       case 'verified':
         filtered = filtered.filter(
-          (c) => isVerified(c.verificationStatus) && c.status === 'active',
+          (c) => isVerified(c.verification_status) && c.status === 'active',
         )
         break
       case 'unverified':
         filtered = filtered.filter(
-          (c) => c.verificationStatus === 'unverified' && c.status === 'active',
+          (c) =>
+            c.verification_status === 'unverified' && c.status === 'active',
         )
         break
       case 'suspended':
@@ -106,17 +122,14 @@ export default function UsersManagementPage() {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(
         (c) =>
-          c.email.toLowerCase().includes(query) ||
-          c.firstName?.toLowerCase().includes(query) ||
-          c.lastName?.toLowerCase().includes(query),
+          c.first_name?.toLowerCase().includes(query) ||
+          c.last_name?.toLowerCase().includes(query) ||
+          c.id.toLowerCase().includes(query),
       )
     }
 
-    // Sort by createdAt descending (newest first)
-    return filtered.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
+    // Already sorted by created_at DESC from the server action
+    return filtered
   }, [consumers, activeFilter, searchQuery])
 
   // Calculate counts for tabs
@@ -124,10 +137,11 @@ export default function UsersManagementPage() {
     return {
       all: consumers.length,
       verified: consumers.filter(
-        (c) => isVerified(c.verificationStatus) && c.status === 'active',
+        (c) => isVerified(c.verification_status) && c.status === 'active',
       ).length,
       unverified: consumers.filter(
-        (c) => c.verificationStatus === 'unverified' && c.status === 'active',
+        (c) =>
+          c.verification_status === 'unverified' && c.status === 'active',
       ).length,
       suspended: consumers.filter((c) => c.status === 'suspended').length,
     }
@@ -137,11 +151,10 @@ export default function UsersManagementPage() {
   const stats = useMemo(() => {
     const total = consumers.length
     const verified = consumers.filter((c) =>
-      isVerified(c.verificationStatus),
+      isVerified(c.verification_status),
     ).length
-    // Mock "new this week" - in real app would filter by date
     const newThisWeek = consumers.filter((c) => {
-      const createdDate = new Date(c.createdAt)
+      const createdDate = new Date(c.created_at)
       const weekAgo = new Date()
       weekAgo.setDate(weekAgo.getDate() - 7)
       return createdDate >= weekAgo
@@ -151,23 +164,35 @@ export default function UsersManagementPage() {
   }, [consumers])
 
   const handleStatusChange = useCallback(
-    (consumerId: string, status: ConsumerStatus) => {
-      const updated = updateConsumerStatus(consumerId, status)
-      if (updated) {
-        setConsumers(getAllConsumers())
+    async (consumerId: string, status: 'active' | 'suspended') => {
+      const consumer = consumers.find((c) => c.id === consumerId)
+      const result = await updateConsumerStatusAction(consumerId, status)
+      if (result.success) {
+        // Reload consumers from server
+        await loadConsumers()
         const name =
-          updated.firstName || updated.lastName
-            ? `${updated.firstName || ''} ${updated.lastName || ''}`.trim()
-            : updated.email
+          consumer?.first_name || consumer?.last_name
+            ? `${consumer?.first_name || ''} ${consumer?.last_name || ''}`.trim()
+            : consumerId.slice(0, 8)
         showFeedback(
           status === 'suspended'
             ? `${name} has been suspended`
             : `${name} has been activated`,
         )
+      } else {
+        showFeedback(`Error: ${result.error || 'Failed to update status'}`)
       }
     },
-    [showFeedback],
+    [consumers, loadConsumers, showFeedback],
   )
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Spinner size={32} className="animate-spin text-amber-800" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -208,7 +233,7 @@ export default function UsersManagementPage() {
         />
         <input
           type="text"
-          placeholder="Search by name or email..."
+          placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"

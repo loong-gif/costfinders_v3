@@ -11,11 +11,15 @@ import {
   Users,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import {
+  getConsumerCountAction,
+  getPendingClaimsCountAction,
+} from '@/lib/actions/admin-user-actions'
 import { useAdminAuth } from '@/lib/context/adminAuthContext'
-import { consumers } from '@/lib/mock-data/consumers'
 
 // Inline mock data for pending moderation items
 const pendingModerationDeals = [
@@ -113,9 +117,24 @@ export function AdminDashboardClient({
   const { state } = useAdminAuth()
   const admin = state.admin
 
-  // Real counts from Supabase, mock for consumers (no real table yet)
-  const pendingModeration = 8 // Mock count as specified
-  const totalConsumers = consumers.length
+  const [totalConsumers, setTotalConsumers] = useState(0)
+  const [pendingModeration, setPendingModeration] = useState(0)
+
+  useEffect(() => {
+    async function loadMetrics() {
+      const [consumersResult, claimsResult] = await Promise.all([
+        getConsumerCountAction(),
+        getPendingClaimsCountAction(),
+      ])
+      if (consumersResult.success && consumersResult.count !== undefined) {
+        setTotalConsumers(consumersResult.count)
+      }
+      if (claimsResult.success && claimsResult.count !== undefined) {
+        setPendingModeration(claimsResult.count)
+      }
+    }
+    loadMetrics()
+  }, [])
 
   const metrics = [
     {

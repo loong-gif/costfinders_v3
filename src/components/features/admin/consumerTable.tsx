@@ -10,19 +10,14 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
-import { getClaimsCountForConsumer } from '@/lib/mock-data/consumers'
-import type {
-  Consumer,
-  ConsumerStatus,
-  VerificationStatus,
-} from '@/types/consumer'
+import type { Profile } from '@/lib/actions/profile'
 
 interface ConsumerTableProps {
-  consumers: Consumer[]
-  onStatusChange: (consumerId: string, status: ConsumerStatus) => void
+  consumers: Profile[]
+  onStatusChange: (consumerId: string, status: 'active' | 'suspended') => void
 }
 
-function getVerificationBadge(status: VerificationStatus) {
+function getVerificationBadge(status: string) {
   switch (status) {
     case 'fully_verified':
       return <Badge variant="success">Fully Verified</Badge>
@@ -35,7 +30,7 @@ function getVerificationBadge(status: VerificationStatus) {
   }
 }
 
-function getStatusBadge(status: ConsumerStatus) {
+function getStatusBadge(status: string) {
   switch (status) {
     case 'active':
       return <Badge variant="success">Active</Badge>
@@ -58,8 +53,8 @@ function ActionsDropdown({
   consumer,
   onStatusChange,
 }: {
-  consumer: Consumer
-  onStatusChange: (consumerId: string, status: ConsumerStatus) => void
+  consumer: Profile
+  onStatusChange: (consumerId: string, status: 'active' | 'suspended') => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -164,7 +159,7 @@ export function ConsumerTable({
                 Name
               </th>
               <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                Email
+                ID
               </th>
               <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
                 Phone
@@ -176,7 +171,7 @@ export function ConsumerTable({
                 Status
               </th>
               <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                Claims
+                Location
               </th>
               <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
                 Joined
@@ -202,15 +197,15 @@ export function ConsumerTable({
                       />
                     </div>
                     <span className="text-sm font-medium text-[#451a03]">
-                      {consumer.firstName || consumer.lastName
-                        ? `${consumer.firstName || ''} ${consumer.lastName || ''}`.trim()
+                      {consumer.first_name || consumer.last_name
+                        ? `${consumer.first_name || ''} ${consumer.last_name || ''}`.trim()
                         : 'No name'}
                     </span>
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f]">
-                    {consumer.email}
+                  <span className="text-sm text-[#78350f] font-mono text-xs">
+                    {consumer.id.slice(0, 8)}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -219,17 +214,19 @@ export function ConsumerTable({
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  {getVerificationBadge(consumer.verificationStatus)}
+                  {getVerificationBadge(consumer.verification_status)}
                 </td>
                 <td className="px-6 py-4">{getStatusBadge(consumer.status)}</td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#451a03]">
-                    {getClaimsCountForConsumer(consumer.id)}
+                  <span className="text-sm text-[#78350f]">
+                    {consumer.location_city && consumer.location_state
+                      ? `${consumer.location_city}, ${consumer.location_state}`
+                      : consumer.location_city || consumer.location_state || '-'}
                   </span>
                 </td>
                 <td className="px-6 py-4">
                   <span className="text-sm text-[#78350f]">
-                    {formatDate(consumer.createdAt)}
+                    {formatDate(consumer.created_at)}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
@@ -255,11 +252,13 @@ export function ConsumerTable({
                 </div>
                 <div>
                   <p className="font-medium text-[#451a03]">
-                    {consumer.firstName || consumer.lastName
-                      ? `${consumer.firstName || ''} ${consumer.lastName || ''}`.trim()
+                    {consumer.first_name || consumer.last_name
+                      ? `${consumer.first_name || ''} ${consumer.last_name || ''}`.trim()
                       : 'No name'}
                   </p>
-                  <p className="text-sm text-[#78350f]">{consumer.email}</p>
+                  <p className="text-sm text-[#78350f] font-mono text-xs">
+                    {consumer.id.slice(0, 8)}
+                  </p>
                 </div>
               </div>
               <ActionsDropdown
@@ -269,21 +268,23 @@ export function ConsumerTable({
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {getVerificationBadge(consumer.verificationStatus)}
+              {getVerificationBadge(consumer.verification_status)}
               {getStatusBadge(consumer.status)}
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-[#92400e]">Claims: </span>
+                <span className="text-[#92400e]">Location: </span>
                 <span className="text-[#451a03]">
-                  {getClaimsCountForConsumer(consumer.id)}
+                  {consumer.location_city && consumer.location_state
+                    ? `${consumer.location_city}, ${consumer.location_state}`
+                    : consumer.location_city || consumer.location_state || '-'}
                 </span>
               </div>
               <div>
                 <span className="text-[#92400e]">Joined: </span>
                 <span className="text-[#78350f]">
-                  {formatDate(consumer.createdAt)}
+                  {formatDate(consumer.created_at)}
                 </span>
               </div>
             </div>
