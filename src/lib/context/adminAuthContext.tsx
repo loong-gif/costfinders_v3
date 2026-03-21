@@ -6,13 +6,21 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
-import { admins } from '@/lib/mock-data'
-import type { Admin } from '@/types/admin'
+import {
+  adminSignInAction,
+  adminSignOutAction,
+} from '@/lib/actions/admin-auth'
+import type { AdminProfile } from '@/lib/actions/admin-profile'
+import { getAdminProfileAction } from '@/lib/actions/admin-profile'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
+import type { Admin, AdminPermission, AdminRole } from '@/types/admin'
 
-const STORAGE_KEY = 'costfinders_admin_id'
-const MOCK_NETWORK_DELAY_MS = 500
+// ---------------------------------------------------------------------------
+// Types (public interface — do not change)
+// ---------------------------------------------------------------------------
 
 interface AdminAuthState {
   admin: Admin | null
@@ -29,126 +37,171 @@ interface AdminAuthContextValue {
 
 const AdminAuthContext = createContext<AdminAuthContextValue | null>(null)
 
-function getInitialState(): AdminAuthState {
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Map a Supabase admin_profiles row + auth email to the Admin shape. */
+function profileToAdmin(
+  authId: string,
+  email: string,
+  profile: AdminProfile,
+): Admin {
   return {
+    id: authId,
+    email,
+    firstName: profile.first_name ?? '',
+    lastName: profile.last_name ?? '',
+    role: profile.role as AdminRole,
+    permissions: (profile.permissions ?? []) as AdminPermission[],
+    createdAt: profile.created_at,
+    updatedAt: profile.updated_at,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
+
+export function AdminAuthProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const [state, setState] = useState<AdminAuthState>({
     admin: null,
     isAuthenticated: false,
     isLoading: true,
     error: null,
-  }
-}
+  })
 
-function loadStoredAdminId(): string | null {
-  if (typeof window === 'undefined') return null
+  // Supabase browser client — stable across renders
+  const supabaseRef = useRef(createSupabaseBrowserClient())
 
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (!stored) return null
-    const data = JSON.parse(stored) as { adminId: string }
-    return data.adminId
-  } catch {
-    return null
-  }
-}
+  // -------------------------------------------------------------------
+  // Fetch admin profile for an authenticated user
+  // -------------------------------------------------------------------
+  const hydrateUser = useCallback(async () => {
+    const supabase = supabaseRef.current
 
-function saveAdminId(adminId: string) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ adminId }))
-}
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser()
 
-function clearStoredAuth() {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(STORAGE_KEY)
-}
-
-function findAdminByEmail(email: string): Admin | undefined {
-  const normalizedEmail = email.toLowerCase()
-  return admins.find((a) => a.email.toLowerCase() === normalizedEmail)
-}
-
-function findAdminById(adminId: string): Admin | undefined {
-  return admins.find((a) => a.id === adminId)
-}
-
-export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AdminAuthState>(getInitialState)
-
-  // Load stored admin on mount
-  useEffect(() => {
-    const adminId = loadStoredAdminId()
-    if (adminId) {
-      const admin = findAdminById(adminId)
-      if (admin) {
-        setState({
-          admin,
-          isAuthenticated: true,
-          isLoading: false,
-          error: null,
-        })
-        return
-      }
-    }
-    setState((prev) => ({ ...prev, isLoading: false }))
-  }, [])
-
-  const signIn = useCallback(
-    async (email: string, _password: string): Promise<void> => {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }))
-
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
-
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: 'Please enter a valid email address',
-        }))
-        throw new Error('Please enter a valid email address')
-      }
-
-      // Find admin by email (mock auth - no password check)
-      const admin = findAdminByEmail(email)
-      if (!admin) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: 'No admin account found with this email',
-        }))
-        throw new Error('No admin account found with this email')
-      }
-
-      // Update lastLoginAt
-      const updatedAdmin: Admin = {
-        ...admin,
-        lastLoginAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-
+    if (!authUser?.email) {
       setState({
-        admin: updatedAdmin,
-        isAuthenticated: true,
+        admin: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
       })
+      return
+    }
 
-      saveAdminId(updatedAdmin.id)
-    },
-    [],
-  )
+    // Only hydrate if the user has an admin role
+    const userRole = authUser.user_metadata?.role as string | undefined
+    if (userRole !== 'admin') {
+      setState({
+        admin: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
 
-  const signOut = useCallback(() => {
+    // Fetch admin profile from server action
+    const profileResult = await getAdminProfileAction()
+
+    if (!profileResult.success || !profileResult.profile) {
+      // User exists in auth but has no admin_profiles row yet
+      setState({
+        admin: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
+    const admin = profileToAdmin(
+      authUser.id,
+      authUser.email,
+      profileResult.profile,
+    )
+
     setState({
-      admin: null,
-      isAuthenticated: false,
+      admin,
+      isAuthenticated: true,
       isLoading: false,
       error: null,
     })
-    clearStoredAuth()
   }, [])
 
+  // -------------------------------------------------------------------
+  // On mount: check for existing session + subscribe to auth changes
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    hydrateUser()
+
+    const supabase = supabaseRef.current
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (
+        event === 'SIGNED_IN' ||
+        event === 'TOKEN_REFRESHED' ||
+        event === 'SIGNED_OUT'
+      ) {
+        hydrateUser()
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [hydrateUser])
+
+  // -------------------------------------------------------------------
+  // signIn — calls server action, then hydrates user from session
+  // -------------------------------------------------------------------
+  const signIn = useCallback(
+    async (email: string, password: string): Promise<void> => {
+      setState((prev) => ({ ...prev, isLoading: true, error: null }))
+
+      const result = await adminSignInAction(email, password)
+
+      if (!result.success) {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: result.error ?? 'Sign in failed',
+        }))
+        throw new Error(result.error ?? 'Sign in failed')
+      }
+
+      await hydrateUser()
+    },
+    [hydrateUser],
+  )
+
+  // -------------------------------------------------------------------
+  // signOut — calls server action, clears state
+  // -------------------------------------------------------------------
+  const signOut = useCallback(() => {
+    adminSignOutAction().then(() => {
+      setState({
+        admin: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+    })
+  }, [])
+
+  // -------------------------------------------------------------------
+  // Context value
+  // -------------------------------------------------------------------
   const value = useMemo<AdminAuthContextValue>(
     () => ({
       state,

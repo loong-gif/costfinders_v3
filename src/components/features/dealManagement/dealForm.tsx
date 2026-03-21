@@ -6,8 +6,12 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { createDeal, updateDeal } from '@/lib/mock-data/deals'
-import type { Deal, TreatmentCategory } from '@/types/deal'
+import {
+  createDealAction,
+  updateDealAction,
+} from '@/lib/actions/deal-management'
+import type { TreatmentCategory } from '@/types/deal'
+import type { Offer } from '@/types/supabase'
 
 const categories: { value: TreatmentCategory; label: string }[] = [
   { value: 'botox', label: 'Botox' },
@@ -49,27 +53,28 @@ interface FormErrors {
 
 interface DealFormProps {
   businessId: string
-  existingDeal?: Deal
+  existingDeal?: Offer
+  existingDealId?: number
   mode: 'create' | 'edit'
 }
 
-function getInitialFormData(deal?: Deal): DealFormData {
+function getInitialFormData(deal?: Offer): DealFormData {
   if (deal) {
     return {
-      title: deal.title,
-      description: deal.description,
-      category: deal.category,
-      originalPrice: deal.originalPrice.toString(),
-      dealPrice: deal.dealPrice.toString(),
-      unit: deal.unit,
-      minUnits: deal.minUnits?.toString() || '',
-      maxUnits: deal.maxUnits?.toString() || '',
-      validFrom: deal.validFrom.split('T')[0],
-      validUntil: deal.validUntil.split('T')[0],
-      termsAndConditions: deal.termsAndConditions,
-      imageUrl: deal.imageUrl || '',
-      isFeatured: deal.isFeatured,
-      isActive: deal.isActive,
+      title: deal.service_name ?? '',
+      description: deal.offer_raw_text ?? '',
+      category: (deal.service_category as TreatmentCategory) ?? 'botox',
+      originalPrice: deal.original_price?.toString() ?? '',
+      dealPrice: deal.discount_price?.toString() ?? '',
+      unit: deal.unit_type ?? '',
+      minUnits: deal.min_unit?.toString() ?? '',
+      maxUnits: '',
+      validFrom: deal.start_date?.split('T')[0] ?? '',
+      validUntil: deal.end_date?.split('T')[0] ?? '',
+      termsAndConditions: deal.eligibility ?? '',
+      imageUrl: '',
+      isFeatured: false,
+      isActive: true,
     }
   }
 
@@ -96,7 +101,7 @@ function getInitialFormData(deal?: Deal): DealFormData {
   }
 }
 
-export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
+export function DealForm({ businessId, existingDeal, existingDealId, mode }: DealFormProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<DealFormData>(() =>
     getInitialFormData(existingDeal),
@@ -202,42 +207,43 @@ export function DealForm({ businessId, existingDeal, mode }: DealFormProps) {
     setSubmitStatus('idle')
 
     try {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
       const originalPrice = Number.parseFloat(formData.originalPrice)
       const dealPrice = Number.parseFloat(formData.dealPrice)
       const discountPercent = Math.round(
         ((originalPrice - dealPrice) / originalPrice) * 100,
       )
 
-      const dealData = {
-        businessId,
-        title: formData.title.trim(),
-        description: formData.description.trim(),
-        category: formData.category,
-        originalPrice,
-        dealPrice,
-        discountPercent,
-        unit: formData.unit.trim(),
-        minUnits: formData.minUnits
-          ? Number.parseInt(formData.minUnits, 10)
-          : undefined,
-        maxUnits: formData.maxUnits
-          ? Number.parseInt(formData.maxUnits, 10)
-          : undefined,
-        validFrom: `${formData.validFrom}T00:00:00Z`,
-        validUntil: `${formData.validUntil}T23:59:59Z`,
-        termsAndConditions: formData.termsAndConditions.trim(),
-        imageUrl: formData.imageUrl.trim() || undefined,
-        isFeatured: formData.isFeatured,
-        isActive: formData.isActive,
+      // Map form fields to promo_offer_master columns
+      const mappedData = {
+        service_name: formData.title.trim(),
+        service_category: formData.category,
+        original_price: originalPrice,
+        discount_price: dealPrice,
+        discount_percent: discountPercent,
+        unit_type: formData.unit.trim(),
+        offer_raw_text: formData.description.trim(),
+        template_type: 'FIXED_PRICE',
+        start_date: formData.validFrom ? `${formData.validFrom}T00:00:00Z` : undefined,
+        end_date: formData.validUntil ? `${formData.validUntil}T23:59:59Z` : undefined,
+        min_unit: formData.minUnits || undefined,
       }
 
+      let result: { success: boolean; error?: string }
+
       if (mode === 'create') {
-        createDeal(dealData)
-      } else if (existingDeal) {
-        updateDeal(existingDeal.id, dealData)
+        result = await createDealAction(Number(businessId), mappedData)
+      } else {
+        const dealId = existingDealId ?? existingDeal?.id
+        if (!dealId) {
+          setSubmitStatus('error')
+          return
+        }
+        result = await updateDealAction(Number(dealId), Number(businessId), mappedData)
+      }
+
+      if (!result.success) {
+        setSubmitStatus('error')
+        return
       }
 
       setSubmitStatus('success')

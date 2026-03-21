@@ -11,6 +11,7 @@ function AdminLoginContent() {
   const router = useRouter()
   const { state, signIn } = useAdminAuth()
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Redirect to dashboard if already authenticated
@@ -25,7 +26,7 @@ function AdminLoginContent() {
     setIsSubmitting(true)
 
     try {
-      await signIn(email, '')
+      await signIn(email, password)
       router.push('/admin/dashboard')
     } catch {
       // Error is set in context state
@@ -93,10 +94,20 @@ function AdminLoginContent() {
               placeholder="admin@costfinders.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              error={state.error || undefined}
               required
               autoComplete="email"
               autoFocus
+            />
+
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={state.error || undefined}
+              required
+              autoComplete="current-password"
             />
 
             <Button
@@ -104,19 +115,11 @@ function AdminLoginContent() {
               size="lg"
               className="w-full"
               isLoading={isSubmitting}
-              disabled={!email || isSubmitting}
+              disabled={!email || !password || isSubmitting}
             >
               Sign In
             </Button>
           </form>
-
-          {/* Help Text */}
-          <div className="mt-6 pt-6 border-t border-[#d4c4b0]">
-            <p className="text-xs text-[#92400e] text-center">
-              For demo purposes, use: admin@costfinders.com,
-              moderator@costfinders.com, or support@costfinders.com
-            </p>
-          </div>
         </div>
       </div>
     </div>

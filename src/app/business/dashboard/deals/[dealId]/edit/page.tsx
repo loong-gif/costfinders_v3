@@ -6,8 +6,8 @@ import { DealForm } from '@/components/features/dealManagement/dealForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { getDealById } from '@/lib/mock-data/deals'
-import type { Deal } from '@/types/deal'
+import { getDealByIdForBusinessAction } from '@/lib/actions/deal-management'
+import type { Offer } from '@/types/supabase'
 
 export default function EditDealPage() {
   const router = useRouter()
@@ -16,14 +16,36 @@ export default function EditDealPage() {
   const { state } = useBusinessAuth()
   const businessId = state.owner?.businessId
 
-  const [deal, setDeal] = useState<Deal | null | undefined>(undefined)
+  const [deal, setDeal] = useState<Offer | null | undefined>(undefined)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (dealId) {
-      const foundDeal = getDealById(dealId)
-      setDeal(foundDeal || null)
+    async function loadDeal() {
+      if (!dealId || !businessId) return
+
+      const result = await getDealByIdForBusinessAction(
+        Number(dealId),
+        Number(businessId),
+      )
+
+      if (result.success && result.deal) {
+        setDeal(result.deal)
+      } else {
+        setLoadError(result.error ?? null)
+        setDeal(null)
+      }
     }
-  }, [dealId])
+
+    loadDeal()
+  }, [dealId, businessId])
+
+  if (!businessId) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-[#78350f]">No business linked to your account.</p>
+      </div>
+    )
+  }
 
   // Loading state
   if (deal === undefined) {
@@ -55,16 +77,16 @@ export default function EditDealPage() {
     )
   }
 
-  // Deal not found
+  // Deal not found or access denied
   if (deal === null) {
     return (
       <Card variant="glass" padding="lg">
         <div className="text-center py-12">
           <h2 className="text-lg font-medium text-[#451a03] mb-2">
-            Deal Not Found
+            {loadError === 'Deal not found.' ? 'Deal Not Found' : 'Cannot Load Deal'}
           </h2>
           <p className="text-[#78350f] mb-6">
-            The deal you are looking for does not exist or has been deleted.
+            {loadError ?? 'The deal you are looking for does not exist or has been deleted.'}
           </p>
           <Button onClick={() => router.push('/business/dashboard/deals')}>
             Back to Deals
@@ -74,32 +96,12 @@ export default function EditDealPage() {
     )
   }
 
-  // Check if deal belongs to this business
-  if (deal.businessId !== businessId) {
-    return (
-      <Card variant="glass" padding="lg">
-        <div className="text-center py-12">
-          <h2 className="text-lg font-medium text-[#451a03] mb-2">
-            Access Denied
-          </h2>
-          <p className="text-[#78350f] mb-6">
-            You do not have permission to edit this deal.
-          </p>
-          <Button onClick={() => router.push('/business/dashboard/deals')}>
-            Back to Deals
-          </Button>
-        </div>
-      </Card>
-    )
-  }
-
-  if (!businessId) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#78350f]">No business linked to your account.</p>
-      </div>
-    )
-  }
-
-  return <DealForm businessId={businessId} existingDeal={deal} mode="edit" />
+  return (
+    <DealForm
+      businessId={businessId}
+      existingDeal={deal}
+      existingDealId={deal.id}
+      mode="edit"
+    />
+  )
 }
