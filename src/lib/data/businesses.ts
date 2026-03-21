@@ -1,9 +1,10 @@
+import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Business } from '@/types/supabase'
 
 const TABLE = 'master_business_info'
 
-export async function getBusinesses(city?: string): Promise<Business[]> {
+export const getBusinesses = cache(async function getBusinesses(city?: string): Promise<Business[]> {
   let query = supabase
     .from(TABLE)
     .select(
@@ -18,7 +19,7 @@ export async function getBusinesses(city?: string): Promise<Business[]> {
   const { data, error } = await query
   if (error) throw error
   return (data ?? []) as Business[]
-}
+})
 
 export async function getBusinessById(id: number): Promise<Business | null> {
   const { data, error } = await supabase
@@ -34,7 +35,7 @@ export async function getBusinessById(id: number): Promise<Business | null> {
   return data as Business
 }
 
-export async function getBusinessCities(): Promise<
+export const getBusinessCities = cache(async function getBusinessCities(): Promise<
   { city: string; count: number }[]
 > {
   const { data, error } = await supabase.rpc('get_business_cities')
@@ -59,7 +60,7 @@ export async function getBusinessCities(): Promise<
   }
 
   return data ?? []
-}
+})
 
 export async function getBusinessCategories(): Promise<
   { category: string; count: number }[]

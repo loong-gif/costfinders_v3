@@ -54,7 +54,7 @@ export function HeroSection({
           >
             <TrendUp size={16} weight="bold" className="text-amber-300" />
             <span className="text-sm text-white/90 font-medium">
-              {totalOffers} deals from {totalBusinesses} providers
+              {totalOffers} deals from {totalBusinesses} {totalBusinesses === 1 ? 'provider' : 'providers'}
             </span>
           </div>
 

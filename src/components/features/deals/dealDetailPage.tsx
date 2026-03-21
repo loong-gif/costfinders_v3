@@ -6,9 +6,9 @@ import {
   Star,
 } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
+import { DealHeroImage } from '@/components/features/dealHeroImage'
 import { DealSidebar } from '@/components/features/dealSidebar'
 import { PricingBreakdown } from '@/components/features/pricingBreakdown'
-import { BlurredImage } from '@/components/patterns/blurredImage'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import type { AnonymousDeal, Deal, TreatmentCategory } from '@/types/deal'
@@ -46,11 +46,11 @@ export function DealDetailPage({ deal, fullDeal }: DealDetailPageProps) {
           <div className="lg:col-span-2 space-y-6">
             {/* Hero Image */}
             <div className="relative aspect-video bg-[#faf5ee] rounded-2xl overflow-hidden">
-              {/* Blurred Image with Lock Overlay */}
-              <BlurredImage
+              {/* Blurred Image — lock overlay hidden when deal is claimed */}
+              <DealHeroImage
+                dealId={fullDeal.id}
                 src={deal.imageUrl}
                 alt={deal.title}
-                sizes="(max-width: 1024px) 100vw, 66vw"
               />
 
               {/* Badges (above blur) */}

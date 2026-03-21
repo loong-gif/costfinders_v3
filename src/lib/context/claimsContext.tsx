@@ -31,6 +31,7 @@ interface ClaimsContextValue {
     preferredTime?: string,
     notes?: string,
   ) => Promise<Claim>
+  refreshClaims: () => Promise<void>
   getClaim: (claimId: string) => Claim | undefined
   getClaimByDealId: (dealId: string) => Claim | undefined
   getClaimsByStatus: (status: ClaimStatus) => Claim[]
@@ -74,6 +75,17 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     isLoading: true,
   })
 
+  // Shared fetch function — used by effect and refreshClaims
+  const fetchClaims = useCallback(async () => {
+    setState((prev) => ({ ...prev, isLoading: true }))
+    const result = await getClaimsAction()
+    if (result.success && result.claims) {
+      setState({ claims: result.claims.map(claimRowToClaim), isLoading: false })
+    } else {
+      setState({ claims: [], isLoading: false })
+    }
+  }, [])
+
   // Fetch claims from Supabase when the user changes
   useEffect(() => {
     if (!authState.user) {
@@ -82,30 +94,17 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     }
 
     let cancelled = false
-
-    async function fetchClaims() {
-      setState((prev) => ({ ...prev, isLoading: true }))
-
-      const result = await getClaimsAction()
-
+    fetchClaims().then(() => {
       if (cancelled) return
+    })
+    return () => { cancelled = true }
+  }, [authState.user, fetchClaims])
 
-      if (result.success && result.claims) {
-        setState({
-          claims: result.claims.map(claimRowToClaim),
-          isLoading: false,
-        })
-      } else {
-        setState({ claims: [], isLoading: false })
-      }
-    }
-
-    fetchClaims()
-
-    return () => {
-      cancelled = true
-    }
-  }, [authState.user])
+  /** Re-fetch claims from the server (call after external claim creation) */
+  const refreshClaims = useCallback(async () => {
+    if (!authState.user) return
+    await fetchClaims()
+  }, [authState.user, fetchClaims])
 
   // -------------------------------------------------------------------
   // createClaim — calls server action, adds to local state on success
@@ -193,11 +192,12 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     () => ({
       state,
       createClaim,
+      refreshClaims,
       getClaim,
       getClaimByDealId,
       getClaimsByStatus,
     }),
-    [state, createClaim, getClaim, getClaimByDealId, getClaimsByStatus],
+    [state, createClaim, refreshClaims, getClaim, getClaimByDealId, getClaimsByStatus],
   )
 
   return (

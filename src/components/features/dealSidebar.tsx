@@ -6,6 +6,7 @@ import { ClaimCTA } from '@/components/features/claimCTA'
 import type { RevealedBusiness } from '@/lib/actions/claims'
 import { getBusinessRevealAction } from '@/lib/actions/claims'
 import { useAuth } from '@/lib/context/authContext'
+import { useClaims } from '@/lib/context/claimsContext'
 import type { Deal } from '@/types/deal'
 
 interface DealSidebarProps {
@@ -15,6 +16,7 @@ interface DealSidebarProps {
 export function DealSidebar({ deal }: DealSidebarProps) {
   const { state } = useAuth()
   const { isAuthenticated, isLoading: authLoading } = state
+  const { refreshClaims } = useClaims()
 
   const [revealState, setRevealState] = useState<{
     loading: boolean
@@ -69,7 +71,7 @@ export function DealSidebar({ deal }: DealSidebarProps) {
       businessId={deal.businessId}
       dealTitle={deal.title}
       isAuthenticated={isAuthenticated}
-      onClaimSuccess={fetchRevealStatus}
+      onClaimSuccess={() => { fetchRevealStatus(); refreshClaims() }}
     />
   )
 }

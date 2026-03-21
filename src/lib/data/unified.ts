@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import type { TreatmentCategory } from '@/types/deal'
 import {
   businessToProvider,
@@ -35,13 +36,13 @@ export function cityToSlug(cityName: string): string {
  * Uses ilike query to handle case differences.
  * Returns null if no matching city found.
  */
-export async function getCityNameFromSlug(
+export const getCityNameFromSlug = cache(async function getCityNameFromSlug(
   slug: string,
 ): Promise<string | null> {
   const cities = await getBusinessCities()
   const match = cities.find((c) => c.city && cityToSlug(c.city) === slug)
   return match?.city ?? null
-}
+})
 
 // ────────────────────────────────────────────────────────
 // Deal / Offer queries (replaces mock-data/utils.ts)
@@ -97,18 +98,18 @@ export async function getDealWithBusinessId(id: string) {
   }
 }
 
-export async function getDealsForCitySlug(citySlug: string) {
+export const getDealsForCitySlug = cache(async function getDealsForCitySlug(citySlug: string) {
   const cityName = await getCityNameFromSlug(citySlug)
   if (!cityName) return []
   return getDealsByCity(cityName)
-}
+})
 
 export async function getDealCountForCitySlug(citySlug: string) {
   const deals = await getDealsForCitySlug(citySlug)
   return deals.length
 }
 
-export async function getDealsForTreatmentAndCity(
+export const getDealsForTreatmentAndCity = cache(async function getDealsForTreatmentAndCity(
   category: TreatmentCategory,
   citySlug: string,
 ) {
@@ -124,7 +125,7 @@ export async function getDealsForTreatmentAndCity(
     ),
   )
   return results.flat().map(offerToAnonymousDeal)
-}
+})
 
 export async function getDealCountForTreatmentAndCity(
   category: TreatmentCategory,
@@ -300,10 +301,10 @@ export async function getProvidersByCity(city: string) {
   return businesses.map(businessToProvider)
 }
 
-export async function getBusinessCountForCity(cityName: string) {
+export const getBusinessCountForCity = cache(async function getBusinessCountForCity(cityName: string) {
   const businesses = await getBusinesses(cityName)
   return businesses.length
-}
+})
 
 /** Get deals for a specific business by its Supabase ID */
 export async function getDealsForBusiness(businessId: number) {

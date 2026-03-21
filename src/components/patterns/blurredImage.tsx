@@ -8,6 +8,8 @@ interface BlurredImageProps {
   sizes?: string
   className?: string
   priority?: boolean
+  /** When true, hides the lock overlay (deal has been claimed) */
+  unlocked?: boolean
 }
 
 export function BlurredImage({
@@ -17,6 +19,7 @@ export function BlurredImage({
   sizes,
   className = '',
   priority = false,
+  unlocked = false,
 }: BlurredImageProps) {
   return (
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
@@ -40,15 +43,17 @@ export function BlurredImage({
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-[#e8ddd0]/60" />
 
-      {/* Lock Icon + Message */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-        <div className="w-16 h-16 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] flex items-center justify-center">
-          <Lock size={32} weight="light" className="text-[#78350f]" />
+      {/* Lock Icon + Message (hidden when deal is claimed) */}
+      {!unlocked && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+          <div className="w-16 h-16 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] flex items-center justify-center">
+            <Lock size={32} weight="light" className="text-[#78350f]" />
+          </div>
+          <span className="text-xs text-[#92400e] font-medium">
+            Unlock with account
+          </span>
         </div>
-        <span className="text-xs text-[#92400e] font-medium">
-          Unlock with account
-        </span>
-      </div>
+      )}
     </div>
   )
 }

@@ -35,11 +35,14 @@ function formatRelativeTime(dateString: string): string {
 }
 
 function formatDate(dateString: string): string {
+  // Date-only strings (YYYY-MM-DD) are parsed as UTC midnight by Date constructor.
+  // Use timeZone: 'UTC' to avoid off-by-one display in local timezones.
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'UTC',
   })
 }
 
