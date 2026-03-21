@@ -22,9 +22,7 @@ import {
 } from '@/lib/actions/deal-management'
 import {
   createBoost,
-  getActiveBoostForDeal,
   getActiveBoosts,
-  isDealEligibleForSponsorship,
 } from '@/lib/mock-data/sponsorship'
 import type { Deal } from '@/types/deal'
 import type { Offer } from '@/types/supabase'
@@ -88,7 +86,7 @@ export function DealList({ businessId }: DealListProps) {
     }
   }, [allDeals])
 
-  // Count sponsored deals
+  // Count sponsored deals (stays mock)
   const sponsoredCount = useMemo(() => {
     return getActiveBoosts(businessId).length
   }, [businessId])
