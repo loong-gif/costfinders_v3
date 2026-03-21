@@ -117,6 +117,25 @@
 
 ---
 
+## Pricing Guides (SEO Content)
+
+| Route | Description |
+|-------|-------------|
+| `/guides/botox-pricing-tucson` | Botox pricing guide — Tucson, AZ (10 deals, 1 provider) |
+| `/guides/botox-pricing-oklahoma-city` | Botox pricing guide — Oklahoma City, OK (32 deals, 11 providers) |
+| `/guides/botox-pricing-irvine` | Botox pricing guide — Irvine, CA (23 deals, 6 providers) |
+| `/guides/botox-pricing-tustin` | Botox pricing guide — Tustin, CA (6 deals, 3 providers) |
+| `/guides/botox-pricing-santa-ana` | Botox pricing guide — Santa Ana, CA (4 deals, 2 providers) |
+| `/guides/fillers-pricing-tucson` | Fillers pricing guide — Tucson, AZ (15 deals, 1 provider) |
+| `/guides/fillers-pricing-oklahoma-city` | Fillers pricing guide — Oklahoma City, OK (34 deals, 8 providers) |
+| `/guides/fillers-pricing-irvine` | Fillers pricing guide — Irvine, CA (56 deals, 5 providers) |
+| `/guides/fillers-pricing-tustin` | Fillers pricing guide — Tustin, CA (20 deals, 2 providers) |
+| `/guides/fillers-pricing-santa-ana` | Fillers pricing guide — Santa Ana, CA (21 deals, 2 providers) |
+
+> Content generated via Perplexity research + Supabase pricing data. Stored as JSON in `src/content/guides/`. Expand with `npm run generate:guides`.
+
+---
+
 ## Summary
 
 | User Type | Page Count |
@@ -125,7 +144,8 @@
 | Business | 17 |
 | Admin | 13 |
 | SEO / Location | 6 (dynamic) |
-| **Total** | **45 pages** |
+| SEO / Pricing Guides | 10 |
+| **Total** | **55 pages** |
 
 > Note: SEO pages generate 42+ static variations via `generateStaticParams`
 
