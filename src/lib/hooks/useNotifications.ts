@@ -20,8 +20,10 @@ export function useNotifications() {
   // Fetch unread count (used on mount + polling)
   const fetchUnreadCount = useCallback(async () => {
     try {
-      const count = await getUnreadCountAction()
-      setUnreadCount(count)
+      const result = await getUnreadCountAction()
+      if (result.success) {
+        setUnreadCount(result.count ?? 0)
+      }
     } catch {
       // Silently fail — bell just won't update
     }
@@ -44,11 +46,12 @@ export function useNotifications() {
   const loadNotifications = useCallback(async () => {
     setIsLoading(true)
     try {
-      const data = await getNotificationsAction(20)
-      setNotifications(data)
-      // Also refresh count since we have fresh data
-      const unread = data.filter((n) => !n.is_read).length
-      setUnreadCount(unread)
+      const result = await getNotificationsAction(20)
+      if (result.success && result.notifications) {
+        setNotifications(result.notifications)
+        const unread = result.notifications.filter((n) => !n.is_read).length
+        setUnreadCount(unread)
+      }
     } catch {
       // Keep existing notifications on error
     } finally {
@@ -68,10 +71,12 @@ export function useNotifications() {
       await markAsReadAction(id)
     } catch {
       // Revert on failure — refetch
-      const data = await getNotificationsAction(20)
-      setNotifications(data)
-      const unread = data.filter((n) => !n.is_read).length
-      setUnreadCount(unread)
+      const result = await getNotificationsAction(20)
+      if (result.success && result.notifications) {
+        setNotifications(result.notifications)
+        const unread = result.notifications.filter((n) => !n.is_read).length
+        setUnreadCount(unread)
+      }
     }
   }, [])
 
@@ -85,10 +90,12 @@ export function useNotifications() {
       await markAllReadAction()
     } catch {
       // Revert on failure — refetch
-      const data = await getNotificationsAction(20)
-      setNotifications(data)
-      const unread = data.filter((n) => !n.is_read).length
-      setUnreadCount(unread)
+      const result = await getNotificationsAction(20)
+      if (result.success && result.notifications) {
+        setNotifications(result.notifications)
+        const unread = result.notifications.filter((n) => !n.is_read).length
+        setUnreadCount(unread)
+      }
     }
   }, [])
 

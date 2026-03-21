@@ -1,9 +1,23 @@
 import { dbCategoryToTreatment } from '@/lib/data/adapters'
 import { getOffersWithBusinesses } from '@/lib/data/offers'
-import type { Deal } from '@/types/deal'
+import type { Deal, ModerationStatus } from '@/types/deal'
 import { DealModerationClient } from './dealsClient'
 
 export const dynamic = 'force-dynamic'
+
+const VALID_MODERATION_STATUSES = new Set<ModerationStatus>([
+  'pending_review',
+  'approved',
+  'rejected',
+  'changes_requested',
+])
+
+function toModerationStatus(value: string | null): ModerationStatus {
+  if (value && VALID_MODERATION_STATUSES.has(value as ModerationStatus)) {
+    return value as ModerationStatus
+  }
+  return 'approved'
+}
 
 export default async function DealModerationPage() {
   // Fetch real offers from Supabase
@@ -13,6 +27,7 @@ export default async function DealModerationPage() {
   const deals: Deal[] = offers.map((offer) => ({
     id: String(offer.id),
     businessId: String(offer.business_id ?? 0),
+    businessName: offer.master_business_info?.name ?? undefined,
     title:
       offer.service_name ??
       offer.offer_raw_text?.slice(0, 60) ??
@@ -29,14 +44,14 @@ export default async function DealModerationPage() {
       offer.start_date ?? offer.created_at ?? new Date().toISOString(),
     validUntil: offer.end_date ?? '',
     termsAndConditions: offer.eligibility ?? '',
-    isActive: true,
+    isActive: toModerationStatus(offer.moderation_status) === 'approved',
     isFeatured: false,
     isSponsored: false,
     claimCount: 0,
     viewCount: 0,
     createdAt: offer.created_at ?? new Date().toISOString(),
     updatedAt: offer.created_at ?? new Date().toISOString(),
-    moderationStatus: 'approved' as const,
+    moderationStatus: toModerationStatus(offer.moderation_status),
   }))
 
   return <DealModerationClient initialDeals={deals} />

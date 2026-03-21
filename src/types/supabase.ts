@@ -48,6 +48,7 @@ export interface Offer {
   offer_content: Record<string, unknown> | null
   start_date: string | null
   end_date: string | null
+  moderation_status: string | null
   created_at: string | null
 }
 

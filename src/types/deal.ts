@@ -15,6 +15,7 @@ export type ModerationStatus =
 export interface Deal {
   id: string
   businessId: string
+  businessName?: string
   title: string
   description: string
   category: TreatmentCategory
