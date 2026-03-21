@@ -2,7 +2,14 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PROTECTED_ROUTES = ['/dashboard']
+/** Routes requiring authentication (any role). */
+const AUTH_REQUIRED_ROUTES = ['/dashboard']
+
+/** Routes requiring a specific user_metadata.role. */
+const ROLE_ROUTES: { prefix: string; role: string; fallback: string }[] = [
+  { prefix: '/business/dashboard', role: 'business', fallback: '/business' },
+  { prefix: '/admin/dashboard', role: 'admin', fallback: '/' },
+]
 
 export default async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -33,11 +40,33 @@ export default async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
+  const { pathname } = request.nextUrl
+
+  // --- Role-gated routes (check before generic auth) ---
+  for (const route of ROLE_ROUTES) {
+    if (pathname.startsWith(route.prefix)) {
+      if (!user) {
+        const url = request.nextUrl.clone()
+        url.pathname = route.fallback
+        url.searchParams.set('signin', 'required')
+        return NextResponse.redirect(url)
+      }
+      const userRole = user.user_metadata?.role as string | undefined
+      if (userRole !== route.role) {
+        const url = request.nextUrl.clone()
+        url.pathname = route.fallback
+        return NextResponse.redirect(url)
+      }
+      return supabaseResponse
+    }
+  }
+
+  // --- Generic auth-required routes ---
+  const needsAuth = AUTH_REQUIRED_ROUTES.some((route) =>
+    pathname.startsWith(route),
   )
 
-  if (isProtectedRoute && !user) {
+  if (needsAuth && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/'
     url.searchParams.set('signin', 'required')

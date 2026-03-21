@@ -6,17 +6,31 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
-import { businessOwners } from '@/lib/mock-data/businessOwners'
+import {
+  businessSignInAction,
+  businessSignOutAction,
+  businessSignUpAction,
+} from '@/lib/actions/business-auth'
+import type { BusinessProfile } from '@/lib/actions/business-profile'
+import {
+  getBusinessProfileAction,
+  linkBusinessAction,
+  updateClaimStatusAction,
+  updateVerificationStatusAction,
+} from '@/lib/actions/business-profile'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type {
   BusinessClaimStatus,
   BusinessOwner,
   BusinessVerificationStatus,
 } from '@/types/businessOwner'
 
-const STORAGE_KEY = 'costfinders_business_auth'
-const MOCK_NETWORK_DELAY_MS = 500
+// ---------------------------------------------------------------------------
+// Types (public interface — do not change)
+// ---------------------------------------------------------------------------
 
 interface BusinessAuthState {
   owner: BusinessOwner | null
@@ -42,292 +56,296 @@ interface BusinessAuthContextValue {
 
 const BusinessAuthContext = createContext<BusinessAuthContextValue | null>(null)
 
-function getInitialState(): BusinessAuthState {
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Map a Supabase business_profiles row + auth email to the BusinessOwner shape. */
+function profileToBusinessOwner(
+  authId: string,
+  email: string,
+  profile: BusinessProfile,
+): BusinessOwner {
   return {
-    owner: null,
-    isAuthenticated: false,
-    isLoading: true,
-    error: null,
+    id: authId,
+    email,
+    firstName: profile.first_name ?? undefined,
+    lastName: profile.last_name ?? undefined,
+    phone: profile.phone ?? undefined,
+    businessId: profile.business_id ? String(profile.business_id) : undefined,
+    verificationStatus: profile.verification_status,
+    claimStatus: profile.claim_status,
+    createdAt: profile.created_at,
+    updatedAt: profile.updated_at,
   }
 }
 
-function loadStoredOwner(): string | null {
-  if (typeof window === 'undefined') return null
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (!stored) return null
-    const data = JSON.parse(stored) as { ownerId: string }
-    return data.ownerId
-  } catch {
-    return null
-  }
-}
-
-function saveOwnerId(ownerId: string) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ownerId }))
-}
-
-function clearStoredAuth() {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(STORAGE_KEY)
-}
-
-// Mock-only: tracks sign-ups during session. Replaced by Supabase queries in production.
-const dynamicOwners: BusinessOwner[] = []
-
-function findOwnerByEmail(email: string): BusinessOwner | undefined {
-  const normalizedEmail = email.toLowerCase()
-  // Check pre-seeded owners first, then dynamic ones
-  return (
-    businessOwners.find((o) => o.email.toLowerCase() === normalizedEmail) ||
-    dynamicOwners.find((o) => o.email.toLowerCase() === normalizedEmail)
-  )
-}
-
-function findOwnerById(ownerId: string): BusinessOwner | undefined {
-  // Check pre-seeded owners first, then dynamic ones
-  return (
-    businessOwners.find((o) => o.id === ownerId) ||
-    dynamicOwners.find((o) => o.id === ownerId)
-  )
-}
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
 
 export function BusinessAuthProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [state, setState] = useState<BusinessAuthState>(getInitialState)
+  const [state, setState] = useState<BusinessAuthState>({
+    owner: null,
+    isAuthenticated: false,
+    isLoading: true,
+    error: null,
+  })
 
-  // Load stored owner on mount
-  useEffect(() => {
-    const ownerId = loadStoredOwner()
-    if (ownerId) {
-      const owner = findOwnerById(ownerId)
-      if (owner) {
-        setState({
-          owner,
-          isAuthenticated: true,
-          isLoading: false,
-          error: null,
-        })
-        return
-      }
+  // Supabase browser client — stable across renders
+  const supabaseRef = useRef(createSupabaseBrowserClient())
+
+  // -------------------------------------------------------------------
+  // Fetch business profile for an authenticated user
+  // -------------------------------------------------------------------
+  const hydrateUser = useCallback(async () => {
+    const supabase = supabaseRef.current
+
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser()
+
+    if (!authUser?.email) {
+      setState({
+        owner: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
     }
-    setState((prev) => ({ ...prev, isLoading: false }))
+
+    // Only hydrate if the user has a business role
+    const userRole = authUser.user_metadata?.role as string | undefined
+    if (userRole !== 'business') {
+      setState({
+        owner: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
+    // Fetch business profile from server action
+    const profileResult = await getBusinessProfileAction()
+
+    if (!profileResult.success || !profileResult.profile) {
+      // User exists in auth but has no business_profiles row yet
+      setState({
+        owner: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
+    const owner = profileToBusinessOwner(
+      authUser.id,
+      authUser.email,
+      profileResult.profile,
+    )
+
+    setState({
+      owner,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    })
   }, [])
 
+  // -------------------------------------------------------------------
+  // On mount: check for existing session + subscribe to auth changes
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    hydrateUser()
+
+    const supabase = supabaseRef.current
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (
+        event === 'SIGNED_IN' ||
+        event === 'TOKEN_REFRESHED' ||
+        event === 'SIGNED_OUT'
+      ) {
+        hydrateUser()
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [hydrateUser])
+
+  // -------------------------------------------------------------------
+  // signUp — calls server action, sets state for email verification
+  // -------------------------------------------------------------------
   const signUp = useCallback(
     async (
       email: string,
-      _password: string,
+      password: string,
       firstName?: string,
       lastName?: string,
     ): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
+      const result = await businessSignUpAction(
+        email,
+        password,
+        firstName,
+        lastName,
+      )
 
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
+      if (!result.success) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'Please enter a valid email address',
+          error: result.error ?? 'Sign up failed',
         }))
-        throw new Error('Please enter a valid email address')
+        throw new Error(result.error ?? 'Sign up failed')
       }
 
-      // Check if email already exists
-      const existingOwner = findOwnerByEmail(email)
-      if (existingOwner) {
+      // If email verification is needed, don't sign in yet
+      if (result.needsEmailVerification) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'An account with this email already exists',
+          error: null,
         }))
-        throw new Error('An account with this email already exists')
+        return
       }
 
-      // Create new mock business owner
-      const now = new Date().toISOString()
-      const newOwner: BusinessOwner = {
-        id: `owner-${Date.now()}`,
-        email: email.toLowerCase(),
-        firstName: firstName || undefined,
-        lastName: lastName || undefined,
-        verificationStatus: 'unverified',
-        claimStatus: 'none',
-        createdAt: now,
-        updatedAt: now,
-      }
-
-      // Add to dynamic owners
-      dynamicOwners.push(newOwner)
-
-      // Update state and persist
-      setState({
-        owner: newOwner,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      })
-
-      saveOwnerId(newOwner.id)
+      // If auto-confirmed, hydrate user
+      await hydrateUser()
     },
-    [],
+    [hydrateUser],
   )
 
+  // -------------------------------------------------------------------
+  // signIn — calls server action, then hydrates user from session
+  // -------------------------------------------------------------------
   const signIn = useCallback(
-    async (email: string, _password: string): Promise<void> => {
+    async (email: string, password: string): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, MOCK_NETWORK_DELAY_MS))
+      const result = await businessSignInAction(email, password)
 
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
+      if (!result.success) {
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error: 'Please enter a valid email address',
+          error: result.error ?? 'Sign in failed',
         }))
-        throw new Error('Please enter a valid email address')
+        throw new Error(result.error ?? 'Sign in failed')
       }
 
-      // Find owner by email (mock auth - no password check)
-      const owner = findOwnerByEmail(email)
-      if (!owner) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: 'No business account found with this email',
-        }))
-        throw new Error('No business account found with this email')
-      }
+      await hydrateUser()
+    },
+    [hydrateUser],
+  )
 
-      // Update timestamps
-      const updatedOwner: BusinessOwner = {
-        ...owner,
-        updatedAt: new Date().toISOString(),
-      }
-
-      // Update in dynamic owners
-      const ownerIndex = dynamicOwners.findIndex((o) => o.id === owner.id)
-      if (ownerIndex !== -1) {
-        dynamicOwners[ownerIndex] = updatedOwner
-      }
-
+  // -------------------------------------------------------------------
+  // signOut — calls server action, clears state
+  // -------------------------------------------------------------------
+  const signOut = useCallback(() => {
+    businessSignOutAction().then(() => {
       setState({
-        owner: updatedOwner,
-        isAuthenticated: true,
+        owner: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
       })
-
-      saveOwnerId(updatedOwner.id)
-    },
-    [],
-  )
-
-  const signOut = useCallback(() => {
-    setState({
-      owner: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
     })
-    clearStoredAuth()
   }, [])
 
+  // -------------------------------------------------------------------
+  // updateVerificationStatus — calls server action, optimistic update
+  // -------------------------------------------------------------------
   const updateVerificationStatus = useCallback(
     (status: BusinessVerificationStatus) => {
       setState((prev) => {
         if (!prev.owner) return prev
-
-        const now = new Date().toISOString()
-        const updatedOwner: BusinessOwner = {
-          ...prev.owner,
-          verificationStatus: status,
-          updatedAt: now,
-        }
-
-        // Update in dynamic owners
-        const ownerIndex = dynamicOwners.findIndex(
-          (o) => o.id === updatedOwner.id,
-        )
-        if (ownerIndex !== -1) {
-          dynamicOwners[ownerIndex] = updatedOwner
-        }
-
         return {
           ...prev,
-          owner: updatedOwner,
+          owner: {
+            ...prev.owner,
+            verificationStatus: status,
+            updatedAt: new Date().toISOString(),
+          },
+        }
+      })
+
+      updateVerificationStatusAction(status).then((result) => {
+        if (!result.success) {
+          hydrateUser()
         }
       })
     },
-    [],
+    [hydrateUser],
   )
 
-  const updateClaimStatus = useCallback((status: BusinessClaimStatus) => {
-    setState((prev) => {
-      if (!prev.owner) return prev
+  // -------------------------------------------------------------------
+  // updateClaimStatus — calls server action, optimistic update
+  // -------------------------------------------------------------------
+  const updateClaimStatus = useCallback(
+    (status: BusinessClaimStatus) => {
+      setState((prev) => {
+        if (!prev.owner) return prev
+        return {
+          ...prev,
+          owner: {
+            ...prev.owner,
+            claimStatus: status,
+            updatedAt: new Date().toISOString(),
+          },
+        }
+      })
 
-      const now = new Date().toISOString()
-      const updatedOwner: BusinessOwner = {
-        ...prev.owner,
-        claimStatus: status,
-        updatedAt: now,
-      }
+      updateClaimStatusAction(status).then((result) => {
+        if (!result.success) {
+          hydrateUser()
+        }
+      })
+    },
+    [hydrateUser],
+  )
 
-      // Update in dynamic owners
-      const ownerIndex = dynamicOwners.findIndex(
-        (o) => o.id === updatedOwner.id,
-      )
-      if (ownerIndex !== -1) {
-        dynamicOwners[ownerIndex] = updatedOwner
-      }
+  // -------------------------------------------------------------------
+  // linkBusiness — calls server action, optimistic update
+  // -------------------------------------------------------------------
+  const linkBusiness = useCallback(
+    (businessId: string) => {
+      setState((prev) => {
+        if (!prev.owner) return prev
+        return {
+          ...prev,
+          owner: {
+            ...prev.owner,
+            businessId,
+            claimStatus: 'pending' as BusinessClaimStatus,
+            updatedAt: new Date().toISOString(),
+          },
+        }
+      })
 
-      return {
-        ...prev,
-        owner: updatedOwner,
-      }
-    })
-  }, [])
+      linkBusinessAction(Number(businessId)).then((result) => {
+        if (!result.success) {
+          hydrateUser()
+        }
+      })
+    },
+    [hydrateUser],
+  )
 
-  const linkBusiness = useCallback((businessId: string) => {
-    setState((prev) => {
-      if (!prev.owner) return prev
-
-      const now = new Date().toISOString()
-      const updatedOwner: BusinessOwner = {
-        ...prev.owner,
-        businessId,
-        claimStatus: 'approved',
-        verificationStatus: 'verified',
-        updatedAt: now,
-      }
-
-      // Update in dynamic owners
-      const ownerIndex = dynamicOwners.findIndex(
-        (o) => o.id === updatedOwner.id,
-      )
-      if (ownerIndex !== -1) {
-        dynamicOwners[ownerIndex] = updatedOwner
-      }
-
-      return {
-        ...prev,
-        owner: updatedOwner,
-      }
-    })
-  }, [])
-
+  // -------------------------------------------------------------------
+  // Context value
+  // -------------------------------------------------------------------
   const value = useMemo<BusinessAuthContextValue>(
     () => ({
       state,
