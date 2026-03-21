@@ -10,28 +10,31 @@ import {
   Envelope,
   Phone,
   PhoneCall,
+  SpinnerGap,
   Tag,
   User,
   XCircle,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { MessageThread } from '@/components/features/messaging/messageThread'
 import { ClaimStatusBadge } from '@/components/patterns/claimStatusBadge'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  addBusinessResponse,
-  getDealByIdDynamic as getDealById,
-  updateClaimStatus,
-} from '@/lib/mock-data'
-import type { Claim, ClaimStatus } from '@/types/claim'
+  addBusinessResponseAction,
+  updateClaimStatusForBusinessAction,
+} from '@/lib/actions/business-claims'
+import type { ClaimRow } from '@/lib/actions/claims'
+import { getOfferById } from '@/lib/data/offers'
+import type { ClaimStatus } from '@/types/claim'
+import type { OfferWithBusiness } from '@/types/supabase'
 
 interface LeadDetailProps {
-  claim: Claim
+  claim: ClaimRow
   businessId: string
-  onClaimUpdate?: (claim: Claim) => void
+  onClaimUpdate?: (claim: ClaimRow) => void
 }
 
 function formatDate(dateString: string): string {
@@ -60,17 +63,7 @@ function formatRelativeTime(dateString: string): string {
 }
 
 function getCustomerDisplay(consumerId: string): string {
-  const num = consumerId.replace(/\D/g, '')
-  return `Customer #${num || consumerId.slice(-3)}`
-}
-
-// Mock contact info - only revealed after initial contact
-function getMockContactInfo(consumerId: string) {
-  const num = consumerId.replace(/\D/g, '') || '123'
-  return {
-    email: `customer${num}@example.com`,
-    phone: `(555) ${num.padStart(3, '0')}-${num.padStart(4, '0').slice(0, 4)}`,
-  }
+  return `Customer #${consumerId.slice(-4).toUpperCase()}`
 }
 
 export function LeadDetail({
@@ -80,37 +73,64 @@ export function LeadDetail({
 }: LeadDetailProps) {
   const [claim, setClaim] = useState(initialClaim)
   const [businessNotes, setBusinessNotes] = useState(
-    claim.businessResponse || '',
+    claim.business_response || '',
   )
   const [isSaving, setIsSaving] = useState(false)
+  const [deal, setDeal] = useState<OfferWithBusiness | null>(null)
+  const [isDealLoading, setIsDealLoading] = useState(true)
 
-  const deal = getDealById(claim.dealId)
+  // Load deal info
+  const loadDeal = useCallback(async () => {
+    setIsDealLoading(true)
+    try {
+      const offer = await getOfferById(claim.deal_id)
+      setDeal(offer)
+    } catch {
+      // Deal info is non-critical, just leave null
+    }
+    setIsDealLoading(false)
+  }, [claim.deal_id])
 
-  const handleStatusChange = (newStatus: ClaimStatus) => {
-    const updatedClaim = updateClaimStatus(claim.id, newStatus)
-    if (updatedClaim) {
-      setClaim(updatedClaim)
-      onClaimUpdate?.(updatedClaim)
+  useEffect(() => {
+    loadDeal()
+  }, [loadDeal])
+
+  const handleStatusChange = async (newStatus: ClaimStatus) => {
+    const result = await updateClaimStatusForBusinessAction(
+      claim.id,
+      Number(businessId),
+      newStatus,
+    )
+    if (result.success && result.claim) {
+      setClaim(result.claim)
+      onClaimUpdate?.(result.claim)
     }
   }
 
-  const handleSaveNotes = () => {
+  const handleSaveNotes = async () => {
     if (!businessNotes.trim()) return
     setIsSaving(true)
 
-    // Simulate saving delay
-    setTimeout(() => {
-      const updatedClaim = addBusinessResponse(claim.id, businessNotes)
-      if (updatedClaim) {
-        setClaim(updatedClaim)
-        onClaimUpdate?.(updatedClaim)
-      }
-      setIsSaving(false)
-    }, 300)
+    const result = await addBusinessResponseAction(
+      claim.id,
+      Number(businessId),
+      businessNotes,
+    )
+    if (result.success && result.claim) {
+      setClaim(result.claim)
+      onClaimUpdate?.(result.claim)
+    }
+    setIsSaving(false)
   }
 
   const canShowContactInfo = claim.status !== 'pending'
-  const contactInfo = getMockContactInfo(claim.consumerId)
+
+  // Derive deal display values
+  const dealTitle =
+    deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
+  const dealCategory = deal?.service_category ?? null
+  const dealPrice = deal?.discount_price ?? null
+  const dealUnit = deal?.unit_type ?? null
 
   // Status transition buttons
   const statusActions: {
@@ -177,10 +197,10 @@ export function LeadDetail({
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-[#451a03]">Lead Details</h1>
           <p className="text-[#78350f] mt-1">
-            {getCustomerDisplay(claim.consumerId)}
+            {getCustomerDisplay(claim.consumer_id)}
           </p>
         </div>
-        <ClaimStatusBadge status={claim.status} size="md" />
+        <ClaimStatusBadge status={claim.status as ClaimStatus} size="md" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -197,35 +217,52 @@ export function LeadDetail({
                   </div>
                   <div>
                     <p className="font-semibold text-[#451a03] text-lg">
-                      {getCustomerDisplay(claim.consumerId)}
+                      {getCustomerDisplay(claim.consumer_id)}
                     </p>
                     <p className="text-sm text-[#92400e]">
-                      Requested {formatRelativeTime(claim.createdAt)}
+                      Requested {formatRelativeTime(claim.created_at)}
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Deal Info */}
-              {deal && (
+              {isDealLoading ? (
+                <div className="p-4 bg-[#faf5ee] rounded-xl flex items-center gap-3">
+                  <SpinnerGap
+                    size={20}
+                    weight="light"
+                    className="text-[#92400e] animate-spin"
+                  />
+                  <span className="text-sm text-[#78350f]">
+                    Loading deal info...
+                  </span>
+                </div>
+              ) : (
                 <div className="p-4 bg-[#faf5ee] rounded-xl">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
                       <Tag size={20} weight="fill" className="text-amber-800" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-[#451a03]">{deal.title}</p>
+                      <p className="font-medium text-[#451a03]">{dealTitle}</p>
                       <div className="flex items-center gap-3 mt-1">
-                        <Badge variant="default" size="sm">
-                          {deal.category.charAt(0).toUpperCase() +
-                            deal.category.slice(1)}
-                        </Badge>
-                        <span className="text-amber-800 font-semibold">
-                          ${deal.dealPrice}{' '}
-                          <span className="text-[#92400e] font-normal">
-                            {deal.unit}
+                        {dealCategory && (
+                          <Badge variant="default" size="sm">
+                            {dealCategory.charAt(0).toUpperCase() +
+                              dealCategory.slice(1)}
+                          </Badge>
+                        )}
+                        {dealPrice != null && (
+                          <span className="text-amber-800 font-semibold">
+                            ${dealPrice}{' '}
+                            {dealUnit && (
+                              <span className="text-[#92400e] font-normal">
+                                {dealUnit}
+                              </span>
+                            )}
                           </span>
-                        </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -238,9 +275,9 @@ export function LeadDetail({
                   Customer Request
                 </h3>
                 <div className="space-y-3">
-                  {(claim.preferredDate || claim.preferredTime) && (
+                  {(claim.preferred_date || claim.preferred_time) && (
                     <div className="flex flex-wrap gap-4">
-                      {claim.preferredDate && (
+                      {claim.preferred_date && (
                         <div className="flex items-center gap-2 text-[#451a03]">
                           <Calendar
                             size={18}
@@ -248,18 +285,18 @@ export function LeadDetail({
                             className="text-[#92400e]"
                           />
                           <span>
-                            Preferred: {formatDate(claim.preferredDate)}
+                            Preferred: {formatDate(claim.preferred_date)}
                           </span>
                         </div>
                       )}
-                      {claim.preferredTime && (
+                      {claim.preferred_time && (
                         <div className="flex items-center gap-2 text-[#451a03]">
                           <Clock
                             size={18}
                             weight="regular"
                             className="text-[#92400e]"
                           />
-                          <span>{claim.preferredTime}</span>
+                          <span>{claim.preferred_time}</span>
                         </div>
                       )}
                     </div>
@@ -271,8 +308,8 @@ export function LeadDetail({
                       </p>
                     </div>
                   )}
-                  {!claim.preferredDate &&
-                    !claim.preferredTime &&
+                  {!claim.preferred_date &&
+                    !claim.preferred_time &&
                     !claim.notes && (
                       <p className="text-[#92400e] text-sm">
                         No specific preferences provided.
@@ -318,9 +355,9 @@ export function LeadDetail({
                 className="w-full h-32 px-4 py-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-[#451a03] placeholder:text-[#92400e] resize-none focus:outline-none focus:border-amber-800/40 focus:ring-2 focus:ring-amber-800/15 transition-all"
               />
               <div className="flex items-center justify-between">
-                {claim.respondedAt && (
+                {claim.responded_at && (
                   <p className="text-xs text-[#92400e]">
-                    Last updated: {formatRelativeTime(claim.respondedAt)}
+                    Last updated: {formatRelativeTime(claim.responded_at)}
                   </p>
                 )}
                 <Button
@@ -330,7 +367,7 @@ export function LeadDetail({
                   disabled={
                     isSaving ||
                     !businessNotes.trim() ||
-                    businessNotes === claim.businessResponse
+                    businessNotes === claim.business_response
                   }
                   className="ml-auto"
                 >
@@ -369,12 +406,9 @@ export function LeadDetail({
                   </div>
                   <div>
                     <p className="text-xs text-[#92400e]">Email</p>
-                    <a
-                      href={`mailto:${contactInfo.email}`}
-                      className="text-[#451a03] hover:text-amber-800 transition-colors"
-                    >
-                      {contactInfo.email}
-                    </a>
+                    <p className="text-[#451a03] text-sm">
+                      Available after consumer profile integration
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -383,12 +417,9 @@ export function LeadDetail({
                   </div>
                   <div>
                     <p className="text-xs text-[#92400e]">Phone</p>
-                    <a
-                      href={`tel:${contactInfo.phone}`}
-                      className="text-[#451a03] hover:text-amber-800 transition-colors"
-                    >
-                      {contactInfo.phone}
-                    </a>
+                    <p className="text-[#451a03] text-sm">
+                      Available after consumer profile integration
+                    </p>
                   </div>
                 </div>
               </div>
@@ -416,22 +447,22 @@ export function LeadDetail({
                 <div>
                   <p className="text-sm text-[#451a03]">Lead received</p>
                   <p className="text-xs text-[#92400e]">
-                    {formatRelativeTime(claim.createdAt)}
+                    {formatRelativeTime(claim.created_at)}
                   </p>
                 </div>
               </div>
-              {claim.respondedAt && claim.status !== 'pending' && (
+              {claim.responded_at && claim.status !== 'pending' && (
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-info mt-2 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-[#451a03]">Contacted customer</p>
                     <p className="text-xs text-[#92400e]">
-                      {formatRelativeTime(claim.respondedAt)}
+                      {formatRelativeTime(claim.responded_at)}
                     </p>
                   </div>
                 </div>
               )}
-              {claim.bookedDate &&
+              {claim.booked_date &&
                 (claim.status === 'booked' || claim.status === 'completed') && (
                   <div className="flex gap-3">
                     <div className="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0" />
@@ -442,7 +473,7 @@ export function LeadDetail({
                           : 'Appointment booked'}
                       </p>
                       <p className="text-xs text-[#92400e]">
-                        {formatDate(claim.bookedDate)}
+                        {formatDate(claim.booked_date)}
                       </p>
                     </div>
                   </div>
@@ -453,7 +484,7 @@ export function LeadDetail({
                   <div>
                     <p className="text-sm text-[#451a03]">Lead cancelled</p>
                     <p className="text-xs text-[#92400e]">
-                      {formatRelativeTime(claim.updatedAt)}
+                      {formatRelativeTime(claim.updated_at)}
                     </p>
                   </div>
                 </div>
