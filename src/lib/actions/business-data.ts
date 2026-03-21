@@ -265,6 +265,79 @@ export async function updateBusinessAction(
   }
 }
 
+/**
+ * Import a business from Google Places into master_business_info.
+ * If the google_place_id already exists, returns the existing business_id.
+ * Otherwise inserts a new row with all available Google data.
+ */
+export async function importGooglePlaceAction(place: {
+  place_id: string
+  name: string
+  address: string
+  city: string
+  website: string | null
+  rating: number | null
+  review_count: number | null
+  category: string | null
+}): Promise<CreateBusinessResult> {
+  try {
+    const supabase = await createSupabaseServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      return { success: false, error: 'Not authenticated' }
+    }
+
+    // Check if this Google place already exists in our DB
+    const { data: existing } = await supabase
+      .from('master_business_info')
+      .select('business_id')
+      .eq('google_place_id', place.place_id)
+      .maybeSingle()
+
+    if (existing) {
+      return { success: true, businessId: existing.business_id }
+    }
+
+    // Insert new row with Google data
+    const { data: business, error } = await supabase
+      .from('master_business_info')
+      .insert({
+        name: place.name,
+        address: place.address,
+        city: place.city,
+        website: place.website,
+        score: place.rating,
+        review_count: place.review_count,
+        category: place.category,
+        google_place_id: place.place_id,
+      })
+      .select('business_id')
+      .single()
+
+    if (error) {
+      // Handle unique constraint on google_place_id (race condition)
+      if (error.code === '23505') {
+        const { data: raceResult } = await supabase
+          .from('master_business_info')
+          .select('business_id')
+          .eq('google_place_id', place.place_id)
+          .single()
+        if (raceResult) {
+          return { success: true, businessId: raceResult.business_id }
+        }
+      }
+      return { success: false, error: error.message }
+    }
+
+    return { success: true, businessId: business.business_id }
+  } catch {
+    return { success: false, error: 'An unexpected error occurred.' }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
