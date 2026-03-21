@@ -12,9 +12,8 @@ import { CreateBusinessForm } from '@/components/features/createBusinessForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { createBusinessAction } from '@/lib/actions/business-data'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { createBusiness } from '@/lib/mock-data/businesses'
-import type { Business } from '@/types/business'
 
 type PageView = 'auth' | 'form' | 'success'
 type AuthView = 'signUp' | 'signIn'
@@ -34,7 +33,10 @@ export default function CreateBusinessPage() {
   const [pageView, setPageView] = useState<PageView>(
     state.isAuthenticated ? 'form' : 'auth',
   )
-  const [createdBusiness, setCreatedBusiness] = useState<Business | null>(null)
+  const [createdBusiness, setCreatedBusiness] = useState<{
+    name: string
+    city: string
+  } | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Auth form state
@@ -122,33 +124,30 @@ export default function CreateBusinessPage() {
   }) => {
     setIsSubmitting(true)
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    try {
+      const result = await createBusinessAction({
+        name: formData.name,
+        address: formData.address || undefined,
+        city: formData.city || undefined,
+        website: formData.website || undefined,
+      })
 
-    // Create the business
-    const newBusiness = createBusiness({
-      name: formData.name,
-      description: formData.description,
-      website: formData.website || undefined,
-      address: formData.address,
-      city: formData.city,
-      state: formData.state,
-      zipCode: formData.zipCode,
-      locationArea: formData.locationArea || formData.city,
-      phone: formData.phone,
-      email: formData.email,
-      // Set placeholder coordinates (would be geocoded in real app)
-      latitude: 30.2672,
-      longitude: -97.7431,
-    })
+      if (!result.success || !result.businessId) {
+        setIsSubmitting(false)
+        return
+      }
 
-    // Link to owner and set approved status (new businesses auto-approved)
-    linkBusiness(newBusiness.id)
-    updateClaimStatus('approved')
+      // Link business to owner profile — claim goes to pending for review
+      linkBusiness(String(result.businessId))
+      updateClaimStatus('pending')
 
-    setCreatedBusiness(newBusiness)
-    setIsSubmitting(false)
-    setPageView('success')
+      setCreatedBusiness({ name: formData.name, city: formData.city })
+      setPageView('success')
+    } catch {
+      // Error handled by context
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // Handle go to dashboard
@@ -344,12 +343,11 @@ export default function CreateBusinessPage() {
                   <h3 className="font-semibold text-[#451a03]">
                     {createdBusiness.name}
                   </h3>
-                  <p className="text-sm text-[#78350f]">
-                    {createdBusiness.city}, {createdBusiness.state}
-                  </p>
-                  <p className="text-sm text-[#92400e]">
-                    {createdBusiness.email}
-                  </p>
+                  {createdBusiness.city && (
+                    <p className="text-sm text-[#78350f]">
+                      {createdBusiness.city}
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>

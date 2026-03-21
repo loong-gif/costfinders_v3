@@ -18,7 +18,7 @@ import { BusinessSearchModal } from '@/components/features/businessSearchModal'
 import { AnimatedCounter } from '@/components/patterns/animatedCounter'
 import { ScrollReveal, ScrollRevealItem } from '@/components/patterns/scrollReveal'
 import { Button } from '@/components/ui/button'
-import type { Business } from '@/types/business'
+import type { BusinessSearchResult } from '@/lib/actions/business-data'
 
 const valueProps = [
   {
@@ -48,8 +48,8 @@ export default function BusinessPage() {
 
   useEffect(() => setMounted(true), [])
 
-  const handleSelectBusiness = (business: Business) => {
-    router.push(`/business/claim/${business.id}`)
+  const handleSelectBusiness = (business: BusinessSearchResult) => {
+    router.push(`/business/claim/${business.business_id}`)
   }
 
   const handleCreateNew = () => {

@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { getBusinessById, updateBusiness } from '@/lib/mock-data/businesses'
-import type { Business } from '@/types/business'
+import type { BusinessRow } from '@/lib/actions/business-data'
+import {
+  getBusinessByIdAction,
+  updateBusinessAction,
+} from '@/lib/actions/business-data'
 
 // US States for dropdown
 const US_STATES = [
@@ -54,7 +57,7 @@ interface BusinessProfileFormProps {
 }
 
 export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
-  const [business, setBusiness] = useState<Business | null>(null)
+  const [business, setBusiness] = useState<BusinessRow | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
@@ -75,24 +78,29 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
     website: '',
   })
 
-  // Load business data
+  // Load business data from Supabase
   useEffect(() => {
-    const loadBusiness = () => {
-      const biz = getBusinessById(businessId)
-      if (biz) {
+    let cancelled = false
+
+    async function loadBusiness() {
+      const result = await getBusinessByIdAction(Number(businessId))
+      if (cancelled) return
+
+      if (result.success && result.business) {
+        const biz = result.business
         setBusiness(biz)
         setFormData({
           name: biz.name || '',
-          description: biz.description || '',
-          logoUrl: biz.logoUrl || '',
-          coverImageUrl: biz.coverImageUrl || '',
+          description: '',
+          logoUrl: '',
+          coverImageUrl: '',
           address: biz.address || '',
           city: biz.city || '',
-          state: biz.state || '',
-          zipCode: biz.zipCode || '',
-          locationArea: biz.locationArea || '',
-          phone: biz.phone || '',
-          email: biz.email || '',
+          state: '',
+          zipCode: '',
+          locationArea: '',
+          phone: '',
+          email: '',
           website: biz.website || '',
         })
       }
@@ -100,6 +108,9 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
     }
 
     loadBusiness()
+    return () => {
+      cancelled = true
+    }
   }, [businessId])
 
   const handleChange = (
@@ -171,30 +182,24 @@ export function BusinessProfileForm({ businessId }: BusinessProfileFormProps) {
     setIsSaving(true)
     setSaveMessage(null)
 
-    // Simulate brief network delay
-    await new Promise((resolve) => setTimeout(resolve, 300))
-
-    const updated = updateBusiness(businessId, {
+    const result = await updateBusinessAction(Number(businessId), {
       name: formData.name.trim(),
-      description: formData.description.trim(),
-      logoUrl: formData.logoUrl.trim() || undefined,
-      coverImageUrl: formData.coverImageUrl.trim() || undefined,
       address: formData.address.trim(),
       city: formData.city.trim(),
-      state: formData.state,
-      zipCode: formData.zipCode.trim(),
-      locationArea: formData.locationArea.trim(),
-      phone: formData.phone.trim(),
-      email: formData.email.trim(),
       website: formData.website.trim() || undefined,
-      latitude: business?.latitude || 0,
-      longitude: business?.longitude || 0,
     })
 
-    if (updated) {
-      setBusiness(updated)
+    if (result.success) {
+      // Re-fetch to get updated data
+      const refreshed = await getBusinessByIdAction(Number(businessId))
+      if (refreshed.success && refreshed.business) {
+        setBusiness(refreshed.business)
+      }
       setSaveMessage('Changes saved successfully')
       setTimeout(() => setSaveMessage(null), 3000)
+    } else {
+      setSaveMessage(result.error ?? 'Failed to save changes')
+      setTimeout(() => setSaveMessage(null), 5000)
     }
 
     setIsSaving(false)

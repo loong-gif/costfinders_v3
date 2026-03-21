@@ -1,39 +1,49 @@
 'use client'
 
-import { Buildings, MagnifyingGlass } from '@phosphor-icons/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  Buildings,
+  CircleNotch,
+  MagnifyingGlass,
+} from '@phosphor-icons/react'
+import { useCallback, useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
-import { businesses } from '@/lib/mock-data/businesses'
-import type { Business, BusinessTier } from '@/types/business'
+import type { BusinessSearchResult } from '@/lib/actions/business-data'
+import { searchBusinessesAction } from '@/lib/actions/business-data'
 
 interface BusinessSearchModalProps {
   isOpen: boolean
   onClose: () => void
-  onSelect: (business: Business) => void
+  onSelect: (business: BusinessSearchResult) => void
   onCreateNew: () => void
 }
 
-function getTierBadge(tier: BusinessTier) {
-  switch (tier) {
+function getClaimBadge(claimStatus: BusinessSearchResult['claim_status']) {
+  switch (claimStatus) {
     case 'unclaimed':
       return (
         <Badge variant="default" size="sm">
           Unclaimed
         </Badge>
       )
-    case 'free':
+    case 'pending':
       return (
-        <Badge variant="info" size="sm">
-          Free
+        <Badge variant="warning" size="sm">
+          Pending
         </Badge>
       )
-    case 'paid':
+    case 'approved':
       return (
-        <Badge variant="brand" size="sm">
-          Premium
+        <Badge variant="info" size="sm">
+          Claimed
+        </Badge>
+      )
+    case 'rejected':
+      return (
+        <Badge variant="default" size="sm">
+          Unclaimed
         </Badge>
       )
   }
@@ -47,6 +57,8 @@ export function BusinessSearchModal({
 }: BusinessSearchModalProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
+  const [results, setResults] = useState<BusinessSearchResult[]>([])
+  const [isSearching, setIsSearching] = useState(false)
 
   // Debounce search query
   useEffect(() => {
@@ -62,21 +74,37 @@ export function BusinessSearchModal({
     if (!isOpen) {
       setSearchQuery('')
       setDebouncedQuery('')
+      setResults([])
     }
   }, [isOpen])
 
-  // Filter businesses by name (case-insensitive)
-  const filteredBusinesses = useMemo(() => {
-    if (!debouncedQuery.trim()) return []
+  // Fetch results from Supabase
+  useEffect(() => {
+    if (!debouncedQuery.trim()) {
+      setResults([])
+      return
+    }
 
-    const query = debouncedQuery.toLowerCase()
-    return businesses.filter((business) =>
-      business.name.toLowerCase().includes(query),
-    )
+    let cancelled = false
+    setIsSearching(true)
+
+    searchBusinessesAction(debouncedQuery).then((result) => {
+      if (cancelled) return
+      setIsSearching(false)
+      if (result.success && result.businesses) {
+        setResults(result.businesses)
+      } else {
+        setResults([])
+      }
+    })
+
+    return () => {
+      cancelled = true
+    }
   }, [debouncedQuery])
 
   const handleSelect = useCallback(
-    (business: Business) => {
+    (business: BusinessSearchResult) => {
       onSelect(business)
       onClose()
     },
@@ -122,7 +150,16 @@ export function BusinessSearchModal({
                 Start typing to search for your business
               </p>
             </div>
-          ) : filteredBusinesses.length === 0 ? (
+          ) : isSearching ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <CircleNotch
+                size={32}
+                weight="light"
+                className="text-[#92400e] mb-4 animate-spin"
+              />
+              <p className="text-[#78350f]">Searching...</p>
+            </div>
+          ) : results.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Buildings
                 size={48}
@@ -130,7 +167,7 @@ export function BusinessSearchModal({
                 className="text-[#92400e] mb-4"
               />
               <p className="text-[#78350f] mb-4">
-                No businesses found matching "{debouncedQuery}"
+                No businesses found matching &ldquo;{debouncedQuery}&rdquo;
               </p>
               <Button variant="primary" onClick={onCreateNew}>
                 Create a New Listing
@@ -138,12 +175,14 @@ export function BusinessSearchModal({
             </div>
           ) : (
             <div className="space-y-3">
-              {filteredBusinesses.map((business) => {
-                const isClaimed = business.tier !== 'unclaimed'
+              {results.map((business) => {
+                const isClaimable =
+                  business.claim_status === 'unclaimed' ||
+                  business.claim_status === 'rejected'
 
                 return (
                   <div
-                    key={business.id}
+                    key={business.business_id}
                     className="p-4 rounded-xl border border-[#d4c4b0] bg-[#f2ebe2] hover:bg-[#faf5ee] transition-colors"
                   >
                     <div className="flex items-start justify-between gap-4">
@@ -152,27 +191,31 @@ export function BusinessSearchModal({
                           <h3 className="font-medium text-[#451a03] truncate">
                             {business.name}
                           </h3>
-                          {getTierBadge(business.tier)}
+                          {getClaimBadge(business.claim_status)}
                         </div>
-                        <p className="text-sm text-[#78350f]">
-                          {business.address}
-                        </p>
-                        <p className="text-sm text-[#92400e]">
-                          {business.city}, {business.state}
-                        </p>
+                        {business.address && (
+                          <p className="text-sm text-[#78350f]">
+                            {business.address}
+                          </p>
+                        )}
+                        {business.city && (
+                          <p className="text-sm text-[#92400e]">
+                            {business.city}
+                          </p>
+                        )}
                       </div>
                       <div className="flex-shrink-0">
-                        {isClaimed ? (
-                          <Button variant="ghost" size="sm" disabled>
-                            Already Claimed
-                          </Button>
-                        ) : (
+                        {isClaimable ? (
                           <Button
                             variant="primary"
                             size="sm"
                             onClick={() => handleSelect(business)}
                           >
                             Claim This Business
+                          </Button>
+                        ) : (
+                          <Button variant="ghost" size="sm" disabled>
+                            Already Claimed
                           </Button>
                         )}
                       </div>
@@ -187,7 +230,7 @@ export function BusinessSearchModal({
         {/* Footer */}
         <div className="pt-4 border-t border-[#d4c4b0]">
           <p className="text-sm text-[#92400e] text-center">
-            Don't see your business?{' '}
+            Don&apos;t see your business?{' '}
             <button
               type="button"
               onClick={onCreateNew}
