@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { AuthModal } from '@/components/features/authModal'
+import { NotificationBell } from '@/components/patterns/notificationBell'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
 import { useScrolled } from '@/lib/hooks/useScrolled'
@@ -58,12 +59,15 @@ export function GlobalHeader() {
           <div className="flex items-center gap-4">
 
             {state.isAuthenticated ? (
-              <Link href="/dashboard">
-                <Button variant="secondary" size="sm">
-                  <User size={18} weight="bold" />
-                  <span className="hidden sm:inline">Dashboard</span>
-                </Button>
-              </Link>
+              <>
+                <NotificationBell />
+                <Link href="/dashboard">
+                  <Button variant="secondary" size="sm">
+                    <User size={18} weight="bold" />
+                    <span className="hidden sm:inline">Dashboard</span>
+                  </Button>
+                </Link>
+              </>
             ) : (
               <div className="flex items-center gap-2">
                 <button

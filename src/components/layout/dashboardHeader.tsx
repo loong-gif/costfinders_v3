@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { NotificationBell } from '@/components/patterns/notificationBell'
 import { useAuth } from '@/lib/context/authContext'
 import { useScrolled } from '@/lib/hooks/useScrolled'
 
@@ -58,11 +59,13 @@ export function DashboardHeader() {
           </nav>
         </div>
 
-        {/* Right: User */}
-        <Link
-          href="/dashboard/settings"
-          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
-        >
+        {/* Right: Notifications + User */}
+        <div className="flex items-center gap-3">
+          <NotificationBell />
+          <Link
+            href="/dashboard/settings"
+            className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+          >
           <div className="w-8 h-8 rounded-full bg-amber-800/15 flex items-center justify-center">
             <span className="text-xs font-semibold text-amber-800">
               {initial}
@@ -72,6 +75,7 @@ export function DashboardHeader() {
             {displayName}
           </span>
         </Link>
+        </div>
       </div>
     </header>
   )
