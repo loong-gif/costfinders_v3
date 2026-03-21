@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { DashboardHeader } from '@/components/layout/dashboardHeader'
 import { PageHeader } from '@/components/patterns/pageHeader'
 
 export interface AuthenticatedDashboardLayoutProps {
@@ -66,6 +67,7 @@ export function AuthenticatedDashboardLayout({
 
   return (
     <div className="min-h-screen overflow-x-hidden">
+      <DashboardHeader />
       {sidebar}
       {/* Main content with left padding for sidebar on desktop */}
       <main className="md:pl-16 pt-20 pb-20 md:pb-0 px-4 sm:px-6 lg:px-8">

@@ -3,176 +3,128 @@
 import {
   CheckCircle,
   ClipboardText,
-  Heart,
   MagnifyingGlass,
   UserCircle,
   WarningCircle,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { ActiveClaimsSection } from '@/components/features/dashboard/activeClaimsSection'
+import { DealsForYouSection } from '@/components/features/dashboard/dealsForYouSection'
+import { SavedDealsRow } from '@/components/features/dashboard/savedDealsRow'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/lib/context/authContext'
-import { useClaims } from '@/lib/context/claimsContext'
 
-function getVerificationBadge(status: string | undefined) {
+function VerificationBadge({ status }: { status: string | undefined }) {
   switch (status) {
     case 'fully_verified':
       return (
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600/10 text-emerald-600 text-sm font-medium">
-          <CheckCircle size={16} weight="fill" />
-          Fully Verified
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-600/10 text-emerald-600 text-xs font-medium">
+          <CheckCircle size={14} weight="fill" />
+          Verified
         </div>
       )
     case 'email_verified':
-      return (
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-800/8 text-amber-800 text-sm font-medium">
-          <WarningCircle size={16} weight="fill" />
-          Email Verified
-        </div>
-      )
     case 'phone_verified':
       return (
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-800/8 text-amber-800 text-sm font-medium">
-          <WarningCircle size={16} weight="fill" />
-          Phone Verified
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-800/8 text-amber-800 text-xs font-medium">
+          <WarningCircle size={14} weight="fill" />
+          Partially verified
         </div>
       )
     default:
       return (
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-400/10 text-red-600 text-sm font-medium">
-          <WarningCircle size={16} weight="fill" />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-400/10 text-red-600 text-xs font-medium">
+          <WarningCircle size={14} weight="fill" />
           Unverified
         </div>
       )
   }
 }
 
+function getProfileCompletion(
+  user: {
+    firstName?: string
+    lastName?: string
+    phone?: string
+    locationCity?: string
+  } | null,
+): number {
+  if (!user) return 0
+  const fields = [user.firstName, user.lastName, user.phone, user.locationCity]
+  const filled = fields.filter(Boolean).length
+  return Math.round((filled / fields.length) * 100)
+}
+
 export default function DashboardPage() {
-  const { state, savedDeals } = useAuth()
-  const { state: claimsState } = useClaims()
+  const { state } = useAuth()
   const user = state.user
 
   const greeting = user?.firstName
     ? `Welcome back, ${user.firstName}`
     : 'Welcome back'
+  const profileCompletion = getProfileCompletion(user)
+  const isProfileComplete = profileCompletion === 100
   const isFullyVerified = user?.verificationStatus === 'fully_verified'
-
-  const savedDealsCount = savedDeals.length
-  const activeClaimsCount = claimsState.claims.filter((c) =>
-    ['pending', 'contacted', 'booked'].includes(c.status),
-  ).length
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-[#451a03]">{greeting}</h1>
-        <p className="text-[#78350f] mt-1">
-          Here&apos;s an overview of your activity
-        </p>
-      </div>
+      {/* Section 1: Welcome bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#451a03]">{greeting}</h1>
+          <VerificationBadge status={user?.verificationStatus} />
+        </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Saved Deals */}
-        <Card variant="glass" padding="lg">
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
-                <Heart size={24} weight="fill" className="text-amber-800" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[#451a03]">{savedDealsCount}</p>
-                <p className="text-sm text-[#78350f]">Saved Deals</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Active Claims */}
-        <Card variant="glass" padding="lg">
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-600/10 flex items-center justify-center">
-                <ClipboardText
-                  size={24}
-                  weight="fill"
-                  className="text-emerald-600"
+        {!isProfileComplete && (
+          <Link href="/dashboard/settings">
+            <div className="flex items-center gap-2 text-sm text-[#78350f] hover:text-[#451a03] transition-colors">
+              <div className="w-24 h-2 rounded-full bg-[#f2ebe2] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-amber-800 transition-all"
+                  style={{ width: `${profileCompletion}%` }}
                 />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-[#451a03]">{activeClaimsCount}</p>
-                <p className="text-sm text-[#78350f]">Active Claims</p>
-              </div>
+              <span>{profileCompletion}% complete</span>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Verification Status */}
-        <Card variant="glass" padding="lg">
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center">
-                <UserCircle size={24} weight="fill" className="text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-[#78350f] mb-1">Account Status</p>
-                {getVerificationBadge(user?.verificationStatus)}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </Link>
+        )}
       </div>
 
-      {/* Quick Actions */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-[#451a03]">Quick Actions</h2>
+      {/* Section 2: Active claims progress */}
+      <ActiveClaimsSection />
+
+      {/* Section 3: Saved deals quick access */}
+      <SavedDealsRow />
+
+      {/* Section 4: Deals near you */}
+      <DealsForYouSection />
+
+      {/* Section 5: Quick actions */}
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold text-[#451a03]">Quick actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link href="/deals">
             <Button variant="primary" size="md">
               <MagnifyingGlass size={18} weight="bold" />
-              Browse Deals
+              Browse deals
+            </Button>
+          </Link>
+          <Link href="/dashboard/claims">
+            <Button variant="secondary" size="md">
+              <ClipboardText size={18} weight="bold" />
+              View claims
             </Button>
           </Link>
           {!isFullyVerified && (
             <Link href="/dashboard/settings">
               <Button variant="secondary" size="md">
                 <UserCircle size={18} weight="bold" />
-                Complete Profile
+                Complete profile
               </Button>
             </Link>
           )}
         </div>
-      </div>
-
-      {/* Empty State Prompt */}
-      <Card variant="glass" padding="lg">
-        <CardContent>
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center mx-auto">
-              <MagnifyingGlass
-                size={32}
-                weight="light"
-                className="text-amber-800"
-              />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[#451a03]">
-                Start Exploring Deals
-              </h3>
-              <p className="text-[#78350f] max-w-md mx-auto">
-                Browse medspa deals in your area, save your favorites, and claim
-                exclusive pricing.
-              </p>
-            </div>
-            <Link href="/deals">
-              <Button variant="primary" size="lg">
-                Find Deals Near You
-              </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+      </section>
     </div>
   )
 }

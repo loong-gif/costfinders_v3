@@ -8,12 +8,14 @@ import { useState } from 'react'
 import { AuthModal } from '@/components/features/authModal'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
+import { useScrolled } from '@/lib/hooks/useScrolled'
 
 type AuthView = 'signUp' | 'signIn'
 
 export function GlobalHeader() {
   const pathname = usePathname()
   const { state } = useAuth()
+  const scrolled = useScrolled(20)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalView, setModalView] = useState<AuthView>('signIn')
 
@@ -42,7 +44,7 @@ export function GlobalHeader() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-[#e8ddd0]/95 backdrop-blur-sm border-b border-[#d4c4b0]">
+      <header className={`fixed top-0 left-0 right-0 z-40 bg-[#e8ddd0]/95 backdrop-blur-sm border-b border-[#d4c4b0] transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(69,26,3,0.08)]' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">

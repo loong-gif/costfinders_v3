@@ -53,8 +53,11 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
       padding="none"
       hover
       onClick={onClick}
-      className={`overflow-hidden bg-[#f2ebe2] border-[#d4c4b0] rounded-[10px] hover:border-[#c4b09a] shadow-md ${isGrid ? '' : 'flex'}`}
+      className={`group relative overflow-hidden bg-[#f2ebe2] border-[#d4c4b0] rounded-[10px] hover:border-[#c4b09a] hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(69,26,3,0.12)] transition-all duration-300 ${isGrid ? '' : 'flex'}`}
     >
+      {/* Left accent bar — slides in on hover */}
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-800 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-300 z-10 rounded-l-[10px]" />
+
       {/* Image Section — compact when no image */}
       <div
         className={`
@@ -72,7 +75,7 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           />
         ) : (
           /* Compact placeholder with category context */
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-[#faf5ee]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#faf5ee] to-[#f0e4d4]">
             <div className="w-10 h-10 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] flex items-center justify-center">
               <CategoryIcon size={20} weight="light" className="text-[#78350f]" />
             </div>
@@ -140,11 +143,11 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
         <div className="mt-2 flex items-baseline gap-2">
           {hasDealPrice ? (
             deal.unit === 'unit' && deal.dealPrice < 50 ? (
-              <span className="text-xl font-bold font-mono text-amber-800">
+              <span className="text-xl font-bold font-mono text-amber-800 group-hover:text-amber-700 transition-colors duration-300">
                 ${deal.dealPrice}<span className="text-base font-semibold">/unit</span>
               </span>
             ) : (
-              <span className="text-xl font-bold font-mono text-amber-800">
+              <span className="text-xl font-bold font-mono text-amber-800 group-hover:text-amber-700 transition-colors duration-300">
                 ${deal.dealPrice}
               </span>
             )

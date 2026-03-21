@@ -46,13 +46,13 @@ export function SaveButton({
         rounded-full
         bg-[#f2ebe2]/80
         border border-[#d4c4b0]
-        transition-all duration-200
+        transition-all duration-300
         ${
           isAuthenticated
-            ? 'hover:bg-[#f2ebe2] hover:scale-110 active:scale-95 cursor-pointer'
+            ? 'hover:bg-[#f2ebe2] hover:scale-110 active:scale-90 cursor-pointer'
             : 'cursor-not-allowed opacity-60'
         }
-        ${saved ? 'text-red-500' : 'text-[#78350f] hover:text-[#451a03]'}
+        ${saved ? 'text-red-500 shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'text-[#78350f] hover:text-[#451a03]'}
         ${className}
       `}
       aria-label={saved ? 'Remove from favorites' : 'Add to favorites'}

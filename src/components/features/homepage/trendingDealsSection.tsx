@@ -48,7 +48,9 @@ export function TrendingDealsSection({ offers }: TrendingDealsSectionProps) {
               animation="fadeInUp"
               stagger={100}
             >
-              <OfferCard offer={offer} />
+              <Link href={`/deals/${offer.id}`} className="block">
+                <OfferCard offer={offer} />
+              </Link>
             </ScrollRevealItem>
           ))}
         </div>

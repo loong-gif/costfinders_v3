@@ -39,11 +39,11 @@ export function CategoryFilter({ selected, onChange }: CategoryFilterProps) {
             onClick={() => onChange(category.value)}
             className={`
               inline-flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-full text-sm font-medium
-              transition-all duration-200 cursor-pointer
+              transition-all duration-200 cursor-pointer active:scale-95
               ${
                 isSelected
-                  ? 'bg-amber-800 text-white shadow-md'
-                  : 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#78350f] hover:text-[#451a03] hover:border-[#c4b09a]'
+                  ? 'bg-amber-800 text-white shadow-[0_0_16px_rgba(146,64,14,0.25)]'
+                  : 'bg-[#f2ebe2] border border-[#d4c4b0] text-[#78350f] hover:text-[#451a03] hover:border-[#c4b09a] hover:-translate-y-0.5'
               }
             `}
             aria-pressed={isSelected}
