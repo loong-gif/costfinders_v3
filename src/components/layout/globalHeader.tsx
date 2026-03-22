@@ -1,11 +1,16 @@
 'use client'
 
 import { SignIn, User } from '@phosphor-icons/react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { AuthModal } from '@/components/features/authModal'
+
+const AuthModal = dynamic(
+  () => import('@/components/features/authModal').then((m) => m.AuthModal),
+  { ssr: false },
+)
 import { NotificationBell } from '@/components/patterns/notificationBell'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'

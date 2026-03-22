@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Offer, OfferWithBusiness } from '@/types/supabase'
 
@@ -42,7 +43,7 @@ export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
   return (data ?? []) as Offer[]
 }
 
-export async function getOfferById(
+export const getOfferById = cache(async function getOfferById(
   id: number,
 ): Promise<OfferWithBusiness | null> {
   const { data, error } = await supabase
@@ -56,7 +57,7 @@ export async function getOfferById(
     throw error
   }
   return data as OfferWithBusiness
-}
+})
 
 export async function getOffersWithBusinesses(
   filters?: OfferFilters,
@@ -116,7 +117,7 @@ export async function getOffersWithBusinesses(
   })
 }
 
-export async function getOfferCategories(): Promise<
+export const getOfferCategories = cache(async function getOfferCategories(): Promise<
   { service_category: string; count: number }[]
 > {
   // Only count deals that have pricing (matches Rule 1 filter)
@@ -139,9 +140,9 @@ export async function getOfferCategories(): Promise<
   return Array.from(counts.entries())
     .map(([service_category, count]) => ({ service_category, count }))
     .sort((a, b) => b.count - a.count)
-}
+})
 
-export async function getOffersByBusiness(
+export const getOffersByBusiness = cache(async function getOffersByBusiness(
   businessId: number,
 ): Promise<Offer[]> {
   const { data, error } = await supabase
@@ -152,9 +153,9 @@ export async function getOffersByBusiness(
 
   if (error) throw error
   return (data ?? []) as Offer[]
-}
+})
 
-export async function getFeaturedOffers(
+export const getFeaturedOffers = cache(async function getFeaturedOffers(
   limit = 6,
 ): Promise<OfferWithBusiness[]> {
   const { data, error } = await supabase
@@ -180,4 +181,4 @@ export async function getFeaturedOffers(
         : 0
     return savingsB - savingsA
   })
-}
+})

@@ -18,28 +18,32 @@ import {
 } from '@/lib/data/unified'
 import { getStateBySlug, getStates } from '@/lib/mock-data/states'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
+import { buildLocalBusinessSchema } from '@/lib/seo/schemas'
 
 // Generate static params for all supported providers
 export async function generateStaticParams() {
   const allCities = await getUnifiedCities()
   const states = getStates()
-  const params: { state: string; city: string; slug: string }[] = []
 
-  for (const city of allCities) {
-    const state = states.find((s) => s.code === city.stateCode)
-    if (!state) continue
+  // Parallelize all city provider fetches instead of sequential N+1
+  const citiesWithState = allCities
+    .map((city) => ({
+      city,
+      state: states.find((s) => s.code === city.stateCode),
+    }))
+    .filter((c) => c.state != null)
 
-    const providers = await getProvidersByCity(city.name)
-    for (const provider of providers) {
-      params.push({
-        state: state.slug,
-        city: city.slug,
-        slug: provider.slug,
-      })
-    }
-  }
+  const providerResults = await Promise.all(
+    citiesWithState.map(({ city }) => getProvidersByCity(city.name)),
+  )
 
-  return params
+  return citiesWithState.flatMap(({ city, state }, i) =>
+    providerResults[i].map((provider) => ({
+      state: state!.slug,
+      city: city.slug,
+      slug: provider.slug,
+    })),
+  )
 }
 
 // Generate metadata for SEO
@@ -149,6 +153,28 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
     <>
       {/* Structured Data */}
       <BreadcrumbSchema items={breadcrumbItems} />
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: structured data requires dangerouslySetInnerHTML
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildLocalBusinessSchema({
+              name: provider.name,
+              description: provider.description || undefined,
+              address: {
+                streetAddress: provider.address || '',
+                city: city.name,
+                state: state.name,
+                postalCode: '',
+              },
+              url: provider.website || undefined,
+              rating: provider.rating > 0 && provider.reviewCount > 0
+                ? { value: provider.rating, count: provider.reviewCount }
+                : undefined,
+            }),
+          ),
+        }}
+      />
 
       <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

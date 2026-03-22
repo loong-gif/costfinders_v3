@@ -21,7 +21,7 @@ export const getBusinesses = cache(async function getBusinesses(city?: string): 
   return (data ?? []) as Business[]
 })
 
-export async function getBusinessById(id: number): Promise<Business | null> {
+export const getBusinessById = cache(async function getBusinessById(id: number): Promise<Business | null> {
   const { data, error } = await supabase
     .from(TABLE)
     .select('*')
@@ -33,7 +33,7 @@ export async function getBusinessById(id: number): Promise<Business | null> {
     throw error
   }
   return data as Business
-}
+})
 
 export const getBusinessCities = cache(async function getBusinessCities(): Promise<
   { city: string; count: number }[]

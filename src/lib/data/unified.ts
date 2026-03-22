@@ -233,7 +233,7 @@ export async function getUnifiedCategories() {
 // City queries (from real business data)
 // ────────────────────────────────────────────────────────
 
-export async function getUnifiedCities() {
+export const getUnifiedCities = cache(async function getUnifiedCities() {
   const cities = await getBusinessCities()
   return cities
     .filter((c) => c.city?.trim())
@@ -247,13 +247,13 @@ export async function getUnifiedCities() {
         businessCount: c.count,
       }
     })
-}
+})
 
 /**
  * Get deal counts per city (only priced deals).
  * Used by homepage to show accurate counts that match what deal pages display.
  */
-export async function getCityDealCounts() {
+export const getCityDealCounts = cache(async function getCityDealCounts() {
   const offers = await getOffersWithBusinesses()
   const cityMap = new Map<string, { dealCount: number; providerIds: Set<number> }>()
 
@@ -280,7 +280,7 @@ export async function getCityDealCounts() {
       }
     })
     .sort((a, b) => b.dealCount - a.dealCount)
-}
+})
 
 export async function getCityOfferCount(cityName: string) {
   const offers = await getOffersWithBusinesses({ city: cityName })

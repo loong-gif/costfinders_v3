@@ -177,6 +177,12 @@ npm run check     # Lint + format
 
 ---
 
+## Git Workflow Override
+
+**Work directly on `main` branch.** Do not create feature branches, worktree branches, or any other branches. Commit all changes directly to `main`. This overrides the default feature-branch workflow from RULES.md.
+
+---
+
 ## Project-Specific Overrides
 
 | Override | Reason |

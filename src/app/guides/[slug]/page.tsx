@@ -24,7 +24,11 @@ import {
 } from '@/lib/seo/metadata'
 import { buildBreadcrumbSchema, buildFaqSchema, buildPricingGuideSchema } from '@/lib/seo/schemas'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: regenerate every 24 hours
+
+export async function generateStaticParams() {
+  return getAvailableGuides().map((g) => ({ slug: g.slug }))
+}
 
 interface GuidePageProps {
   params: Promise<{ slug: string }>

@@ -2,7 +2,17 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true, // For Cloudinary handling + static export readiness
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.cloudinary.com' },
+    ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000, // 1 year for immutable images
+  },
+  experimental: {
+    optimizePackageImports: [
+      '@phosphor-icons/react',
+      '@supabase/supabase-js',
+    ],
   },
 }
 

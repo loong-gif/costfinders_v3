@@ -1,24 +1,25 @@
 'use client'
 
 import {
+  ArrowLeft,
   ChatCircle,
   EnvelopeSimple,
   MagnifyingGlass,
-  SpinnerGap,
   Tag,
-  User,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { MessageThread } from '@/components/features/messaging/messageThread'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import { getConversationsAction } from '@/lib/actions/messaging'
+import { useAuth } from '@/lib/context/authContext'
 import type { ConversationWithPreview } from '@/types/messaging'
 
 type FilterTab = 'all' | 'unread'
 
-const POLL_INTERVAL = 10_000 // 10 seconds
+/** Polling interval for refreshing the conversation list (ms). */
+const POLL_INTERVAL = 10_000
 
 function formatMessageTime(dateString: string): string {
   const date = new Date(dateString)
@@ -42,79 +43,63 @@ function formatMessageTime(dateString: string): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-function getCustomerDisplay(consumerId: string): string {
-  const num = consumerId.replace(/\D/g, '')
-  return `Customer #${num || consumerId.slice(-3)}`
-}
-
-function truncateMessage(message: string, maxLength: number = 60): string {
+function truncateMessage(message: string, maxLength = 60): string {
   if (message.length <= maxLength) return message
   return `${message.slice(0, maxLength)}...`
 }
 
-export default function MessagesPage() {
-  const { state } = useBusinessAuth()
-  const businessId = state.owner?.businessId
-  const [activeTab, setActiveTab] = useState<FilterTab>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+export default function ConsumerMessagesPage() {
+  const { state } = useAuth()
+  const userId = state.user?.id
+
   const [conversations, setConversations] = useState<ConversationWithPreview[]>(
     [],
   )
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<FilterTab>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    string | null
+  >(null)
+  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const fetchConversations = useCallback(async (showLoading = false) => {
-    if (showLoading) setIsLoading(true)
+  const fetchConversations = useCallback(async () => {
     try {
-      const result = await getConversationsAction('business')
+      const { getConversationsAction } = await import(
+        '@/lib/actions/messaging'
+      )
+      const result = await getConversationsAction('consumer')
       if (result.success && result.conversations) {
         setConversations(result.conversations)
-        setError(null)
-      } else {
-        setError('Failed to load conversations')
       }
     } catch {
-      setError('Failed to load conversations')
+      // Server actions may not be available yet — fail silently
     } finally {
-      if (showLoading) setIsLoading(false)
+      setIsLoading(false)
     }
   }, [])
 
   // Initial fetch + polling
   useEffect(() => {
-    fetchConversations(true)
+    fetchConversations()
 
-    pollRef.current = setInterval(() => {
-      fetchConversations(false)
-    }, POLL_INTERVAL)
-
+    pollRef.current = setInterval(fetchConversations, POLL_INTERVAL)
     return () => {
       if (pollRef.current) clearInterval(pollRef.current)
     }
   }, [fetchConversations])
 
-  if (!businessId) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#78350f]">No business linked to your account.</p>
-      </div>
-    )
-  }
+  // ---------- Filtering ----------
 
-  // Filter by tab
-  let filteredConversations = conversations
+  let filtered = conversations
   if (activeTab === 'unread') {
-    filteredConversations = conversations.filter((c) => c.unread_count > 0)
+    filtered = conversations.filter((c) => c.unread_count > 0)
   }
-
-  // Filter by search
   if (searchQuery) {
-    const query = searchQuery.toLowerCase()
-    filteredConversations = filteredConversations.filter(
-      (c) =>
-        (c.deal_title ?? '').toLowerCase().includes(query) ||
-        getCustomerDisplay(c.consumer_id).toLowerCase().includes(query),
+    const q = searchQuery.toLowerCase()
+    filtered = filtered.filter((c) =>
+      c.deal_title?.toLowerCase().includes(q),
     )
   }
 
@@ -124,6 +109,49 @@ export default function MessagesPage() {
     { id: 'all', label: 'All', count: conversations.length },
     { id: 'unread', label: 'Unread', count: unreadCount },
   ]
+
+  // ---------- Selected thread view ----------
+
+  if (selectedConversationId && selectedClaimId && userId) {
+    return (
+      <div className="space-y-4">
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedConversationId(null)
+            setSelectedClaimId(null)
+          }}
+          className="inline-flex items-center gap-1.5 text-sm text-[#78350f] hover:text-[#451a03] transition-colors"
+        >
+          <ArrowLeft size={16} weight="bold" />
+          Back to messages
+        </button>
+
+        <MessageThread
+          claimId={selectedClaimId}
+          currentUserId={userId}
+          currentUserType="consumer"
+        />
+      </div>
+    )
+  }
+
+  // ---------- Loading state ----------
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="h-20 rounded-xl bg-[#f2ebe2] animate-pulse"
+          />
+        ))}
+      </div>
+    )
+  }
+
+  // ---------- Conversation list ----------
 
   return (
     <div className="space-y-6">
@@ -163,7 +191,7 @@ export default function MessagesPage() {
                 <span
                   className={`px-2 py-0.5 rounded-full text-xs ${
                     activeTab === tab.id
-                      ? 'bg-[#faf5ee] text-white'
+                      ? 'bg-white/20 text-white'
                       : 'bg-[#faf5ee] text-[#92400e]'
                   }`}
                 >
@@ -175,35 +203,8 @@ export default function MessagesPage() {
         </div>
       </div>
 
-      {/* Loading State */}
-      {isLoading ? (
-        <Card variant="glass" padding="lg">
-          <div className="text-center py-12">
-            <SpinnerGap
-              size={32}
-              weight="light"
-              className="text-[#92400e] animate-spin mx-auto mb-4"
-            />
-            <p className="text-[#78350f] text-sm">Loading conversations...</p>
-          </div>
-        </Card>
-      ) : error ? (
-        <Card variant="glass" padding="lg">
-          <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-red-50 mx-auto mb-4 flex items-center justify-center">
-              <EnvelopeSimple
-                size={32}
-                weight="light"
-                className="text-red-400"
-              />
-            </div>
-            <h3 className="text-lg font-semibold text-[#451a03] mb-2">
-              Something went wrong
-            </h3>
-            <p className="text-[#78350f] text-sm">{error}</p>
-          </div>
-        </Card>
-      ) : filteredConversations.length === 0 ? (
+      {/* Conversations List */}
+      {filtered.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full bg-[#f2ebe2] mx-auto mb-4 flex items-center justify-center">
@@ -218,15 +219,23 @@ export default function MessagesPage() {
                 ? 'No conversations found'
                 : activeTab === 'unread'
                   ? 'No unread messages'
-                  : 'No conversations yet'}
+                  : 'No messages yet'}
             </h3>
-            <p className="text-[#78350f] text-sm">
+            <p className="text-[#78350f] text-sm mb-6">
               {searchQuery
                 ? 'Try adjusting your search terms'
                 : activeTab === 'unread'
                   ? "You're all caught up!"
-                  : 'Conversations will appear here when customers message you'}
+                  : 'When you claim a deal, you can message the business here'}
             </p>
+            {!searchQuery && activeTab === 'all' && (
+              <Link href="/deals">
+                <Button variant="primary" size="md">
+                  <MagnifyingGlass size={18} weight="bold" />
+                  Browse deals
+                </Button>
+              </Link>
+            )}
           </div>
         </Card>
       ) : (
@@ -235,10 +244,14 @@ export default function MessagesPage() {
           padding="none"
           className="divide-y divide-[#d4c4b0]"
         >
-          {filteredConversations.map((conversation) => (
-            <ConversationRow
+          {filtered.map((conversation) => (
+            <ConversationItem
               key={conversation.id}
               conversation={conversation}
+              onSelect={() => {
+                setSelectedConversationId(conversation.id)
+                setSelectedClaimId(conversation.claim_id)
+              }}
             />
           ))}
         </Card>
@@ -247,35 +260,34 @@ export default function MessagesPage() {
   )
 }
 
-function ConversationRow({
+// ---------------------------------------------------------------------------
+// Conversation row component
+// ---------------------------------------------------------------------------
+
+function ConversationItem({
   conversation,
+  onSelect,
 }: {
   conversation: ConversationWithPreview
+  onSelect: () => void
 }) {
-  const {
-    deal_title,
-    last_message,
-    last_message_at,
-    unread_count,
-    consumer_id,
-    claim_id,
-  } = conversation
-  const hasUnread = unread_count > 0
+  const hasUnread = conversation.unread_count > 0
 
   return (
-    <Link
-      href={`/business/dashboard/leads/${claim_id}`}
-      className="block hover:bg-[#d4c4b0]/30 transition-colors"
+    <button
+      type="button"
+      onClick={onSelect}
+      className="w-full text-left hover:bg-[#d4c4b0]/30 transition-colors"
     >
       <div className="p-4 flex items-center gap-4">
-        {/* Avatar */}
+        {/* Avatar / Icon */}
         <div className="relative flex-shrink-0">
           <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center">
-            <User size={24} weight="fill" className="text-amber-800" />
+            <ChatCircle size={24} weight="fill" className="text-amber-800" />
           </div>
           {hasUnread && (
             <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-800 text-white text-xs font-semibold flex items-center justify-center">
-              {unread_count}
+              {conversation.unread_count}
             </div>
           )}
         </div>
@@ -286,42 +298,54 @@ function ConversationRow({
             <span
               className={`font-medium truncate ${hasUnread ? 'text-[#451a03]' : 'text-[#78350f]'}`}
             >
-              {getCustomerDisplay(consumer_id)}
+              {conversation.other_party_name ?? 'Business'}
             </span>
-            <span className="text-xs text-[#92400e] flex-shrink-0">
-              {last_message_at ? formatMessageTime(last_message_at) : ''}
-            </span>
+            {conversation.last_message_at && (
+              <span className="text-xs text-[#92400e] flex-shrink-0">
+                {formatMessageTime(conversation.last_message_at)}
+              </span>
+            )}
           </div>
 
-          <div className="flex items-center gap-2 mb-1.5">
-            <Tag
-              size={14}
-              weight="fill"
-              className="text-[#92400e] flex-shrink-0"
-            />
-            <span className="text-sm text-[#92400e] truncate">
-              {deal_title}
-            </span>
-          </div>
+          {conversation.deal_title && (
+            <div className="flex items-center gap-2 mb-1.5">
+              <Tag
+                size={14}
+                weight="fill"
+                className="text-[#92400e] flex-shrink-0"
+              />
+              <span className="text-sm text-[#92400e] truncate">
+                {conversation.deal_title}
+              </span>
+            </div>
+          )}
 
-          <div className="flex items-start gap-2">
-            <ChatCircle
-              size={14}
-              weight={hasUnread ? 'fill' : 'regular'}
-              className={`flex-shrink-0 mt-0.5 ${hasUnread ? 'text-amber-800' : 'text-[#92400e]'}`}
-            />
-            <p
-              className={`text-sm truncate ${hasUnread ? 'text-[#451a03] font-medium' : 'text-[#92400e]'}`}
-            >
-              {truncateMessage(last_message ?? '')}
-            </p>
-          </div>
+          {conversation.last_message && (
+            <div className="flex items-start gap-2">
+              <ChatCircle
+                size={14}
+                weight={hasUnread ? 'fill' : 'regular'}
+                className={`flex-shrink-0 mt-0.5 ${hasUnread ? 'text-amber-800' : 'text-[#92400e]'}`}
+              />
+              <p
+                className={`text-sm truncate ${hasUnread ? 'text-[#451a03] font-medium' : 'text-[#92400e]'}`}
+              >
+                {truncateMessage(conversation.last_message ?? '')}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Status Badge */}
         <div className="flex-shrink-0">
+          <Badge
+            variant={hasUnread ? 'brand' : 'default'}
+            size="sm"
+          >
+            {hasUnread ? 'New' : 'Open'}
+          </Badge>
         </div>
       </div>
-    </Link>
+    </button>
   )
 }

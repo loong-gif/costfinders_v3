@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { CityDealsPage } from '@/components/features/deals/cityDealsPage'
@@ -20,9 +21,10 @@ import {
   generateCityDealsMetadata,
   generateTreatmentCityMetadata,
 } from '@/lib/seo/metadata'
+import { buildDealsListSchema, buildTreatmentServiceSchema } from '@/lib/seo/schemas'
 import type { TreatmentCategory } from '@/types/deal'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // ISR: regenerate every hour
 
 // Valid treatment slugs for route matching
 const VALID_TREATMENTS: Set<string> = new Set([
@@ -52,7 +54,7 @@ type RouteType =
   | { type: 'deal'; dealId: string }
   | { type: 'not-found' }
 
-async function resolveRoute(slugs?: string[]): Promise<RouteType> {
+const resolveRoute = cache(async function resolveRoute(slugs?: string[]): Promise<RouteType> {
   // No slugs = redirect to detected city
   if (!slugs || slugs.length === 0) {
     return { type: 'redirect' }
@@ -106,7 +108,7 @@ async function resolveRoute(slugs?: string[]): Promise<RouteType> {
 
   // More than 2 slugs - not found
   return { type: 'not-found' }
-}
+})
 
 // Generate metadata dynamically based on route
 export async function generateMetadata({
@@ -221,13 +223,33 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
         getBusinessCountForCity(route.citySlug.replace(/-/g, ' ')),
       ])
       return (
-        <CityDealsPage
-          citySlug={route.citySlug}
-          cityName={route.cityName}
-          initialDeals={cityDeals}
-          dealCount={cityDeals.length}
-          businessCount={cityBusinessCount}
-        />
+        <>
+          <script
+            type="application/ld+json"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: structured data requires dangerouslySetInnerHTML
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                buildDealsListSchema(
+                  cityDeals.map((d) => ({
+                    id: d.id,
+                    title: d.title,
+                    description: d.description,
+                    dealPrice: d.dealPrice,
+                    locationArea: route.cityName,
+                  })),
+                  route.cityName,
+                ),
+              ),
+            }}
+          />
+          <CityDealsPage
+            citySlug={route.citySlug}
+            cityName={route.cityName}
+            initialDeals={cityDeals}
+            dealCount={cityDeals.length}
+            businessCount={cityBusinessCount}
+          />
+        </>
       )
     }
 
@@ -237,15 +259,34 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
         getBusinessCountForCity(route.citySlug.replace(/-/g, ' ')),
       ])
       return (
-        <TreatmentCityPage
-          treatmentSlug={route.treatmentSlug}
-          treatmentName={route.treatmentName}
-          citySlug={route.citySlug}
-          cityName={route.cityName}
-          initialDeals={treatmentCityDeals}
-          dealCount={treatmentCityDeals.length}
-          businessCount={tcBusinessCount}
-        />
+        <>
+          <script
+            type="application/ld+json"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: structured data requires dangerouslySetInnerHTML
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                buildTreatmentServiceSchema(
+                  route.treatmentName,
+                  route.cityName,
+                  {
+                    dealCount: treatmentCityDeals.length,
+                    minPrice: treatmentCityDeals.length > 0 ? Math.min(...treatmentCityDeals.map((d) => d.dealPrice)) : undefined,
+                    maxPrice: treatmentCityDeals.length > 0 ? Math.max(...treatmentCityDeals.map((d) => d.dealPrice)) : undefined,
+                  },
+                ),
+              ),
+            }}
+          />
+          <TreatmentCityPage
+            treatmentSlug={route.treatmentSlug}
+            treatmentName={route.treatmentName}
+            citySlug={route.citySlug}
+            cityName={route.cityName}
+            initialDeals={treatmentCityDeals}
+            dealCount={treatmentCityDeals.length}
+            businessCount={tcBusinessCount}
+          />
+        </>
       )
     }
 

@@ -23,8 +23,9 @@ import {
 } from '@/lib/data/unified'
 import { getCategoryFaqs } from '@/lib/seo/faq-content'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
+import { buildTreatmentServiceSchema } from '@/lib/seo/schemas'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // ISR: regenerate every hour
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -132,6 +133,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Structured Data */}
       <BreadcrumbSchema items={breadcrumbItems} />
       <FaqSchema items={faqItems} />
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: structured data requires dangerouslySetInnerHTML
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildTreatmentServiceSchema(category.label, 'Multiple Cities', {
+              dealCount: deals.length,
+              minPrice: deals.length > 0 ? Math.min(...deals.map((d) => d.dealPrice)) : undefined,
+              maxPrice: deals.length > 0 ? Math.max(...deals.map((d) => d.dealPrice)) : undefined,
+            }),
+          ),
+        }}
+      />
 
       <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

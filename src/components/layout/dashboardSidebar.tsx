@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  ChatCircle,
   ClipboardText,
   Gear,
   Heart,
@@ -14,6 +15,7 @@ const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Home', icon: House },
   { href: '/dashboard/favorites', label: 'Favorites', icon: Heart },
   { href: '/dashboard/claims', label: 'Claims', icon: ClipboardText },
+  { href: '/dashboard/messages', label: 'Messages', icon: ChatCircle },
   { href: '/deals', label: 'Browse', icon: MagnifyingGlass },
   { href: '/dashboard/settings', label: 'Settings', icon: Gear },
 ]

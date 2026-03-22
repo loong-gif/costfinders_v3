@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { claimConfirmationEmail } from '@/lib/email/templates'
+import { getOrCreateConversationAction } from '@/lib/actions/messaging'
 import { createNotificationAction } from '@/lib/actions/notification-actions'
 import {
   sendClaimNotificationEmail,
@@ -232,6 +233,9 @@ export async function createClaimAction(
       )
       sendEmailAction(user.email, subject, html).catch(() => {})
     }
+
+    // Auto-create conversation for messaging (best-effort)
+    getOrCreateConversationAction(data.id).catch(() => {})
 
     return { success: true, claimId: data.id }
   } catch {

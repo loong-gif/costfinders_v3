@@ -1,9 +1,10 @@
 export interface ConversationRow {
   id: string
   claim_id: string
-  business_id: number
   consumer_id: string
+  business_owner_id: string
   status: 'active' | 'archived'
+  last_message_at: string | null
   created_at: string
   updated_at: string
 }
@@ -18,11 +19,16 @@ export interface MessageRow {
   created_at: string
 }
 
-export interface ConversationWithPreview extends ConversationRow {
-  deal_title: string
-  last_message: string
-  last_message_at: string
-  last_message_sender_type: 'business' | 'consumer'
+export interface ConversationWithPreview {
+  id: string
+  claim_id: string
+  consumer_id: string
+  business_owner_id: string
+  status: 'active' | 'archived'
+  last_message_at: string | null
+  last_message: string | null
   unread_count: number
-  claim_status: string
+  deal_title: string | null
+  other_party_name: string | null
+  created_at: string
 }

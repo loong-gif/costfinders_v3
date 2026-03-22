@@ -9,7 +9,7 @@ import { getCategoryLabel, getCategorySlug } from '@/lib/data/categories'
 import { getFeaturedOffers, getOfferCategories } from '@/lib/data/offers'
 import { getCityDealCounts } from '@/lib/data/unified'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // ISR: regenerate every hour
 
 export default async function Home() {
   const [featuredOffers, rawCategories, cityDealCounts] = await Promise.all([

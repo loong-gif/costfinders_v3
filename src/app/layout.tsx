@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Manrope, Sora } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { GlobalHeader } from '@/components/layout/globalHeader'
 import { OrganizationSchema, WebsiteSchema } from '@/components/seo'
 import { AuthProvider } from '@/lib/context/authContext'
@@ -48,10 +50,19 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'CostFinders',
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'CostFinders - Compare MedSpa Prices' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@costfinders',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 }
 
@@ -75,6 +86,8 @@ export default function RootLayout({
             </ClaimsProvider>
           </BusinessAuthProvider>
         </AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
