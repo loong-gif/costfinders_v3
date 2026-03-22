@@ -4,20 +4,21 @@ import {
   ChatCircle,
   EnvelopeSimple,
   MagnifyingGlass,
+  SpinnerGap,
   Tag,
   User,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-import {
-  type ConversationSummary,
-  getConversationsForBusiness,
-} from '@/lib/mock-data'
+import { getConversationsAction } from '@/lib/actions/messaging'
+import type { ConversationWithPreview } from '@/types/messaging'
 
 type FilterTab = 'all' | 'unread'
+
+const POLL_INTERVAL = 10_000 // 10 seconds
 
 function formatMessageTime(dateString: string): string {
   const date = new Date(dateString)
@@ -56,6 +57,42 @@ export default function MessagesPage() {
   const businessId = state.owner?.businessId
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [conversations, setConversations] = useState<ConversationWithPreview[]>(
+    [],
+  )
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const fetchConversations = useCallback(async (showLoading = false) => {
+    if (showLoading) setIsLoading(true)
+    try {
+      const result = await getConversationsAction('business')
+      if (result.success && result.conversations) {
+        setConversations(result.conversations)
+        setError(null)
+      } else {
+        setError('Failed to load conversations')
+      }
+    } catch {
+      setError('Failed to load conversations')
+    } finally {
+      if (showLoading) setIsLoading(false)
+    }
+  }, [])
+
+  // Initial fetch + polling
+  useEffect(() => {
+    fetchConversations(true)
+
+    pollRef.current = setInterval(() => {
+      fetchConversations(false)
+    }, POLL_INTERVAL)
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current)
+    }
+  }, [fetchConversations])
 
   if (!businessId) {
     return (
@@ -65,12 +102,10 @@ export default function MessagesPage() {
     )
   }
 
-  const allConversations = getConversationsForBusiness(businessId)
-
   // Filter by tab
-  let filteredConversations = allConversations
+  let filteredConversations = conversations
   if (activeTab === 'unread') {
-    filteredConversations = allConversations.filter((c) => c.unreadCount > 0)
+    filteredConversations = conversations.filter((c) => c.unread_count > 0)
   }
 
   // Filter by search
@@ -78,15 +113,15 @@ export default function MessagesPage() {
     const query = searchQuery.toLowerCase()
     filteredConversations = filteredConversations.filter(
       (c) =>
-        c.dealTitle.toLowerCase().includes(query) ||
-        getCustomerDisplay(c.claim.consumerId).toLowerCase().includes(query),
+        c.deal_title.toLowerCase().includes(query) ||
+        getCustomerDisplay(c.consumer_id).toLowerCase().includes(query),
     )
   }
 
-  const unreadCount = allConversations.filter((c) => c.unreadCount > 0).length
+  const unreadCount = conversations.filter((c) => c.unread_count > 0).length
 
   const tabs: { id: FilterTab; label: string; count?: number }[] = [
-    { id: 'all', label: 'All', count: allConversations.length },
+    { id: 'all', label: 'All', count: conversations.length },
     { id: 'unread', label: 'Unread', count: unreadCount },
   ]
 
@@ -140,8 +175,35 @@ export default function MessagesPage() {
         </div>
       </div>
 
-      {/* Conversations List */}
-      {filteredConversations.length === 0 ? (
+      {/* Loading State */}
+      {isLoading ? (
+        <Card variant="glass" padding="lg">
+          <div className="text-center py-12">
+            <SpinnerGap
+              size={32}
+              weight="light"
+              className="text-[#92400e] animate-spin mx-auto mb-4"
+            />
+            <p className="text-[#78350f] text-sm">Loading conversations...</p>
+          </div>
+        </Card>
+      ) : error ? (
+        <Card variant="glass" padding="lg">
+          <div className="text-center py-12">
+            <div className="w-16 h-16 rounded-full bg-red-50 mx-auto mb-4 flex items-center justify-center">
+              <EnvelopeSimple
+                size={32}
+                weight="light"
+                className="text-red-400"
+              />
+            </div>
+            <h3 className="text-lg font-semibold text-[#451a03] mb-2">
+              Something went wrong
+            </h3>
+            <p className="text-[#78350f] text-sm">{error}</p>
+          </div>
+        </Card>
+      ) : filteredConversations.length === 0 ? (
         <Card variant="glass" padding="lg">
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full bg-[#f2ebe2] mx-auto mb-4 flex items-center justify-center">
@@ -175,7 +237,7 @@ export default function MessagesPage() {
         >
           {filteredConversations.map((conversation) => (
             <ConversationRow
-              key={conversation.claim.id}
+              key={conversation.id}
               conversation={conversation}
             />
           ))}
@@ -188,14 +250,23 @@ export default function MessagesPage() {
 function ConversationRow({
   conversation,
 }: {
-  conversation: ConversationSummary
+  conversation: ConversationWithPreview
 }) {
-  const { claim, dealTitle, lastMessage, unreadCount } = conversation
-  const hasUnread = unreadCount > 0
+  const {
+    deal_title,
+    last_message,
+    last_message_at,
+    last_message_sender_type,
+    unread_count,
+    consumer_id,
+    claim_id,
+    claim_status,
+  } = conversation
+  const hasUnread = unread_count > 0
 
   return (
     <Link
-      href={`/business/dashboard/leads/${claim.id}`}
+      href={`/business/dashboard/leads/${claim_id}`}
       className="block hover:bg-[#d4c4b0]/30 transition-colors"
     >
       <div className="p-4 flex items-center gap-4">
@@ -206,7 +277,7 @@ function ConversationRow({
           </div>
           {hasUnread && (
             <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-800 text-white text-xs font-semibold flex items-center justify-center">
-              {unreadCount}
+              {unread_count}
             </div>
           )}
         </div>
@@ -217,10 +288,10 @@ function ConversationRow({
             <span
               className={`font-medium truncate ${hasUnread ? 'text-[#451a03]' : 'text-[#78350f]'}`}
             >
-              {getCustomerDisplay(claim.consumerId)}
+              {getCustomerDisplay(consumer_id)}
             </span>
             <span className="text-xs text-[#92400e] flex-shrink-0">
-              {formatMessageTime(lastMessage.createdAt)}
+              {formatMessageTime(last_message_at)}
             </span>
           </div>
 
@@ -230,7 +301,9 @@ function ConversationRow({
               weight="fill"
               className="text-[#92400e] flex-shrink-0"
             />
-            <span className="text-sm text-[#92400e] truncate">{dealTitle}</span>
+            <span className="text-sm text-[#92400e] truncate">
+              {deal_title}
+            </span>
           </div>
 
           <div className="flex items-start gap-2">
@@ -242,10 +315,10 @@ function ConversationRow({
             <p
               className={`text-sm truncate ${hasUnread ? 'text-[#451a03] font-medium' : 'text-[#92400e]'}`}
             >
-              {lastMessage.senderType === 'business' && (
+              {last_message_sender_type === 'business' && (
                 <span className="text-[#92400e]">You: </span>
               )}
-              {truncateMessage(lastMessage.content)}
+              {truncateMessage(last_message)}
             </p>
           </div>
         </div>
@@ -254,17 +327,17 @@ function ConversationRow({
         <div className="flex-shrink-0">
           <Badge
             variant={
-              claim.status === 'completed'
+              claim_status === 'completed'
                 ? 'success'
-                : claim.status === 'cancelled'
+                : claim_status === 'cancelled'
                   ? 'error'
-                  : claim.status === 'booked'
+                  : claim_status === 'booked'
                     ? 'info'
                     : 'default'
             }
             size="sm"
           >
-            {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
+            {claim_status.charAt(0).toUpperCase() + claim_status.slice(1)}
           </Badge>
         </div>
       </div>

@@ -27,6 +27,7 @@ import {
   updateClaimStatusForBusinessAction,
 } from '@/lib/actions/business-claims'
 import type { ClaimRow } from '@/lib/actions/claims'
+import { getOrCreateConversationAction } from '@/lib/actions/messaging'
 import { getOfferById } from '@/lib/data/offers'
 import type { ClaimStatus } from '@/types/claim'
 import type { OfferWithBusiness } from '@/types/supabase'
@@ -78,6 +79,25 @@ export function LeadDetail({
   const [isSaving, setIsSaving] = useState(false)
   const [deal, setDeal] = useState<OfferWithBusiness | null>(null)
   const [isDealLoading, setIsDealLoading] = useState(true)
+  const [conversationId, setConversationId] = useState<string | undefined>(
+    undefined,
+  )
+
+  // Load conversation for this claim
+  const loadConversation = useCallback(async () => {
+    try {
+      const result = await getOrCreateConversationAction(initialClaim.id)
+      if (result.success && result.conversation) {
+        setConversationId(result.conversation.id)
+      }
+    } catch {
+      // Non-critical — messaging just won't be available
+    }
+  }, [initialClaim.id])
+
+  useEffect(() => {
+    loadConversation()
+  }, [loadConversation])
 
   // Load deal info
   const loadDeal = useCallback(async () => {
@@ -381,6 +401,7 @@ export function LeadDetail({
           {claim.status !== 'pending' && (
             <MessageThread
               claimId={claim.id}
+              conversationId={conversationId}
               currentUserId={businessId}
               currentUserType="business"
             />

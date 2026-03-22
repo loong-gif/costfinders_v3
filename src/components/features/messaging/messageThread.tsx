@@ -1,17 +1,24 @@
 'use client'
 
-import { ChatCircle, PaperPlaneRight } from '@phosphor-icons/react'
-import { useEffect, useRef, useState } from 'react'
+import { ChatCircle, PaperPlaneRight, SpinnerGap } from '@phosphor-icons/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { getMessagesForClaim, sendMessage } from '@/lib/mock-data'
-import type { Message } from '@/types/message'
+import {
+  getMessagesAction,
+  sendMessageAction,
+  markMessagesReadAction,
+} from '@/lib/actions/messaging'
+import type { MessageRow } from '@/types/messaging'
 
 interface MessageThreadProps {
   claimId: string
+  conversationId?: string
   currentUserId: string
   currentUserType: 'business' | 'consumer'
 }
+
+const POLL_INTERVAL = 5_000 // 5 seconds
 
 function formatMessageTime(dateString: string): string {
   const date = new Date(dateString)
@@ -45,15 +52,16 @@ function formatMessageTime(dateString: string): string {
 
 export function MessageThread({
   claimId,
+  conversationId,
   currentUserId,
   currentUserType,
 }: MessageThreadProps) {
-  const [messages, setMessages] = useState<Message[]>(() =>
-    getMessagesForClaim(claimId),
-  )
+  const [messages, setMessages] = useState<MessageRow[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [newMessage, setNewMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Auto-scroll to latest message
   const scrollToBottom = () => {
@@ -65,23 +73,80 @@ export function MessageThread({
     scrollToBottom()
   }, [messages])
 
-  const handleSend = () => {
-    if (!newMessage.trim() || isSending) return
+  const fetchMessages = useCallback(
+    async (showLoading = false) => {
+      if (!conversationId) return
+      if (showLoading) setIsLoading(true)
+      try {
+        const result = await getMessagesAction(conversationId)
+        if (result.success && result.messages) {
+          setMessages(result.messages)
+        }
+        // Mark messages as read on each fetch
+        await markMessagesReadAction(conversationId)
+      } catch {
+        // Silently fail on polling errors
+      } finally {
+        if (showLoading) setIsLoading(false)
+      }
+    },
+    [conversationId],
+  )
+
+  // Initial fetch + polling
+  useEffect(() => {
+    if (!conversationId) {
+      setIsLoading(false)
+      return
+    }
+
+    fetchMessages(true)
+
+    pollRef.current = setInterval(() => {
+      fetchMessages(false)
+    }, POLL_INTERVAL)
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current)
+    }
+  }, [conversationId, fetchMessages])
+
+  const handleSend = async () => {
+    if (!newMessage.trim() || isSending || !conversationId) return
 
     setIsSending(true)
+    const content = newMessage.trim()
 
-    // Simulate send delay
-    setTimeout(() => {
-      const sent = sendMessage(
-        claimId,
-        newMessage.trim(),
-        currentUserType,
-        currentUserId,
+    // Optimistic update: append message with temp ID
+    const optimisticMessage: MessageRow = {
+      id: `temp-${Date.now()}`,
+      conversation_id: conversationId,
+      sender_id: currentUserId,
+      sender_type: currentUserType,
+      content,
+      read_at: null,
+      created_at: new Date().toISOString(),
+    }
+
+    setMessages((prev) => [...prev, optimisticMessage])
+    setNewMessage('')
+
+    try {
+      const result = await sendMessageAction(conversationId, content)
+      if (result.success && result.message) {
+        // Replace the optimistic message with the real one
+        setMessages((prev) =>
+          prev.map((m) => (m.id === optimisticMessage.id ? result.message! : m)),
+        )
+      }
+    } catch {
+      // Remove optimistic message on failure
+      setMessages((prev) =>
+        prev.filter((m) => m.id !== optimisticMessage.id),
       )
-      setMessages((prev) => [...prev, sent])
-      setNewMessage('')
+    } finally {
       setIsSending(false)
-    }, 200)
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -89,6 +154,30 @@ export function MessageThread({
       e.preventDefault()
       handleSend()
     }
+  }
+
+  // No conversationId yet — show a placeholder
+  if (!conversationId) {
+    return (
+      <Card variant="glass" padding="none" className="flex flex-col h-[400px]">
+        <div className="px-4 py-3 border-b border-[#d4c4b0]">
+          <h3 className="text-sm font-medium text-[#78350f] flex items-center gap-2">
+            <ChatCircle size={18} weight="fill" className="text-[#92400e]" />
+            Messages
+          </h3>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center py-8">
+            <div className="w-12 h-12 rounded-full bg-[#f2ebe2] flex items-center justify-center mb-3 mx-auto">
+              <ChatCircle size={24} weight="light" className="text-[#92400e]" />
+            </div>
+            <p className="text-[#78350f] text-sm">
+              Messaging will be available once the conversation is initialized
+            </p>
+          </div>
+        </div>
+      </Card>
+    )
   }
 
   return (
@@ -103,7 +192,16 @@ export function MessageThread({
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center h-full text-center py-8">
+            <SpinnerGap
+              size={24}
+              weight="light"
+              className="text-[#92400e] animate-spin mb-3"
+            />
+            <p className="text-[#78350f] text-sm">Loading messages...</p>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-8">
             <div className="w-12 h-12 rounded-full bg-[#f2ebe2] flex items-center justify-center mb-3">
               <ChatCircle size={24} weight="light" className="text-[#92400e]" />
@@ -116,7 +214,7 @@ export function MessageThread({
         ) : (
           <>
             {messages.map((message) => {
-              const isOwnMessage = message.senderType === currentUserType
+              const isOwnMessage = message.sender_type === currentUserType
               return (
                 <div
                   key={message.id}
@@ -132,13 +230,18 @@ export function MessageThread({
                     <p className="text-sm whitespace-pre-wrap break-words">
                       {message.content}
                     </p>
-                    <p
-                      className={`text-xs mt-1 ${
+                    <div
+                      className={`flex items-center gap-1.5 mt-1 ${
                         isOwnMessage ? 'text-white/70' : 'text-[#92400e]'
                       }`}
                     >
-                      {formatMessageTime(message.createdAt)}
-                    </p>
+                      <span className="text-xs">
+                        {formatMessageTime(message.created_at)}
+                      </span>
+                      {isOwnMessage && message.read_at && (
+                        <span className="text-xs">read</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               )
