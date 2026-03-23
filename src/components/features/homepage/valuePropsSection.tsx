@@ -39,7 +39,7 @@ export function ValuePropsSection() {
     <section className="relative w-full overflow-hidden py-20 sm:py-28">
       {/* Background image */}
       <Image
-        src="/images/homepage/value-props-bg.png"
+        src="/images/homepage/value-props-bg.webp"
         alt=""
         fill
         className="object-cover"

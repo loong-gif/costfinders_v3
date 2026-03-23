@@ -14,7 +14,13 @@ import {
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { BusinessSearchModal } from '@/components/features/businessSearchModal'
+import dynamic from 'next/dynamic'
+
+// M8: Dynamic import — only loaded when user clicks search
+const BusinessSearchModal = dynamic(
+  () => import('@/components/features/businessSearchModal').then((m) => m.BusinessSearchModal),
+  { ssr: false },
+)
 import { AnimatedCounter } from '@/components/patterns/animatedCounter'
 import { ScrollReveal, ScrollRevealItem } from '@/components/patterns/scrollReveal'
 import { Button } from '@/components/ui/button'
@@ -61,7 +67,7 @@ export default function BusinessPage() {
       {/* Hero — full-bleed with image background */}
       <section className="relative w-full min-h-[60vh] sm:min-h-[70vh] flex items-center overflow-hidden">
         <Image
-          src="/images/business-owner.png"
+          src="/images/business-owner.webp"
           alt=""
           fill
           className="object-cover"

@@ -32,7 +32,7 @@ export function DashboardHeader() {
         {/* Left: Logo + Nav Links */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/icon.png" alt="CostFinders" width={32} height={32} />
+            <Image src="/icon.webp" alt="CostFinders" width={32} height={32} />
             <span className="font-bold text-lg text-amber-800">
               CostFinders
             </span>

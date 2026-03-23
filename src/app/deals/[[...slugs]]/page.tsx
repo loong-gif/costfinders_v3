@@ -119,10 +119,13 @@ export async function generateMetadata({
 
   switch (route.type) {
     case 'city': {
-      const dealCount = await getDealCountForCitySlug(route.citySlug)
+      // M3: Parallelize 3 independent metadata queries (was sequential)
       const cityName = route.citySlug.replace(/-/g, ' ')
-      const businessCount = await getBusinessCountForCity(cityName)
-      const minPrice = await getMinPriceForCitySlug(route.citySlug)
+      const [dealCount, businessCount, minPrice] = await Promise.all([
+        getDealCountForCitySlug(route.citySlug),
+        getBusinessCountForCity(cityName),
+        getMinPriceForCitySlug(route.citySlug),
+      ])
       return generateCityDealsMetadata(route.cityName, route.citySlug, {
         dealCount,
         businessCount,
@@ -131,16 +134,13 @@ export async function generateMetadata({
     }
 
     case 'treatment-city': {
-      const dealCount = await getDealCountForTreatmentAndCity(
-        route.treatmentSlug,
-        route.citySlug,
-      )
+      // M3: Parallelize 3 independent metadata queries (was sequential)
       const cityName = route.citySlug.replace(/-/g, ' ')
-      const businessCount = await getBusinessCountForCity(cityName)
-      const minPrice = await getMinPriceForTreatmentAndCity(
-        route.treatmentSlug,
-        route.citySlug,
-      )
+      const [dealCount, businessCount, minPrice] = await Promise.all([
+        getDealCountForTreatmentAndCity(route.treatmentSlug, route.citySlug),
+        getBusinessCountForCity(cityName),
+        getMinPriceForTreatmentAndCity(route.treatmentSlug, route.citySlug),
+      ])
       return generateTreatmentCityMetadata(
         route.treatmentName,
         route.treatmentSlug,

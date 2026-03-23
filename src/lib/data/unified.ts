@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { supabase } from '@/lib/supabase'
 import type { TreatmentCategory } from '@/types/deal'
 import {
   businessToProvider,
@@ -251,9 +252,27 @@ export const getUnifiedCities = cache(async function getUnifiedCities() {
 
 /**
  * Get deal counts per city (only priced deals).
- * Used by homepage to show accurate counts that match what deal pages display.
+ * M1: Uses RPC for SQL-side aggregation (~20 rows vs entire offers+businesses dataset).
  */
 export const getCityDealCounts = cache(async function getCityDealCounts() {
+  // Try RPC first (returns ~20 rows instead of 347+ with joins)
+  const { data, error } = await supabase.rpc('get_city_deal_counts')
+
+  if (!error && data) {
+    return (data as { city: string; deal_count: number; provider_count: number }[]).map((row) => {
+      const { state, stateCode } = inferState(row.city)
+      return {
+        city: row.city,
+        slug: cityToSlug(row.city),
+        state,
+        stateCode,
+        dealCount: Number(row.deal_count),
+        providerCount: Number(row.provider_count),
+      }
+    })
+  }
+
+  // Fallback: JS-side aggregation if RPC doesn't exist
   const offers = await getOffersWithBusinesses()
   const cityMap = new Map<string, { dealCount: number; providerIds: Set<number> }>()
 
@@ -268,15 +287,15 @@ export const getCityDealCounts = cache(async function getCityDealCounts() {
   }
 
   return Array.from(cityMap.entries())
-    .map(([city, data]) => {
+    .map(([city, cityData]) => {
       const { state, stateCode } = inferState(city)
       return {
         city,
         slug: cityToSlug(city),
         state,
         stateCode,
-        dealCount: data.dealCount,
-        providerCount: data.providerIds.size,
+        dealCount: cityData.dealCount,
+        providerCount: cityData.providerIds.size,
       }
     })
     .sort((a, b) => b.dealCount - a.dealCount)
@@ -302,6 +321,14 @@ export async function getProvidersByCity(city: string) {
 }
 
 export const getBusinessCountForCity = cache(async function getBusinessCountForCity(cityName: string) {
+  // M1: Use RPC to get count without fetching full business objects
+  const { data, error } = await supabase.rpc('get_business_count_for_city', { city_name: cityName })
+
+  if (!error && data != null) {
+    return Number(data)
+  }
+
+  // Fallback: fetch full objects and count
   const businesses = await getBusinesses(cityName)
   return businesses.length
 })

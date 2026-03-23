@@ -1,9 +1,6 @@
-'use client'
-
-import { MagnifyingGlass, TrendUp } from '@phosphor-icons/react'
+import { MagnifyingGlass, TrendUp } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 
 interface HeroSectionProps {
@@ -17,17 +14,11 @@ export function HeroSection({
   totalOffers,
   totalBusinesses,
 }: HeroSectionProps) {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   return (
     <section className="relative w-full min-h-[70vh] sm:min-h-[80vh] flex items-center overflow-hidden">
       {/* Background image */}
       <Image
-        src="/images/homepage/hero-bg.png"
+        src="/images/homepage/hero-bg.webp"
         alt=""
         fill
         className="object-cover"
@@ -41,17 +32,11 @@ export function HeroSection({
         aria-hidden="true"
       />
 
-      {/* Content */}
+      {/* Content — CSS animations replace JS mounted state (M16) */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 sm:py-28">
         <div className="max-w-3xl mx-auto text-center">
           {/* Stats badge — frosted glass */}
-          <div
-            className={`inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 transition-all duration-700 ${
-              mounted
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-4'
-            }`}
-          >
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-hero-fade-in [animation-delay:0ms]">
             <TrendUp size={16} weight="bold" className="text-amber-300" />
             <span className="text-sm text-white/90 font-medium">
               {totalOffers} deals from {totalBusinesses} {totalBusinesses === 1 ? 'provider' : 'providers'}
@@ -59,37 +44,19 @@ export function HeroSection({
           </div>
 
           {/* Headline */}
-          <h1
-            className={`text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight transition-all duration-700 delay-200 ${
-              mounted
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-6'
-            }`}
-          >
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight animate-hero-fade-in [animation-delay:200ms]">
             Don&apos;t overpay for{' '}
             <span className="text-amber-300">medspa treatments</span>
           </h1>
 
           {/* Subtitle */}
-          <p
-            className={`text-lg text-white/80 mb-10 max-w-xl mx-auto transition-all duration-700 delay-400 ${
-              mounted
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-6'
-            }`}
-          >
+          <p className="text-lg text-white/80 mb-10 max-w-xl mx-auto animate-hero-fade-in [animation-delay:400ms]">
             Compare real prices from verified providers. Find the best deals on
             Botox, fillers, facials, and more.
           </p>
 
           {/* CTA Button */}
-          <div
-            className={`transition-all duration-700 delay-500 ${
-              mounted
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-6'
-            }`}
-          >
+          <div className="animate-hero-fade-in [animation-delay:500ms]">
             <Link href="/deals">
               <Button
                 size="lg"
@@ -102,20 +69,14 @@ export function HeroSection({
           </div>
 
           {/* Category chips — frosted glass */}
-          <div
-            className={`flex flex-wrap items-center justify-center gap-2 mt-10 transition-all duration-700 delay-700 ${
-              mounted
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-6'
-            }`}
-          >
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-10 animate-hero-fade-in [animation-delay:700ms]">
             {categories
               .filter((cat) => cat.count >= 2)
               .map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/treatments/${cat.slug}`}
-                  className="bg-white/10 backdrop-blur-sm border border-white/15 text-white/90 hover:bg-white/20 hover:text-white hover:border-white/30 hover:-translate-y-0.5 rounded-full px-4 py-1.5 text-sm transition-all duration-200 cursor-pointer"
+                  className="bg-white/10 backdrop-blur-sm border border-white/15 text-white/90 hover:bg-white/20 hover:text-white hover:border-white/30 hover:-translate-y-0.5 rounded-full px-4 py-2 min-h-[44px] flex items-center text-sm transition-all duration-200 cursor-pointer"
                 >
                   {cat.label}
                   <span className="ml-1.5 text-amber-300/80">{cat.count}</span>

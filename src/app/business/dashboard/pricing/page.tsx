@@ -7,7 +7,12 @@ import { BillingHistory } from '@/components/features/billingHistory'
 import { LeadBalanceCard } from '@/components/features/leadBalanceCard'
 import { LeadCostCard } from '@/components/features/leadCostCard'
 import { LeadPackagesGrid } from '@/components/features/leadPackagesGrid'
-import { LeadPurchaseModal } from '@/components/features/leadPurchaseModal'
+import dynamic from 'next/dynamic'
+
+const LeadPurchaseModal = dynamic(
+  () => import('@/components/features/leadPurchaseModal').then((m) => m.LeadPurchaseModal),
+  { ssr: false },
+)
 import { PaymentMethods } from '@/components/features/paymentMethods'
 import { PricingHubHeader } from '@/components/features/pricingHubHeader'
 import { Card } from '@/components/ui/card'

@@ -40,22 +40,32 @@ export default async function Home() {
       <TrendingDealsSection offers={featuredOffers} />
 
       {/* Browse by Treatment — full-bleed surface band */}
-      <CategoryGrid categories={categories} />
+      <div className="content-visibility-auto">
+        <CategoryGrid categories={categories} />
+      </div>
 
       {/* Browse by City — contained, base background */}
-      <CityGrid cities={cityDealCounts} />
+      <div className="content-visibility-auto">
+        <CityGrid cities={cityDealCounts} />
+      </div>
 
       {/* How It Works — full-bleed image background */}
-      <ValuePropsSection />
+      <div className="content-visibility-auto">
+        <ValuePropsSection />
+      </div>
 
       {/* Social Proof — full-bleed elevated band */}
-      <SocialProofSection
-        totalOffers={totalOffers}
-        totalBusinesses={totalProviders}
-      />
+      <div className="content-visibility-auto">
+        <SocialProofSection
+          totalOffers={totalOffers}
+          totalBusinesses={totalProviders}
+        />
+      </div>
 
       {/* Business CTA — full-bleed dark inverted */}
-      <BusinessCtaSection />
+      <div className="content-visibility-auto">
+        <BusinessCtaSection />
+      </div>
     </main>
   )
 }

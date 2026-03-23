@@ -100,7 +100,7 @@ export function TreatmentsPageContent({
       {/* Hero — full-bleed with image background */}
       <section className="relative w-full overflow-hidden">
         <Image
-          src="/images/treatments-hero.png"
+          src="/images/treatments-hero.webp"
           alt=""
           fill
           className="object-cover"

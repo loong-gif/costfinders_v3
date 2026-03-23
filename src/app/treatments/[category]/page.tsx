@@ -92,21 +92,24 @@ interface CategoryPageProps {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params
-  const categories = await getUnifiedCategories()
+
+  // M3: Parallelize 3 independent queries (was sequential — 100-300ms savings on ISR miss)
+  const [categories, deals, cities] = await Promise.all([
+    getUnifiedCategories(),
+    getDealsByDbCategorySlug(categorySlug),
+    getUnifiedCities(),
+  ])
+
   const category = categories.find((c) => c.slug === categorySlug)
 
   if (!category) {
     notFound()
   }
 
-  const deals = await getDealsByDbCategorySlug(categorySlug)
   const iconName = slugToIcon[categorySlug] || 'Lightning'
   const CategoryIcon = categoryIcons[iconName] || (
     <Tag size={24} weight="fill" className="text-amber-800" />
   )
-
-  // Build city links for related locations section
-  const cities = await getUnifiedCities()
   const cityLinks: RelatedLink[] = cities.slice(0, 8).map((c) => ({
     label: `${category.label} in ${c.name}`,
     href: `/deals/${c.slug}`,

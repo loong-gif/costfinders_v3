@@ -59,7 +59,25 @@ export const getOfferById = cache(async function getOfferById(
   return data as OfferWithBusiness
 })
 
+/**
+ * Cached version for the no-filter case (used by getCityDealCounts, getActiveDeals).
+ * Deduplicates within a single React server request.
+ */
+const getAllOffersWithBusinesses = cache(async function getAllOffersWithBusinesses(): Promise<OfferWithBusiness[]> {
+  return _getOffersWithBusinesses()
+})
+
 export async function getOffersWithBusinesses(
+  filters?: OfferFilters,
+): Promise<OfferWithBusiness[]> {
+  // Deduplicate the most common call: no filters
+  if (!filters || Object.keys(filters).length === 0) {
+    return getAllOffersWithBusinesses()
+  }
+  return _getOffersWithBusinesses(filters)
+}
+
+async function _getOffersWithBusinesses(
   filters?: OfferFilters,
 ): Promise<OfferWithBusiness[]> {
   let query = supabase
@@ -120,16 +138,23 @@ export async function getOffersWithBusinesses(
 export const getOfferCategories = cache(async function getOfferCategories(): Promise<
   { service_category: string; count: number }[]
 > {
-  // Only count deals that have pricing (matches Rule 1 filter)
-  const { data, error } = await supabase
+  // M1: Use RPC for SQL-side aggregation (6 rows vs 347)
+  const { data, error } = await supabase.rpc('get_offer_category_counts')
+
+  if (!error && data) {
+    return data as { service_category: string; count: number }[]
+  }
+
+  // Fallback: JS-side counting if RPC doesn't exist
+  const { data: raw, error: rawError } = await supabase
     .from(TABLE)
     .select('service_category')
     .or('discount_price.gt.0,original_price.gt.0')
 
-  if (error) throw error
+  if (rawError) throw rawError
 
   const counts = new Map<string, number>()
-  for (const row of data ?? []) {
+  for (const row of raw ?? []) {
     if (!row.service_category) continue
     counts.set(
       row.service_category,

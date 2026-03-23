@@ -16,7 +16,7 @@ export function BusinessCtaSection() {
             <div className="order-1 lg:order-2">
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
                 <Image
-                  src="/images/homepage/business-cta.png"
+                  src="/images/homepage/business-cta.webp"
                   alt="Modern medspa storefront at golden hour"
                   fill
                   className="object-cover"

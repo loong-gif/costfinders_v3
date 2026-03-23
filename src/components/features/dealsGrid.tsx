@@ -28,7 +28,7 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
         onClick={() => onChange('grid')}
         disabled={disabled}
         className={`
-          p-2 rounded-md transition-colors
+          min-w-[44px] min-h-[44px] p-2.5 rounded-md transition-colors flex items-center justify-center touch-action-manipulation
           ${
             viewMode === 'grid'
               ? 'bg-amber-800/15 text-amber-800'
@@ -40,7 +40,7 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
         aria-pressed={viewMode === 'grid'}
       >
         <SquaresFour
-          size={18}
+          size={20}
           weight={viewMode === 'grid' ? 'fill' : 'regular'}
         />
       </button>
@@ -49,7 +49,7 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
         onClick={() => onChange('list')}
         disabled={disabled}
         className={`
-          p-2 rounded-md transition-colors
+          min-w-[44px] min-h-[44px] p-2.5 rounded-md transition-colors flex items-center justify-center touch-action-manipulation
           ${
             viewMode === 'list'
               ? 'bg-amber-800/15 text-amber-800'
@@ -60,7 +60,7 @@ function ViewModeToggle({ viewMode, onChange, disabled }: ViewModeToggleProps) {
         aria-label="List view"
         aria-pressed={viewMode === 'list'}
       >
-        <List size={18} weight={viewMode === 'list' ? 'fill' : 'regular'} />
+        <List size={20} weight={viewMode === 'list' ? 'fill' : 'regular'} />
       </button>
     </div>
   )

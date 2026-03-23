@@ -14,15 +14,14 @@ const sora = Sora({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
-  weight: ['400', '500', '600', '700'],
+  adjustFontFallback: true,
 })
 
 const manrope = Manrope({
   variable: '--font-manrope',
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   preload: false,
-  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -73,6 +72,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co" />
+        <link rel="dns-prefetch" href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body
         className={`${sora.variable} ${manrope.variable} font-sans antialiased`}
       >

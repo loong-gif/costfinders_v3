@@ -10,10 +10,10 @@ interface CityGridProps {
 }
 
 const CITY_IMAGES = [
-  '/images/homepage/city-1.png',
-  '/images/homepage/city-2.png',
-  '/images/homepage/city-3.png',
-  '/images/homepage/city-4.png',
+  '/images/homepage/city-1.webp',
+  '/images/homepage/city-2.webp',
+  '/images/homepage/city-3.webp',
+  '/images/homepage/city-4.webp',
 ]
 
 export function CityGrid({ cities }: CityGridProps) {

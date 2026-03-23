@@ -27,9 +27,10 @@ export function BlurredImage({
       {src ? (
         <Image
           src={src}
-          alt={alt}
+          alt=""
           fill={fill}
-          sizes={sizes}
+          sizes={sizes || '48px'}
+          quality={10}
           priority={priority}
           loading={priority ? 'eager' : 'lazy'}
           className="object-cover blur-xl scale-110"

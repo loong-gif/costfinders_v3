@@ -62,15 +62,23 @@ export const getBusinessCities = cache(async function getBusinessCities(): Promi
   return data ?? []
 })
 
-export async function getBusinessCategories(): Promise<
+export const getBusinessCategories = cache(async function getBusinessCategories(): Promise<
   { category: string; count: number }[]
 > {
-  const { data, error } = await supabase.from(TABLE).select('category')
+  // M1: Use RPC for SQL-side aggregation
+  const { data, error } = await supabase.rpc('get_business_category_counts')
 
-  if (error) throw error
+  if (!error && data) {
+    return data as { category: string; count: number }[]
+  }
+
+  // Fallback: JS-side counting
+  const { data: raw, error: rawError } = await supabase.from(TABLE).select('category')
+
+  if (rawError) throw rawError
 
   const counts = new Map<string, number>()
-  for (const row of data ?? []) {
+  for (const row of raw ?? []) {
     if (!row.category) continue
     counts.set(row.category, (counts.get(row.category) ?? 0) + 1)
   }
@@ -78,7 +86,7 @@ export async function getBusinessCategories(): Promise<
   return Array.from(counts.entries())
     .map(([category, count]) => ({ category, count }))
     .sort((a, b) => b.count - a.count)
-}
+})
 
 export async function searchBusinesses(query: string): Promise<Business[]> {
   const { data, error } = await supabase

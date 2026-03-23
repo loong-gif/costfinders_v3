@@ -1,10 +1,19 @@
 'use client'
 
 import { Lock, Sparkle, UserPlus } from '@phosphor-icons/react'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
-import { AuthModal } from '@/components/features/authModal'
-import { ClaimDealModal } from '@/components/features/claimDealModal'
 import { Button } from '@/components/ui/button'
+
+// M8: Dynamic import modals — only loaded when user clicks
+const AuthModal = dynamic(
+  () => import('@/components/features/authModal').then((m) => m.AuthModal),
+  { ssr: false },
+)
+const ClaimDealModal = dynamic(
+  () => import('@/components/features/claimDealModal').then((m) => m.ClaimDealModal),
+  { ssr: false },
+)
 import { Card } from '@/components/ui/card'
 
 type AuthView = 'signUp' | 'signIn'

@@ -54,7 +54,7 @@ export function GlobalHeader() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/icon.png" alt="CostFinders" width={36} height={36} />
+            <Image src="/icon.webp" alt="CostFinders" width={36} height={36} priority />
             <span className="font-bold text-xl text-amber-800">
               CostFinders
             </span>
@@ -78,7 +78,7 @@ export function GlobalHeader() {
                 <button
                   type="button"
                   onClick={handleSignIn}
-                  className="text-sm text-[#78350f] hover:text-[#451a03] transition-colors hidden sm:block cursor-pointer"
+                  className="text-sm text-[#78350f] hover:text-[#451a03] transition-colors hidden sm:flex items-center justify-center min-h-[44px] px-3 cursor-pointer"
                 >
                   Sign in
                 </button>
