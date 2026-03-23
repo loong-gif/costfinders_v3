@@ -105,6 +105,18 @@ export function BusinessAuthProvider({
   const hydrateUser = useCallback(async () => {
     const supabase = supabaseRef.current
 
+    // Quick check: skip network call for anonymous visitors
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      setState({
+        owner: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
     const {
       data: { user: authUser },
     } = await supabase.auth.getUser()
