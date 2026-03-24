@@ -1,5 +1,6 @@
 'use client'
 
+import * as Sentry from '@sentry/nextjs'
 import { ArrowCounterClockwise, House, WarningCircle } from '@phosphor-icons/react'
 import { useEffect } from 'react'
 
@@ -11,6 +12,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
+    Sentry.captureException(error)
     console.error('[ErrorBoundary]', {
       message: error.message,
       digest: error.digest,
