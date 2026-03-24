@@ -1,3 +1,4 @@
+import { dealImageUrl } from '@/lib/cloudinary'
 import type { AnonymousDeal, TemplateType, TreatmentCategory } from '@/types/deal'
 import type {
   Business as SupaBusiness,
@@ -112,7 +113,7 @@ export function offerToAnonymousDeal(offer: OfferWithBusiness): AnonymousDeal {
     validFrom: offer.start_date ?? offer.created_at ?? new Date().toISOString(),
     validUntil: offer.end_date ?? '',
     termsAndConditions: offer.eligibility ?? '',
-    imageUrl: undefined,
+    imageUrl: biz?.business_id ? dealImageUrl(biz.business_id) : undefined,
     isActive: true,
     isFeatured: false,
     isSponsored: false,
