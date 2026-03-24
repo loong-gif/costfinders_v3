@@ -2,28 +2,39 @@
 
 ## What This Is
 
-CostFinders is a price transparency and lead generation platform for medical spas. The v1.0 MVP is a complete UI-only Next.js application featuring consumer deal discovery, business portal, and admin tools — all with mock data structured for Supabase integration by a separate team.
+CostFinders is a price transparency and lead generation platform for medical spas. The v1.4 release is a production-ready Next.js application with live Supabase data (354 businesses, 347 offers), consumer deal discovery, business portal, admin tools, and performance-optimized data access via SQL RPCs and React cache() deduplication.
 
 ## Core Value
 
 **Deal discovery UX that makes finding and comparing medspa pricing effortless.** The browse → filter → compare → claim flow must feel intuitive, fast, and premium. Everything else supports this core experience.
 
-## Current State (v1.0 MVP — Shipped 2026-01-11)
+## Current State (v1.4 — Shipped 2026-03-24)
 
 **Tech Stack:**
 - Next.js 16 (App Router) + React + TypeScript
 - Tailwind CSS v4 with Warm Sand design system
 - Phosphor icons, Sora font (Manrope fallback)
-- Mock data layer structured for Supabase
+- Database: Supabase (PostgreSQL + Auth + real data — 354 businesses, 347 offers)
+- Images: Cloudinary (configured, env-gated activation)
+- Hosting: Vercel (region: iad1)
+- Analytics: @vercel/analytics (6 custom conversion events) + @vercel/speed-insights
+- CI/CD: GitHub Actions (lint + build)
+- Load testing: k6 scripts (smoke + average)
 
-**Lines of Code:** 24,676 TypeScript
-**Files:** 247
+**Lines of Code:** 42,878 TypeScript
+**Files:** 256
 
 **What's Built:**
 - Consumer: Deal browsing, location discovery, auth flows, dashboard, favorites, claims
 - Business: Onboarding, deal management, lead inbox, messaging, analytics, profile
 - Admin: Deal moderation, user management, content management, reporting, data tools
 - Monetization: Tier system, billing UI, sponsored placements, lead pricing, admin overrides
+- Data: Live Supabase integration with 4 RPC functions, React cache() deduplication, Promise.all() parallelization
+- Performance: WebP images (84% reduction), variable font, lazy auth providers, hero server component, CDN caching headers
+- Reliability: Structured logging in all 18 server action files, segment error boundaries, /api/health endpoint
+- Analytics: 6 conversion events (deal_claimed, deal_saved, auth_signup, auth_signin, filter_applied, category_selected)
+- Mobile: BottomSheet swipe-to-dismiss, sticky filter bar, safe-area support, 44px touch targets
+- CI/CD: GitHub Actions workflow, bundlewatch config, k6 load test scripts
 
 ## Requirements
 
@@ -61,15 +72,24 @@ CostFinders is a price transparency and lead generation platform for medical spa
 - [x] Glassmorphic design system per style guide — v1.0
 - [x] Responsive design (mobile-first, desktop-enhanced) — v1.0
 - [x] Mock data layer structured for Supabase integration — v1.0
+- [x] Live Supabase integration (354 businesses, 347 offers) — v1.2
+- [x] SQL RPC functions for server-side aggregation — v1.3
+- [x] React cache() deduplication + Promise.all() parallelization — v1.3
+- [x] Structured logging across all 18 server action files — v1.3
+- [x] WebP image optimization (84% size reduction) — v1.3
+- [x] @vercel/analytics with 6 custom conversion events — v1.4
+- [x] @vercel/speed-insights integration — v1.4
+- [x] GitHub Actions CI/CD (lint + build) — v1.4
+- [x] k6 load test scripts (smoke + average) — v1.4
+- [x] Segment error boundaries + /api/health endpoint — v1.4
 
 ### Active
 
-(None — v1.0 UI complete, awaiting backend integration)
+Supabase integration is live. v1.4 complete, planning v1.5 features.
 
 ### Out of Scope
 
 - Native mobile apps (iOS/Android) — web only for v1
-- Real backend integration — mock data, separate team handles backend
 - Scraping/data collection tools — admin UI only, no actual scraping
 - Scheduling system integrations — "Coming Soon" placeholder only
 - Payment processing — UI only, no Stripe connection
@@ -77,17 +97,20 @@ CostFinders is a price transparency and lead generation platform for medical spa
 
 ## Context
 
-**Shipped v1.0 MVP** with complete UI covering all three user roles:
+**Shipped v1.4** with live Supabase data, performance optimizations, and production observability:
 - Consumer deal discovery and account management
 - Business onboarding, lead management, and monetization
 - Admin moderation, content management, and platform reporting
+- Live data: 354 businesses, 347 offers across 20+ cities
+- 4 SQL RPC functions replacing client-side aggregation
+- Structured logging, error boundaries, health endpoint
 
 **Business Model Insight**: Businesses don't need to sign up for deals to appear — CostFinders scrapes public sources. Three business tiers exist:
 1. **Unclaimed** — scraped data, leads collected by CostFinders, business account pre-created
 2. **Free** — business claims profile, can edit info/deals
 3. **Paid** — premium placements, featured spots, newsletter inclusion, priority lead routing
 
-**Next Steps**: Backend team integrates Supabase, then v1.1 connects real data.
+**Next Steps**: v1.4 complete. Ready for v1.5 planning (real-time features, Stripe integration, expanded market coverage).
 
 ## Constraints
 
@@ -118,4 +141,4 @@ CostFinders is a price transparency and lead generation platform for medical spa
 | Icon-only sidebar | Minimal footprint (64px) with tooltips | Good — clean navigation |
 
 ---
-*Last updated: 2026-01-11 after v1.0 milestone*
+*Last updated: 2026-03-24 after v1.4 milestone*

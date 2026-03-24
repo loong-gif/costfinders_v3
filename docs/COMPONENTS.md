@@ -15,7 +15,7 @@ Design primitives with zero business logic. Only import external libraries.
 | **Card** | `card.tsx` | Container with sub-components | `variant`: glass/solid/outline, `padding`: none/sm/md/lg, `hover` |
 | **Input** | `input.tsx` | Text input with label/error/hint | `label`, `error`, `hint` |
 | **Modal** | `modal.tsx` | Overlay dialog with mobile variants | `size`: sm/md/lg/xl, `mobileVariant`: default/fullscreen/bottom |
-| **BottomSheet** | `bottomSheet.tsx` | Mobile slide-up dialog | `height`: auto/half/full |
+| **BottomSheet** | `bottomSheet.tsx` | Mobile slide-up dialog with swipe-to-dismiss | `height`: auto/half/full, drag gesture to dismiss |
 | **Breadcrumb** | `breadcrumb.tsx` | Navigation trail (collapses on mobile) | `items`: `{label, href?}[]` |
 | **Faq** | `faq.tsx` | Accordion using native `<details>` | `items`: `{question, answer}[]` |
 | **RelatedLinks** | `relatedLinks.tsx` | Cross-navigation link grid for SEO | `title`, `links`: `{label, href, description?}[]` |
@@ -29,13 +29,13 @@ Reusable compositions. Can import from `ui/` and external libs.
 | Component | File | Purpose | Key Props |
 |-----------|------|---------|-----------|
 | **AreaFilter** | `areaFilter.tsx` | Neighborhood dropdown selector | `areas`, `selectedArea`, `onSelect` |
-| **BlurredImage** | `blurredImage.tsx` | Blurred image with lock overlay (anonymous) | `src`, `alt`, `fill`, `priority` |
+| **BlurredImage** | `blurredImage.tsx` | Blurred image with lock overlay (anonymous). Defaults: `quality={10}`, `sizes="48px"` for performance | `src`, `alt`, `fill`, `priority` |
 | **CategoryFilter** | `categoryFilter.tsx` | Horizontal pill filter for treatments | `selected`, `onChange` |
 | **CityPicker** | `cityPicker.tsx` | Searchable city dropdown | `cities`, `selectedCity`, `onSelect` |
 | **ClaimStatusBadge** | `claimStatusBadge.tsx` | Status badge (pending→warning, booked→success) | `status`, `size` |
 | **PageHeader** | `pageHeader.tsx` | Breadcrumb + title header for dashboards | `title?`, `showBack?`, `backUrl?` |
 | **PriceRangeFilter** | `priceRangeFilter.tsx` | Dual min/max price inputs | `minPrice`, `maxPrice`, `onChange` |
-| **SaveButton** | `saveButton.tsx` | Heart icon to favorite deals | `dealId`, `size` |
+| **SaveButton** | `saveButton.tsx` | Heart icon to favorite deals. Tracks `deal_saved` / `deal_unsaved` analytics events | `dealId`, `size` |
 | **SortSelector** | `sortSelector.tsx` | Deal sort dropdown (popular/newest/price/discount) | `value`, `onChange` |
 
 ## Layer 3: Features (`src/components/features/`)
@@ -45,7 +45,7 @@ Domain components with data and business logic. Can import from `ui/`, `patterns
 ### Homepage (`features/homepage/`)
 | Component | Purpose |
 |-----------|---------|
-| `heroSection.tsx` | Hero banner with category picker and stats |
+| `heroSection.tsx` | Hero banner with category picker and stats. Server Component — CSS-only animations (no JS mounted state) |
 | `categoryGrid.tsx` | Treatment categories grid |
 | `categoryPreviewSection.tsx` + `categoryPreviewCard.tsx` | Category showcase |
 | `cityGrid.tsx` | City shortcuts grid |
@@ -173,6 +173,16 @@ Server components emitting JSON-LD structured data.
 | **FaqSchema** | `faqSchema.tsx` | `FAQPage` |
 | **OrganizationSchema** | `organizationSchema.tsx` | `Organization` |
 | **WebsiteSchema** | `websiteSchema.tsx` | `WebSite` |
+
+---
+
+## Utilities (`src/lib/`)
+
+| Utility | File | Purpose |
+|---------|------|---------|
+| **Analytics** | `analytics.ts` | Typed `trackEvent()` wrapper around `@vercel/analytics` `track()`. Events: `deal_claimed`, `deal_saved`, `deal_unsaved`, `auth_signup`, `auth_signin`, `filter_applied`, `category_selected` |
+| **Logger** | `logger.ts` | Structured JSON logger with `debug` / `info` / `warn` / `error` levels + `withAction()` wrapper for server actions |
+| **Cloudinary** | `cloudinary.ts` | `cloudinaryUrl(publicId, options)` and `dealImageUrl(businessId)` helpers. Activated by `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` env var |
 
 ---
 

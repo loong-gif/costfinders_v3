@@ -2,7 +2,7 @@
 
 > Complete list of all pages organized by user type.
 > Mock auth - no password validation (any password works).
-> Last updated: 2026-03-19
+> Last updated: 2026-03-24
 
 ---
 
@@ -136,6 +136,14 @@
 
 ---
 
+## API Endpoints
+
+| Route | Description |
+|-------|-------------|
+| `GET /api/health` | Health check endpoint, returns `{status, checks, latency_ms, timestamp}` |
+
+---
+
 ## Summary
 
 | User Type | Page Count |
@@ -145,7 +153,8 @@
 | Admin | 13 |
 | SEO / Location | 6 (dynamic) |
 | SEO / Pricing Guides | 10 |
-| **Total** | **55 pages** |
+| API Endpoints | 1 |
+| **Total** | **56 pages** |
 
 > Note: SEO pages generate 42+ static variations via `generateStaticParams`
 

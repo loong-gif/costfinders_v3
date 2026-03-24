@@ -2,7 +2,7 @@
 
 ## Overview
 
-Build the complete CostFinders UI — a price transparency and lead generation platform for medical spas. The journey progresses from foundational design system through consumer deal discovery, business lead management, and admin moderation tools. All features use mock data structured for Supabase integration by a separate team.
+Build the complete CostFinders platform — a price transparency and lead generation platform for medical spas. Live Supabase integration with 354 businesses and 347 offers. Hosted on Vercel with CI/CD, structured logging, analytics, and performance optimization.
 
 ## Milestones
 
@@ -10,7 +10,7 @@ Build the complete CostFinders UI — a price transparency and lead generation p
 - ✅ [v1.1 UI Consistency & Polish](milestones/v1.1-ROADMAP.md) (Phases 11-15) — SHIPPED 2026-01-12
 - ✅ **v1.2 Messaging Style Guide** — Phases 16-23 — SHIPPED 2026-01-12
 - ✅ **v1.3 Location SEO Clusters** — Phases 24-33 — SHIPPED 2026-01-14
-- 🚧 **v1.4 Mobile Polish** — Phases 34-41 (in progress)
+- ✅ **v1.4 Mobile Polish + Performance** — Phases 34-41 — SHIPPED 2026-03-24
 
 ## Completed Milestones
 
@@ -84,9 +84,11 @@ See [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md) for full details.
 
 </details>
 
-### 🚧 v1.4 Mobile Polish (In Progress)
+### ✅ v1.4 Mobile Polish + Performance (SHIPPED 2026-03-24)
 
-**Milestone Goal:** Enhance mobile experience to achieve native-feeling interactions on small screens — touch gestures, mobile-optimized components, form refinements, and bottom sheet patterns.
+**Milestone Goal:** Enhance mobile experience, implement comprehensive performance optimization, add reliability infrastructure, analytics, and CI/CD.
+
+**Performance work included:** WebP images (84% size reduction), Supabase RPC functions, React cache() deduplication, Promise.all() parallelization, lazy auth providers, hero server component, CSS-only animations, CDN caching headers, Cloudinary pipeline, structured logging in all 58 server action catch blocks, 6 custom analytics events, GitHub Actions CI, k6 load tests, segment error boundaries, health check endpoint.
 
 #### Phase 34: Mobile Form Optimization ✓
 
@@ -133,46 +135,38 @@ Plans:
 Plans:
 - [x] 37-01: Add mobileVariant prop to Modal + apply to form-heavy modals
 
-#### Phase 38: Touch Gesture Foundation
+#### Phase 38: Touch Gesture Foundation ✓
 
 **Goal**: Add swipe gestures for key interactions
-**Depends on**: Phase 37
-**Research**: Likely (gesture libraries, touch events)
-**Research topics**: React gesture libraries, touch event handling, swipe detection
-**Plans**: TBD
+**Plans**: 1/1 complete
 
 Plans:
-- [ ] 38-01: TBD
+- [x] 38-01: BottomSheet swipe-to-dismiss (pointer events, 100px threshold, snap-back)
 
-#### Phase 39: Mobile Navigation Enhancements
+#### Phase 39: Mobile Navigation Enhancements ✓
 
-**Goal**: Improve mobile navigation UX and breadcrumb handling
-**Depends on**: Phase 38
-**Research**: Unlikely (internal patterns)
-**Plans**: TBD
+**Goal**: Improve mobile navigation UX
+**Plans**: 2/2 complete
 
 Plans:
-- [ ] 39-01: TBD
+- [x] 39-01: Sticky filter/category bar on deals listing
+- [x] 39-02: Reduce loading skeleton cards on mobile (6-9 → 3 visible)
 
-#### Phase 40: Touch Target & Spacing Audit
+#### Phase 40: Touch Target & Spacing Audit ✓
 
-**Goal**: Ensure all interactive elements meet mobile touch guidelines
-**Depends on**: Phase 39
-**Research**: Unlikely (audit work)
-**Plans**: TBD
-
-Plans:
-- [ ] 40-01: TBD
-
-#### Phase 41: Mobile QA & Polish
-
-**Goal**: Cross-device testing and final refinements
-**Depends on**: Phase 40
-**Research**: Unlikely (testing)
-**Plans**: TBD
+**Goal**: Ensure all interactive elements meet 44px minimum
+**Plans**: 1/1 complete
 
 Plans:
-- [ ] 41-01: TBD
+- [x] 40-01: Fix undersized touch targets (notification close, more menu close) + verify audit
+
+#### Phase 41: Mobile QA & Polish ✓
+
+**Goal**: Viewport configuration, safe-area support, cross-device readiness
+**Plans**: 1/1 complete
+
+Plans:
+- [x] 41-01: Viewport export with viewportFit:cover, themeColor, safe-area-inset-bottom on mobile nav
 
 ## Progress
 
@@ -219,7 +213,7 @@ Phases execute in numeric order: 1 → ... → 33 → 34 → 35 → 36 → 37 �
 | 35. Mobile Table Alternatives | v1.4 | 6/6 | Complete | 2026-01-14 |
 | 36. Bottom Sheet Component | v1.4 | 1/1 | Complete | 2026-01-14 |
 | 37. Modal Mobile Optimization | v1.4 | 1/? | Partial | 2026-01-14 |
-| 38. Touch Gesture Foundation | v1.4 | 0/? | Not started | - |
-| 39. Mobile Navigation Enhancements | v1.4 | 0/? | Not started | - |
-| 40. Touch Target & Spacing Audit | v1.4 | 0/? | Not started | - |
-| 41. Mobile QA & Polish | v1.4 | 0/? | Not started | - |
+| 38. Touch Gesture Foundation | v1.4 | 1/1 | Complete | 2026-03-23 |
+| 39. Mobile Navigation Enhancements | v1.4 | 2/2 | Complete | 2026-03-24 |
+| 40. Touch Target & Spacing Audit | v1.4 | 1/1 | Complete | 2026-03-24 |
+| 41. Mobile QA & Polish | v1.4 | 1/1 | Complete | 2026-03-24 |

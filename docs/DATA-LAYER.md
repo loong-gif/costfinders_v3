@@ -18,10 +18,10 @@ const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANO
 
 | Function | Params | Returns | Notes |
 |----------|--------|---------|-------|
-| `getBusinesses(city?)` | Optional city (case-insensitive) | `Business[]` | Sorted by score desc |
-| `getBusinessById(id)` | `number` | `Business \| null` | Full record |
-| `getBusinessCities()` | — | `{city, count}[]` | Tries RPC first, falls back to manual aggregation |
-| `getBusinessCategories()` | — | `{category, count}[]` | Client-side aggregation |
+| `getBusinesses(city?)` | Optional city (case-insensitive) | `Business[]` | Sorted by score desc; wrapped with `cache()` |
+| `getBusinessById(id)` | `number` | `Business \| null` | Full record; wrapped with `cache()` |
+| `getBusinessCities()` | — | `{city, count}[]` | Tries RPC first, falls back to manual aggregation; wrapped with `cache()` |
+| `getBusinessCategories()` | — | `{category, count}[]` | RPC `get_business_category_counts` with JS fallback; wrapped with `cache()` |
 | `searchBusinesses(query)` | Search string | `Business[]` (max 20) | ilike on name + address |
 
 ### offers.ts — `promo_offer_master` table (347 records)
@@ -31,7 +31,7 @@ const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANO
 | `getOffers(filters?)` | `OfferFilters` | `Offer[]` | Sorted by created_at desc |
 | `getOfferById(id)` | `number` | `OfferWithBusiness \| null` | Joins `master_business_info` |
 | `getOffersWithBusinesses(filters?)` | `OfferFilters` | `OfferWithBusiness[]` | LEFT JOIN on business_id |
-| `getOfferCategories()` | — | `{service_category, count}[]` | Client-side aggregation |
+| `getOfferCategories()` | — | `{service_category, count}[]` | RPC `get_offer_category_counts` with JS fallback; wrapped with `cache()` |
 | `getOffersByBusiness(businessId)` | `number` | `Offer[]` | All offers for a business |
 | `getFeaturedOffers(limit?)` | Default 6 | `OfferWithBusiness[]` | Where discount/original price exist, sorted by savings |
 
