@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { Profile } from '@/lib/actions/profile'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -87,6 +88,10 @@ export async function getConsumersAction(
 
     return { success: true, consumers: (data ?? []) as Profile[] }
   } catch (err) {
+    logger.error('getConsumersAction failed', {
+      action: 'getConsumersAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }
@@ -115,6 +120,10 @@ export async function updateConsumerStatusAction(
     revalidatePath('/admin/dashboard/users')
     return { success: true }
   } catch (err) {
+    logger.error('updateConsumerStatusAction failed', {
+      action: 'updateConsumerStatusAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }
@@ -138,6 +147,10 @@ export async function getConsumerCountAction(): Promise<CountResult> {
 
     return { success: true, count: count ?? 0 }
   } catch (err) {
+    logger.error('getConsumerCountAction failed', {
+      action: 'getConsumerCountAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }
@@ -162,6 +175,10 @@ export async function getPendingClaimsCountAction(): Promise<CountResult> {
 
     return { success: true, count: count ?? 0 }
   } catch (err) {
+    logger.error('getPendingClaimsCountAction failed', {
+      action: 'getPendingClaimsCountAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }

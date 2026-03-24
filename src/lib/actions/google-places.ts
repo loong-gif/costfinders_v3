@@ -1,5 +1,7 @@
 'use server'
 
+import { logger } from '@/lib/logger'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -122,6 +124,10 @@ export async function searchGooglePlacesAction(
     return { success: true, places: results }
   } catch (err) {
     console.error('[searchGooglePlaces] unexpected error:', err)
+    logger.error('searchGooglePlacesAction failed', {
+      action: 'searchGooglePlacesAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

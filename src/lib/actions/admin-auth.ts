@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 interface AuthResult {
   success: boolean
@@ -48,7 +49,11 @@ export async function adminSignInAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('adminSignInAction failed', {
+      action: 'adminSignInAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -70,7 +75,11 @@ export async function adminSignOutAction(): Promise<AuthResult> {
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('adminSignOutAction failed', {
+      action: 'adminSignOutAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',

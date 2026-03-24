@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { AdminRole } from '@/types/admin'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -56,7 +57,11 @@ export async function getAdminProfileAction(): Promise<AdminProfileResult> {
     }
 
     return { success: true, profile: data as AdminProfile }
-  } catch {
+  } catch (error) {
+    logger.error('getAdminProfileAction failed', {
+      action: 'getAdminProfileAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

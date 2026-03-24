@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -73,7 +74,11 @@ export async function getProfileAction(): Promise<ProfileResult> {
     }
 
     return { success: true, profile: data as Profile }
-  } catch {
+  } catch (error) {
+    logger.error('getProfileAction failed', {
+      action: 'getProfileAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -130,7 +135,11 @@ export async function updateProfileAction(
     revalidatePath('/account')
 
     return { success: true, profile: data as Profile }
-  } catch {
+  } catch (error) {
+    logger.error('updateProfileAction failed', {
+      action: 'updateProfileAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -191,7 +200,11 @@ export async function updateAlertPrefsAction(
     revalidatePath('/account')
 
     return { success: true, profile: data as Profile }
-  } catch {
+  } catch (error) {
+    logger.error('updateAlertPrefsAction failed', {
+      action: 'updateAlertPrefsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

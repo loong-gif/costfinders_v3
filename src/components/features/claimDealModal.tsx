@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { createClaimAction } from '@/lib/actions/claims'
+import { trackEvent } from '@/lib/analytics'
 
 interface ClaimDealModalProps {
   isOpen: boolean
@@ -76,6 +77,7 @@ export function ClaimDealModal({
       }
 
       setIsSuccess(true)
+      trackEvent('deal_claimed', { dealId, businessId })
 
       // Auto-close after 3 seconds and notify parent
       setTimeout(() => {

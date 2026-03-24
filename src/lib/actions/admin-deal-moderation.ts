@@ -9,6 +9,7 @@ import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ModerationStatus } from '@/types/deal'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -149,7 +150,11 @@ export async function getPendingDealsAction(): Promise<ModerationDealsResult> {
         mapDealRow(row as unknown as Record<string, unknown>),
       ),
     }
-  } catch {
+  } catch (error) {
+    logger.error('getPendingDealsAction failed', {
+      action: 'getPendingDealsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -189,7 +194,11 @@ export async function getAllDealsForModerationAction(
         mapDealRow(row as unknown as Record<string, unknown>),
       ),
     }
-  } catch {
+  } catch (error) {
+    logger.error('getAllDealsForModerationAction failed', {
+      action: 'getAllDealsForModerationAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -253,7 +262,11 @@ export async function approveDealAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('approveDealAction failed', {
+      action: 'approveDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -322,7 +335,11 @@ export async function rejectDealAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('rejectDealAction failed', {
+      action: 'rejectDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -353,7 +370,11 @@ export async function requestDealChangesAction(
 
     revalidatePath('/admin/dashboard/deals')
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('requestDealChangesAction failed', {
+      action: 'requestDealChangesAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

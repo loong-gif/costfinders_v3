@@ -1,5 +1,7 @@
 'use server'
 
+import { logger } from '@/lib/logger'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -111,6 +113,10 @@ export async function sendClaimNotificationEmail(
     return { success: true }
   } catch (err) {
     console.error('[notifications] Failed to send email:', err)
+    logger.error('sendClaimNotificationEmail failed', {
+      action: 'sendClaimNotificationEmail',
+      error: err instanceof Error ? err.message : String(err),
+    })
     return { success: false, error: String(err) }
   }
 }
@@ -162,6 +168,10 @@ export async function sendEmailAction(
     return { success: true }
   } catch (err) {
     console.error('[notifications] Failed to send email:', err)
+    logger.error('sendEmailAction failed', {
+      action: 'sendEmailAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     return { success: false, error: String(err) }
   }
 }

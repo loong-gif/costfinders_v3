@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 import type { ClaimStatus } from '@/types/claim'
 import type { ClaimRow } from '@/lib/actions/claims'
 
@@ -87,7 +88,11 @@ export async function getClaimsForBusinessAction(
     }
 
     return { success: true, claims: (data ?? []) as ClaimRow[] }
-  } catch {
+  } catch (error) {
+    logger.error('getClaimsForBusinessAction failed', {
+      action: 'getClaimsForBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -129,7 +134,11 @@ export async function getClaimByIdForBusinessAction(
     }
 
     return { success: true, claim: data as ClaimRow }
-  } catch {
+  } catch (error) {
+    logger.error('getClaimByIdForBusinessAction failed', {
+      action: 'getClaimByIdForBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -178,7 +187,11 @@ export async function updateClaimStatusForBusinessAction(
     revalidatePath('/business/dashboard/leads')
 
     return { success: true, claim: data as ClaimRow }
-  } catch {
+  } catch (error) {
+    logger.error('updateClaimStatusForBusinessAction failed', {
+      action: 'updateClaimStatusForBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -230,7 +243,11 @@ export async function addBusinessResponseAction(
     revalidatePath('/business/dashboard/leads')
 
     return { success: true, claim: data as ClaimRow }
-  } catch {
+  } catch (error) {
+    logger.error('addBusinessResponseAction failed', {
+      action: 'addBusinessResponseAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 import type {
   ConversationRow,
   ConversationWithPreview,
@@ -158,7 +159,11 @@ export async function getOrCreateConversationAction(
     }
 
     return { success: true, conversation: conversation as ConversationRow }
-  } catch {
+  } catch (error) {
+    logger.error('getOrCreateConversationAction failed', {
+      action: 'getOrCreateConversationAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -256,7 +261,11 @@ export async function getConversationsAction(
     )
 
     return { success: true, conversations: previews }
-  } catch {
+  } catch (error) {
+    logger.error('getConversationsAction failed', {
+      action: 'getConversationsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -292,7 +301,11 @@ export async function getMessagesAction(
     }
 
     return { success: true, messages: (data ?? []) as MessageRow[] }
-  } catch {
+  } catch (error) {
+    logger.error('getMessagesAction failed', {
+      action: 'getMessagesAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -383,7 +396,11 @@ export async function sendMessageAction(
     revalidatePath('/business/dashboard/messages')
 
     return { success: true, message: message as MessageRow }
-  } catch {
+  } catch (error) {
+    logger.error('sendMessageAction failed', {
+      action: 'sendMessageAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -441,7 +458,11 @@ export async function markMessagesReadAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('markMessagesReadAction failed', {
+      action: 'markMessagesReadAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -493,7 +514,11 @@ export async function archiveConversationAction(
     revalidatePath('/business/dashboard/messages')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('archiveConversationAction failed', {
+      action: 'archiveConversationAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

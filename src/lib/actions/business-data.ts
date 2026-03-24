@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -117,7 +118,11 @@ export async function searchBusinessesAction(
     }))
 
     return { success: true, businesses: results }
-  } catch {
+  } catch (error) {
+    logger.error('searchBusinessesAction failed', {
+      action: 'searchBusinessesAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -145,7 +150,11 @@ export async function getBusinessByIdAction(
     }
 
     return { success: true, business: data as BusinessRow }
-  } catch {
+  } catch (error) {
+    logger.error('getBusinessByIdAction failed', {
+      action: 'getBusinessByIdAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -188,7 +197,11 @@ export async function createBusinessAction(data: {
     }
 
     return { success: true, businessId: business.business_id }
-  } catch {
+  } catch (error) {
+    logger.error('createBusinessAction failed', {
+      action: 'createBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -260,7 +273,11 @@ export async function updateBusinessAction(
     revalidatePath('/business/dashboard')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('updateBusinessAction failed', {
+      action: 'updateBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -333,7 +350,11 @@ export async function importGooglePlaceAction(place: {
     }
 
     return { success: true, businessId: business.business_id }
-  } catch {
+  } catch (error) {
+    logger.error('importGooglePlaceAction failed', {
+      action: 'importGooglePlaceAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

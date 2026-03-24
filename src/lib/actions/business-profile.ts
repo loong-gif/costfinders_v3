@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 import type {
   BusinessClaimStatus,
   BusinessVerificationStatus,
@@ -68,7 +69,11 @@ export async function getBusinessProfileAction(): Promise<BusinessProfileResult>
     }
 
     return { success: true, profile: data as BusinessProfile }
-  } catch {
+  } catch (error) {
+    logger.error('getBusinessProfileAction failed', {
+      action: 'getBusinessProfileAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -122,7 +127,11 @@ export async function updateBusinessProfileAction(
     revalidatePath('/business/dashboard')
 
     return { success: true, profile: data as BusinessProfile }
-  } catch {
+  } catch (error) {
+    logger.error('updateBusinessProfileAction failed', {
+      action: 'updateBusinessProfileAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -172,7 +181,11 @@ export async function linkBusinessAction(
     revalidatePath('/business/dashboard')
 
     return { success: true, profile: data as BusinessProfile }
-  } catch {
+  } catch (error) {
+    logger.error('linkBusinessAction failed', {
+      action: 'linkBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -207,7 +220,11 @@ export async function updateClaimStatusAction(
     revalidatePath('/business/dashboard')
 
     return { success: true, profile: data as BusinessProfile }
-  } catch {
+  } catch (error) {
+    logger.error('updateClaimStatusAction failed', {
+      action: 'updateClaimStatusAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -242,7 +259,11 @@ export async function updateVerificationStatusAction(
     revalidatePath('/business/dashboard')
 
     return { success: true, profile: data as BusinessProfile }
-  } catch {
+  } catch (error) {
+    logger.error('updateVerificationStatusAction failed', {
+      action: 'updateVerificationStatusAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

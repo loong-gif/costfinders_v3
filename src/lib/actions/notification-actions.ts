@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -76,7 +77,11 @@ export async function createNotificationAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('createNotificationAction failed', {
+      action: 'createNotificationAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -109,7 +114,11 @@ export async function getNotificationsAction(
     }
 
     return { success: true, notifications: (data ?? []) as NotificationRow[] }
-  } catch {
+  } catch (error) {
+    logger.error('getNotificationsAction failed', {
+      action: 'getNotificationsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -139,7 +148,11 @@ export async function getUnreadCountAction(): Promise<UnreadCountResult> {
     }
 
     return { success: true, count: count ?? 0 }
-  } catch {
+  } catch (error) {
+    logger.error('getUnreadCountAction failed', {
+      action: 'getUnreadCountAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -171,7 +184,11 @@ export async function markAsReadAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('markAsReadAction failed', {
+      action: 'markAsReadAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -203,7 +220,11 @@ export async function markAllReadAction(): Promise<NotificationResult> {
     revalidatePath('/dashboard')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('markAllReadAction failed', {
+      action: 'markAllReadAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

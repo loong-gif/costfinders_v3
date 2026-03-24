@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 interface AuthResult {
   success: boolean
@@ -40,7 +41,11 @@ export async function businessSignUpAction(
     const needsEmailVerification = !!data.user && !data.user.email_confirmed_at
 
     return { success: true, needsEmailVerification }
-  } catch {
+  } catch (error) {
+    logger.error('businessSignUpAction failed', {
+      action: 'businessSignUpAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -90,7 +95,11 @@ export async function businessSignInAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('businessSignInAction failed', {
+      action: 'businessSignInAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -112,7 +121,11 @@ export async function businessSignOutAction(): Promise<AuthResult> {
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('businessSignOutAction failed', {
+      action: 'businessSignOutAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',

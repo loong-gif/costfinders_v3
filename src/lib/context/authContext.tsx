@@ -21,6 +21,7 @@ import {
   saveDealAction,
   unsaveDealAction,
 } from '@/lib/actions/saved-deals'
+import { trackEvent } from '@/lib/analytics'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { Consumer, VerificationStatus } from '@/types/consumer'
 
@@ -246,6 +247,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // If auto-confirmed, hydrate user
+      trackEvent('auth_signup')
       await hydrateUser()
     },
     [hydrateUser],
@@ -271,6 +273,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // The onAuthStateChange listener will fire and hydrate the user,
       // but we also call hydrateUser explicitly for immediate feedback.
+      trackEvent('auth_signin')
       await hydrateUser()
     },
     [hydrateUser],

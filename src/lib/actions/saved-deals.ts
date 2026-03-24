@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -55,7 +56,11 @@ export async function getSavedDealsAction(): Promise<SavedDealsResult> {
       success: true,
       deals: (data ?? []) as SavedDeal[],
     }
-  } catch {
+  } catch (error) {
+    logger.error('getSavedDealsAction failed', {
+      action: 'getSavedDealsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -90,7 +95,11 @@ export async function saveDealAction(dealId: number): Promise<MutationResult> {
     revalidatePath('/account/saved')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('saveDealAction failed', {
+      action: 'saveDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -125,7 +134,11 @@ export async function unsaveDealAction(
     revalidatePath('/account/saved')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('unsaveDealAction failed', {
+      action: 'unsaveDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -182,7 +195,11 @@ export async function migrateLocalDealsAction(
     revalidatePath('/account/saved')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('migrateLocalDealsAction failed', {
+      action: 'migrateLocalDealsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

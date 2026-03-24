@@ -2,6 +2,7 @@
 
 import { Heart } from '@phosphor-icons/react'
 import { Tooltip } from '@/components/ui/tooltip'
+import { trackEvent } from '@/lib/analytics'
 import { useAuth } from '@/lib/context/authContext'
 
 interface SaveButtonProps {
@@ -30,8 +31,10 @@ export function SaveButton({
 
     if (saved) {
       unsaveDeal(dealId)
+      trackEvent('deal_unsaved', { dealId })
     } else {
       saveDeal(dealId)
+      trackEvent('deal_saved', { dealId })
     }
   }
 

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 import type { Offer } from '@/types/supabase'
 
 // ---------------------------------------------------------------------------
@@ -113,7 +114,11 @@ export async function getDealsForBusinessAction(
     }
 
     return { success: true, deals: (data ?? []) as Offer[] }
-  } catch {
+  } catch (error) {
+    logger.error('getDealsForBusinessAction failed', {
+      action: 'getDealsForBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -148,7 +153,11 @@ export async function getDealByIdForBusinessAction(
     }
 
     return { success: true, deal: data as Offer }
-  } catch {
+  } catch (error) {
+    logger.error('getDealByIdForBusinessAction failed', {
+      action: 'getDealByIdForBusinessAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -222,7 +231,11 @@ export async function createDealAction(
     revalidatePath('/business/dashboard/deals')
 
     return { success: true, deal: deal as Offer }
-  } catch {
+  } catch (error) {
+    logger.error('createDealAction failed', {
+      action: 'createDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -314,7 +327,11 @@ export async function updateDealAction(
     revalidatePath('/business/dashboard/deals')
 
     return { success: true, deal: deal as Offer }
-  } catch {
+  } catch (error) {
+    logger.error('updateDealAction failed', {
+      action: 'updateDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -347,7 +364,11 @@ export async function deleteDealAction(
     revalidatePath('/business/dashboard/deals')
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('deleteDealAction failed', {
+      action: 'deleteDealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }

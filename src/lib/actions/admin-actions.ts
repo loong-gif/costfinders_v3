@@ -8,6 +8,7 @@ import {
 import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -122,6 +123,10 @@ export async function getBusinessClaimsAction(
 
     return { success: true, claims }
   } catch (err) {
+    logger.error('getBusinessClaimsAction failed', {
+      action: 'getBusinessClaimsAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }
@@ -186,6 +191,10 @@ export async function approveClaimAction(
 
     return { success: true }
   } catch (err) {
+    logger.error('approveClaimAction failed', {
+      action: 'approveClaimAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }
@@ -247,6 +256,10 @@ export async function rejectClaimAction(
 
     return { success: true }
   } catch (err) {
+    logger.error('rejectClaimAction failed', {
+      action: 'rejectClaimAction',
+      error: err instanceof Error ? err.message : String(err),
+    })
     const message =
       err instanceof Error ? err.message : 'An unexpected error occurred.'
     return { success: false, error: message }

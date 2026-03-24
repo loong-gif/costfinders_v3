@@ -1,9 +1,10 @@
 'use client'
 
-import { ArrowCounterClockwise, House, WarningCircle } from '@phosphor-icons/react'
+import { ArrowCounterClockwise, Sparkle, WarningCircle } from '@phosphor-icons/react'
+import Link from 'next/link'
 import { useEffect } from 'react'
 
-export default function Error({
+export default function TreatmentsError({
   error,
   reset,
 }: {
@@ -11,27 +12,25 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('[ErrorBoundary]', {
+    console.error('[TreatmentsError]', {
       message: error.message,
       digest: error.digest,
       timestamp: new Date().toISOString(),
     })
   }, [error])
+
   return (
     <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-2xl mx-auto text-center py-16">
         <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center mx-auto mb-6">
           <WarningCircle size={32} weight="light" className="text-red-600" />
         </div>
-
-        <h1 className="text-4xl font-bold text-[#451a03] mb-4">
-          Something Went Wrong
+        <h1 className="text-3xl font-bold text-[#451a03] mb-4">
+          Couldn&apos;t Load Treatments
         </h1>
         <p className="text-lg text-[#78350f] mb-10 max-w-md mx-auto">
-          We hit an unexpected error. Please try again or head back to the
-          homepage.
+          We had trouble loading treatment categories. Please try again.
         </p>
-
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             type="button"
@@ -41,13 +40,13 @@ export default function Error({
             <ArrowCounterClockwise size={20} weight="light" />
             Try Again
           </button>
-          <a
-            href="/"
+          <Link
+            href="/treatments"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#f2ebe2] border border-[#d4c4b0] text-[#451a03] font-medium hover:bg-[#e8ddd0] transition-colors"
           >
-            <House size={20} weight="light" />
-            Back to Home
-          </a>
+            <Sparkle size={20} weight="light" />
+            All Treatments
+          </Link>
         </div>
       </div>
     </main>

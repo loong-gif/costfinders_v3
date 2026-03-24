@@ -10,6 +10,7 @@ import {
 } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ClaimStatus } from '@/types/claim'
+import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -238,7 +239,11 @@ export async function createClaimAction(
     getOrCreateConversationAction(data.id).catch(() => {})
 
     return { success: true, claimId: data.id }
-  } catch {
+  } catch (error) {
+    logger.error('createClaimAction failed', {
+      action: 'createClaimAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -268,7 +273,11 @@ export async function getClaimsAction(): Promise<ClaimsListResult> {
     }
 
     return { success: true, claims: (data ?? []) as ClaimRow[] }
-  } catch {
+  } catch (error) {
+    logger.error('getClaimsAction failed', {
+      action: 'getClaimsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -305,7 +314,11 @@ export async function getClaimByIdAction(
     }
 
     return { success: true, claim: data as ClaimRow }
-  } catch {
+  } catch (error) {
+    logger.error('getClaimByIdAction failed', {
+      action: 'getClaimByIdAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -351,7 +364,11 @@ export async function getClaimByDealIdAction(
     }
 
     return { success: true, claim: data as ClaimRow }
-  } catch {
+  } catch (error) {
+    logger.error('getClaimByDealIdAction failed', {
+      action: 'getClaimByDealIdAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { success: false, error: 'An unexpected error occurred.' }
   }
 }
@@ -437,7 +454,11 @@ export async function getBusinessRevealAction(
       revealed: true,
       business: business as RevealedBusiness,
     }
-  } catch {
+  } catch (error) {
+    logger.error('getBusinessRevealAction failed', {
+      action: 'getBusinessRevealAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return { revealed: false }
   }
 }

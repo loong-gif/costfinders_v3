@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 interface AuthResult {
   success: boolean
@@ -42,7 +43,11 @@ export async function signUpAction(
     const needsEmailVerification = !!data.user && !data.user.email_confirmed_at
 
     return { success: true, needsEmailVerification }
-  } catch {
+  } catch (error) {
+    logger.error('signUpAction failed', {
+      action: 'signUpAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -81,7 +86,11 @@ export async function signInAction(
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('signInAction failed', {
+      action: 'signInAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -103,7 +112,11 @@ export async function signOutAction(): Promise<AuthResult> {
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('signOutAction failed', {
+      action: 'signOutAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -132,7 +145,11 @@ export async function resetPasswordAction(email: string): Promise<AuthResult> {
 
     // Always return success to prevent email enumeration
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('resetPasswordAction failed', {
+      action: 'resetPasswordAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',
@@ -164,7 +181,11 @@ export async function sendMagicLinkAction(email: string): Promise<AuthResult> {
     }
 
     return { success: true }
-  } catch {
+  } catch (error) {
+    logger.error('sendMagicLinkAction failed', {
+      action: 'sendMagicLinkAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
     return {
       success: false,
       error: 'An unexpected error occurred. Please try again.',

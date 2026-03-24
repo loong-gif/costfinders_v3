@@ -2,6 +2,7 @@
 
 import { Funnel, X } from '@phosphor-icons/react'
 import { useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 import { PriceRangeFilter } from '@/components/patterns/priceRangeFilter'
 import { SortSelector } from '@/components/patterns/sortSelector'
 import type { DealFilters, SortOption } from '@/lib/mock-data'
@@ -29,6 +30,11 @@ export function FilterPanel({
     min: number | undefined,
     max: number | undefined,
   ) => {
+    trackEvent('filter_applied', {
+      type: 'price',
+      min: min ?? 0,
+      max: max ?? 0,
+    })
     onFiltersChange({
       ...filters,
       minPrice: min,
