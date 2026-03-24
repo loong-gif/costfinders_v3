@@ -29,11 +29,11 @@ const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANO
 | Function | Params | Returns | Notes |
 |----------|--------|---------|-------|
 | `getOffers(filters?)` | `OfferFilters` | `Offer[]` | Sorted by created_at desc |
-| `getOfferById(id)` | `number` | `OfferWithBusiness \| null` | Joins `master_business_info` |
-| `getOffersWithBusinesses(filters?)` | `OfferFilters` | `OfferWithBusiness[]` | LEFT JOIN on business_id |
+| `getOfferById(id)` | `number` | `OfferWithBusiness \| null` | Joins `master_business_info`; wrapped with `cache()` |
+| `getOffersWithBusinesses(filters?)` | `OfferFilters` | `OfferWithBusiness[]` | LEFT JOIN on business_id; no-arg calls cached via `getAllOffersWithBusinesses()` internal helper |
 | `getOfferCategories()` | — | `{service_category, count}[]` | RPC `get_offer_category_counts` with JS fallback; wrapped with `cache()` |
-| `getOffersByBusiness(businessId)` | `number` | `Offer[]` | All offers for a business |
-| `getFeaturedOffers(limit?)` | Default 6 | `OfferWithBusiness[]` | Where discount/original price exist, sorted by savings |
+| `getOffersByBusiness(businessId)` | `number` | `Offer[]` | All offers for a business; wrapped with `cache()` |
+| `getFeaturedOffers(limit?)` | Default 6 | `OfferWithBusiness[]` | Where discount/original price exist, sorted by savings; wrapped with `cache()` |
 
 ```ts
 interface OfferFilters {
@@ -270,11 +270,89 @@ Admin dashboard ───── AdminAuthContext + Mock data
 Location detection ── Browser Geolocation → findNearestCity()
 ```
 
+## Supabase RPC Functions
+
+Server-side SQL aggregation functions that replace downloading full tables for counting.
+
+| RPC | Returns | Replaces |
+|-----|---------|----------|
+| `get_city_deal_counts()` | `{city, deal_count, provider_count}[]` | JS-side aggregation of all offers + businesses |
+| `get_offer_category_counts()` | `{service_category, count}[]` | Downloading all 347 offer rows for counting |
+| `get_business_count_for_city(city_name)` | `bigint` (single count) | Fetching full business objects and counting |
+| `get_business_category_counts()` | `{category, count}[]` | Downloading all 354 business rows for counting |
+
+**Supporting indexes:**
+- `idx_offers_pricing` — covers discount_price/original_price filters
+- `idx_offers_business_id` — foreign key join performance
+- `idx_business_city` — city-based business lookups
+- `idx_offers_service_category` — category filtering
+
+All RPC calls include JS fallback logic: if the RPC doesn't exist or errors, the function downloads raw rows and aggregates client-side.
+
+---
+
+## Performance Patterns
+
+### React `cache()` Deduplication
+
+All three data files (`businesses.ts`, `offers.ts`, `unified.ts`) import `cache` from React and wrap exported functions. Within a single React server request, duplicate calls to the same function with the same arguments are deduplicated automatically.
+
+**Cached functions in `businesses.ts`:** `getBusinesses`, `getBusinessById`, `getBusinessCities`, `getBusinessCategories`
+
+**Cached functions in `offers.ts`:** `getOfferById`, `getAllOffersWithBusinesses` (internal), `getOfferCategories`, `getOffersByBusiness`, `getFeaturedOffers`
+
+**Cached functions in `unified.ts`:** `getCityNameFromSlug`, `getDealsForCitySlug`, `getDealsForTreatmentAndCity`, `getUnifiedCities`, `getCityDealCounts`, `getBusinessCountForCity`
+
+### `Promise.all()` Parallelization
+
+Used in `unified.ts` for operations that need multiple independent Supabase queries:
+- `getDealsByCategory()` — fetches offers for multiple DB categories in parallel
+- `getDealsForTreatmentAndCity()` — same pattern, scoped to a city
+- Treatment category page metadata and deals page metadata run parallel data fetches
+
+### Lazy Auth
+
+`getSession()` check runs before `getUser()` in both `AuthProvider` and `BusinessAuthProvider`. If there's no session, the heavier `getUser()` call is skipped entirely.
+
+---
+
+## Structured Logging
+
+### Logger (`src/lib/logger.ts`)
+
+```ts
+import { logger } from '@/lib/logger'
+
+logger.debug(message, context?)  // dev only (NODE_ENV === 'development')
+logger.info(message, context?)   // general info
+logger.warn(message, context?)   // warnings (e.g. slow actions >1s)
+logger.error(message, context?)  // errors with action name + stack trace
+```
+
+Outputs JSON to console, captured by Vercel log drains.
+
+### `withAction()` Wrapper
+
+```ts
+import { withAction } from '@/lib/logger'
+
+export const myAction = withAction('myAction', async (args) => {
+  // automatically logs timing + errors
+})
+```
+
+Adds automatic duration tracking and error logging with stack traces. Warns on actions exceeding 1 second.
+
+### Coverage
+
+All 18 server action files in `src/lib/actions/` import `logger` and log errors with action name + error message in their catch blocks.
+
+---
+
 ## Known Limitations
 
 1. **No real auth** — mock auth skips password verification, uses localStorage (XSS risk)
 2. **No Supabase Auth** — production needs httpOnly cookies via Supabase Auth
 3. **No real-time** — Supabase client exists but no Realtime subscriptions
-4. **Client-side aggregation** — category/city counts computed in JS, not SQL
-5. **Claims expire client-side** — no background job; 7-day expiry calculated in context
-6. **Hardcoded category map** — `CATEGORY_MAP` must be updated manually if DB categories change
+4. **Claims expire client-side** — no background job; 7-day expiry calculated in context
+5. **Hardcoded category map** — `CATEGORY_MAP` must be updated manually if DB categories change
