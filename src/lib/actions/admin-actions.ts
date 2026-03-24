@@ -9,6 +9,7 @@ import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { logAdminAction } from '@/lib/actions/audit'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -189,6 +190,7 @@ export async function approveClaimAction(
       sendEmailAction(profile.email, subject, html).catch(() => {})
     }
 
+    logAdminAction('claim_approved', 'claim', String(profileId))
     return { success: true }
   } catch (err) {
     logger.error('approveClaimAction failed', {
@@ -254,6 +256,7 @@ export async function rejectClaimAction(
       sendEmailAction(profile.email, subject, html).catch(() => {})
     }
 
+    logAdminAction('claim_rejected', 'claim', String(profileId))
     return { success: true }
   } catch (err) {
     logger.error('rejectClaimAction failed', {

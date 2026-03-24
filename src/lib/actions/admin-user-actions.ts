@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { Profile } from '@/lib/actions/profile'
 import { logger } from '@/lib/logger'
+import { logAdminAction } from '@/lib/actions/audit'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -118,6 +119,7 @@ export async function updateConsumerStatusAction(
     }
 
     revalidatePath('/admin/dashboard/users')
+    logAdminAction('user_status_updated', 'user', userId, { status })
     return { success: true }
   } catch (err) {
     logger.error('updateConsumerStatusAction failed', {

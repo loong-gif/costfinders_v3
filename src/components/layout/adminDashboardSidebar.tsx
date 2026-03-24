@@ -8,6 +8,7 @@ import {
   FolderSimple,
   Gear,
   House,
+  Megaphone,
   Tag,
   Users,
 } from '@phosphor-icons/react'
@@ -18,6 +19,7 @@ import { BaseSidebar, type NavItem } from './baseSidebar'
 const navItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Home', icon: House },
   { href: '/admin/dashboard/deals', label: 'Deals', icon: Tag },
+  { href: '/admin/dashboard/leads', label: 'Leads', icon: Megaphone },
   { href: '/admin/dashboard/users', label: 'Users', icon: Users },
   { href: '/admin/dashboard/businesses', label: 'Businesses', icon: Buildings },
   { href: '/admin/dashboard/content', label: 'Content', icon: FolderSimple },

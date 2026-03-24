@@ -10,6 +10,7 @@ import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ModerationStatus } from '@/types/deal'
 import { logger } from '@/lib/logger'
+import { logAdminAction } from '@/lib/actions/audit'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -261,6 +262,7 @@ export async function approveDealAction(
       }
     }
 
+    logAdminAction('deal_approved', 'deal', String(dealId))
     return { success: true }
   } catch (error) {
     logger.error('approveDealAction failed', {
@@ -276,7 +278,7 @@ export async function approveDealAction(
  */
 export async function rejectDealAction(
   dealId: number,
-  _notes?: string,
+  notes?: string,
 ): Promise<ModerationResult> {
   try {
     const supabase = await createSupabaseServerClient()
@@ -288,7 +290,10 @@ export async function rejectDealAction(
 
     const { error } = await supabase
       .from('promo_offer_master')
-      .update({ moderation_status: 'rejected' })
+      .update({
+        moderation_status: 'rejected',
+        moderation_notes: notes || null,
+      })
       .eq('id', dealId)
 
     if (error) {
@@ -327,13 +332,14 @@ export async function rejectDealAction(
           const { subject, html } = dealRejectionEmail(
             ownerName,
             dealTitle,
-            _notes,
+            notes,
           )
           sendEmailAction(owner.email, subject, html).catch(() => {})
         }
       }
     }
 
+    logAdminAction('deal_rejected', 'deal', String(dealId), { notes })
     return { success: true }
   } catch (error) {
     logger.error('rejectDealAction failed', {
@@ -349,7 +355,7 @@ export async function rejectDealAction(
  */
 export async function requestDealChangesAction(
   dealId: number,
-  _notes: string,
+  notes: string,
 ): Promise<ModerationResult> {
   try {
     const supabase = await createSupabaseServerClient()
@@ -361,7 +367,10 @@ export async function requestDealChangesAction(
 
     const { error } = await supabase
       .from('promo_offer_master')
-      .update({ moderation_status: 'changes_requested' })
+      .update({
+        moderation_status: 'changes_requested',
+        moderation_notes: notes || null,
+      })
       .eq('id', dealId)
 
     if (error) {
@@ -369,6 +378,7 @@ export async function requestDealChangesAction(
     }
 
     revalidatePath('/admin/dashboard/deals')
+    logAdminAction('deal_changes_requested', 'deal', String(dealId), { notes })
     return { success: true }
   } catch (error) {
     logger.error('requestDealChangesAction failed', {
