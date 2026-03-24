@@ -1,6 +1,6 @@
 'use client'
 
-import { ChatCircle, PaperPlaneRight, SpinnerGap } from '@phosphor-icons/react'
+import { ChatCircle, DotsThree, PaperPlaneRight, SpinnerGap } from '@phosphor-icons/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -9,7 +9,9 @@ import {
   sendMessageAction,
   markMessagesReadAction,
 } from '@/lib/actions/messaging'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { MessageRow } from '@/types/messaging'
+import type { RealtimeChannel } from '@supabase/supabase-js'
 
 interface MessageThreadProps {
   claimId: string
@@ -18,7 +20,7 @@ interface MessageThreadProps {
   currentUserType: 'business' | 'consumer'
 }
 
-const POLL_INTERVAL = 5_000 // 5 seconds
+const TYPING_TIMEOUT_MS = 3_000
 
 function formatMessageTime(dateString: string): string {
   const date = new Date(dateString)
@@ -60,8 +62,10 @@ export function MessageThread({
   const [isLoading, setIsLoading] = useState(true)
   const [newMessage, setNewMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
+  const [isOtherTyping, setIsOtherTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const channelRef = useRef<RealtimeChannel | null>(null)
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Auto-scroll to latest message
   const scrollToBottom = () => {
@@ -82,10 +86,10 @@ export function MessageThread({
         if (result.success && result.messages) {
           setMessages(result.messages)
         }
-        // Mark messages as read on each fetch
+        // Mark messages as read on initial fetch
         await markMessagesReadAction(conversationId)
       } catch {
-        // Silently fail on polling errors
+        // Silently fail on fetch errors
       } finally {
         if (showLoading) setIsLoading(false)
       }
@@ -93,23 +97,115 @@ export function MessageThread({
     [conversationId],
   )
 
-  // Initial fetch + polling
+  // Initial fetch + Supabase Realtime subscription
   useEffect(() => {
     if (!conversationId) {
       setIsLoading(false)
       return
     }
 
+    // Initial load
     fetchMessages(true)
 
-    pollRef.current = setInterval(() => {
-      fetchMessages(false)
-    }, POLL_INTERVAL)
+    // Set up Realtime subscription
+    const supabase = createSupabaseBrowserClient()
+    const channel = supabase
+      .channel(`conversation:${conversationId}`)
+      // Listen for new messages
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `conversation_id=eq.${conversationId}`,
+        },
+        (payload) => {
+          const newMsg = payload.new as MessageRow
+          setMessages((prev) => {
+            // Skip if already present (e.g., our own optimistic message was replaced)
+            if (prev.some((m) => m.id === newMsg.id)) return prev
+            // Replace any optimistic message from the same sender with matching content
+            const optimisticIndex = prev.findIndex(
+              (m) =>
+                m.id.startsWith('temp-') &&
+                m.sender_id === newMsg.sender_id &&
+                m.content === newMsg.content,
+            )
+            if (optimisticIndex !== -1) {
+              const updated = [...prev]
+              updated[optimisticIndex] = newMsg
+              return updated
+            }
+            return [...prev, newMsg]
+          })
+          // Mark incoming messages from the other party as read
+          if (newMsg.sender_id !== currentUserId) {
+            markMessagesReadAction(conversationId)
+          }
+          // Clear typing indicator when a message arrives from the other party
+          if (newMsg.sender_id !== currentUserId) {
+            setIsOtherTyping(false)
+          }
+        },
+      )
+      // Listen for read status updates on existing messages
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'messages',
+          filter: `conversation_id=eq.${conversationId}`,
+        },
+        (payload) => {
+          const updated = payload.new as MessageRow
+          setMessages((prev) =>
+            prev.map((m) => (m.id === updated.id ? { ...m, read_at: updated.read_at } : m)),
+          )
+        },
+      )
+      // Listen for typing broadcasts
+      .on('broadcast', { event: 'typing' }, (payload) => {
+        const senderId = payload.payload?.userId as string | undefined
+        if (senderId && senderId !== currentUserId) {
+          setIsOtherTyping(true)
+          // Clear typing indicator after timeout
+          if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current)
+          }
+          typingTimeoutRef.current = setTimeout(() => {
+            setIsOtherTyping(false)
+          }, TYPING_TIMEOUT_MS)
+        }
+      })
+      .subscribe()
+
+    channelRef.current = channel
 
     return () => {
-      if (pollRef.current) clearInterval(pollRef.current)
+      supabase.removeChannel(channel)
+      channelRef.current = null
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current)
+      }
     }
-  }, [conversationId, fetchMessages])
+  }, [conversationId, currentUserId, fetchMessages])
+
+  // Broadcast typing status to the other party
+  const broadcastTyping = useCallback(() => {
+    if (!channelRef.current) return
+    channelRef.current.send({
+      type: 'broadcast',
+      event: 'typing',
+      payload: { userId: currentUserId },
+    })
+  }, [currentUserId])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage(e.target.value)
+    broadcastTyping()
+  }
 
   const handleSend = async () => {
     if (!newMessage.trim() || isSending || !conversationId) return
@@ -251,12 +347,22 @@ export function MessageThread({
         )}
       </div>
 
+      {/* Typing Indicator */}
+      {isOtherTyping && (
+        <div className="px-4 pb-1">
+          <div className="flex items-center gap-1.5 text-[#92400e]">
+            <DotsThree size={18} weight="bold" className="animate-pulse" />
+            <span className="text-xs">typing...</span>
+          </div>
+        </div>
+      )}
+
       {/* Input Area */}
       <div className="p-4 border-t border-[#d4c4b0]">
         <div className="flex items-end gap-2">
           <textarea
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
             rows={1}

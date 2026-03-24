@@ -2,142 +2,144 @@
 
 import {
   Check,
-  DotsSixVertical,
-  Drop,
-  Leaf,
-  Lightning,
   PencilSimple,
-  Person,
   Plus,
-  Sparkle,
-  Syringe,
+  Spinner,
   X,
 } from '@phosphor-icons/react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  type Category,
-  createCategory,
-  getCategories,
-  toggleCategoryStatus,
-  updateCategory,
-} from '@/lib/mock-data/categories'
-
-// Icon mapping for category icons
-const iconMap: Record<
-  string,
-  React.ComponentType<{
-    size?: number
-    weight?: 'light' | 'fill'
-    className?: string
-  }>
-> = {
-  Syringe,
-  Drop,
-  Sparkle,
-  Lightning,
-  Person,
-  Leaf,
-}
-
-const availableIcons = Object.keys(iconMap)
+  type ContentCategory,
+  createCategoryAction,
+  getCategoriesAction,
+  toggleCategoryAction,
+  updateCategoryAction,
+} from '@/lib/actions/admin-content'
 
 export default function CategoriesManagementPage() {
-  const [categories, setCategories] = useState(() => getCategories())
+  const [categories, setCategories] = useState<ContentCategory[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
   const [isAddingNew, setIsAddingNew] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    text: string
+    type: 'success' | 'error'
+  } | null>(null)
 
   // Form state for new/edit
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
-    icon: 'Syringe',
+    slug: '',
   })
 
-  const showFeedback = useCallback((message: string) => {
-    setFeedbackMessage(message)
-    setTimeout(() => setFeedbackMessage(null), 3000)
-  }, [])
-
-  const refreshCategories = useCallback(() => {
-    setCategories(getCategories())
-  }, [])
-
-  const handleToggleStatus = useCallback(
-    (id: string) => {
-      const updated = toggleCategoryStatus(id)
-      if (updated) {
-        refreshCategories()
-        showFeedback(
-          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`,
-        )
-      }
+  const showFeedback = useCallback(
+    (text: string, type: 'success' | 'error' = 'success') => {
+      setFeedbackMessage({ text, type })
+      setTimeout(() => setFeedbackMessage(null), 3000)
     },
-    [refreshCategories, showFeedback],
+    [],
   )
 
-  const handleStartEdit = useCallback((category: Category) => {
+  const loadCategories = useCallback(async () => {
+    const result = await getCategoriesAction()
+    if (result.success && result.categories) {
+      setCategories(result.categories)
+    } else if (result.error) {
+      showFeedback(result.error, 'error')
+    }
+    setIsLoading(false)
+  }, [showFeedback])
+
+  useEffect(() => {
+    loadCategories()
+  }, [loadCategories])
+
+  const handleToggleStatus = useCallback(
+    async (id: string, currentActive: boolean) => {
+      const result = await toggleCategoryAction(id, !currentActive)
+      if (result.success) {
+        await loadCategories()
+        showFeedback(
+          `Category ${currentActive ? 'deactivated' : 'activated'}`,
+        )
+      } else {
+        showFeedback(result.error ?? 'Failed to toggle status', 'error')
+      }
+    },
+    [loadCategories, showFeedback],
+  )
+
+  const handleStartEdit = useCallback((category: ContentCategory) => {
     setEditingId(category.id)
     setFormData({
       name: category.name,
-      description: category.description,
-      icon: category.icon,
+      slug: category.slug,
     })
   }, [])
 
   const handleCancelEdit = useCallback(() => {
     setEditingId(null)
     setIsAddingNew(false)
-    setFormData({ name: '', description: '', icon: 'Syringe' })
+    setFormData({ name: '', slug: '' })
   }, [])
 
-  const handleSaveEdit = useCallback(() => {
-    if (!formData.name.trim()) return
+  const handleSaveEdit = useCallback(async () => {
+    if (!formData.name.trim() || !editingId) return
 
-    if (editingId) {
-      const updated = updateCategory(editingId, {
-        name: formData.name,
-        description: formData.description,
-        icon: formData.icon,
-      })
-      if (updated) {
-        showFeedback(`${updated.name} updated`)
-      }
-    }
-    refreshCategories()
-    handleCancelEdit()
-  }, [editingId, formData, refreshCategories, showFeedback, handleCancelEdit])
-
-  const handleAddNew = useCallback(() => {
-    if (!formData.name.trim()) return
-
-    // Generate a valid slug for the category
-    const slug = formData.name.toLowerCase().replace(/\s+/g, '-') as
-      | 'botox'
-      | 'fillers'
-      | 'facials'
-      | 'laser'
-      | 'body'
-      | 'skincare'
-    const newCat = createCategory({
+    setIsSaving(true)
+    const result = await updateCategoryAction(editingId, {
       name: formData.name,
-      slug,
-      description: formData.description,
-      icon: formData.icon,
-      isActive: true,
+      slug: formData.slug,
     })
-    refreshCategories()
-    showFeedback(`${newCat.name} created`)
-    handleCancelEdit()
-  }, [formData, refreshCategories, showFeedback, handleCancelEdit])
+
+    if (result.success) {
+      await loadCategories()
+      showFeedback('Category updated')
+      handleCancelEdit()
+    } else {
+      showFeedback(result.error ?? 'Failed to update category', 'error')
+    }
+    setIsSaving(false)
+  }, [editingId, formData, loadCategories, showFeedback, handleCancelEdit])
+
+  const handleAddNew = useCallback(async () => {
+    if (!formData.name.trim() || !formData.slug.trim()) return
+
+    setIsSaving(true)
+    const result = await createCategoryAction(formData.name, formData.slug)
+
+    if (result.success) {
+      await loadCategories()
+      showFeedback('Category created')
+      handleCancelEdit()
+    } else {
+      showFeedback(result.error ?? 'Failed to create category', 'error')
+    }
+    setIsSaving(false)
+  }, [formData, loadCategories, showFeedback, handleCancelEdit])
+
+  const generateSlug = useCallback((name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+  }, [])
 
   const stats = {
     total: categories.length,
-    active: categories.filter((c) => c.isActive).length,
-    totalDeals: categories.reduce((sum, c) => sum + c.dealCount, 0),
+    active: categories.filter((c) => c.is_active).length,
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Spinner size={32} className="animate-spin text-amber-800" />
+      </div>
+    )
   }
 
   return (
@@ -157,13 +159,19 @@ export default function CategoriesManagementPage() {
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
-          {feedbackMessage}
+        <div
+          className={`px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300 ${
+            feedbackMessage.type === 'success'
+              ? 'bg-emerald-600/10 border border-success/20 text-emerald-600'
+              : 'bg-red-600/10 border border-red-600/20 text-red-600'
+          }`}
+        >
+          {feedbackMessage.text}
         </div>
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <Card variant="glass" padding="md">
           <p className="text-2xl font-bold text-[#451a03]">{stats.total}</p>
           <p className="text-sm text-[#78350f]">Total Categories</p>
@@ -171,12 +179,6 @@ export default function CategoriesManagementPage() {
         <Card variant="glass" padding="md">
           <p className="text-2xl font-bold text-[#451a03]">{stats.active}</p>
           <p className="text-sm text-[#78350f]">Active</p>
-        </Card>
-        <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {stats.totalDeals}
-          </p>
-          <p className="text-sm text-[#78350f]">Total Deals</p>
         </Card>
       </div>
 
@@ -194,58 +196,40 @@ export default function CategoriesManagementPage() {
               <input
                 type="text"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                onChange={(e) => {
+                  const name = e.target.value
+                  setFormData((prev) => ({
+                    ...prev,
+                    name,
+                    slug: generateSlug(name),
+                  }))
+                }}
                 placeholder="Category name"
                 className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-[#78350f] mb-1">
-                Description
+                Slug
               </label>
               <input
                 type="text"
-                value={formData.description}
+                value={formData.slug}
                 onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
+                  setFormData((prev) => ({ ...prev, slug: e.target.value }))
                 }
-                placeholder="Category description"
+                placeholder="category-slug"
                 className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-[#78350f] mb-1">
-                Icon
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {availableIcons.map((iconName) => {
-                  const Icon = iconMap[iconName]
-                  return (
-                    <button
-                      type="button"
-                      key={iconName}
-                      onClick={() =>
-                        setFormData((prev) => ({ ...prev, icon: iconName }))
-                      }
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                        formData.icon === iconName
-                          ? 'bg-amber-800 text-white'
-                          : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
-                      }`}
-                    >
-                      <Icon size={20} weight="light" />
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
             <div className="flex gap-2 pt-2">
-              <Button variant="primary" size="sm" onClick={handleAddNew}>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleAddNew}
+                isLoading={isSaving}
+                disabled={!formData.name.trim() || !formData.slug.trim()}
+              >
                 Create Category
               </Button>
               <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
@@ -256,10 +240,9 @@ export default function CategoriesManagementPage() {
         </Card>
       )}
 
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Categories List */}
+      <div className="space-y-3">
         {categories.map((category) => {
-          const Icon = iconMap[category.icon] || Syringe
           const isEditing = editingId === category.id
 
           return (
@@ -267,51 +250,44 @@ export default function CategoriesManagementPage() {
               {isEditing ? (
                 /* Edit Mode */
                 <div className="space-y-3">
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, name: e.target.value }))
-                    }
-                    className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
-                  />
-                  <input
-                    type="text"
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
-                  />
-                  <div className="flex flex-wrap gap-2">
-                    {availableIcons.map((iconName) => {
-                      const IconOption = iconMap[iconName]
-                      return (
-                        <button
-                          type="button"
-                          key={iconName}
-                          onClick={() =>
-                            setFormData((prev) => ({ ...prev, icon: iconName }))
-                          }
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            formData.icon === iconName
-                              ? 'bg-amber-800 text-white'
-                              : 'bg-[#f2ebe2] text-[#78350f] hover:bg-[#faf5ee]'
-                          }`}
-                        >
-                          <IconOption size={16} weight="light" />
-                        </button>
-                      )
-                    })}
+                  <div>
+                    <label className="block text-xs font-medium text-[#78350f] mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#78350f] mb-1">
+                      Slug
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.slug}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          slug: e.target.value,
+                        }))
+                      }
+                      className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
+                    />
                   </div>
                   <div className="flex gap-2">
                     <Button
                       variant="primary"
                       size="sm"
                       onClick={handleSaveEdit}
+                      isLoading={isSaving}
                     >
                       <Check size={16} />
                       Save
@@ -328,27 +304,12 @@ export default function CategoriesManagementPage() {
                 </div>
               ) : (
                 /* View Mode */
-                <div className="flex items-start gap-4">
-                  {/* Drag Handle (visual only) */}
-                  <div className="flex-shrink-0 text-[#92400e] cursor-grab">
-                    <DotsSixVertical size={20} weight="bold" />
-                  </div>
-
-                  {/* Icon */}
-                  <div
-                    className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
-                      category.isActive
-                        ? 'bg-amber-800/8'
-                        : 'bg-[#f2ebe2] opacity-50'
-                    }`}
-                  >
-                    <Icon
-                      size={24}
-                      weight="light"
-                      className={
-                        category.isActive ? 'text-amber-800' : 'text-[#92400e]'
-                      }
-                    />
+                <div className="flex items-center gap-4">
+                  {/* Order badge */}
+                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-800/8 flex items-center justify-center">
+                    <span className="text-xs font-bold text-amber-800">
+                      {category.display_order}
+                    </span>
                   </div>
 
                   {/* Content */}
@@ -356,29 +317,22 @@ export default function CategoriesManagementPage() {
                     <div className="flex items-center gap-2">
                       <h3
                         className={`font-semibold ${
-                          category.isActive
+                          category.is_active
                             ? 'text-[#451a03]'
                             : 'text-[#92400e]'
                         }`}
                       >
                         {category.name}
                       </h3>
-                      {!category.isActive && (
+                      <span className="text-xs text-[#92400e] font-mono">
+                        /{category.slug}
+                      </span>
+                      {!category.is_active && (
                         <Badge variant="default" size="sm">
                           Inactive
                         </Badge>
                       )}
                     </div>
-                    <p
-                      className={`text-sm mt-0.5 ${
-                        category.isActive ? 'text-[#78350f]' : 'text-[#92400e]'
-                      }`}
-                    >
-                      {category.description}
-                    </p>
-                    <p className="text-xs text-[#92400e] mt-1">
-                      {category.dealCount} deals
-                    </p>
                   </div>
 
                   {/* Actions */}
@@ -392,14 +346,18 @@ export default function CategoriesManagementPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleToggleStatus(category.id)}
+                      onClick={() =>
+                        handleToggleStatus(category.id, category.is_active)
+                      }
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        category.isActive ? 'bg-amber-800' : 'bg-[#f2ebe2]'
+                        category.is_active ? 'bg-amber-800' : 'bg-[#f2ebe2]'
                       }`}
                     >
                       <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          category.isActive ? 'translate-x-6' : 'translate-x-1'
+                          category.is_active
+                            ? 'translate-x-6'
+                            : 'translate-x-1'
                         }`}
                       />
                     </button>
@@ -409,6 +367,14 @@ export default function CategoriesManagementPage() {
             </Card>
           )
         })}
+
+        {categories.length === 0 && (
+          <Card variant="glass" padding="lg" className="text-center">
+            <p className="text-[#78350f]">
+              No categories found. Add one to get started.
+            </p>
+          </Card>
+        )}
       </div>
     </div>
   )

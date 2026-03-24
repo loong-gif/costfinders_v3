@@ -1,134 +1,164 @@
 'use client'
 
 import {
-  Buildings,
   CaretLeft,
-  CaretRight,
+  Check,
   MapPin,
+  PencilSimple,
   Plus,
-  Tag,
+  Spinner,
   X,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  addArea,
-  addCity,
-  getAreasForCity,
-  getBusinessCountForCity,
-  getCities,
-  getDealCountForCity,
-  getLocationStats,
-  toggleAreaStatus,
-  toggleCityStatus,
-} from '@/lib/mock-data/locations'
+  type ContentLocation,
+  createLocationAction,
+  getLocationsAction,
+  toggleLocationAction,
+  updateLocationAction,
+} from '@/lib/actions/admin-content'
 
 export default function LocationsManagementPage() {
-  const [cities, setCities] = useState(() => getCities())
-  const [selectedCityId, setSelectedCityId] = useState<string | null>(null)
-  const [isAddingCity, setIsAddingCity] = useState(false)
-  const [isAddingArea, setIsAddingArea] = useState(false)
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
+  const [locations, setLocations] = useState<ContentLocation[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isAddingNew, setIsAddingNew] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    text: string
+    type: 'success' | 'error'
+  } | null>(null)
 
-  // City form state
-  const [cityForm, setCityForm] = useState({
-    name: '',
+  // Form state
+  const [formData, setFormData] = useState({
+    city: '',
     state: '',
     stateCode: '',
   })
 
-  // Area form state
-  const [areaForm, setAreaForm] = useState({
-    name: '',
-  })
-
-  const selectedCity = useMemo(() => {
-    return cities.find((c) => c.id === selectedCityId) || null
-  }, [cities, selectedCityId])
-
-  const selectedCityAreas = useMemo(() => {
-    if (!selectedCityId) return []
-    return getAreasForCity(selectedCityId)
-  }, [selectedCityId])
-
-  const stats = useMemo(() => getLocationStats(), [])
-
-  const showFeedback = useCallback((message: string) => {
-    setFeedbackMessage(message)
-    setTimeout(() => setFeedbackMessage(null), 3000)
-  }, [])
-
-  const refreshCities = useCallback(() => {
-    setCities(getCities())
-  }, [])
-
-  const handleToggleCityStatus = useCallback(
-    (id: string) => {
-      const updated = toggleCityStatus(id)
-      if (updated) {
-        refreshCities()
-        showFeedback(
-          `${updated.name} ${updated.isActive ? 'activated' : 'deactivated'}`,
-        )
-      }
+  const showFeedback = useCallback(
+    (text: string, type: 'success' | 'error' = 'success') => {
+      setFeedbackMessage({ text, type })
+      setTimeout(() => setFeedbackMessage(null), 3000)
     },
-    [refreshCities, showFeedback],
+    [],
   )
 
-  const handleToggleAreaStatus = useCallback(
-    (id: string, areaName: string) => {
-      const updated = toggleAreaStatus(id)
-      if (updated) {
-        // Force re-render by updating selected city
-        setSelectedCityId((prev) => prev)
+  const loadLocations = useCallback(async () => {
+    const result = await getLocationsAction()
+    if (result.success && result.locations) {
+      setLocations(result.locations)
+    } else if (result.error) {
+      showFeedback(result.error, 'error')
+    }
+    setIsLoading(false)
+  }, [showFeedback])
+
+  useEffect(() => {
+    loadLocations()
+  }, [loadLocations])
+
+  const handleToggleStatus = useCallback(
+    async (id: string, currentActive: boolean) => {
+      const result = await toggleLocationAction(id, !currentActive)
+      if (result.success) {
+        await loadLocations()
         showFeedback(
-          `${areaName} ${updated.isActive !== false ? 'activated' : 'deactivated'}`,
+          `Location ${currentActive ? 'deactivated' : 'activated'}`,
         )
+      } else {
+        showFeedback(result.error ?? 'Failed to toggle status', 'error')
       }
     },
-    [showFeedback],
+    [loadLocations, showFeedback],
   )
 
-  const handleAddCity = useCallback(() => {
-    if (!cityForm.name.trim() || !cityForm.state.trim()) return
+  const handleStartEdit = useCallback((location: ContentLocation) => {
+    setEditingId(location.id)
+    setFormData({
+      city: location.city,
+      state: location.state,
+      stateCode: location.state_code,
+    })
+  }, [])
 
-    const newCity = addCity({
-      name: cityForm.name,
-      state: cityForm.state,
-      stateCode: cityForm.stateCode || cityForm.state.slice(0, 2).toUpperCase(),
-      latitude: 0,
-      longitude: 0,
-      timezone: 'America/Chicago',
-      isActive: true,
+  const handleCancelEdit = useCallback(() => {
+    setEditingId(null)
+    setIsAddingNew(false)
+    setFormData({ city: '', state: '', stateCode: '' })
+  }, [])
+
+  const handleSaveEdit = useCallback(async () => {
+    if (!formData.city.trim() || !editingId) return
+
+    setIsSaving(true)
+    const result = await updateLocationAction(editingId, {
+      city: formData.city,
+      state: formData.state,
+      state_code: formData.stateCode,
     })
 
-    refreshCities()
-    showFeedback(`${newCity.name} added`)
-    setIsAddingCity(false)
-    setCityForm({ name: '', state: '', stateCode: '' })
-  }, [cityForm, refreshCities, showFeedback])
+    if (result.success) {
+      await loadLocations()
+      showFeedback('Location updated')
+      handleCancelEdit()
+    } else {
+      showFeedback(result.error ?? 'Failed to update location', 'error')
+    }
+    setIsSaving(false)
+  }, [editingId, formData, loadLocations, showFeedback, handleCancelEdit])
 
-  const handleAddArea = useCallback(() => {
-    if (!areaForm.name.trim() || !selectedCityId) return
+  const handleAddNew = useCallback(async () => {
+    if (
+      !formData.city.trim() ||
+      !formData.state.trim() ||
+      !formData.stateCode.trim()
+    )
+      return
 
-    const newArea = addArea({
-      cityId: selectedCityId,
-      name: areaForm.name,
-      latitude: 0,
-      longitude: 0,
-      radiusMiles: 5,
-      isActive: true,
-    })
+    setIsSaving(true)
+    const result = await createLocationAction(
+      formData.city,
+      formData.state,
+      formData.stateCode,
+    )
 
-    showFeedback(`${newArea.name} added`)
-    setIsAddingArea(false)
-    setAreaForm({ name: '' })
-    // Force re-render
-    setSelectedCityId((prev) => prev)
-  }, [areaForm.name, selectedCityId, showFeedback])
+    if (result.success) {
+      await loadLocations()
+      showFeedback('Location created')
+      handleCancelEdit()
+    } else {
+      showFeedback(result.error ?? 'Failed to create location', 'error')
+    }
+    setIsSaving(false)
+  }, [formData, loadLocations, showFeedback, handleCancelEdit])
+
+  // Group locations by state for display
+  const locationsByState = locations.reduce<
+    Record<string, ContentLocation[]>
+  >((acc, loc) => {
+    if (!acc[loc.state]) acc[loc.state] = []
+    acc[loc.state].push(loc)
+    return acc
+  }, {})
+
+  const stats = {
+    total: locations.length,
+    active: locations.filter((l) => l.is_active).length,
+    states: Object.keys(locationsByState).length,
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Spinner size={32} className="animate-spin text-amber-800" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -154,58 +184,52 @@ export default function LocationsManagementPage() {
           variant="primary"
           size="sm"
           className="gap-2"
-          onClick={() => setIsAddingCity(true)}
+          onClick={() => setIsAddingNew(true)}
         >
           <Plus size={18} />
-          Add City
+          Add Location
         </Button>
       </div>
 
       {/* Feedback message */}
       {feedbackMessage && (
-        <div className="bg-emerald-600/10 border border-success/20 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
-          {feedbackMessage}
+        <div
+          className={`px-4 py-3 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300 ${
+            feedbackMessage.type === 'success'
+              ? 'bg-emerald-600/10 border border-success/20 text-emerald-600'
+              : 'bg-red-600/10 border border-red-600/20 text-red-600'
+          }`}
+        >
+          {feedbackMessage.text}
         </div>
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {stats.totalCities}
-          </p>
-          <p className="text-sm text-[#78350f]">Total Cities</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.total}</p>
+          <p className="text-sm text-[#78350f]">Total Locations</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {stats.activeCities}
-          </p>
-          <p className="text-sm text-[#78350f]">Active Cities</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.active}</p>
+          <p className="text-sm text-[#78350f]">Active</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {stats.totalAreas}
-          </p>
-          <p className="text-sm text-[#78350f]">Total Areas</p>
-        </Card>
-        <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {stats.activeAreas}
-          </p>
-          <p className="text-sm text-[#78350f]">Active Areas</p>
+          <p className="text-2xl font-bold text-[#451a03]">{stats.states}</p>
+          <p className="text-sm text-[#78350f]">States</p>
         </Card>
       </div>
 
-      {/* Add City Form */}
-      {isAddingCity && (
+      {/* Add New Form */}
+      {isAddingNew && (
         <Card variant="glass" padding="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#451a03]">
-              Add New City
+              Add New Location
             </h3>
             <button
               type="button"
-              onClick={() => setIsAddingCity(false)}
+              onClick={() => setIsAddingNew(false)}
               className="text-[#92400e] hover:text-[#78350f]"
             >
               <X size={20} />
@@ -218,9 +242,9 @@ export default function LocationsManagementPage() {
               </label>
               <input
                 type="text"
-                value={cityForm.name}
+                value={formData.city}
                 onChange={(e) =>
-                  setCityForm((prev) => ({ ...prev, name: e.target.value }))
+                  setFormData((prev) => ({ ...prev, city: e.target.value }))
                 }
                 placeholder="e.g., Chicago"
                 className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
@@ -232,9 +256,9 @@ export default function LocationsManagementPage() {
               </label>
               <input
                 type="text"
-                value={cityForm.state}
+                value={formData.state}
                 onChange={(e) =>
-                  setCityForm((prev) => ({ ...prev, state: e.target.value }))
+                  setFormData((prev) => ({ ...prev, state: e.target.value }))
                 }
                 placeholder="e.g., Illinois"
                 className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
@@ -246,9 +270,9 @@ export default function LocationsManagementPage() {
               </label>
               <input
                 type="text"
-                value={cityForm.stateCode}
+                value={formData.stateCode}
                 onChange={(e) =>
-                  setCityForm((prev) => ({
+                  setFormData((prev) => ({
                     ...prev,
                     stateCode: e.target.value.toUpperCase(),
                   }))
@@ -260,13 +284,23 @@ export default function LocationsManagementPage() {
             </div>
           </div>
           <div className="flex gap-2 mt-4">
-            <Button variant="primary" size="sm" onClick={handleAddCity}>
-              Add City
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleAddNew}
+              isLoading={isSaving}
+              disabled={
+                !formData.city.trim() ||
+                !formData.state.trim() ||
+                !formData.stateCode.trim()
+              }
+            >
+              Add Location
             </Button>
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => setIsAddingCity(false)}
+              onClick={() => setIsAddingNew(false)}
             >
               Cancel
             </Button>
@@ -274,259 +308,186 @@ export default function LocationsManagementPage() {
         </Card>
       )}
 
-      {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Cities List */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-[#451a03]">Cities</h2>
+      {/* Locations grouped by state */}
+      {Object.entries(locationsByState).map(([state, stateLocations]) => (
+        <div key={state} className="space-y-3">
+          <h2 className="text-lg font-semibold text-[#451a03]">{state}</h2>
           <div className="space-y-2">
-            {cities.map((city) => {
-              const areaCount = getAreasForCity(city.id).length
-              const businessCount = getBusinessCountForCity(city.id)
-              const dealCount = getDealCountForCity(city.id)
-              const isSelected = selectedCityId === city.id
+            {stateLocations.map((location) => {
+              const isEditing = editingId === location.id
 
               return (
-                <Card
-                  key={city.id}
-                  variant="glass"
-                  padding="md"
-                  className={`cursor-pointer transition-all ${
-                    isSelected
-                      ? 'ring-2 ring-amber-800/40'
-                      : 'hover:bg-[#faf5ee]'
-                  }`}
-                  onClick={() => setSelectedCityId(city.id)}
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Icon */}
-                    <div
-                      className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
-                        city.isActive ? 'bg-amber-800/8' : 'bg-[#f2ebe2]'
-                      }`}
-                    >
-                      <MapPin
-                        size={20}
-                        weight="light"
-                        className={
-                          city.isActive ? 'text-amber-800' : 'text-[#92400e]'
-                        }
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3
-                          className={`font-semibold ${
-                            city.isActive ? 'text-[#451a03]' : 'text-[#92400e]'
-                          }`}
+                <Card key={location.id} variant="glass" padding="md">
+                  {isEditing ? (
+                    /* Edit Mode */
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-[#78350f] mb-1">
+                            City
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.city}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                city: e.target.value,
+                              }))
+                            }
+                            className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-[#78350f] mb-1">
+                            State
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.state}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                state: e.target.value,
+                              }))
+                            }
+                            className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-[#78350f] mb-1">
+                            State Code
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.stateCode}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                stateCode: e.target.value.toUpperCase(),
+                              }))
+                            }
+                            maxLength={2}
+                            className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-3 py-2 text-sm text-[#451a03] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={handleSaveEdit}
+                          isLoading={isSaving}
                         >
-                          {city.name}
-                        </h3>
-                        <span className="text-sm text-[#78350f]">
-                          {city.stateCode}
-                        </span>
-                        {!city.isActive && (
-                          <Badge variant="default" size="sm">
-                            Inactive
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-[#92400e]">
-                        <span className="flex items-center gap-1">
-                          <MapPin size={12} />
-                          {areaCount} areas
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Buildings size={12} />
-                          {businessCount} businesses
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Tag size={12} />
-                          {dealCount} deals
-                        </span>
+                          <Check size={16} />
+                          Save
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={handleCancelEdit}
+                        >
+                          <X size={16} />
+                          Cancel
+                        </Button>
                       </div>
                     </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleToggleCityStatus(city.id)
-                        }}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          city.isActive ? 'bg-amber-800' : 'bg-[#f2ebe2]'
+                  ) : (
+                    /* View Mode */
+                    <div className="flex items-center gap-4">
+                      {/* Icon */}
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
+                          location.is_active
+                            ? 'bg-amber-800/8'
+                            : 'bg-[#f2ebe2] opacity-50'
                         }`}
                       >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            city.isActive ? 'translate-x-6' : 'translate-x-1'
-                          }`}
+                        <MapPin
+                          size={20}
+                          weight="light"
+                          className={
+                            location.is_active
+                              ? 'text-amber-800'
+                              : 'text-[#92400e]'
+                          }
                         />
-                      </button>
-                      <CaretRight
-                        size={20}
-                        weight="light"
-                        className={`text-[#92400e] transition-transform ${
-                          isSelected ? 'rotate-90' : ''
-                        }`}
-                      />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3
+                            className={`font-semibold ${
+                              location.is_active
+                                ? 'text-[#451a03]'
+                                : 'text-[#92400e]'
+                            }`}
+                          >
+                            {location.city}
+                          </h3>
+                          <span className="text-sm text-[#78350f]">
+                            {location.state_code}
+                          </span>
+                          {!location.is_active && (
+                            <Badge variant="default" size="sm">
+                              Inactive
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleStartEdit(location)}
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-[#78350f] hover:bg-[#faf5ee] transition-colors"
+                        >
+                          <PencilSimple size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleToggleStatus(
+                              location.id,
+                              location.is_active,
+                            )
+                          }
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                            location.is_active
+                              ? 'bg-amber-800'
+                              : 'bg-[#f2ebe2]'
+                          }`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              location.is_active
+                                ? 'translate-x-6'
+                                : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Card>
               )
             })}
           </div>
         </div>
+      ))}
 
-        {/* Areas Panel */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-[#451a03]">
-              {selectedCity ? `${selectedCity.name} Areas` : 'Select a City'}
-            </h2>
-            {selectedCity && (
-              <Button
-                variant="secondary"
-                size="sm"
-                className="gap-1"
-                onClick={() => setIsAddingArea(true)}
-              >
-                <Plus size={16} />
-                Add Area
-              </Button>
-            )}
+      {locations.length === 0 && (
+        <Card variant="glass" padding="lg" className="text-center">
+          <div className="w-12 h-12 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-3">
+            <MapPin size={24} weight="light" className="text-amber-800" />
           </div>
-
-          {selectedCity ? (
-            <div className="space-y-2">
-              {/* Add Area Form */}
-              {isAddingArea && (
-                <Card variant="glass" padding="md">
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="text"
-                      value={areaForm.name}
-                      onChange={(e) => setAreaForm({ name: e.target.value })}
-                      placeholder="Area name (e.g., Downtown)"
-                      className="flex-1 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-4 py-2 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
-                    />
-                    <Button variant="primary" size="sm" onClick={handleAddArea}>
-                      Add
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setIsAddingArea(false)
-                        setAreaForm({ name: '' })
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </Card>
-              )}
-
-              {/* Areas List */}
-              {selectedCityAreas.length > 0 ? (
-                selectedCityAreas.map((area) => (
-                  <Card key={area.id} variant="glass" padding="md">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                            area.isActive !== false
-                              ? 'bg-amber-800/8'
-                              : 'bg-[#f2ebe2]'
-                          }`}
-                        >
-                          <MapPin
-                            size={16}
-                            weight="light"
-                            className={
-                              area.isActive !== false
-                                ? 'text-amber-800'
-                                : 'text-[#92400e]'
-                            }
-                          />
-                        </div>
-                        <div>
-                          <p
-                            className={`font-medium ${
-                              area.isActive !== false
-                                ? 'text-[#451a03]'
-                                : 'text-[#92400e]'
-                            }`}
-                          >
-                            {area.name}
-                          </p>
-                          <p className="text-xs text-[#92400e]">
-                            {area.radiusMiles} mile radius
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleToggleAreaStatus(area.id, area.name)
-                        }
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          area.isActive !== false
-                            ? 'bg-amber-800'
-                            : 'bg-[#f2ebe2]'
-                        }`}
-                      >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            area.isActive !== false
-                              ? 'translate-x-6'
-                              : 'translate-x-1'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <Card variant="glass" padding="lg" className="text-center">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-3">
-                    <MapPin
-                      size={24}
-                      weight="light"
-                      className="text-amber-800"
-                    />
-                  </div>
-                  <p className="text-[#78350f]">
-                    No areas defined for {selectedCity.name}
-                  </p>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="mt-3 gap-1"
-                    onClick={() => setIsAddingArea(true)}
-                  >
-                    <Plus size={16} />
-                    Add First Area
-                  </Button>
-                </Card>
-              )}
-            </div>
-          ) : (
-            <Card variant="glass" padding="lg" className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-3">
-                <MapPin size={24} weight="light" className="text-amber-800" />
-              </div>
-              <p className="text-[#78350f]">
-                Select a city to view and manage its service areas
-              </p>
-            </Card>
-          )}
-        </div>
-      </div>
+          <p className="text-[#78350f]">
+            No locations found. Add one to get started.
+          </p>
+        </Card>
+      )}
     </div>
   )
 }

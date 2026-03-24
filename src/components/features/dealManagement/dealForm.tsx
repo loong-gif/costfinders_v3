@@ -1,11 +1,22 @@
 'use client'
 
-import { ArrowLeft, FloppyDisk, Sparkle } from '@phosphor-icons/react'
+import {
+  ArrowLeft,
+  FloppyDisk,
+  Image as ImageIcon,
+  Sparkle,
+  Trash,
+  UploadSimple,
+} from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import {
+  deleteDealImageAction,
+  uploadDealImageAction,
+} from '@/lib/actions/deal-images'
 import {
   createDealAction,
   updateDealAction,
@@ -112,6 +123,16 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
     'idle' | 'success' | 'error'
   >('idle')
 
+  // Image upload state
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageUploadStatus, setImageUploadStatus] = useState<
+    'idle' | 'uploading' | 'success' | 'error'
+  >('idle')
+  const [imageError, setImageError] = useState<string | null>(null)
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
+
   // Update form when existingDeal changes (for edit mode)
   useEffect(() => {
     if (existingDeal) {
@@ -137,6 +158,99 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
       setErrors((prev) => ({ ...prev, [name]: undefined }))
     }
   }
+
+  const handleImageSelect = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0]
+      if (!file) return
+
+      // Validate type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+      if (!allowedTypes.includes(file.type)) {
+        setImageError('Invalid file type. Use JPEG, PNG, WebP, or AVIF.')
+        return
+      }
+
+      // Validate size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setImageError('File too large. Maximum 5MB.')
+        return
+      }
+
+      setImageError(null)
+      setImageFile(file)
+
+      // Generate preview
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        setImagePreview(ev.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    },
+    [],
+  )
+
+  const handleImageUpload = useCallback(async () => {
+    const dealId = existingDealId ?? existingDeal?.id
+    if (!imageFile || !dealId) {
+      setImageError('Save the deal first, then upload an image.')
+      return
+    }
+
+    setImageUploadStatus('uploading')
+    setImageError(null)
+
+    const formData = new FormData()
+    formData.append('image', imageFile)
+
+    const result = await uploadDealImageAction(
+      dealId,
+      Number(businessId),
+      formData,
+    )
+
+    if (result.success && result.url) {
+      setImageUploadStatus('success')
+      setUploadedImageUrl(result.url)
+      setImageFile(null)
+    } else {
+      setImageUploadStatus('error')
+      setImageError(result.error ?? 'Upload failed.')
+    }
+  }, [imageFile, existingDealId, existingDeal?.id, businessId])
+
+  const handleImageDelete = useCallback(async () => {
+    const dealId = existingDealId ?? existingDeal?.id
+    if (!dealId) return
+
+    setImageUploadStatus('uploading')
+    setImageError(null)
+
+    const result = await deleteDealImageAction(dealId, Number(businessId))
+
+    if (result.success) {
+      setImagePreview(null)
+      setImageFile(null)
+      setUploadedImageUrl(null)
+      setImageUploadStatus('idle')
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    } else {
+      setImageUploadStatus('error')
+      setImageError(result.error ?? 'Delete failed.')
+    }
+  }, [existingDealId, existingDeal?.id, businessId])
+
+  const handleRemovePreview = useCallback(() => {
+    setImagePreview(null)
+    setImageFile(null)
+    setImageError(null)
+    setImageUploadStatus('idle')
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }, [])
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
@@ -514,15 +628,139 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
               )}
             </div>
 
-            <Input
-              label="Image URL"
-              name="imageUrl"
-              type="url"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              placeholder="https://example.com/image.jpg"
-              hint="Optional cover image for your deal"
-            />
+            {/* Deal Image Upload */}
+            <div className="w-full">
+              <label className="block text-sm font-medium text-[#78350f] mb-1.5">
+                Deal Image
+              </label>
+
+              {/* Preview area */}
+              {(imagePreview || uploadedImageUrl) ? (
+                <div className="relative group rounded-xl overflow-hidden border border-[#d4c4b0] bg-[#f2ebe2]">
+                  <img
+                    src={imagePreview ?? uploadedImageUrl ?? ''}
+                    alt="Deal preview"
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    {uploadedImageUrl && (
+                      <Button
+                        type="button"
+                        variant="danger"
+                        size="sm"
+                        onClick={handleImageDelete}
+                        disabled={imageUploadStatus === 'uploading'}
+                      >
+                        <Trash size={16} weight="light" />
+                        Delete
+                      </Button>
+                    )}
+                    {!uploadedImageUrl && imagePreview && (
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleRemovePreview}
+                      >
+                        <Trash size={16} weight="light" />
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                  {/* Upload status badge */}
+                  {uploadedImageUrl && (
+                    <div className="absolute top-2 right-2 px-2 py-1 bg-green-600/90 text-white text-xs rounded-lg">
+                      Uploaded
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="
+                    w-full h-48 flex flex-col items-center justify-center gap-3
+                    bg-[#f2ebe2] border-2 border-dashed border-[#d4c4b0]
+                    rounded-xl cursor-pointer
+                    hover:border-amber-800/40 hover:bg-[#ede5da]
+                    transition-all duration-200
+                  "
+                >
+                  <ImageIcon size={32} weight="light" className="text-[#92400e]" />
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-[#78350f]">
+                      Click to select an image
+                    </p>
+                    <p className="text-xs text-[#92400e] mt-1">
+                      JPEG, PNG, WebP, or AVIF (max 5MB)
+                    </p>
+                  </div>
+                </button>
+              )}
+
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/avif"
+                onChange={handleImageSelect}
+                className="hidden"
+              />
+
+              {/* Upload button (shown when file is selected but not yet uploaded) */}
+              {imageFile && !uploadedImageUrl && (
+                <div className="mt-3 flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleImageUpload}
+                    disabled={imageUploadStatus === 'uploading'}
+                    isLoading={imageUploadStatus === 'uploading'}
+                  >
+                    <UploadSimple size={16} weight="light" />
+                    {imageUploadStatus === 'uploading' ? 'Uploading...' : 'Upload Image'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Choose different file
+                  </Button>
+                </div>
+              )}
+
+              {/* Change image button when already uploaded */}
+              {uploadedImageUrl && (
+                <div className="mt-3">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <UploadSimple size={16} weight="light" />
+                    Replace image
+                  </Button>
+                </div>
+              )}
+
+              {/* Error message */}
+              {imageError && (
+                <p className="mt-1.5 text-xs text-red-600">{imageError}</p>
+              )}
+
+              {/* Help text */}
+              {!imageFile && !uploadedImageUrl && (
+                <p className="mt-1.5 text-xs text-[#92400e]">
+                  {mode === 'create'
+                    ? 'Save the deal first, then you can upload an image.'
+                    : 'Optional cover image for your deal'}
+                </p>
+              )}
+            </div>
           </div>
         </Card>
 
