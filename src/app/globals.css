@@ -182,6 +182,11 @@ button, a, [role="button"], input, select, textarea {
   touch-action: manipulation;
 }
 
+/* Safe area padding for notched devices (iPhone X+) */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Q13: Skip rendering of off-screen content */
 .content-visibility-auto {
   content-visibility: auto;

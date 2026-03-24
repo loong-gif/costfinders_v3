@@ -14,7 +14,7 @@ export default function TreatmentsLoading() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={`treat-skel-${i}`}
-              className="h-40 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl"
+              className={`h-40 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl ${i >= 3 ? 'hidden sm:block' : ''}`}
             />
           ))}
         </div>

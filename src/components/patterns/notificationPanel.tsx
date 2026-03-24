@@ -178,7 +178,7 @@ export function NotificationPanel({
                       e.stopPropagation()
                       onMarkAsRead(notification.id)
                     }}
-                    className="absolute top-2 right-2 p-1 rounded-md text-[#78350f]/40 hover:text-amber-800 hover:bg-amber-800/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                    className="absolute top-2 right-2 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md text-[#78350f]/40 hover:text-amber-800 hover:bg-amber-800/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
                     aria-label="Mark as read"
                   >
                     <Check size={14} weight="bold" />

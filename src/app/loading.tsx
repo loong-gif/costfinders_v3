@@ -10,7 +10,7 @@ export default function Loading() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={`skel-${i}`}
-              className="h-48 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl"
+              className={`h-48 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl ${i >= 3 ? 'hidden sm:block' : ''}`}
             />
           ))}
         </div>

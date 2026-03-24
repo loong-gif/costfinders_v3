@@ -14,7 +14,7 @@ export default function DealsLoading() {
           {Array.from({ length: 9 }).map((_, i) => (
             <div
               key={`deal-skel-${i}`}
-              className="h-56 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl"
+              className={`h-56 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl ${i >= 3 ? 'hidden sm:block' : ''}`}
             />
           ))}
         </div>

@@ -115,16 +115,12 @@ export function CityDealsPage({
           </div>
         </div>
 
-        {/* Category Filter */}
-        <div className="mb-6">
+        {/* Category + Filter Bar — sticky on mobile */}
+        <div className="sticky top-16 z-30 bg-[#e8ddd0] -mx-4 px-4 py-3 mb-3 border-b border-[#d4c4b0]/50 space-y-3">
           <CategoryFilter
             selected={selectedCategory}
             onChange={handleCategoryChange}
           />
-        </div>
-
-        {/* Filter Panel */}
-        <div className="mb-6">
           <FilterPanel
             filters={filters}
             sortBy={sortBy}

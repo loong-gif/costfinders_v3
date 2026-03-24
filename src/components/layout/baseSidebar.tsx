@@ -132,7 +132,7 @@ export function BaseSidebar({
       </aside>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#f2ebe2] border-t border-[#d4c4b0] z-50">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#f2ebe2] border-t border-[#d4c4b0] z-50 safe-bottom">
         <div className="flex items-center justify-around py-2">
           {visibleMobileItems.map((item) => {
             const active = isActive(item.href)
@@ -212,7 +212,7 @@ export function BaseSidebar({
               <button
                 type="button"
                 onClick={() => setMoreMenuOpen(false)}
-                className="p-1 rounded-lg text-[#78350f] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
+                className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-[#78350f] hover:text-[#451a03] hover:bg-[#faf5ee] transition-colors"
                 aria-label="Close menu"
               >
                 <X size={18} weight="bold" />
