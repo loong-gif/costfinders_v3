@@ -11,6 +11,7 @@ Build the complete CostFinders platform — a price transparency and lead genera
 - ✅ **v1.2 Messaging Style Guide** — Phases 16-23 — SHIPPED 2026-01-12
 - ✅ **v1.3 Location SEO Clusters** — Phases 24-33 — SHIPPED 2026-01-14
 - ✅ **v1.4 Mobile Polish + Performance** — Phases 34-41 — SHIPPED 2026-03-24
+- ✅ **v1.5 PRD Completion** — SHIPPED 2026-03-24
 
 ## Completed Milestones
 
@@ -168,6 +169,24 @@ Plans:
 Plans:
 - [x] 41-01: Viewport export with viewportFit:cover, themeColor, safe-area-inset-bottom on mobile nav
 
+### ✅ v1.5 PRD Completion (SHIPPED 2026-03-24)
+
+**Milestone Goal:** Complete all well-built PRDs (01, 03, 05, 07, 09) to 100% coverage. Fill remaining gaps in auth, lead management, business tools, messaging, and admin operations.
+
+**What was built:**
+- PRD-03: Admin lead relay dashboard with relay tracking (relayed_at, relayed_by, relay_method)
+- PRD-05: Moderation notes storage (reject/changes_requested persist notes to DB), deal image upload via Supabase Storage
+- PRD-07: Supabase Realtime messaging (replaces 5s polling), typing indicator, realtime unread badge
+- PRD-09: Admin audit log system (6 actions logged), content management CRUD (categories + locations with real data), user suspension RLS enforcement
+
+**Supabase migrations applied:**
+- admin_audit_log table + indexes
+- Lead relay columns on claims table
+- moderation_notes column on promo_offer_master
+- content_categories + content_locations tables (seeded)
+- deal-images storage bucket
+- 3 suspension RLS policies
+
 ## Progress
 
 **Execution Order:**
@@ -217,3 +236,7 @@ Phases execute in numeric order: 1 → ... → 33 → 34 → 35 → 36 → 37 �
 | 39. Mobile Navigation Enhancements | v1.4 | 2/2 | Complete | 2026-03-24 |
 | 40. Touch Target & Spacing Audit | v1.4 | 1/1 | Complete | 2026-03-24 |
 | 41. Mobile QA & Polish | v1.4 | 1/1 | Complete | 2026-03-24 |
+| PRD-03: Lead Relay | v1.5 | 1/1 | Complete | 2026-03-24 |
+| PRD-05: Moderation + Images | v1.5 | 1/1 | Complete | 2026-03-24 |
+| PRD-07: Realtime Messaging | v1.5 | 1/1 | Complete | 2026-03-24 |
+| PRD-09: Audit + Content + RLS | v1.5 | 1/1 | Complete | 2026-03-24 |

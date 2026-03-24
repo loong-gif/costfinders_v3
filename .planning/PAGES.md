@@ -106,6 +106,7 @@
 | `/admin/dashboard/businesses` | Business management - approve/manage all businesses |
 | `/admin/dashboard/deals` | Deal moderation - review/approve submitted deals |
 | `/admin/dashboard/users` | User management - consumer account administration |
+| `/admin/dashboard/leads` | Lead relay queue - ops team dashboard for relaying leads to businesses |
 | `/admin/dashboard/content` | Content hub - taxonomy management navigation |
 | `/admin/dashboard/content/categories` | Categories - manage treatment categories |
 | `/admin/dashboard/content/treatments` | Treatments - manage treatment types |
@@ -150,11 +151,11 @@
 |-----------|------------|
 | Consumer (Public + Dashboard) | 9 |
 | Business | 17 |
-| Admin | 13 |
+| Admin | 14 |
 | SEO / Location | 6 (dynamic) |
 | SEO / Pricing Guides | 10 |
 | API Endpoints | 1 |
-| **Total** | **56 pages** |
+| **Total** | **57 pages** |
 
 > Note: SEO pages generate 42+ static variations via `generateStaticParams`
 

@@ -349,10 +349,114 @@ All 18 server action files in `src/lib/actions/` import `logger` and log errors 
 
 ---
 
+## 9. New Server Actions (v1.5)
+
+### admin-leads.ts — Lead Relay Management
+
+| Function | Params | Returns | Notes |
+|----------|--------|---------|-------|
+| `getUnrelayedLeadsAction()` | — | Claims with no relay timestamp | Leads pending relay to businesses |
+| `getRelayedLeadsAction()` | — | Claims with relay data | Previously relayed leads |
+| `markLeadRelayedAction(claimId, method)` | Claim ID, relay method | Updated claim | Sets relayed_at, relayed_by, relay_method |
+
+### audit.ts — Admin Audit Logging
+
+| Function | Params | Returns | Notes |
+|----------|--------|---------|-------|
+| `logAdminAction(action, targetType, targetId, details?)` | Action name, target type, target ID, optional details | Audit log entry | Logs to admin_audit_log table; 6 action types tracked |
+
+### admin-content.ts — Content CRUD
+
+| Function | Params | Returns | Notes |
+|----------|--------|---------|-------|
+| `getCategoriesAction()` | — | content_categories rows | All categories |
+| `createCategoryAction(data)` | Category fields | New category | Insert into content_categories |
+| `updateCategoryAction(id, data)` | ID + fields | Updated category | Update content_categories |
+| `deleteCategoryAction(id)` | Category ID | void | Delete from content_categories |
+| `getLocationsAction()` | — | content_locations rows | All locations |
+| `createLocationAction(data)` | Location fields | New location | Insert into content_locations |
+| `updateLocationAction(id, data)` | ID + fields | Updated location | Update content_locations |
+| `deleteLocationAction(id)` | Location ID | void | Delete from content_locations |
+
+### deal-images.ts — Deal Image Storage
+
+| Function | Params | Returns | Notes |
+|----------|--------|---------|-------|
+| `uploadDealImageAction(file, dealId)` | File + deal ID | Blob URL | Uploads to deal-images Supabase Storage bucket |
+| `deleteDealImageAction(path)` | Storage path | void | Removes image from storage |
+| `getDealImageUrl(path)` | Storage path | Public URL | Returns public URL for stored image |
+
+---
+
+## Supabase Tables (v1.5 Additions)
+
+### `admin_audit_log`
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment |
+| `admin_id` | uuid | Admin user who performed the action |
+| `action` | text | Action type (e.g., "approve_deal", "suspend_user") |
+| `target_type` | text | Entity type (e.g., "deal", "user", "business") |
+| `target_id` | text | ID of the affected entity |
+| `details` | jsonb | Additional context (nullable) |
+| `created_at` | timestamptz | When the action occurred |
+
+Indexed on `admin_id` and `created_at` for dashboard queries.
+
+### `content_categories`
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment |
+| `name` | text | Category display name |
+| `slug` | text | URL-safe slug |
+| `description` | text | Category description (nullable) |
+| `created_at` | timestamptz | Row creation time |
+| `updated_at` | timestamptz | Last update time |
+
+Seeded with treatment categories from existing data.
+
+### `content_locations`
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment |
+| `name` | text | Location display name |
+| `slug` | text | URL-safe slug |
+| `state` | text | US state abbreviation |
+| `description` | text | Location description (nullable) |
+| `created_at` | timestamptz | Row creation time |
+| `updated_at` | timestamptz | Last update time |
+
+Seeded with cities from existing business data.
+
+### New Columns on Existing Tables
+
+**`claims` table additions:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `relayed_at` | timestamptz | When the lead was relayed to the business (nullable) |
+| `relayed_by` | uuid | Admin who relayed the lead (nullable) |
+| `relay_method` | text | How the lead was relayed: "email", "phone", "dashboard" (nullable) |
+
+**`promo_offer_master` addition:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `moderation_notes` | text | Admin notes from reject/changes_requested moderation actions (nullable) |
+
+### `deal-images` Storage Bucket
+
+Supabase Storage bucket for deal images uploaded during deal creation/editing. Public read access, authenticated write access.
+
+---
+
 ## Known Limitations
 
 1. **No real auth** — mock auth skips password verification, uses localStorage (XSS risk)
 2. **No Supabase Auth** — production needs httpOnly cookies via Supabase Auth
-3. **No real-time** — Supabase client exists but no Realtime subscriptions
+3. **Partial real-time** — Supabase Realtime used for messaging; other entities still poll or use static data
 4. **Claims expire client-side** — no background job; 7-day expiry calculated in context
 5. **Hardcoded category map** — `CATEGORY_MAP` must be updated manually if DB categories change

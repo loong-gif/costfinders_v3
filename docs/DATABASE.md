@@ -138,6 +138,90 @@ Promotional offers extracted from business websites, social media, and email cam
 
 ---
 
+### `admin_audit_log`
+
+Admin action audit trail for tracking all administrative operations.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment identity |
+| `admin_id` | uuid | Admin user who performed the action |
+| `action` | text | Action type (e.g., "approve_deal", "suspend_user", "relay_lead") |
+| `target_type` | text | Entity type affected (e.g., "deal", "user", "business") |
+| `target_id` | text | ID of the affected entity |
+| `details` | jsonb | Additional context and metadata (nullable) |
+| `created_at` | timestamptz | When the action occurred |
+
+**Indexes:** `admin_id`, `created_at`
+
+---
+
+### `content_categories`
+
+Treatment categories for admin content management CRUD.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment identity |
+| `name` | text | Category display name |
+| `slug` | text | URL-safe slug (unique) |
+| `description` | text | Category description (nullable) |
+| `created_at` | timestamptz | Row creation time |
+| `updated_at` | timestamptz | Last update time |
+
+Seeded with treatment categories from existing offer data.
+
+---
+
+### `content_locations`
+
+Location entries for admin content management CRUD.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint (PK) | Auto-increment identity |
+| `name` | text | Location display name |
+| `slug` | text | URL-safe slug (unique) |
+| `state` | text | US state abbreviation |
+| `description` | text | Location description (nullable) |
+| `created_at` | timestamptz | Row creation time |
+| `updated_at` | timestamptz | Last update time |
+
+Seeded with cities from existing business data.
+
+---
+
+### New Columns on Existing Tables (v1.5)
+
+**`claims` table additions:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `relayed_at` | timestamptz | When the lead was relayed to the business (nullable) |
+| `relayed_by` | uuid | Admin who relayed the lead (nullable) |
+| `relay_method` | text | How the lead was relayed: "email", "phone", "dashboard" (nullable) |
+
+**`promo_offer_master` addition:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `moderation_notes` | text | Admin notes from reject/changes_requested moderation actions (nullable) |
+
+---
+
+### `deal-images` Storage Bucket
+
+Supabase Storage bucket for deal images uploaded during deal creation/editing.
+
+| Setting | Value |
+|---------|-------|
+| **Bucket name** | `deal-images` |
+| **Read access** | Public |
+| **Write access** | Authenticated users |
+| **File types** | Images (png, jpg, webp) |
+
+---
+
 ## Other Tables (Not Used by App)
 
 These tables are part of the data pipeline and should not be queried by the frontend:
@@ -153,6 +237,8 @@ These tables are part of the data pipeline and should not be queried by the fron
 ## RLS
 
 Row Level Security is **enabled** on all tables. The anon key provides read access.
+
+**Suspension RLS policies (v1.5):** 3 policies enforce that suspended users cannot create/update rows in `claims`, `messages`, and `saved_deals` tables.
 
 ---
 

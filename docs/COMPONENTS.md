@@ -92,7 +92,7 @@ Domain components with data and business logic. Can import from `ui/`, `patterns
 ### Deal Management (`features/dealManagement/`)
 | Component | Purpose |
 |-----------|---------|
-| `dealForm.tsx` | Create/edit deal form |
+| `dealForm.tsx` | Create/edit deal form. Includes image upload with drag-and-drop preview via Supabase Storage |
 | `dealList.tsx` | Table view of deals with actions |
 
 ### Deal Moderation (`features/dealModeration/`)
@@ -121,7 +121,7 @@ Domain components with data and business logic. Can import from `ui/`, `patterns
 ### Messaging (`features/messaging/`)
 | Component | Purpose |
 |-----------|---------|
-| `messageThread.tsx` | Chat thread display |
+| `messageThread.tsx` | Chat thread display. Uses Supabase Realtime (not polling) with typing indicator and realtime unread badge |
 
 ### Monetization & Billing
 | Component | Purpose |

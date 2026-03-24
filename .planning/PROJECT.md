@@ -2,13 +2,13 @@
 
 ## What This Is
 
-CostFinders is a price transparency and lead generation platform for medical spas. The v1.4 release is a production-ready Next.js application with live Supabase data (354 businesses, 347 offers), consumer deal discovery, business portal, admin tools, and performance-optimized data access via SQL RPCs and React cache() deduplication.
+CostFinders is a price transparency and lead generation platform for medical spas. The v1.5 release is a production-ready Next.js application with live Supabase data (354 businesses, 347 offers), consumer deal discovery, business portal, admin tools, realtime messaging, audit logging, and performance-optimized data access via SQL RPCs and React cache() deduplication.
 
 ## Core Value
 
 **Deal discovery UX that makes finding and comparing medspa pricing effortless.** The browse → filter → compare → claim flow must feel intuitive, fast, and premium. Everything else supports this core experience.
 
-## Current State (v1.4 — Shipped 2026-03-24)
+## Current State (v1.5 — Shipped 2026-03-24)
 
 **Tech Stack:**
 - Next.js 16 (App Router) + React + TypeScript
@@ -35,6 +35,12 @@ CostFinders is a price transparency and lead generation platform for medical spa
 - Analytics: 6 conversion events (deal_claimed, deal_saved, auth_signup, auth_signin, filter_applied, category_selected)
 - Mobile: BottomSheet swipe-to-dismiss, sticky filter bar, safe-area support, 44px touch targets
 - CI/CD: GitHub Actions workflow, bundlewatch config, k6 load test scripts
+- Lead relay: Admin dashboard for tracking lead relay to businesses (relayed_at, relayed_by, relay_method)
+- Realtime: Supabase Realtime messaging with typing indicators, replaces 5s polling
+- Audit: Admin audit log tracking all admin actions (6 action types)
+- Content: Category and location CRUD management with seeded real data
+- Storage: Deal image upload via Supabase Storage with drag-and-drop preview
+- Security: Suspension RLS enforcement on claims, messages, saved_deals
 
 ## Requirements
 
@@ -82,10 +88,17 @@ CostFinders is a price transparency and lead generation platform for medical spa
 - [x] GitHub Actions CI/CD (lint + build) — v1.4
 - [x] k6 load test scripts (smoke + average) — v1.4
 - [x] Segment error boundaries + /api/health endpoint — v1.4
+- [x] Admin lead relay dashboard with relay tracking — v1.5
+- [x] Supabase Realtime messaging with typing indicators — v1.5
+- [x] Admin audit log system (6 action types) — v1.5
+- [x] Content management CRUD (categories + locations with real data) — v1.5
+- [x] Deal image upload via Supabase Storage — v1.5
+- [x] Moderation notes persistence (reject/changes_requested) — v1.5
+- [x] User suspension RLS enforcement — v1.5
 
 ### Active
 
-Supabase integration is live. v1.4 complete, planning v1.5 features.
+Supabase integration is live. v1.5 complete, planning v2.0 features.
 
 ### Out of Scope
 
@@ -97,20 +110,24 @@ Supabase integration is live. v1.4 complete, planning v1.5 features.
 
 ## Context
 
-**Shipped v1.4** with live Supabase data, performance optimizations, and production observability:
+**Shipped v1.5** with live Supabase data, realtime messaging, audit logging, and full PRD coverage:
 - Consumer deal discovery and account management
 - Business onboarding, lead management, and monetization
 - Admin moderation, content management, and platform reporting
 - Live data: 354 businesses, 347 offers across 20+ cities
 - 4 SQL RPC functions replacing client-side aggregation
 - Structured logging, error boundaries, health endpoint
+- Supabase Realtime messaging replacing polling-based approach
+- Admin audit log, lead relay tracking, content CRUD
+- Deal image upload via Supabase Storage
+- Suspension RLS enforcement across claims, messages, saved_deals
 
 **Business Model Insight**: Businesses don't need to sign up for deals to appear — CostFinders scrapes public sources. Three business tiers exist:
 1. **Unclaimed** — scraped data, leads collected by CostFinders, business account pre-created
 2. **Free** — business claims profile, can edit info/deals
 3. **Paid** — premium placements, featured spots, newsletter inclusion, priority lead routing
 
-**Next Steps**: v1.4 complete. Ready for v1.5 planning (real-time features, Stripe integration, expanded market coverage).
+**Next Steps**: v1.5 complete. Ready for v2.0 planning (Stripe integration, expanded market coverage, native auth improvements).
 
 ## Constraints
 
@@ -141,4 +158,4 @@ Supabase integration is live. v1.4 complete, planning v1.5 features.
 | Icon-only sidebar | Minimal footprint (64px) with tooltips | Good — clean navigation |
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone*
+*Last updated: 2026-03-24 after v1.5 milestone*
