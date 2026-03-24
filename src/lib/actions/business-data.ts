@@ -92,18 +92,22 @@ export async function searchBusinessesAction(
       return { success: true, businesses: [] }
     }
 
-    // Check which businesses are claimed via business_profiles
+    // Check which businesses are claimed via business_claims table
     const businessIds = businesses.map((b) => b.business_id)
     const { data: claims } = await supabase
-      .from('business_profiles')
-      .select('business_id, claim_status')
+      .from('business_claims')
+      .select('business_id, status')
       .in('business_id', businessIds)
+      .in('status', ['pending', 'approved', 'code_sent'])
 
     const claimMap = new Map<number, string>()
     if (claims) {
       for (const claim of claims) {
         if (claim.business_id) {
-          claimMap.set(claim.business_id, claim.claim_status)
+          // Map business_claims.status to the BusinessSearchResult claim_status
+          const mappedStatus =
+            claim.status === 'code_sent' ? 'pending' : claim.status
+          claimMap.set(claim.business_id, mappedStatus)
         }
       }
     }

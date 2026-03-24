@@ -4,6 +4,9 @@ import {
   CheckCircle,
   ClockCountdown,
   CurrencyDollar,
+  EnvelopeSimple,
+  FileArrowUp,
+  FileText,
   MagnifyingGlass,
   Prohibit,
   Storefront,
@@ -67,16 +70,172 @@ function MetricCard({ icon: Icon, value, label, highlight }: MetricCardProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Claims Section
+// Helpers
 // ---------------------------------------------------------------------------
 
-function formatClaimDate(dateString: string): string {
+function formatTimeAgo(dateString: string): string {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMinutes = Math.floor(diffMs / (1000 * 60))
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffMinutes < 1) return 'just now'
+  if (diffMinutes < 60) return `${diffMinutes}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  if (diffDays < 7) return `${diffDays}d ago`
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`
   return new Date(dateString).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
   })
 }
+
+function VerificationMethodBadge({
+  method,
+}: {
+  method: string | null | undefined
+}) {
+  if (method === 'email') {
+    return (
+      <Badge variant="info" size="sm">
+        <EnvelopeSimple size={12} weight="fill" className="mr-1" />
+        Email
+      </Badge>
+    )
+  }
+  if (method === 'document') {
+    return (
+      <Badge variant="brand" size="sm">
+        <FileArrowUp size={12} weight="fill" className="mr-1" />
+        Document
+      </Badge>
+    )
+  }
+  return (
+    <Badge variant="default" size="sm">
+      Unknown
+    </Badge>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Approve/Reject Modal
+// ---------------------------------------------------------------------------
+
+function ClaimActionModal({
+  claim,
+  action,
+  onConfirm,
+  onCancel,
+  isProcessing,
+}: {
+  claim: BusinessClaim
+  action: 'approve' | 'reject'
+  onConfirm: (notes: string) => void
+  onCancel: () => void
+  isProcessing: boolean
+}) {
+  const [adminNotes, setAdminNotes] = useState('')
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40"
+        onClick={onCancel}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') onCancel()
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Close modal"
+      />
+
+      {/* Modal */}
+      <Card
+        variant="glass"
+        padding="lg"
+        className="relative z-10 w-full max-w-md space-y-4"
+      >
+        <h3 className="text-lg font-semibold text-[#451a03]">
+          {action === 'approve' ? 'Approve Claim' : 'Reject Claim'}
+        </h3>
+
+        <div className="text-sm text-[#78350f] space-y-1">
+          <p>
+            <span className="font-medium text-[#451a03]">
+              {claim.first_name ?? ''} {claim.last_name ?? ''}
+            </span>{' '}
+            — {claim.email}
+          </p>
+          <p>
+            Business: <span className="font-medium text-[#451a03]">{claim.business_name ?? 'Unknown'}</span>
+          </p>
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="admin-notes"
+            className="block text-sm font-medium text-[#78350f]"
+          >
+            Admin Notes (optional)
+          </label>
+          <textarea
+            id="admin-notes"
+            value={adminNotes}
+            onChange={(e) => setAdminNotes(e.target.value)}
+            placeholder={
+              action === 'approve'
+                ? 'Add any notes about this approval...'
+                : 'Provide a reason for rejection...'
+            }
+            rows={3}
+            className="w-full px-4 py-2.5 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-[#451a03] placeholder:text-[#92400e] text-sm focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15 resize-none"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 pt-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={onCancel}
+            disabled={isProcessing}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant={action === 'approve' ? 'primary' : 'danger'}
+            size="sm"
+            onClick={() => onConfirm(adminNotes)}
+            isLoading={isProcessing}
+            disabled={isProcessing}
+            className="flex-1"
+          >
+            {action === 'approve' ? (
+              <>
+                <CheckCircle size={16} weight="bold" />
+                Approve
+              </>
+            ) : (
+              <>
+                <Prohibit size={16} weight="bold" />
+                Reject
+              </>
+            )}
+          </Button>
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Claims Section
+// ---------------------------------------------------------------------------
 
 function PendingClaimsSection({
   onFeedback,
@@ -91,6 +250,10 @@ function PendingClaimsSection({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [processingIds, setProcessingIds] = useState<Set<string>>(new Set())
+
+  // Modal state
+  const [modalClaim, setModalClaim] = useState<BusinessClaim | null>(null)
+  const [modalAction, setModalAction] = useState<'approve' | 'reject'>('approve')
 
   useEffect(() => {
     async function fetchClaims() {
@@ -108,49 +271,46 @@ function PendingClaimsSection({
     fetchClaims()
   }, [onClaimCountChange])
 
-  const handleApprove = useCallback(
-    async (profileId: string) => {
-      setProcessingIds((prev) => new Set(prev).add(profileId))
-
-      // Optimistic removal
-      setClaims((prev) => prev.filter((c) => c.id !== profileId))
-      onClaimCountChange(claims.length - 1)
-
-      const result = await approveClaimAction(profileId)
-      if (result.success) {
-        onFeedback('Claim approved successfully')
-      } else {
-        // Revert on failure — re-fetch
-        onFeedback(`Failed to approve: ${result.error}`)
-        const refreshed = await getBusinessClaimsAction('pending')
-        if (refreshed.success && refreshed.claims) {
-          setClaims(refreshed.claims)
-          onClaimCountChange(refreshed.claims.length)
-        }
-      }
-
-      setProcessingIds((prev) => {
-        const next = new Set(prev)
-        next.delete(profileId)
-        return next
-      })
+  const openModal = useCallback(
+    (claim: BusinessClaim, action: 'approve' | 'reject') => {
+      setModalClaim(claim)
+      setModalAction(action)
     },
-    [claims.length, onFeedback, onClaimCountChange],
+    [],
   )
 
-  const handleReject = useCallback(
-    async (profileId: string) => {
+  const closeModal = useCallback(() => {
+    setModalClaim(null)
+  }, [])
+
+  const handleConfirmAction = useCallback(
+    async (adminNotes: string) => {
+      if (!modalClaim) return
+
+      const profileId = modalClaim.id
       setProcessingIds((prev) => new Set(prev).add(profileId))
 
       // Optimistic removal
       setClaims((prev) => prev.filter((c) => c.id !== profileId))
       onClaimCountChange(claims.length - 1)
+      closeModal()
 
-      const result = await rejectClaimAction(profileId)
+      const result =
+        modalAction === 'approve'
+          ? await approveClaimAction(profileId, undefined, adminNotes)
+          : await rejectClaimAction(profileId, undefined, adminNotes)
+
       if (result.success) {
-        onFeedback('Claim rejected')
+        onFeedback(
+          modalAction === 'approve'
+            ? 'Claim approved successfully'
+            : 'Claim rejected',
+        )
       } else {
-        onFeedback(`Failed to reject: ${result.error}`)
+        onFeedback(
+          `Failed to ${modalAction}: ${result.error}`,
+        )
+        // Revert on failure — re-fetch
         const refreshed = await getBusinessClaimsAction('pending')
         if (refreshed.success && refreshed.claims) {
           setClaims(refreshed.claims)
@@ -164,7 +324,7 @@ function PendingClaimsSection({
         return next
       })
     },
-    [claims.length, onFeedback, onClaimCountChange],
+    [modalClaim, modalAction, claims.length, onFeedback, onClaimCountChange, closeModal],
   )
 
   if (loading) {
@@ -203,171 +363,230 @@ function PendingClaimsSection({
   }
 
   return (
-    <Card variant="glass" padding="none" className="overflow-hidden">
-      {/* Desktop Table */}
-      <div className="hidden lg:block overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-[#d4c4b0]">
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                Owner
-              </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                Business
-              </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                City
-              </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                Claimed
-              </th>
-              <th className="text-right text-sm font-medium text-[#78350f] px-6 py-4">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[#d4c4b0]">
-            {claims.map((claim) => {
-              const isProcessing = processingIds.has(claim.id)
-              return (
-                <tr
-                  key={claim.id}
-                  className="hover:bg-[#faf5ee] transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-amber-800/8 flex items-center justify-center">
-                        <User
-                          size={16}
-                          weight="fill"
-                          className="text-amber-800"
+    <>
+      {/* Action Modal */}
+      {modalClaim && (
+        <ClaimActionModal
+          claim={modalClaim}
+          action={modalAction}
+          onConfirm={handleConfirmAction}
+          onCancel={closeModal}
+          isProcessing={processingIds.has(modalClaim.id)}
+        />
+      )}
+
+      <Card variant="glass" padding="none" className="overflow-hidden">
+        {/* Desktop Table */}
+        <div className="hidden lg:block overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[#d4c4b0]">
+                <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+                  Owner
+                </th>
+                <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+                  Business
+                </th>
+                <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+                  City
+                </th>
+                <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+                  Method
+                </th>
+                <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+                  Submitted
+                </th>
+                <th className="text-right text-sm font-medium text-[#78350f] px-6 py-4">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#d4c4b0]">
+              {claims.map((claim) => {
+                const isProcessing = processingIds.has(claim.id)
+                return (
+                  <tr
+                    key={claim.id}
+                    className="hover:bg-[#faf5ee] transition-colors"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-amber-800/8 flex items-center justify-center">
+                          <User
+                            size={16}
+                            weight="fill"
+                            className="text-amber-800"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-[#451a03]">
+                            {claim.first_name ?? ''} {claim.last_name ?? ''}
+                          </p>
+                          <p className="text-xs text-[#92400e]">{claim.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-sm text-[#451a03]">
+                        {claim.business_name ?? 'Unknown'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-sm text-[#78350f]">
+                        {claim.business_city ?? '-'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <VerificationMethodBadge
+                          method={claim.verification_method}
                         />
+                        {claim.evidence_document_url && (
+                          <a
+                            href={claim.evidence_document_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-amber-800 hover:text-amber-700 transition-colors"
+                            title="View uploaded document"
+                          >
+                            <FileText size={14} weight="light" />
+                            View
+                          </a>
+                        )}
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-[#451a03]">
-                          {claim.first_name ?? ''} {claim.last_name ?? ''}
-                        </p>
-                        <p className="text-xs text-[#92400e]">{claim.email}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className="text-sm text-[#78350f]"
+                        title={new Date(claim.created_at).toLocaleString()}
+                      >
+                        {formatTimeAgo(claim.created_at)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          disabled={isProcessing}
+                          isLoading={isProcessing}
+                          onClick={() => openModal(claim, 'approve')}
+                        >
+                          <CheckCircle size={16} weight="bold" />
+                          Approve
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          disabled={isProcessing}
+                          onClick={() => openModal(claim, 'reject')}
+                        >
+                          <Prohibit size={16} weight="bold" />
+                          Reject
+                        </Button>
                       </div>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card List */}
+        <div className="lg:hidden divide-y divide-[#d4c4b0]">
+          {claims.map((claim) => {
+            const isProcessing = processingIds.has(claim.id)
+            return (
+              <div key={claim.id} className="p-4 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center">
+                      <User
+                        size={20}
+                        weight="fill"
+                        className="text-amber-800"
+                      />
                     </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-sm text-[#451a03]">
+                    <div>
+                      <p className="font-medium text-[#451a03]">
+                        {claim.first_name ?? ''} {claim.last_name ?? ''}
+                      </p>
+                      <p className="text-xs text-[#92400e]">{claim.email}</p>
+                    </div>
+                  </div>
+                  <Badge variant="warning">Pending</Badge>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-[#92400e]">Business: </span>
+                    <span className="text-[#451a03]">
                       {claim.business_name ?? 'Unknown'}
                     </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-sm text-[#78350f]">
-                      {claim.business_city ?? '-'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-sm text-[#78350f]">
-                      {formatClaimDate(claim.created_at)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        disabled={isProcessing}
-                        isLoading={isProcessing}
-                        onClick={() => handleApprove(claim.id)}
-                      >
-                        <CheckCircle size={16} weight="bold" />
-                        Approve
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        disabled={isProcessing}
-                        onClick={() => handleReject(claim.id)}
-                      >
-                        <Prohibit size={16} weight="bold" />
-                        Reject
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mobile Card List */}
-      <div className="lg:hidden divide-y divide-[#d4c4b0]">
-        {claims.map((claim) => {
-          const isProcessing = processingIds.has(claim.id)
-          return (
-            <div key={claim.id} className="p-4 space-y-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center">
-                    <User
-                      size={20}
-                      weight="fill"
-                      className="text-amber-800"
-                    />
                   </div>
                   <div>
-                    <p className="font-medium text-[#451a03]">
-                      {claim.first_name ?? ''} {claim.last_name ?? ''}
-                    </p>
-                    <p className="text-xs text-[#92400e]">{claim.email}</p>
+                    <span className="text-[#92400e]">City: </span>
+                    <span className="text-[#451a03]">
+                      {claim.business_city ?? '-'}
+                    </span>
                   </div>
                 </div>
-                <Badge variant="warning">Pending</Badge>
-              </div>
 
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span className="text-[#92400e]">Business: </span>
-                  <span className="text-[#451a03]">
-                    {claim.business_name ?? 'Unknown'}
-                  </span>
+                {/* Verification method + document link */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <VerificationMethodBadge
+                    method={claim.verification_method}
+                  />
+                  {claim.evidence_document_url && (
+                    <a
+                      href={claim.evidence_document_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-amber-800 hover:text-amber-700 transition-colors"
+                    >
+                      <FileText size={14} weight="light" />
+                      View Document
+                    </a>
+                  )}
                 </div>
-                <div>
-                  <span className="text-[#92400e]">City: </span>
-                  <span className="text-[#451a03]">
-                    {claim.business_city ?? '-'}
-                  </span>
+
+                <div
+                  className="text-sm text-[#92400e]"
+                  title={new Date(claim.created_at).toLocaleString()}
+                >
+                  Submitted {formatTimeAgo(claim.created_at)}
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    disabled={isProcessing}
+                    isLoading={isProcessing}
+                    onClick={() => openModal(claim, 'approve')}
+                    className="flex-1"
+                  >
+                    <CheckCircle size={16} weight="bold" />
+                    Approve
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    disabled={isProcessing}
+                    onClick={() => openModal(claim, 'reject')}
+                    className="flex-1"
+                  >
+                    <Prohibit size={16} weight="bold" />
+                    Reject
+                  </Button>
                 </div>
               </div>
-
-              <div className="text-sm text-[#92400e]">
-                Claimed {formatClaimDate(claim.created_at)}
-              </div>
-
-              <div className="flex items-center gap-2 pt-1">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  disabled={isProcessing}
-                  isLoading={isProcessing}
-                  onClick={() => handleApprove(claim.id)}
-                  className="flex-1"
-                >
-                  <CheckCircle size={16} weight="bold" />
-                  Approve
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  disabled={isProcessing}
-                  onClick={() => handleReject(claim.id)}
-                  className="flex-1"
-                >
-                  <Prohibit size={16} weight="bold" />
-                  Reject
-                </Button>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-    </Card>
+            )
+          })}
+        </div>
+      </Card>
+    </>
   )
 }
 

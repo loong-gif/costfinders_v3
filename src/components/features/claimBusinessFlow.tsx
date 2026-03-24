@@ -4,22 +4,34 @@ import {
   ArrowRight,
   Buildings,
   CheckCircle,
+  Clock,
   EnvelopeSimple,
+  FileArrowUp,
+  FilePdf,
   MapPin,
   Phone,
-  Shield,
+  ShieldCheck,
+  Warning,
+  X,
 } from '@phosphor-icons/react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import type { Business } from '@/types/business'
 
-type ClaimStep = 'confirm' | 'auth' | 'verify' | 'success'
+type ClaimStep = 'confirm' | 'auth' | 'verify' | 'email-code' | 'document' | 'success'
 type AuthView = 'signUp' | 'signIn'
-type VerifyMethod = 'email' | 'phone' | null
+type VerifyMethod = 'email' | 'document'
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ACCEPTED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png']
+const MAX_ATTEMPTS = 3
+const RESEND_COOLDOWN_SECONDS = 60
 
 interface ClaimBusinessFlowProps {
   business: Business
@@ -50,7 +62,6 @@ export function ClaimBusinessFlow({
   // Flow state
   const [currentStep, setCurrentStep] = useState<ClaimStep>('confirm')
   const [authView, setAuthView] = useState<AuthView>('signUp')
-  const [verifyMethod, setVerifyMethod] = useState<VerifyMethod>(null)
 
   // Auth form state
   const [email, setEmail] = useState('')
@@ -61,10 +72,49 @@ export function ClaimBusinessFlow({
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Verification state
+  // Verification state (email)
+  const [claimId, setClaimId] = useState<string | null>(null)
   const [verificationCode, setVerificationCode] = useState('')
   const [verifyError, setVerifyError] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
+  const [attemptsRemaining, setAttemptsRemaining] = useState(MAX_ATTEMPTS)
+  const [resendCooldown, setResendCooldown] = useState(0)
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Verification state (document)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null)
+  const [fileError, setFileError] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Clean up cooldown interval and preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl)
+    }
+  }, [filePreviewUrl])
+
+  // Start resend cooldown timer
+  const startResendCooldown = useCallback(() => {
+    setResendCooldown(RESEND_COOLDOWN_SECONDS)
+    if (cooldownRef.current) clearInterval(cooldownRef.current)
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownRef.current) clearInterval(cooldownRef.current)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }, [])
 
   // Handle step 1: Confirm business
   const handleConfirmBusiness = () => {
@@ -75,7 +125,6 @@ export function ClaimBusinessFlow({
   const validateAuthForm = (): boolean => {
     const newErrors: FormErrors = {}
 
-    // Email validation
     if (!email.trim()) {
       newErrors.email = 'Email is required'
     } else {
@@ -85,14 +134,12 @@ export function ClaimBusinessFlow({
       }
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = 'Password is required'
     } else if (authView === 'signUp' && password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters'
     }
 
-    // Confirm password (only for sign up)
     if (authView === 'signUp') {
       if (!confirmPassword) {
         newErrors.confirmPassword = 'Please confirm your password'
@@ -132,28 +179,187 @@ export function ClaimBusinessFlow({
     }
   }
 
-  // Handle step 3: Verify ownership
-  const handleVerifySubmit = async () => {
+  // Handle choosing verification method and creating claim
+  const handleChooseEmail = async () => {
+    setIsSubmitting(true)
+    try {
+      const { createBusinessClaimAction } = await import(
+        '@/lib/actions/business-verification'
+      )
+      const result = await createBusinessClaimAction(business.id, 'email')
+      if (result.success && result.claimId) {
+        setClaimId(result.claimId)
+
+        // Send the verification code
+        const { sendVerificationCodeAction } = await import(
+          '@/lib/actions/business-verification'
+        )
+        await sendVerificationCodeAction(result.claimId)
+        startResendCooldown()
+
+        setCurrentStep('email-code')
+      } else {
+        setVerifyError('Failed to create claim. Please try again.')
+      }
+    } catch {
+      setVerifyError('Something went wrong. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleChooseDocument = async () => {
+    setIsSubmitting(true)
+    try {
+      const { createBusinessClaimAction } = await import(
+        '@/lib/actions/business-verification'
+      )
+      const result = await createBusinessClaimAction(business.id, 'document')
+      if (result.success && result.claimId) {
+        setClaimId(result.claimId)
+        setCurrentStep('document')
+      } else {
+        setVerifyError('Failed to create claim. Please try again.')
+      }
+    } catch {
+      setVerifyError('Something went wrong. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Handle email verification code submit
+  const handleVerifyCodeSubmit = async () => {
     setVerifyError(null)
 
-    // Validate 6-digit code
     if (!/^\d{6}$/.test(verificationCode)) {
       setVerifyError('Please enter a valid 6-digit code')
       return
     }
 
+    if (!claimId) {
+      setVerifyError('No active claim found. Please restart.')
+      return
+    }
+
     setIsVerifying(true)
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    try {
+      const { verifyCodeAction } = await import(
+        '@/lib/actions/business-verification'
+      )
+      const result = await verifyCodeAction(claimId, verificationCode)
 
-    // Mock verification: accept any 6-digit code
-    updateVerificationStatus('verified')
-    updateClaimStatus('pending')
-    linkBusiness(business.id)
+      if (result.success) {
+        updateVerificationStatus('verified')
+        updateClaimStatus('pending')
+        linkBusiness(business.id)
+        setCurrentStep('success')
+      } else {
+        const remaining = attemptsRemaining - 1
+        setAttemptsRemaining(remaining)
+        if (remaining <= 0) {
+          setVerifyError(
+            'Maximum attempts reached. Please request a new code.',
+          )
+        } else {
+          setVerifyError(
+            `Invalid code. ${remaining} attempt${remaining === 1 ? '' : 's'} remaining.`,
+          )
+        }
+      }
+    } catch {
+      setVerifyError('Verification failed. Please try again.')
+    } finally {
+      setIsVerifying(false)
+    }
+  }
 
-    setIsVerifying(false)
-    setCurrentStep('success')
+  // Handle resend code
+  const handleResendCode = async () => {
+    if (resendCooldown > 0 || !claimId) return
+
+    try {
+      const { sendVerificationCodeAction } = await import(
+        '@/lib/actions/business-verification'
+      )
+      await sendVerificationCodeAction(claimId)
+      setAttemptsRemaining(MAX_ATTEMPTS)
+      setVerificationCode('')
+      setVerifyError(null)
+      startResendCooldown()
+    } catch {
+      setVerifyError('Failed to resend code. Please try again.')
+    }
+  }
+
+  // Handle file selection
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError(null)
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+      setFileError('Please upload a PDF, JPG, or PNG file')
+      return
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError('File size must be under 5MB')
+      return
+    }
+
+    // Revoke previous preview URL
+    if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl)
+
+    setSelectedFile(file)
+
+    // Create preview for images
+    if (file.type.startsWith('image/')) {
+      setFilePreviewUrl(URL.createObjectURL(file))
+    } else {
+      setFilePreviewUrl(null)
+    }
+  }
+
+  // Handle file removal
+  const handleRemoveFile = () => {
+    if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl)
+    setSelectedFile(null)
+    setFilePreviewUrl(null)
+    setFileError(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  // Handle document upload
+  const handleDocumentUpload = async () => {
+    if (!selectedFile || !claimId) return
+
+    setIsUploading(true)
+    setFileError(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+
+      const { uploadVerificationDocAction } = await import(
+        '@/lib/actions/business-verification'
+      )
+      const result = await uploadVerificationDocAction(claimId, formData)
+
+      if (result.success) {
+        updateClaimStatus('pending')
+        linkBusiness(business.id)
+        setCurrentStep('success')
+      } else {
+        setFileError('Upload failed. Please try again.')
+      }
+    } catch {
+      setFileError('Something went wrong. Please try again.')
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   // Handle success completion
@@ -162,11 +368,10 @@ export function ClaimBusinessFlow({
     router.push('/business/dashboard')
   }
 
-  // Render step 1: Business confirmation
+  // ---- Render Step 1: Business confirmation ----
   if (currentStep === 'confirm') {
     return (
       <div className="space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
             <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
@@ -181,7 +386,6 @@ export function ClaimBusinessFlow({
           </p>
         </div>
 
-        {/* Business details card */}
         <Card className="p-6 space-y-4">
           <div className="space-y-1">
             <h3 className="text-lg font-semibold text-[#451a03]">
@@ -225,7 +429,6 @@ export function ClaimBusinessFlow({
           </div>
         </Card>
 
-        {/* Continue button */}
         <Button onClick={handleConfirmBusiness} className="w-full" size="lg">
           Yes, this is my business
           <ArrowRight size={20} weight="light" className="ml-2" />
@@ -245,11 +448,10 @@ export function ClaimBusinessFlow({
     )
   }
 
-  // Render step 2: Authentication
+  // ---- Render Step 2: Authentication ----
   if (currentStep === 'auth') {
     return (
       <div className="space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <h2 className="text-xl font-semibold text-[#451a03]">
             {authView === 'signUp'
@@ -263,7 +465,6 @@ export function ClaimBusinessFlow({
           </p>
         </div>
 
-        {/* Auth form */}
         <form onSubmit={handleAuthSubmit} className="space-y-4">
           {authView === 'signUp' && (
             <div className="grid grid-cols-2 gap-4">
@@ -344,7 +545,6 @@ export function ClaimBusinessFlow({
           </Button>
         </form>
 
-        {/* Switch auth view */}
         <p className="text-center text-sm text-[#78350f]">
           {authView === 'signUp' ? (
             <>
@@ -374,99 +574,119 @@ export function ClaimBusinessFlow({
     )
   }
 
-  // Render step 3: Verification
+  // ---- Render Step 3: Choose Verification Method ----
   if (currentStep === 'verify') {
-    // Show verification method selection if not chosen
-    if (!verifyMethod) {
-      return (
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="text-center space-y-2">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
-                <Shield size={32} weight="light" className="text-amber-800" />
-              </div>
-            </div>
-            <h2 className="text-xl font-semibold text-[#451a03]">
-              Verify your ownership
-            </h2>
-            <p className="text-[#78350f]">
-              We need to verify you own {business.name}
-            </p>
-          </div>
-
-          {/* Verification options */}
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={() => setVerifyMethod('email')}
-              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-800 transition-colors text-left group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
-                  <EnvelopeSimple
-                    size={24}
-                    weight="light"
-                    className="text-amber-800"
-                  />
-                </div>
-                <div>
-                  <p className="font-medium text-[#451a03]">Verify via email</p>
-                  <p className="text-sm text-[#78350f]">
-                    I have access to {business.email}
-                  </p>
-                </div>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setVerifyMethod('phone')}
-              className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-800 transition-colors text-left group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
-                  <Phone size={24} weight="light" className="text-amber-800" />
-                </div>
-                <div>
-                  <p className="font-medium text-[#451a03]">Verify via phone</p>
-                  <p className="text-sm text-[#78350f]">
-                    Call {business.phone} for verification code
-                  </p>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      )
-    }
-
-    // Show code entry
     return (
       <div className="space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
             <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
-              {verifyMethod === 'email' ? (
+              <ShieldCheck size={32} weight="light" className="text-amber-800" />
+            </div>
+          </div>
+          <h2 className="text-xl font-semibold text-[#451a03]">
+            Verify your ownership
+          </h2>
+          <p className="text-[#78350f]">
+            We need to verify you own {business.name}
+          </p>
+        </div>
+
+        {verifyError && (
+          <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg text-center">
+            {verifyError}
+          </p>
+        )}
+
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={handleChooseEmail}
+            disabled={isSubmitting}
+            className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-800 transition-colors text-left group disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
                 <EnvelopeSimple
-                  size={32}
+                  size={24}
                   weight="light"
                   className="text-amber-800"
                 />
-              ) : (
-                <Phone size={32} weight="light" className="text-amber-800" />
-              )}
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-[#451a03]">Verify by Email</p>
+                <p className="text-sm text-[#78350f]">
+                  We&apos;ll send a 6-digit code to {business.email}
+                </p>
+              </div>
+              <Badge variant="success" size="sm">Fastest</Badge>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleChooseDocument}
+            disabled={isSubmitting}
+            className="w-full p-4 rounded-xl bg-surface-secondary/50 border border-border-primary hover:border-amber-800 transition-colors text-left group disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center group-hover:bg-amber-800/15 transition-colors">
+                <FileArrowUp
+                  size={24}
+                  weight="light"
+                  className="text-amber-800"
+                />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-[#451a03]">Verify by Document</p>
+                <p className="text-sm text-[#78350f]">
+                  Upload proof of ownership (PDF, JPG, or PNG)
+                </p>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        {isSubmitting && (
+          <p className="text-center text-sm text-[#78350f] animate-pulse">
+            Setting up verification...
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  // ---- Render Step 3a: Email Code Entry ----
+  if (currentStep === 'email-code') {
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <div className="flex justify-center">
+            <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
+              <EnvelopeSimple
+                size={32}
+                weight="light"
+                className="text-amber-800"
+              />
             </div>
           </div>
           <h2 className="text-xl font-semibold text-[#451a03]">
             Enter verification code
           </h2>
           <p className="text-[#78350f]">
-            {verifyMethod === 'email'
-              ? `We sent a code to ${business.email}`
-              : `We called ${business.phone} with your code`}
+            We sent a 6-digit code to{' '}
+            <span className="font-medium text-[#451a03]">{business.email}</span>
           </p>
+        </div>
+
+        {/* Attempts indicator */}
+        <div className="flex justify-center">
+          <Badge
+            variant={attemptsRemaining <= 1 ? 'error' : 'default'}
+            size="sm"
+          >
+            {attemptsRemaining} attempt{attemptsRemaining === 1 ? '' : 's'} remaining
+          </Badge>
         </div>
 
         {/* Code input */}
@@ -483,24 +703,53 @@ export function ClaimBusinessFlow({
             maxLength={6}
             className="text-center text-lg tracking-widest"
             error={verifyError || undefined}
-            disabled={isVerifying}
+            disabled={isVerifying || attemptsRemaining <= 0}
           />
 
           <Button
-            onClick={handleVerifySubmit}
+            onClick={handleVerifyCodeSubmit}
             className="w-full"
             size="lg"
             isLoading={isVerifying}
-            disabled={isVerifying || verificationCode.length !== 6}
+            disabled={
+              isVerifying ||
+              verificationCode.length !== 6 ||
+              attemptsRemaining <= 0
+            }
           >
             Verify & Submit Claim
           </Button>
         </div>
 
+        {/* Resend code */}
+        <div className="text-center space-y-2">
+          {resendCooldown > 0 ? (
+            <p className="text-sm text-[#92400e]">
+              Resend code in {resendCooldown}s
+            </p>
+          ) : (
+            <p className="text-sm text-[#78350f]">
+              Didn&apos;t receive the code?{' '}
+              <button
+                type="button"
+                onClick={handleResendCode}
+                className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
+              >
+                Resend
+              </button>
+            </p>
+          )}
+        </div>
+
         {/* Back link */}
         <button
           type="button"
-          onClick={() => setVerifyMethod(null)}
+          onClick={() => {
+            setVerificationCode('')
+            setVerifyError(null)
+            setAttemptsRemaining(MAX_ATTEMPTS)
+            setCurrentStep('verify')
+          }}
           className="w-full text-center text-sm text-[#92400e] hover:text-[#78350f] transition-colors"
         >
           Choose a different verification method
@@ -509,48 +758,181 @@ export function ClaimBusinessFlow({
     )
   }
 
-  // Render step 4: Success
+  // ---- Render Step 3b: Document Upload ----
+  if (currentStep === 'document') {
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <div className="flex justify-center">
+            <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
+              <FileArrowUp
+                size={32}
+                weight="light"
+                className="text-amber-800"
+              />
+            </div>
+          </div>
+          <h2 className="text-xl font-semibold text-[#451a03]">
+            Upload proof of ownership
+          </h2>
+          <p className="text-[#78350f]">
+            Provide a document proving you own {business.name}
+          </p>
+        </div>
+
+        {/* Accepted formats hint */}
+        <Card className="p-4">
+          <div className="flex items-start gap-3">
+            <Warning size={20} weight="light" className="text-[#92400e] mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-[#78350f] space-y-1">
+              <p className="font-medium text-[#451a03]">Accepted documents</p>
+              <p>
+                Business license, utility bill, tax document, or any official
+                document showing the business name and your name.
+              </p>
+              <p className="text-xs text-[#92400e]">PDF, JPG, or PNG — Max 5MB</p>
+            </div>
+          </div>
+        </Card>
+
+        {/* File upload area */}
+        {!selectedFile ? (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full p-8 border-2 border-dashed border-[#d4c4b0] rounded-xl hover:border-amber-800/40 hover:bg-amber-800/5 transition-colors text-center cursor-pointer"
+          >
+            <FileArrowUp
+              size={40}
+              weight="light"
+              className="text-[#92400e] mx-auto mb-3"
+            />
+            <p className="text-sm font-medium text-[#451a03]">
+              Click to select a file
+            </p>
+            <p className="text-xs text-[#92400e] mt-1">
+              PDF, JPG, or PNG up to 5MB
+            </p>
+          </button>
+        ) : (
+          <Card className="p-4">
+            <div className="flex items-start gap-4">
+              {/* File preview */}
+              {filePreviewUrl ? (
+                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-[#d4c4b0]">
+                  <Image
+                    src={filePreviewUrl}
+                    alt="Document preview"
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-16 h-16 rounded-lg bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                  <FilePdf size={28} weight="light" className="text-amber-800" />
+                </div>
+              )}
+
+              {/* File info */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[#451a03] truncate">
+                  {selectedFile.name}
+                </p>
+                <p className="text-xs text-[#92400e]">
+                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+
+              {/* Remove button */}
+              <button
+                type="button"
+                onClick={handleRemoveFile}
+                className="flex-shrink-0 w-8 h-8 rounded-full bg-red-600/10 flex items-center justify-center hover:bg-red-600/20 transition-colors"
+              >
+                <X size={16} className="text-red-600" />
+              </button>
+            </div>
+          </Card>
+        )}
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+
+        {fileError && (
+          <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg text-center">
+            {fileError}
+          </p>
+        )}
+
+        <Button
+          onClick={handleDocumentUpload}
+          className="w-full"
+          size="lg"
+          isLoading={isUploading}
+          disabled={!selectedFile || isUploading}
+        >
+          Upload & Submit Claim
+        </Button>
+
+        {/* Back link */}
+        <button
+          type="button"
+          onClick={() => {
+            handleRemoveFile()
+            setCurrentStep('verify')
+          }}
+          className="w-full text-center text-sm text-[#92400e] hover:text-[#78350f] transition-colors"
+        >
+          Choose a different verification method
+        </button>
+      </div>
+    )
+  }
+
+  // ---- Render Step 4: Success / Pending ----
   return (
     <div className="space-y-6 text-center">
-      {/* Success icon */}
       <div className="flex justify-center">
         <div className="w-20 h-20 rounded-full bg-emerald-400/20 flex items-center justify-center">
           <CheckCircle size={48} weight="fill" className="text-emerald-600" />
         </div>
       </div>
 
-      {/* Success message */}
       <div className="space-y-2">
         <h2 className="text-xl font-semibold text-[#451a03]">
           Claim submitted!
         </h2>
         <p className="text-[#78350f]">
           Your claim for{' '}
-          <span className="font-medium text-[#451a03]">{business.name}</span> is
-          being reviewed.
+          <span className="font-medium text-[#451a03]">{business.name}</span> has
+          been submitted and is pending admin review.
         </p>
       </div>
 
-      {/* Info card */}
       <Card className="p-4 text-left">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-            <Shield size={20} weight="light" className="text-amber-800" />
+            <Clock size={20} weight="light" className="text-amber-800" />
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium text-[#451a03]">
               What happens next?
             </p>
             <p className="text-sm text-[#78350f]">
-              We&apos;ll verify your ownership and notify you within 24-48
-              hours. Once approved, you&apos;ll have full access to manage your
-              business profile.
+              Our team will review your verification and notify you within
+              24-48 hours. Once approved, you&apos;ll have full access to
+              manage your business profile.
             </p>
           </div>
         </div>
       </Card>
 
-      {/* CTA */}
       <Button onClick={handleGoToDashboard} className="w-full" size="lg">
         Go to Business Dashboard
         <ArrowRight size={20} weight="light" className="ml-2" />

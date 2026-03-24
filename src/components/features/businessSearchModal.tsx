@@ -6,6 +6,7 @@ import {
   Globe,
   MagnifyingGlass,
   MapPin,
+  ShieldCheck,
 } from '@phosphor-icons/react'
 import { useCallback, useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
@@ -43,8 +44,9 @@ function getClaimBadge(claimStatus: BusinessSearchResult['claim_status']) {
       )
     case 'approved':
       return (
-        <Badge variant="info" size="sm">
-          Claimed
+        <Badge variant="info" size="md">
+          <ShieldCheck size={14} weight="fill" className="mr-1" />
+          Already Claimed
         </Badge>
       )
     case 'rejected':
@@ -135,11 +137,6 @@ export function BusinessSearchModal({
   }, [debouncedQuery])
 
   // Filter Google results to exclude businesses already in our DB
-  const dbPlaceIds = new Set(
-    dbResults
-      .map((b) => b.business_id)
-      .filter(Boolean),
-  )
   const filteredGoogleResults = googleResults.filter(
     (g) => !dbResults.some((db) => db.name === g.name && db.city === g.city),
   )
@@ -269,6 +266,8 @@ export function BusinessSearchModal({
               ) : (
                 <div className="space-y-2">
                   {dbResults.map((business) => {
+                    const isClaimed = business.claim_status === 'approved'
+                    const isPending = business.claim_status === 'pending'
                     const isClaimable =
                       business.claim_status === 'unclaimed' ||
                       business.claim_status === 'rejected'
@@ -276,12 +275,27 @@ export function BusinessSearchModal({
                     return (
                       <div
                         key={business.business_id}
-                        className="p-3 rounded-xl border border-[#d4c4b0] bg-[#f2ebe2] hover:bg-[#faf5ee] transition-colors"
+                        className={`p-3 rounded-xl border transition-colors ${
+                          isClaimed
+                            ? 'border-[#d4c4b0]/60 bg-[#e8ddd0]/60 opacity-60'
+                            : 'border-[#d4c4b0] bg-[#f2ebe2] hover:bg-[#faf5ee]'
+                        }`}
+                        title={
+                          isClaimed
+                            ? 'This business has already been claimed by another owner'
+                            : undefined
+                        }
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <h4 className="font-medium text-[#451a03] truncate text-sm">
+                            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                              <h4
+                                className={`font-medium truncate text-sm ${
+                                  isClaimed
+                                    ? 'text-[#78350f]'
+                                    : 'text-[#451a03]'
+                                }`}
+                              >
                                 {business.name}
                               </h4>
                               {getClaimBadge(business.claim_status)}
@@ -296,6 +310,11 @@ export function BusinessSearchModal({
                                 {business.city}
                               </p>
                             )}
+                            {isClaimed && (
+                              <p className="text-xs text-[#92400e] mt-1 italic">
+                                This business has already been claimed by another owner
+                              </p>
+                            )}
                           </div>
                           <div className="flex-shrink-0">
                             {isClaimable ? (
@@ -305,6 +324,10 @@ export function BusinessSearchModal({
                                 onClick={() => handleSelectDb(business)}
                               >
                                 Claim
+                              </Button>
+                            ) : isPending ? (
+                              <Button variant="ghost" size="sm" disabled>
+                                Pending
                               </Button>
                             ) : (
                               <Button variant="ghost" size="sm" disabled>
