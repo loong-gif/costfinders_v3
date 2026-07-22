@@ -7,7 +7,7 @@ const PAGE_SIZE = 1000
 const OFFER_EMBED =
   'promo_offer_items(offer_item_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(source_url,promotion_title)'
 const PRICE_QUOTE_EMBED =
-  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,unit_type,clinic_services(service_name,service_category,unit_type,regular_price)),clinic_promotions(source_url,promotion_title)'
+  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type,regular_price)),clinic_promotions(source_url,promotion_title)'
 const BUSINESS_JOIN =
   'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
 const SERVICE_BUSINESS_JOIN =
