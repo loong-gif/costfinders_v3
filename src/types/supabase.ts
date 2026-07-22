@@ -68,7 +68,9 @@ export interface Offer {
   is_new_customer_required: boolean
   offer_fingerprint: string | null
   offer_raw_text: string | null
+  price_model?: string | null
   created_at: string | null
+  updated_at?: string | null
   promo_offer_items?: PromoOfferItem[] | PromoOfferItem | null
   clinic_promotions?: ClinicPromotion | ClinicPromotion[] | null
   /** Legacy / derived for UI compatibility */

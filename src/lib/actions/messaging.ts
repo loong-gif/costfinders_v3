@@ -237,11 +237,11 @@ export async function getConversationsAction(
         if (claim) {
           const { data: offer } = await supabase
             .from('promo_offer_master')
-            .select('service_name')
+            .select('offer_raw_text')
             .eq('id', claim.deal_id)
             .single()
 
-          dealTitle = offer?.service_name ?? null
+          dealTitle = offer?.offer_raw_text?.trim().slice(0, 60) ?? null
         }
 
         return {

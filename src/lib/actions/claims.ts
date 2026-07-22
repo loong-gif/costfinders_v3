@@ -96,7 +96,7 @@ export async function createClaimAction(
     // --- Derive business_id server-side (don't trust client) ---
     const { data: offer, error: offerError } = await supabase
       .from('promo_offer_master')
-      .select('business_id, service_name, source_name')
+      .select('business_id, offer_raw_text')
       .eq('id', dealId)
       .single()
 
@@ -201,7 +201,7 @@ export async function createClaimAction(
     sendClaimNotificationEmail({
       consumerName: user.user_metadata?.full_name ?? user.email ?? 'Unknown',
       consumerEmail: user.email ?? '',
-      dealTitle: offer.service_name ?? offer.source_name ?? `Deal #${dealId}`,
+      dealTitle: offer.offer_raw_text ?? `Deal #${dealId}`,
       businessName: business?.name ?? `Business #${businessId}`,
       businessCity: business?.city ?? '',
       preferredDate,
@@ -213,7 +213,7 @@ export async function createClaimAction(
     })
 
     // --- Best-effort in-app notification for consumer ---
-    const dealTitle = offer.service_name ?? `Deal #${dealId}`
+    const dealTitle = offer.offer_raw_text ?? `Deal #${dealId}`
 
     createNotificationAction(
       user.id,

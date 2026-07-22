@@ -2,34 +2,13 @@ import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Offer, OfferWithBusiness } from '@/types/supabase'
 import {
-  offerItemName,
-  offerServiceCategory,
-  offerSourceUrl,
-  offerUnitType,
-} from '@/types/supabase'
+  BUSINESS_JOIN,
+  enrichOffer,
+  enrichOffers,
+  OFFER_EMBED,
+} from '@/lib/data/offer-query'
 
 const TABLE = 'promo_offer_master'
-
-const OFFER_EMBED =
-  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(promotion_id,source_url,promotion_title)'
-
-const BUSINESS_JOIN =
-  'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
-
-function normalizeOfferPrice<T extends Offer>(offer: T): T {
-  return {
-    ...offer,
-    original_price: offer.regular_price,
-    service_name: offerItemName(offer),
-    service_category: offerServiceCategory(offer) || offer.service_category,
-    source_url: offerSourceUrl(offer),
-    unit_type: offerUnitType(offer),
-  }
-}
-
-function normalizeOfferPrices<T extends Offer>(offers: T[]): T[] {
-  return offers.map(normalizeOfferPrice)
-}
 
 export interface OfferFilters {
   city?: string
@@ -58,7 +37,7 @@ export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
 
   const { data, error } = await query
   if (error) throw error
-  let results = normalizeOfferPrices((data ?? []) as Offer[])
+  let results = enrichOffers((data ?? []) as Offer[])
   if (filters?.serviceCategory) {
     results = results.filter(
       (offer) => offer.service_category === filters.serviceCategory,
@@ -80,7 +59,7 @@ export const getOfferById = cache(async function getOfferById(
     if (error.code === 'PGRST116') return null
     throw error
   }
-  return normalizeOfferPrice(data as OfferWithBusiness)
+  return enrichOffer(data as OfferWithBusiness)
 })
 
 const getAllOffersWithBusinesses = cache(
@@ -133,7 +112,7 @@ async function _getOffersWithBusinesses(
   const { data, error } = await query
   if (error) throw error
 
-  let results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
+  let results = enrichOffers((data ?? []) as OfferWithBusiness[])
   if (filters?.serviceCategory) {
     results = results.filter(
       (offer) => offer.service_category === filters.serviceCategory,
@@ -211,7 +190,7 @@ export const getOffersByBusiness = cache(async function getOffersByBusiness(
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return normalizeOfferPrices((data ?? []) as Offer[])
+  return enrichOffers((data ?? []) as Offer[])
 })
 
 export const getFeaturedOffers = cache(async function getFeaturedOffers(
@@ -228,7 +207,7 @@ export const getFeaturedOffers = cache(async function getFeaturedOffers(
 
   if (error) throw error
 
-  const results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
+  const results = enrichOffers((data ?? []) as OfferWithBusiness[])
   return results.sort((a, b) => {
     const savingsA =
       a.original_price && a.discount_price

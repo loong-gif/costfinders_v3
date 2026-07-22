@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { outboundEntryPoint, toExternalUrl } from '@/lib/outbound'
 import { supabase } from '@/lib/supabase'
+import { offerSourceUrl, type Offer } from '@/types/supabase'
 
 export async function GET(
   request: NextRequest,
@@ -14,11 +15,11 @@ export async function GET(
 
   const { data: offer } = await supabase
     .from('promo_offer_master')
-    .select('id, business_id, source_url')
+    .select('id, business_id, is_active, clinic_promotions(source_url)')
     .eq('id', offerId)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .maybeSingle()
-  const destination = toExternalUrl(offer?.source_url)
+  const destination = toExternalUrl(offer ? offerSourceUrl(offer as Offer) : null)
   if (!offer || !destination) {
     return new NextResponse('Offer source unavailable', { status: 404 })
   }

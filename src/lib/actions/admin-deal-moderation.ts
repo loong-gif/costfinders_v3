@@ -9,6 +9,12 @@ import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ModerationStatus } from '@/types/deal'
+import {
+  mapModerationDealRow,
+  MODERATION_DEAL_SELECT,
+  moderationStatusToIsActive,
+  offerDisplayTitle,
+} from '@/lib/data/offer-query'
 import { logger } from '@/lib/logger'
 import { logAdminAction } from '@/lib/actions/audit'
 
@@ -78,45 +84,10 @@ async function verifyAdmin(
   return { authorized: true as const, userId: user.id }
 }
 
-const DEAL_SELECT = `
-  id,
-  business_id,
-  service_name,
-  service_category,
-  offer_raw_text,
-  original_price,
-  discount_price,
-  discount_percent,
-  unit_type,
-  template_type,
-  start_date,
-  end_date,
-  eligibility,
-  moderation_status,
-  created_at,
-  master_business_info(name)
-`
+const DEAL_SELECT = MODERATION_DEAL_SELECT
 
 function mapDealRow(row: Record<string, unknown>): ModerationDeal {
-  const biz = row.master_business_info as { name: string | null } | null
-  return {
-    id: row.id as number,
-    business_id: row.business_id as number | null,
-    service_name: row.service_name as string | null,
-    service_category: row.service_category as string | null,
-    offer_raw_text: row.offer_raw_text as string | null,
-    original_price: row.original_price as number | null,
-    discount_price: row.discount_price as number | null,
-    discount_percent: row.discount_percent as number | null,
-    unit_type: row.unit_type as string | null,
-    template_type: row.template_type as string | null,
-    start_date: row.start_date as string | null,
-    end_date: row.end_date as string | null,
-    eligibility: row.eligibility as string | null,
-    moderation_status: (row.moderation_status as ModerationStatus) ?? 'approved',
-    created_at: row.created_at as string | null,
-    business_name: biz?.name ?? null,
-  }
+  return mapModerationDealRow(row) as ModerationDeal
 }
 
 // ---------------------------------------------------------------------------
@@ -138,7 +109,7 @@ export async function getPendingDealsAction(): Promise<ModerationDealsResult> {
     const { data, error } = await supabase
       .from('promo_offer_master')
       .select(DEAL_SELECT)
-      .eq('moderation_status', 'pending_review')
+      .eq('is_active', false)
       .order('created_at', { ascending: true })
 
     if (error) {
@@ -180,7 +151,10 @@ export async function getAllDealsForModerationAction(
       .order('created_at', { ascending: false })
 
     if (status) {
-      query = query.eq('moderation_status', status)
+      const isActive = moderationStatusToIsActive(status)
+      if (isActive != null) {
+        query = query.eq('is_active', isActive)
+      }
     }
 
     const { data, error } = await query
@@ -220,7 +194,7 @@ export async function approveDealAction(
 
     const { error } = await supabase
       .from('promo_offer_master')
-      .update({ moderation_status: 'approved' })
+      .update({ is_active: true })
       .eq('id', dealId)
 
     if (error) {
@@ -232,7 +206,7 @@ export async function approveDealAction(
     // --- Best-effort notifications for business owner ---
     const { data: deal } = await supabase
       .from('promo_offer_master')
-      .select('business_id, service_name')
+      .select('business_id, offer_raw_text')
       .eq('id', dealId)
       .single()
 
@@ -244,7 +218,10 @@ export async function approveDealAction(
         .single()
 
       if (owner) {
-        const dealTitle = deal.service_name ?? `Deal #${dealId}`
+        const dealTitle = offerDisplayTitle({
+          id: dealId,
+          offer_raw_text: deal.offer_raw_text,
+        })
 
         createNotificationAction(
           owner.id,
@@ -290,10 +267,7 @@ export async function rejectDealAction(
 
     const { error } = await supabase
       .from('promo_offer_master')
-      .update({
-        moderation_status: 'rejected',
-        moderation_notes: notes || null,
-      })
+      .update({ is_active: false })
       .eq('id', dealId)
 
     if (error) {
@@ -305,7 +279,7 @@ export async function rejectDealAction(
     // --- Best-effort notifications for business owner ---
     const { data: deal } = await supabase
       .from('promo_offer_master')
-      .select('business_id, service_name')
+      .select('business_id, offer_raw_text')
       .eq('id', dealId)
       .single()
 
@@ -317,7 +291,10 @@ export async function rejectDealAction(
         .single()
 
       if (owner) {
-        const dealTitle = deal.service_name ?? `Deal #${dealId}`
+        const dealTitle = offerDisplayTitle({
+          id: dealId,
+          offer_raw_text: deal.offer_raw_text,
+        })
 
         createNotificationAction(
           owner.id,
@@ -367,10 +344,7 @@ export async function requestDealChangesAction(
 
     const { error } = await supabase
       .from('promo_offer_master')
-      .update({
-        moderation_status: 'changes_requested',
-        moderation_notes: notes || null,
-      })
+      .update({ is_active: false })
       .eq('id', dealId)
 
     if (error) {

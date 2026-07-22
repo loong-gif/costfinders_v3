@@ -1,17 +1,16 @@
 import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { OfferWithBusiness, PromoOfferItem } from '@/types/supabase'
+import {
+  BUSINESS_JOIN,
+  enrichOffers,
+  OFFER_EMBED,
+  OFFER_ITEM_EMBED,
+  SERVICE_BUSINESS_JOIN,
+} from '@/lib/data/offer-query'
 
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
-const OFFER_EMBED =
-  'promo_offer_items(offer_item_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(source_url,promotion_title)'
-const PRICE_QUOTE_EMBED =
-  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type,regular_price)),clinic_promotions(source_url,promotion_title)'
-const BUSINESS_JOIN =
-  'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
-const SERVICE_BUSINESS_JOIN =
-  'master_business_info!fk_service_business(business_id, name, city)'
 
 export type PromotionSignal = 'price' | 'percent' | 'amount'
 
@@ -382,7 +381,7 @@ const getActiveOffers = cache(async function getActiveOffers() {
   for (let from = 0; ; from += PAGE_SIZE) {
     const { data, error } = await supabase
       .from('promo_offer_master')
-      .select(`*, ${PRICE_QUOTE_EMBED}, ${BUSINESS_JOIN}`)
+      .select(`*, ${OFFER_EMBED}, ${BUSINESS_JOIN}`)
       .eq('is_active', true)
       .range(from, from + PAGE_SIZE - 1)
 
@@ -392,7 +391,7 @@ const getActiveOffers = cache(async function getActiveOffers() {
     if (page.length < PAGE_SIZE) break
   }
 
-  return rows
+  return enrichOffers(rows)
 })
 
 export const getPublicPriceQuotes = cache(
@@ -421,7 +420,7 @@ const getFreshOffers = cache(async function getFreshOffers() {
     if (page.length < PAGE_SIZE) break
   }
 
-  return rows
+  return enrichOffers(rows)
 })
 
 export const getPublicPromotions = cache(async function getPublicPromotions() {

@@ -190,19 +190,41 @@ async function fetchPricingStats(
 
   const businessIds = businesses.map((b: { business_id: number }) => b.business_id)
 
-  // Get offers
+  const { data: services } = await supabase
+    .from('clinic_services')
+    .select('service_id')
+    .in('business_id', businessIds)
+    .in('service_category', dbCategories)
+
+  if (!services?.length) {
+    return { dealCount: 0, providerCount: 0, minPrice: null, maxPrice: null, avgPrice: null }
+  }
+
+  const serviceIds = services.map((s: { service_id: number }) => s.service_id)
+
+  const { data: offerItems } = await supabase
+    .from('promo_offer_items')
+    .select('offer_id')
+    .in('service_id', serviceIds)
+
+  if (!offerItems?.length) {
+    return { dealCount: 0, providerCount: 0, minPrice: null, maxPrice: null, avgPrice: null }
+  }
+
+  const offerIds = [...new Set(offerItems.map((i: { offer_id: number }) => i.offer_id))]
+
   const { data: offers } = await supabase
     .from('promo_offer_master')
-    .select('id, business_id, discount_price, original_price')
-    .in('service_category', dbCategories)
+    .select('id, business_id, discount_price, regular_price')
+    .in('id', offerIds)
     .in('business_id', businessIds)
-    .or('discount_price.gt.0,original_price.gt.0')
+    .or('discount_price.gt.0,regular_price.gt.0')
 
   if (!offers?.length) return { dealCount: 0, providerCount: 0, minPrice: null, maxPrice: null, avgPrice: null }
 
   const prices = offers
-    .map((o: { discount_price: number | null; original_price: number | null }) =>
-      o.discount_price ?? o.original_price ?? 0)
+    .map((o: { discount_price: number | null; regular_price: number | null }) =>
+      o.discount_price ?? o.regular_price ?? 0)
     .filter((p: number) => p > 0)
     .sort((a: number, b: number) => a - b)
 
