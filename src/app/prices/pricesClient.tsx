@@ -1,28 +1,76 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   applyPriceFilters,
   getPriceFilterOptions,
+  type ParsedPriceFilters,
   type PriceQuote,
   parsePriceFilters,
 } from '@/lib/data/marketplace'
 
 interface PricesClientProps {
   quotes: PriceQuote[]
+  initialSearchParams: Record<string, string | string[] | undefined>
 }
 
 function money(value: number) {
   return `$${value.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
 }
 
-export function PricesClient({ quotes }: PricesClientProps) {
-  const router = useRouter()
+function filtersToQuery(filters: ParsedPriceFilters): string {
+  const params = new URLSearchParams()
+  if (filters.city) params.set('city', filters.city)
+  if (filters.category) params.set('category', filters.category)
+  if (filters.min !== null) params.set('min', String(filters.min))
+  if (filters.max !== null) params.set('max', String(filters.max))
+  return params.toString()
+}
+
+function patchFilters(
+  current: ParsedPriceFilters,
+  patch: {
+    city?: string | null
+    category?: string | null
+    min?: string | null
+    max?: string | null
+  },
+): ParsedPriceFilters {
+  const record: Record<string, string> = {}
+  const city = patch.city !== undefined ? patch.city : current.city
+  const category =
+    patch.category !== undefined ? patch.category : current.category
+  const minRaw =
+    patch.min !== undefined
+      ? patch.min
+      : current.min !== null
+        ? String(current.min)
+        : null
+  const maxRaw =
+    patch.max !== undefined
+      ? patch.max
+      : current.max !== null
+        ? String(current.max)
+        : null
+
+  if (city) record.city = city
+  if (category) record.category = category
+  if (minRaw) record.min = minRaw
+  if (maxRaw) record.max = maxRaw
+
+  return parsePriceFilters(record)
+}
+
+export function PricesClient({
+  quotes,
+  initialSearchParams,
+}: PricesClientProps) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const filters = useMemo(() => parsePriceFilters(searchParams), [searchParams])
+  const [filters, setFilters] = useState(() =>
+    parsePriceFilters(initialSearchParams),
+  )
   const filterOptions = useMemo(() => getPriceFilterOptions(quotes), [quotes])
   const comparisons = useMemo(
     () => applyPriceFilters(quotes, filters),
@@ -40,6 +88,39 @@ export function PricesClient({ quotes }: PricesClientProps) {
     setMaxInput(filters.max !== null ? String(filters.max) : '')
   }, [filters.min, filters.max])
 
+  const syncUrl = useCallback(
+    (next: ParsedPriceFilters) => {
+      const query = filtersToQuery(next)
+      const url = query ? `${pathname}?${query}` : pathname
+      window.history.replaceState(window.history.state, '', url)
+    },
+    [pathname],
+  )
+
+  const replaceFilters = useCallback(
+    (patch: {
+      city?: string | null
+      category?: string | null
+      min?: string | null
+      max?: string | null
+    }) => {
+      setFilters((current) => {
+        const next = patchFilters(current, patch)
+        syncUrl(next)
+        return next
+      })
+    },
+    [syncUrl],
+  )
+
+  useEffect(() => {
+    const onPopState = () => {
+      setFilters(parsePriceFilters(new URLSearchParams(window.location.search)))
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
   const hasActiveFilters = Boolean(
     filters.city ||
       filters.category ||
@@ -47,50 +128,12 @@ export function PricesClient({ quotes }: PricesClientProps) {
       filters.max !== null,
   )
 
-  const replaceFilters = useCallback(
-    (next: {
-      city?: string | null
-      category?: string | null
-      min?: string | null
-      max?: string | null
-    }) => {
-      const params = new URLSearchParams(searchParams.toString())
-      const entries: Array<[string, string | null | undefined]> = [
-        ['city', next.city ?? filters.city],
-        ['category', next.category ?? filters.category],
-        [
-          'min',
-          next.min === undefined
-            ? filters.min !== null
-              ? String(filters.min)
-              : null
-            : next.min,
-        ],
-        [
-          'max',
-          next.max === undefined
-            ? filters.max !== null
-              ? String(filters.max)
-              : null
-            : next.max,
-        ],
-      ]
-      for (const [key, value] of entries) {
-        if (value) params.set(key, value)
-        else params.delete(key)
-      }
-      const query = params.toString()
-      router.replace(query ? `${pathname}?${query}` : pathname, {
-        scroll: false,
-      })
-    },
-    [filters, pathname, router, searchParams],
-  )
-
   const clearFilters = () => {
     setMinInput('')
     setMaxInput('')
-    router.replace(pathname, { scroll: false })
+    const next = parsePriceFilters({})
+    setFilters(next)
+    syncUrl(next)
   }
 
   const applyPriceRange = () => {

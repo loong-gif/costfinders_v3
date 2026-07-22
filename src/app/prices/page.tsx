@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import {
   getPublicPriceQuotes,
   isMarketplaceFreshnessError,
@@ -7,9 +6,16 @@ import { PricesClient } from './pricesClient'
 
 export const dynamic = 'force-dynamic'
 
-export default async function PricesPage() {
+interface PricesPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+export default async function PricesPage({ searchParams }: PricesPageProps) {
   try {
-    const quotes = await getPublicPriceQuotes()
+    const [quotes, params] = await Promise.all([
+      getPublicPriceQuotes(),
+      searchParams,
+    ])
 
     return (
       <main className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8">
@@ -20,13 +26,7 @@ export default async function PricesPage() {
           price. Units stay separate so comparisons stay apples-to-apples.
         </p>
 
-        <Suspense
-          fallback={
-            <p className="mt-8 text-[#78350f]">Loading price filters…</p>
-          }
-        >
-          <PricesClient quotes={quotes} />
-        </Suspense>
+        <PricesClient quotes={quotes} initialSearchParams={params} />
       </main>
     )
   } catch (error) {
