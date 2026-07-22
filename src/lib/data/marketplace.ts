@@ -1,11 +1,13 @@
 import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { OfferWithBusiness } from '@/types/supabase'
+import type { OfferWithBusiness, PromoOfferItem } from '@/types/supabase'
 
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
 const OFFER_EMBED =
   'promo_offer_items(offer_item_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(source_url,promotion_title)'
+const PRICE_QUOTE_EMBED =
+  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,unit_type,clinic_services(service_name,service_category,unit_type,regular_price)),clinic_promotions(source_url,promotion_title)'
 const BUSINESS_JOIN =
   'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
 const SERVICE_BUSINESS_JOIN =
@@ -28,6 +30,36 @@ export interface PriceComparison {
     maximum: number
     median: number | null
   }>
+}
+
+export interface PriceQuote {
+  offerItemId: number
+  offerId: number
+  businessId: number
+  city: string
+  serviceCategory: string
+  unitType: string
+  effectivePrice: number
+}
+
+export interface ParsedPriceFilters {
+  city: string | null
+  category: string | null
+  min: number | null
+  max: number | null
+  rangeError: string | null
+}
+
+export interface PriceFilterOptions {
+  cities: string[]
+  categories: string[]
+}
+
+interface ClinicServicePriceRef {
+  service_name: string | null
+  service_category: string | null
+  unit_type?: string | null
+  regular_price?: number | null
 }
 
 export interface ClinicServiceWithBusiness {
@@ -144,6 +176,230 @@ export function summarizeRegularPrices(
       a.serviceCategory.localeCompare(b.serviceCategory),
   )
 }
+
+function quoteItemService(item: PromoOfferItem): ClinicServicePriceRef | null {
+  if (!item.clinic_services) return null
+  const service = Array.isArray(item.clinic_services)
+    ? item.clinic_services[0]
+    : item.clinic_services
+  return service as ClinicServicePriceRef
+}
+
+function offerItems(offer: OfferWithBusiness) {
+  const items = offer.promo_offer_items
+  if (!items) return []
+  return Array.isArray(items) ? items : [items]
+}
+
+export function normalizeOfferItemsToQuotes(
+  offer: OfferWithBusiness,
+): PriceQuote[] {
+  const businessId = offer.business_id
+  if (businessId === null) return []
+
+  const city =
+    offer.master_business_info?.city?.trim() || 'Location unavailable'
+  const quotes: PriceQuote[] = []
+
+  for (const item of offerItems(offer)) {
+    const service = quoteItemService(item)
+    const unitPrice = positive(item.unit_price)
+    const catalogPrice = positive(service?.regular_price)
+    const effectivePrice = unitPrice > 0 ? unitPrice : catalogPrice
+    if (effectivePrice <= 0) continue
+
+    quotes.push({
+      offerItemId: item.offer_item_id,
+      offerId: offer.id,
+      businessId,
+      city,
+      serviceCategory:
+        service?.service_category?.trim() ||
+        offer.service_category?.trim() ||
+        'Other services',
+      unitType:
+        service?.unit_type?.trim() ||
+        item.unit_type?.trim() ||
+        offer.unit_type?.trim() ||
+        'service',
+      effectivePrice,
+    })
+  }
+
+  return quotes
+}
+
+export function summarizePriceQuotes(quotes: PriceQuote[]): PriceComparison[] {
+  const groups = new Map<string, Map<string, PriceQuote[]>>()
+
+  for (const quote of quotes) {
+    const categoryKey = `${quote.city}\u0000${quote.serviceCategory}`
+    const unitGroups =
+      groups.get(categoryKey) ?? new Map<string, PriceQuote[]>()
+    unitGroups.set(quote.unitType, [
+      ...(unitGroups.get(quote.unitType) ?? []),
+      quote,
+    ])
+    groups.set(categoryKey, unitGroups)
+  }
+
+  return Array.from(groups, ([key, unitGroups]) => {
+    const [city, serviceCategory] = key.split('\u0000')
+    const units = Array.from(unitGroups, ([unitType, unitQuotes]) => {
+      const byProvider = new Map<number, number>()
+      for (const quote of unitQuotes) {
+        const existing = byProvider.get(quote.businessId)
+        if (existing === undefined || quote.effectivePrice < existing)
+          byProvider.set(quote.businessId, quote.effectivePrice)
+      }
+      const prices = Array.from(byProvider.values()).sort((a, b) => a - b)
+      const middle = Math.floor(prices.length / 2)
+      const median =
+        prices.length >= 3
+          ? prices.length % 2 === 0
+            ? (prices[middle - 1] + prices[middle]) / 2
+            : prices[middle]
+          : null
+
+      return {
+        unitType,
+        providerCount: prices.length,
+        prices,
+        minimum: prices[0] ?? 0,
+        maximum: prices.at(-1) ?? 0,
+        median,
+      }
+    })
+
+    return {
+      city,
+      serviceCategory,
+      units: units.sort((a, b) => a.unitType.localeCompare(b.unitType)),
+    }
+  }).sort(
+    (a, b) =>
+      a.city.localeCompare(b.city) ||
+      a.serviceCategory.localeCompare(b.serviceCategory),
+  )
+}
+
+function paramValue(
+  params: URLSearchParams | Record<string, string | string[] | undefined>,
+  key: string,
+): string | null {
+  if (params instanceof URLSearchParams) return params.get(key)
+  const value = params[key]
+  if (Array.isArray(value)) return value[0] ?? null
+  return value ?? null
+}
+
+function parseOptionalPrice(raw: string | null): number | null {
+  if (!raw?.trim()) return null
+  const parsed = Number(raw)
+  if (!Number.isFinite(parsed) || parsed < 0) return Number.NaN
+  return parsed
+}
+
+export function parsePriceFilters(
+  params: URLSearchParams | Record<string, string | string[] | undefined>,
+): ParsedPriceFilters {
+  const city = paramValue(params, 'city')?.trim() || null
+  const category = paramValue(params, 'category')?.trim() || null
+  const minParsed = parseOptionalPrice(paramValue(params, 'min'))
+  const maxParsed = parseOptionalPrice(paramValue(params, 'max'))
+
+  let rangeError: string | null = null
+  if (Number.isNaN(minParsed)) {
+    rangeError = 'Enter a valid minimum price.'
+  } else if (Number.isNaN(maxParsed)) {
+    rangeError = 'Enter a valid maximum price.'
+  } else if (
+    minParsed !== null &&
+    maxParsed !== null &&
+    minParsed > maxParsed
+  ) {
+    rangeError = 'Minimum price cannot exceed maximum price.'
+  }
+
+  return {
+    city,
+    category,
+    min: Number.isNaN(minParsed) ? null : minParsed,
+    max: Number.isNaN(maxParsed) ? null : maxParsed,
+    rangeError,
+  }
+}
+
+export function filterPriceQuotes(
+  quotes: PriceQuote[],
+  filters: ParsedPriceFilters,
+): PriceQuote[] {
+  let result = quotes
+  if (filters.city) {
+    result = result.filter((quote) => quote.city === filters.city)
+  }
+  if (filters.category) {
+    result = result.filter(
+      (quote) => quote.serviceCategory === filters.category,
+    )
+  }
+  if (filters.rangeError) return result
+  const { min, max } = filters
+  if (min !== null) {
+    result = result.filter((quote) => quote.effectivePrice >= min)
+  }
+  if (max !== null) {
+    result = result.filter((quote) => quote.effectivePrice <= max)
+  }
+  return result
+}
+
+export function getPriceFilterOptions(
+  quotes: PriceQuote[],
+): PriceFilterOptions {
+  const cities = new Set<string>()
+  const categories = new Set<string>()
+  for (const quote of quotes) {
+    if (quote.city !== 'Location unavailable') cities.add(quote.city)
+    categories.add(quote.serviceCategory)
+  }
+  return {
+    cities: Array.from(cities).sort((a, b) => a.localeCompare(b)),
+    categories: Array.from(categories).sort((a, b) => a.localeCompare(b)),
+  }
+}
+
+export function applyPriceFilters(
+  quotes: PriceQuote[],
+  filters: ParsedPriceFilters,
+): PriceComparison[] {
+  return summarizePriceQuotes(filterPriceQuotes(quotes, filters))
+}
+
+const getActiveOffers = cache(async function getActiveOffers() {
+  const rows: OfferWithBusiness[] = []
+
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('promo_offer_master')
+      .select(`*, ${PRICE_QUOTE_EMBED}, ${BUSINESS_JOIN}`)
+      .eq('is_active', true)
+      .range(from, from + PAGE_SIZE - 1)
+
+    if (error) throw error
+    const page = (data ?? []) as OfferWithBusiness[]
+    rows.push(...page)
+    if (page.length < PAGE_SIZE) break
+  }
+
+  return rows
+})
+
+export const getPublicPriceQuotes = cache(
+  async function getPublicPriceQuotes() {
+    return (await getActiveOffers()).flatMap(normalizeOfferItemsToQuotes)
+  },
+)
 
 const getFreshOffers = cache(async function getFreshOffers() {
   const since = new Date(
