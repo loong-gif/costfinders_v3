@@ -85,7 +85,7 @@ const TREATMENT_TO_DB: Record<TreatmentCategory, string[]> = {
 }
 
 export function dbCategoryToTreatment(
-  dbCategory: string | null,
+  dbCategory: string | null | undefined,
 ): TreatmentCategory {
   if (!dbCategory) return 'body'
   return DB_TO_TREATMENT[dbCategory] ?? 'body'

@@ -16,12 +16,12 @@ export const CATEGORY_MAP: Record<string, CategoryMapping> = {
   Others: { label: 'Other Services', slug: 'other' },
 }
 
-export function getCategoryLabel(dbCategory: string | null): string {
+export function getCategoryLabel(dbCategory: string | null | undefined): string {
   if (!dbCategory) return 'Other Services'
   return CATEGORY_MAP[dbCategory]?.label ?? dbCategory
 }
 
-export function getCategorySlug(dbCategory: string | null): string {
+export function getCategorySlug(dbCategory: string | null | undefined): string {
   if (!dbCategory) return 'other'
   return CATEGORY_MAP[dbCategory]?.slug ?? 'other'
 }
