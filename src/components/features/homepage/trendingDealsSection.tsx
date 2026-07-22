@@ -12,7 +12,7 @@ interface TrendingDealsSectionProps {
 
 export function TrendingDealsSection({ offers }: TrendingDealsSectionProps) {
   return (
-    <section className="py-16 sm:py-20">
+    <section id="trending-deals" className="scroll-mt-20 py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -22,9 +22,7 @@ export function TrendingDealsSection({ offers }: TrendingDealsSectionProps) {
                 Trending deals
               </h2>
             </div>
-            <p className="text-sm text-[#78350f]">
-              Best savings right now
-            </p>
+            <p className="text-sm text-[#78350f]">Best savings right now</p>
           </div>
 
           <Link

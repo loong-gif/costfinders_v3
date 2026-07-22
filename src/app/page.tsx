@@ -1,3 +1,4 @@
+import { SupabaseSetupNotice } from '@/components/features/demo/supabaseSetupNotice'
 import { BusinessCtaSection } from '@/components/features/homepage/businessCtaSection'
 import { CategoryGrid } from '@/components/features/homepage/categoryGrid'
 import { CityGrid } from '@/components/features/homepage/cityGrid'
@@ -8,24 +9,52 @@ import { ValuePropsSection } from '@/components/features/homepage/valuePropsSect
 import { getCategoryLabel, getCategorySlug } from '@/lib/data/categories'
 import { getFeaturedOffers, getOfferCategories } from '@/lib/data/offers'
 import { getCityDealCounts } from '@/lib/data/unified'
+import { isSupabaseConfigured } from '@/lib/supabase-config'
 
 export const revalidate = 3600 // ISR: regenerate every hour
 
 export default async function Home() {
+  if (!isSupabaseConfigured) {
+    return <SupabaseSetupNotice />
+  }
+
   const [featuredOffers, rawCategories, cityDealCounts] = await Promise.all([
     getFeaturedOffers(6),
     getOfferCategories(),
     getCityDealCounts(),
   ])
 
-  const categories = rawCategories.map((c) => ({
-    slug: getCategorySlug(c.service_category),
-    label: getCategoryLabel(c.service_category),
-    count: c.count,
-  }))
+  const categoriesBySlug = new Map<
+    string,
+    { slug: string; label: string; count: number }
+  >()
+
+  for (const category of rawCategories) {
+    const slug = getCategorySlug(category.service_category)
+    const existing = categoriesBySlug.get(slug)
+
+    if (existing) {
+      existing.count += category.count
+      continue
+    }
+
+    categoriesBySlug.set(slug, {
+      slug,
+      label:
+        slug === 'other'
+          ? 'Other Services'
+          : getCategoryLabel(category.service_category),
+      count: category.count,
+    })
+  }
+
+  const categories = Array.from(categoriesBySlug.values())
 
   const totalOffers = rawCategories.reduce((sum, c) => sum + c.count, 0)
-  const totalProviders = new Set(cityDealCounts.flatMap((c) => Array.from({ length: c.providerCount }))).size || cityDealCounts.reduce((sum, c) => sum + c.providerCount, 0)
+  const totalProviders = cityDealCounts.reduce(
+    (sum, city) => sum + city.providerCount,
+    0,
+  )
 
   return (
     <main className="min-h-screen pt-16 pb-0">

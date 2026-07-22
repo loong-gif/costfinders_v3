@@ -8,6 +8,9 @@
 
 :root {
   /* Non-Tailwind tokens (used directly in CSS, not duplicated in @theme) */
+  /* Local-first font stack keeps the demo buildable without Google Fonts access. */
+  --font-sora: 'Sora';
+  --font-manrope: 'Manrope';
   --font-mono: ui-monospace, 'SFMono-Regular', monospace;
   --color-bg-overlay: rgba(69, 26, 3, 0.4);
   --color-accent-text: #ffffff;

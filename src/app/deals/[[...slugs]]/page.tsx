@@ -1,17 +1,18 @@
-import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
 import { CityDealsPage } from '@/components/features/deals/cityDealsPage'
 import { DealDetailPage } from '@/components/features/deals/dealDetailPage'
 import { TreatmentCityPage } from '@/components/features/deals/treatmentCityPage'
+import { SupabaseSetupNotice } from '@/components/features/demo/supabaseSetupNotice'
 import {
   getBusinessCountForCity,
   getDealById,
   getDealCountForCitySlug,
   getDealCountForTreatmentAndCity,
-  getDealWithBusinessId,
   getDealsForCitySlug,
   getDealsForTreatmentAndCity,
+  getDealWithBusinessId,
   getMinPriceForCitySlug,
   getMinPriceForTreatmentAndCity,
   getTreatmentLabel,
@@ -21,7 +22,11 @@ import {
   generateCityDealsMetadata,
   generateTreatmentCityMetadata,
 } from '@/lib/seo/metadata'
-import { buildDealsListSchema, buildTreatmentServiceSchema } from '@/lib/seo/schemas'
+import {
+  buildDealsListSchema,
+  buildTreatmentServiceSchema,
+} from '@/lib/seo/schemas'
+import { isSupabaseConfigured } from '@/lib/supabase-config'
 import type { TreatmentCategory } from '@/types/deal'
 
 export const revalidate = 3600 // ISR: regenerate every hour
@@ -54,7 +59,9 @@ type RouteType =
   | { type: 'deal'; dealId: string }
   | { type: 'not-found' }
 
-const resolveRoute = cache(async function resolveRoute(slugs?: string[]): Promise<RouteType> {
+const resolveRoute = cache(async function resolveRoute(
+  slugs?: string[],
+): Promise<RouteType> {
   // No slugs = redirect to detected city
   if (!slugs || slugs.length === 0) {
     return { type: 'redirect' }
@@ -114,6 +121,14 @@ const resolveRoute = cache(async function resolveRoute(slugs?: string[]): Promis
 export async function generateMetadata({
   params,
 }: DealsPageProps): Promise<Metadata> {
+  if (!isSupabaseConfigured) {
+    return {
+      title: 'Connect Supabase | CostFinders local demo',
+      description:
+        'Configure Supabase credentials to browse live CostFinders deals.',
+    }
+  }
+
   const { slugs } = await params
   const route = await resolveRoute(slugs)
 
@@ -171,6 +186,10 @@ export async function generateMetadata({
 }
 
 export default async function DealsRoutingPage({ params }: DealsPageProps) {
+  if (!isSupabaseConfigured) {
+    return <SupabaseSetupNotice />
+  }
+
   const { slugs } = await params
   const route = await resolveRoute(slugs)
 
@@ -196,8 +215,18 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
                   className="group flex items-center gap-4 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl px-5 py-4 hover:border-[#c4b09a] hover:bg-[#faf5ee] transition-all duration-200"
                 >
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#faf5ee] group-hover:bg-amber-800/8 transition-colors shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" className="text-[#78350f] group-hover:text-amber-800 transition-colors">
-                      <path fill="currentColor" d="M128 16a88.1 88.1 0 0 0-88 88c0 75.3 80 132.17 83.41 134.55a8 8 0 0 0 9.18 0C136 236.17 216 179.3 216 104a88.1 88.1 0 0 0-88-88m0 56a32 32 0 1 1-32 32 32 32 0 0 1 32-32" />
+                    <svg
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 256 256"
+                      className="text-[#78350f] group-hover:text-amber-800 transition-colors"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M128 16a88.1 88.1 0 0 0-88 88c0 75.3 80 132.17 83.41 134.55a8 8 0 0 0 9.18 0C136 236.17 216 179.3 216 104a88.1 88.1 0 0 0-88-88m0 56a32 32 0 1 1-32 32 32 32 0 0 1 32-32"
+                      />
                     </svg>
                   </div>
                   <div className="min-w-0">
@@ -205,7 +234,8 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
                       {city.name}
                     </p>
                     <p className="text-sm text-[#92400e]">
-                      {city.stateCode} &middot; {city.businessCount} {city.businessCount === 1 ? 'provider' : 'providers'}
+                      {city.stateCode} &middot; {city.businessCount}{' '}
+                      {city.businessCount === 1 ? 'provider' : 'providers'}
                     </p>
                   </div>
                 </a>
@@ -217,9 +247,8 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
     }
 
     case 'city': {
-      const [cityDeals, allCities, cityBusinessCount] = await Promise.all([
+      const [cityDeals, cityBusinessCount] = await Promise.all([
         getDealsForCitySlug(route.citySlug),
-        getUnifiedCities(),
         getBusinessCountForCity(route.citySlug.replace(/-/g, ' ')),
       ])
       return (
@@ -270,8 +299,18 @@ export default async function DealsRoutingPage({ params }: DealsPageProps) {
                   route.cityName,
                   {
                     dealCount: treatmentCityDeals.length,
-                    minPrice: treatmentCityDeals.length > 0 ? Math.min(...treatmentCityDeals.map((d) => d.dealPrice)) : undefined,
-                    maxPrice: treatmentCityDeals.length > 0 ? Math.max(...treatmentCityDeals.map((d) => d.dealPrice)) : undefined,
+                    minPrice:
+                      treatmentCityDeals.length > 0
+                        ? Math.min(
+                            ...treatmentCityDeals.map((d) => d.dealPrice),
+                          )
+                        : undefined,
+                    maxPrice:
+                      treatmentCityDeals.length > 0
+                        ? Math.max(
+                            ...treatmentCityDeals.map((d) => d.dealPrice),
+                          )
+                        : undefined,
                   },
                 ),
               ),

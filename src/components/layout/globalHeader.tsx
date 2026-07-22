@@ -11,6 +11,7 @@ const AuthModal = dynamic(
   () => import('@/components/features/authModal').then((m) => m.AuthModal),
   { ssr: false },
 )
+
 import { NotificationBell } from '@/components/patterns/notificationBell'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
@@ -50,19 +51,47 @@ export function GlobalHeader() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-40 bg-[#e8ddd0]/95 backdrop-blur-sm border-b border-[#d4c4b0] transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(69,26,3,0.08)]' : ''}`}>
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 bg-[#e8ddd0]/95 backdrop-blur-sm border-b border-[#d4c4b0] transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(69,26,3,0.08)]' : ''}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/icon.webp" alt="CostFinders" width={36} height={36} priority />
+            <Image
+              src="/icon.webp"
+              alt="CostFinders"
+              width={36}
+              height={36}
+              priority
+            />
             <span className="font-bold text-xl text-amber-800">
               CostFinders
             </span>
           </Link>
 
+          <nav className="hidden items-center gap-5 text-sm font-medium text-[#78350f] md:flex">
+            <Link
+              href="/prices"
+              className="transition-colors hover:text-[#451a03]"
+            >
+              Compare prices
+            </Link>
+            <Link
+              href="/promotions"
+              className="transition-colors hover:text-[#451a03]"
+            >
+              Promotions
+            </Link>
+            <Link
+              href="/businesses"
+              className="transition-colors hover:text-[#451a03]"
+            >
+              Businesses
+            </Link>
+          </nav>
+
           {/* Right side: Auth */}
           <div className="flex items-center gap-4">
-
             {state.isAuthenticated ? (
               <>
                 <NotificationBell />

@@ -1,32 +1,51 @@
 import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Offer, OfferWithBusiness } from '@/types/supabase'
+import {
+  offerItemName,
+  offerSourceUrl,
+  offerUnitType,
+} from '@/types/supabase'
 
 const TABLE = 'promo_offer_master'
 
+const OFFER_EMBED =
+  'promo_offer_items(offer_item_id,offer_id,service_id,item_name,quantity,unit_type),clinic_promotions(promotion_id,source_url,promotion_title)'
+
 const BUSINESS_JOIN =
-  'master_business_info(business_id, name, address, city, score, review_count, category, website_clean)'
+  'master_business_info!fk_promo_offer_master_business(business_id, name, address, city, score, review_count, category, website_clean)'
+
+function normalizeOfferPrice<T extends Offer>(offer: T): T {
+  return {
+    ...offer,
+    original_price: offer.regular_price,
+    service_name: offerItemName(offer),
+    source_url: offerSourceUrl(offer),
+    unit_type: offerUnitType(offer),
+  }
+}
+
+function normalizeOfferPrices<T extends Offer>(offers: T[]): T[] {
+  return offers.map(normalizeOfferPrice)
+}
 
 export interface OfferFilters {
   city?: string
   serviceCategory?: string
   minPrice?: number
   maxPrice?: number
-  templateType?: string
   limit?: number
 }
 
 export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
   let query = supabase
     .from(TABLE)
-    .select('*')
+    .select(`*, ${OFFER_EMBED}`)
+    .eq('is_active', true)
     .order('created_at', { ascending: false })
 
   if (filters?.serviceCategory) {
     query = query.eq('service_category', filters.serviceCategory)
-  }
-  if (filters?.templateType) {
-    query = query.eq('template_type', filters.templateType)
   }
   if (filters?.minPrice != null) {
     query = query.gte('discount_price', filters.minPrice)
@@ -40,7 +59,7 @@ export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
 
   const { data, error } = await query
   if (error) throw error
-  return (data ?? []) as Offer[]
+  return normalizeOfferPrices((data ?? []) as Offer[])
 }
 
 export const getOfferById = cache(async function getOfferById(
@@ -48,7 +67,7 @@ export const getOfferById = cache(async function getOfferById(
 ): Promise<OfferWithBusiness | null> {
   const { data, error } = await supabase
     .from(TABLE)
-    .select(`*, ${BUSINESS_JOIN}`)
+    .select(`*, ${OFFER_EMBED}, ${BUSINESS_JOIN}`)
     .eq('id', id)
     .single()
 
@@ -56,21 +75,18 @@ export const getOfferById = cache(async function getOfferById(
     if (error.code === 'PGRST116') return null
     throw error
   }
-  return data as OfferWithBusiness
+  return normalizeOfferPrice(data as OfferWithBusiness)
 })
 
-/**
- * Cached version for the no-filter case (used by getCityDealCounts, getActiveDeals).
- * Deduplicates within a single React server request.
- */
-const getAllOffersWithBusinesses = cache(async function getAllOffersWithBusinesses(): Promise<OfferWithBusiness[]> {
-  return _getOffersWithBusinesses()
-})
+const getAllOffersWithBusinesses = cache(
+  async function getAllOffersWithBusinesses(): Promise<OfferWithBusiness[]> {
+    return _getOffersWithBusinesses()
+  },
+)
 
 export async function getOffersWithBusinesses(
   filters?: OfferFilters,
 ): Promise<OfferWithBusiness[]> {
-  // Deduplicate the most common call: no filters
   if (!filters || Object.keys(filters).length === 0) {
     return getAllOffersWithBusinesses()
   }
@@ -82,13 +98,12 @@ async function _getOffersWithBusinesses(
 ): Promise<OfferWithBusiness[]> {
   let query = supabase
     .from(TABLE)
-    .select(`*, ${BUSINESS_JOIN}`)
-    // Rule 1: Hide deals with no pricing data
-    .or('discount_price.gt.0,original_price.gt.0')
+    .select(`*, ${OFFER_EMBED}, ${BUSINESS_JOIN}`)
+    .eq('is_active', true)
+    .gt('discount_price', 0)
+    .gt('regular_price', 0)
 
   if (filters?.city) {
-    // PostgREST can't filter parent rows by joined table columns,
-    // so first resolve business IDs for this city, then filter offers
     const { data: cityBusinesses } = await supabase
       .from('master_business_info')
       .select('business_id')
@@ -116,17 +131,20 @@ async function _getOffersWithBusinesses(
   const { data, error } = await query
   if (error) throw error
 
-  // Rule 5: Sort by pricing quality — deals with savings first, then priced, then rest
-  const results = (data ?? []) as OfferWithBusiness[]
+  const results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
   return results.sort((a, b) => {
     const scoreA =
-      a.discount_price && a.original_price && a.discount_price < a.original_price
+      a.discount_price &&
+      a.original_price &&
+      a.discount_price < a.original_price
         ? 0
         : a.discount_price && a.discount_price > 0
           ? 1
           : 2
     const scoreB =
-      b.discount_price && b.original_price && b.discount_price < b.original_price
+      b.discount_price &&
+      b.original_price &&
+      b.discount_price < b.original_price
         ? 0
         : b.discount_price && b.discount_price > 0
           ? 1
@@ -135,49 +153,52 @@ async function _getOffersWithBusinesses(
   })
 }
 
-export const getOfferCategories = cache(async function getOfferCategories(): Promise<
-  { service_category: string; count: number }[]
-> {
-  // M1: Use RPC for SQL-side aggregation (6 rows vs 347)
-  const { data, error } = await supabase.rpc('get_offer_category_counts')
+export const getOfferCategories = cache(
+  async function getOfferCategories(): Promise<
+    { service_category: string; count: number }[]
+  > {
+    const { data, error } = await supabase.rpc('get_offer_category_counts')
 
-  if (!error && data) {
-    return data as { service_category: string; count: number }[]
-  }
+    if (!error && data) {
+      return data as { service_category: string; count: number }[]
+    }
 
-  // Fallback: JS-side counting if RPC doesn't exist
-  const { data: raw, error: rawError } = await supabase
-    .from(TABLE)
-    .select('service_category')
-    .or('discount_price.gt.0,original_price.gt.0')
+    const { data: raw, error: rawError } = await supabase
+      .from(TABLE)
+      .select('service_category')
+      .eq('is_active', true)
+      .gt('discount_price', 0)
+      .gt('regular_price', 0)
 
-  if (rawError) throw rawError
+    if (rawError) throw rawError
 
-  const counts = new Map<string, number>()
-  for (const row of raw ?? []) {
-    if (!row.service_category) continue
-    counts.set(
-      row.service_category,
-      (counts.get(row.service_category) ?? 0) + 1,
-    )
-  }
+    const counts = new Map<string, number>()
+    for (const row of raw ?? []) {
+      if (!row.service_category) continue
+      counts.set(
+        row.service_category,
+        (counts.get(row.service_category) ?? 0) + 1,
+      )
+    }
 
-  return Array.from(counts.entries())
-    .map(([service_category, count]) => ({ service_category, count }))
-    .sort((a, b) => b.count - a.count)
-})
+    return Array.from(counts.entries())
+      .map(([service_category, count]) => ({ service_category, count }))
+      .sort((a, b) => b.count - a.count)
+  },
+)
 
 export const getOffersByBusiness = cache(async function getOffersByBusiness(
   businessId: number,
 ): Promise<Offer[]> {
   const { data, error } = await supabase
     .from(TABLE)
-    .select('*')
+    .select(`*, ${OFFER_EMBED}`)
     .eq('business_id', businessId)
+    .eq('is_active', true)
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return (data ?? []) as Offer[]
+  return normalizeOfferPrices((data ?? []) as Offer[])
 })
 
 export const getFeaturedOffers = cache(async function getFeaturedOffers(
@@ -185,16 +206,16 @@ export const getFeaturedOffers = cache(async function getFeaturedOffers(
 ): Promise<OfferWithBusiness[]> {
   const { data, error } = await supabase
     .from(TABLE)
-    .select(`*, ${BUSINESS_JOIN}`)
-    .not('discount_price', 'is', null)
-    .not('original_price', 'is', null)
+    .select(`*, ${OFFER_EMBED}, ${BUSINESS_JOIN}`)
+    .eq('is_active', true)
+    .gt('discount_price', 0)
+    .gt('regular_price', 0)
     .order('discount_percent', { ascending: false, nullsFirst: false })
     .limit(limit)
 
   if (error) throw error
 
-  // Sort by savings (original - discount), biggest savings first
-  const results = (data ?? []) as OfferWithBusiness[]
+  const results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
   return results.sort((a, b) => {
     const savingsA =
       a.original_price && a.discount_price

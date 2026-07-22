@@ -1,28 +1,13 @@
-import type { Metadata, Viewport } from 'next'
-import { Manrope, Sora } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Metadata, Viewport } from 'next'
 import { GlobalHeader } from '@/components/layout/globalHeader'
 import { OrganizationSchema, WebsiteSchema } from '@/components/seo'
 import { AuthProvider } from '@/lib/context/authContext'
 import { BusinessAuthProvider } from '@/lib/context/businessAuthContext'
 import { ClaimsProvider } from '@/lib/context/claimsContext'
+import { isSupabaseConfigured } from '@/lib/supabase-config'
 import './globals.css'
-
-const sora = Sora({
-  variable: '--font-sora',
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-  adjustFontFallback: true,
-})
-
-const manrope = Manrope({
-  variable: '--font-manrope',
-  subsets: ['latin'],
-  display: 'optional',
-  preload: false,
-})
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -30,6 +15,9 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
   themeColor: '#e8ddd0',
 }
+
+// The local demo reads live Supabase data and must not fetch it during static builds.
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -56,7 +44,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'CostFinders',
-    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'CostFinders - Compare MedSpa Prices' }],
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'CostFinders - Compare MedSpa Prices',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -80,24 +75,32 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co" />
-        <link rel="dns-prefetch" href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co" />
+        <link
+          rel="preconnect"
+          href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://kdlpkjzcnbkjcvwsvlwn.supabase.co"
+        />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
-      <body
-        className={`${sora.variable} ${manrope.variable} font-sans antialiased`}
-      >
+      <body className="font-sans antialiased">
         <WebsiteSchema />
         <OrganizationSchema />
-        <AuthProvider>
-          <BusinessAuthProvider>
-            <ClaimsProvider>
-              <GlobalHeader />
-              {children}
-            </ClaimsProvider>
-          </BusinessAuthProvider>
-        </AuthProvider>
+        {isSupabaseConfigured ? (
+          <AuthProvider>
+            <BusinessAuthProvider>
+              <ClaimsProvider>
+                <GlobalHeader />
+                {children}
+              </ClaimsProvider>
+            </BusinessAuthProvider>
+          </AuthProvider>
+        ) : (
+          children
+        )}
         <Analytics />
         <SpeedInsights />
       </body>

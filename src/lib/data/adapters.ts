@@ -1,9 +1,12 @@
 import { dealImageUrl } from '@/lib/cloudinary'
-import type { AnonymousDeal, TemplateType, TreatmentCategory } from '@/types/deal'
 import type {
-  Business as SupaBusiness,
-  Offer,
+  AnonymousDeal,
+  TemplateType,
+  TreatmentCategory,
+} from '@/types/deal'
+import type {
   OfferWithBusiness,
+  Business as SupaBusiness,
 } from '@/types/supabase'
 import { getCategorySlug } from './categories'
 
@@ -27,7 +30,12 @@ const CITY_STATE_MAP: Record<string, { state: string; stateCode: string }> = {
   'lake forest': { state: 'California', stateCode: 'CA' },
   'mission viejo': { state: 'California', stateCode: 'CA' },
   'foothill ranch': { state: 'California', stateCode: 'CA' },
+  calabasas: { state: 'California', stateCode: 'CA' },
+  'canoga park': { state: 'California', stateCode: 'CA' },
   pasadena: { state: 'California', stateCode: 'CA' },
+  tarzana: { state: 'California', stateCode: 'CA' },
+  'west hills': { state: 'California', stateCode: 'CA' },
+  'woodland hills': { state: 'California', stateCode: 'CA' },
   // Colorado
   boulder: { state: 'Colorado', stateCode: 'CO' },
   louisville: { state: 'Colorado', stateCode: 'CO' },
@@ -98,15 +106,21 @@ export function offerToAnonymousDeal(offer: OfferWithBusiness): AnonymousDeal {
 
   return {
     id: String(offer.id),
-    title: offer.service_name ?? offer.offer_raw_text?.slice(0, 60) ?? 'Special Offer',
+    title:
+      offer.service_name ??
+      offer.offer_raw_text?.slice(0, 60) ??
+      'Special Offer',
     description:
       offer.offer_raw_text ??
       `${offer.service_name ?? 'Treatment'} — ${offer.template_type ?? 'deal'}`,
     category: dbCategoryToTreatment(offer.service_category),
     originalPrice: offer.original_price ?? 0,
     dealPrice: offer.discount_price ?? offer.original_price ?? 0,
-    discountPercent: offer.discount_percent ??
-      (offer.original_price && offer.discount_price && offer.original_price > offer.discount_price
+    discountPercent:
+      offer.discount_percent ??
+      (offer.original_price &&
+      offer.discount_price &&
+      offer.original_price > offer.discount_price
         ? Math.round((1 - offer.discount_price / offer.original_price) * 100)
         : 0),
     unit: offer.unit_type ?? 'per treatment',
