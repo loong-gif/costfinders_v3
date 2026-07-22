@@ -124,7 +124,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Quick check: read session from local storage (no network request).
     // If no session exists, skip the expensive getUser() call entirely.
     // This saves 200-400ms for anonymous visitors (95% of traffic).
-    const { data: { session } } = await supabase.auth.getSession()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
     if (!session) {
       setState({
         user: null,
