@@ -242,7 +242,7 @@ function ClaimActionModal({
 
 function PendingClaimsSection({
   onFeedback,
-  claimCount,
+  claimCount: _claimCount,
   onClaimCountChange,
 }: {
   onFeedback: (message: string) => void

@@ -20,6 +20,11 @@
       "style": {
         "noNonNullAssertion": "warn"
       },
+      "correctness": {
+        "noUnusedFunctionParameters": "warn",
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "warn"
+      },
       "suspicious": {
         "noArrayIndexKey": "warn",
         "noAssignInExpressions": "warn",

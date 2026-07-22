@@ -57,7 +57,6 @@ export default function ClaimsPage() {
       const titles: Record<string, string> = {}
       await Promise.all(
         allClaims.map(async (claim) => {
-          if (dealTitles[claim.dealId]) return
           const deal = await getDealById(claim.dealId)
           if (deal && !cancelled) {
             titles[claim.dealId] = deal.title
@@ -65,7 +64,13 @@ export default function ClaimsPage() {
         }),
       )
       if (!cancelled) {
-        setDealTitles((prev) => ({ ...prev, ...titles }))
+        setDealTitles((prev) => {
+          const merged = { ...prev, ...titles }
+          for (const [dealId, title] of Object.entries(titles)) {
+            if (prev[dealId] !== title) return merged
+          }
+          return prev
+        })
       }
     }
 
