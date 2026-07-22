@@ -31,7 +31,6 @@ export function NotificationBell() {
   }, [])
 
   // Close panel on outside click
-  // biome-ignore lint/correctness/useExhaustiveDependencies: handleClose is stable via useCallback
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -62,7 +61,11 @@ export function NotificationBell() {
         className="relative p-2 rounded-lg hover:bg-amber-800/10 transition-colors cursor-pointer"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
       >
-        <Bell size={20} weight={isOpen ? 'fill' : 'light'} className="text-[#451a03]" />
+        <Bell
+          size={20}
+          weight={isOpen ? 'fill' : 'light'}
+          className="text-[#451a03]"
+        />
 
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold px-1 leading-none">

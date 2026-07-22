@@ -1,15 +1,15 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { NotificationRow } from '@/lib/actions/notification-actions'
 import {
   getNotificationsAction,
   getUnreadCountAction,
   markAllReadAction,
   markAsReadAction,
 } from '@/lib/actions/notification-actions'
-import type { NotificationRow } from '@/lib/actions/notification-actions'
-import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import { useAuth } from '@/lib/context/authContext'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
 const POLL_INTERVAL_MS = 60_000
 
@@ -72,9 +72,7 @@ export function useNotifications() {
             setUnreadCount((prev) => prev + 1)
           }
           // Prepend to notification list if panel was already loaded
-          setNotifications((prev) =>
-            prev.length > 0 ? [row, ...prev] : prev,
-          )
+          setNotifications((prev) => (prev.length > 0 ? [row, ...prev] : prev))
         },
       )
       .on(

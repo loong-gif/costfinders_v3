@@ -67,9 +67,7 @@ export default function LocationsManagementPage() {
       const result = await toggleLocationAction(id, !currentActive)
       if (result.success) {
         await loadLocations()
-        showFeedback(
-          `Location ${currentActive ? 'deactivated' : 'activated'}`,
-        )
+        showFeedback(`Location ${currentActive ? 'deactivated' : 'activated'}`)
       } else {
         showFeedback(result.error ?? 'Failed to toggle status', 'error')
       }
@@ -138,13 +136,14 @@ export default function LocationsManagementPage() {
   }, [formData, loadLocations, showFeedback, handleCancelEdit])
 
   // Group locations by state for display
-  const locationsByState = locations.reduce<
-    Record<string, ContentLocation[]>
-  >((acc, loc) => {
-    if (!acc[loc.state]) acc[loc.state] = []
-    acc[loc.state].push(loc)
-    return acc
-  }, {})
+  const locationsByState = locations.reduce<Record<string, ContentLocation[]>>(
+    (acc, loc) => {
+      if (!acc[loc.state]) acc[loc.state] = []
+      acc[loc.state].push(loc)
+      return acc
+    },
+    {},
+  )
 
   const stats = {
     total: locations.length,
@@ -449,15 +448,10 @@ export default function LocationsManagementPage() {
                         <button
                           type="button"
                           onClick={() =>
-                            handleToggleStatus(
-                              location.id,
-                              location.is_active,
-                            )
+                            handleToggleStatus(location.id, location.is_active)
                           }
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            location.is_active
-                              ? 'bg-amber-800'
-                              : 'bg-[#f2ebe2]'
+                            location.is_active ? 'bg-amber-800' : 'bg-[#f2ebe2]'
                           }`}
                         >
                           <span

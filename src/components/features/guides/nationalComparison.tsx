@@ -11,7 +11,8 @@ export function NationalComparison({
   cityLabel,
   stats,
 }: NationalComparisonProps) {
-  const nationalAvg = content.nationalAvgPerUnit ?? content.nationalAvgPerSyringe
+  const nationalAvg =
+    content.nationalAvgPerUnit ?? content.nationalAvgPerSyringe
   if (!nationalAvg) return null
 
   // Find the comparable local average from byUnitType

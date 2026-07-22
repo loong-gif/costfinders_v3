@@ -11,22 +11,21 @@ interface BreadcrumbProps {
   className?: string
 }
 
-function BreadcrumbLink({ item, isLast }: { item: BreadcrumbItem; isLast: boolean }) {
+function BreadcrumbLink({
+  item,
+  isLast,
+}: {
+  item: BreadcrumbItem
+  isLast: boolean
+}) {
   if (item.href && !isLast) {
     return (
-      <Link
-        href={item.href}
-        className="hover:text-[#451a03] transition-colors"
-      >
+      <Link href={item.href} className="hover:text-[#451a03] transition-colors">
         {item.label}
       </Link>
     )
   }
-  return (
-    <span className={isLast ? 'text-[#451a03]' : ''}>
-      {item.label}
-    </span>
-  )
+  return <span className={isLast ? 'text-[#451a03]' : ''}>{item.label}</span>
 }
 
 function Separator() {
@@ -78,7 +77,11 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
               {/* Show ellipsis before the last item when collapsing */}
               {shouldCollapse && index === 1 && (
                 <>
-                  <DotsThree size={16} weight="bold" className="text-[#92400e]" />
+                  <DotsThree
+                    size={16}
+                    weight="bold"
+                    className="text-[#92400e]"
+                  />
                   <Separator />
                 </>
               )}

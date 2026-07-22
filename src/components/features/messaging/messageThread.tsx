@@ -1,17 +1,22 @@
 'use client'
 
-import { ChatCircle, DotsThree, PaperPlaneRight, SpinnerGap } from '@phosphor-icons/react'
+import {
+  ChatCircle,
+  DotsThree,
+  PaperPlaneRight,
+  SpinnerGap,
+} from '@phosphor-icons/react'
+import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
   getMessagesAction,
-  sendMessageAction,
   markMessagesReadAction,
+  sendMessageAction,
 } from '@/lib/actions/messaging'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { MessageRow } from '@/types/messaging'
-import type { RealtimeChannel } from '@supabase/supabase-js'
 
 interface MessageThreadProps {
   claimId: string
@@ -161,7 +166,9 @@ export function MessageThread({
         (payload) => {
           const updated = payload.new as MessageRow
           setMessages((prev) =>
-            prev.map((m) => (m.id === updated.id ? { ...m, read_at: updated.read_at } : m)),
+            prev.map((m) =>
+              m.id === updated.id ? { ...m, read_at: updated.read_at } : m,
+            ),
           )
         },
       )
@@ -232,14 +239,14 @@ export function MessageThread({
       if (result.success && result.message) {
         // Replace the optimistic message with the real one
         setMessages((prev) =>
-          prev.map((m) => (m.id === optimisticMessage.id ? result.message! : m)),
+          prev.map((m) =>
+            m.id === optimisticMessage.id ? result.message! : m,
+          ),
         )
       }
     } catch {
       // Remove optimistic message on failure
-      setMessages((prev) =>
-        prev.filter((m) => m.id !== optimisticMessage.id),
-      )
+      setMessages((prev) => prev.filter((m) => m.id !== optimisticMessage.id))
     } finally {
       setIsSending(false)
     }

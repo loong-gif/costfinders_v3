@@ -99,7 +99,9 @@ export async function getDealWithBusinessId(id: string) {
   }
 }
 
-export const getDealsForCitySlug = cache(async function getDealsForCitySlug(citySlug: string) {
+export const getDealsForCitySlug = cache(async function getDealsForCitySlug(
+  citySlug: string,
+) {
   const cityName = await getCityNameFromSlug(citySlug)
   if (!cityName) return []
   return getDealsByCity(cityName)
@@ -110,23 +112,25 @@ export async function getDealCountForCitySlug(citySlug: string) {
   return deals.length
 }
 
-export const getDealsForTreatmentAndCity = cache(async function getDealsForTreatmentAndCity(
-  category: TreatmentCategory,
-  citySlug: string,
-) {
-  const dbCategories = treatmentToDbCategories(category)
-  if (dbCategories.length === 0) return []
+export const getDealsForTreatmentAndCity = cache(
+  async function getDealsForTreatmentAndCity(
+    category: TreatmentCategory,
+    citySlug: string,
+  ) {
+    const dbCategories = treatmentToDbCategories(category)
+    if (dbCategories.length === 0) return []
 
-  const cityName = await getCityNameFromSlug(citySlug)
-  if (!cityName) return []
+    const cityName = await getCityNameFromSlug(citySlug)
+    if (!cityName) return []
 
-  const results = await Promise.all(
-    dbCategories.map((dbCat) =>
-      getOffersWithBusinesses({ serviceCategory: dbCat, city: cityName }),
-    ),
-  )
-  return results.flat().map(offerToAnonymousDeal)
-})
+    const results = await Promise.all(
+      dbCategories.map((dbCat) =>
+        getOffersWithBusinesses({ serviceCategory: dbCat, city: cityName }),
+      ),
+    )
+    return results.flat().map(offerToAnonymousDeal)
+  },
+)
 
 export async function getDealCountForTreatmentAndCity(
   category: TreatmentCategory,
@@ -259,7 +263,9 @@ export const getCityDealCounts = cache(async function getCityDealCounts() {
   const { data, error } = await supabase.rpc('get_city_deal_counts')
 
   if (!error && data) {
-    return (data as { city: string; deal_count: number; provider_count: number }[]).map((row) => {
+    return (
+      data as { city: string; deal_count: number; provider_count: number }[]
+    ).map((row) => {
       const { state, stateCode } = inferState(row.city)
       return {
         city: row.city,
@@ -274,7 +280,10 @@ export const getCityDealCounts = cache(async function getCityDealCounts() {
 
   // Fallback: JS-side aggregation if RPC doesn't exist
   const offers = await getOffersWithBusinesses()
-  const cityMap = new Map<string, { dealCount: number; providerIds: Set<number> }>()
+  const cityMap = new Map<
+    string,
+    { dealCount: number; providerIds: Set<number> }
+  >()
 
   for (const offer of offers) {
     const city = offer.master_business_info?.city
@@ -320,18 +329,22 @@ export async function getProvidersByCity(city: string) {
   return businesses.map(businessToProvider)
 }
 
-export const getBusinessCountForCity = cache(async function getBusinessCountForCity(cityName: string) {
-  // M1: Use RPC to get count without fetching full business objects
-  const { data, error } = await supabase.rpc('get_business_count_for_city', { city_name: cityName })
+export const getBusinessCountForCity = cache(
+  async function getBusinessCountForCity(cityName: string) {
+    // M1: Use RPC to get count without fetching full business objects
+    const { data, error } = await supabase.rpc('get_business_count_for_city', {
+      city_name: cityName,
+    })
 
-  if (!error && data != null) {
-    return Number(data)
-  }
+    if (!error && data != null) {
+      return Number(data)
+    }
 
-  // Fallback: fetch full objects and count
-  const businesses = await getBusinesses(cityName)
-  return businesses.length
-})
+    // Fallback: fetch full objects and count
+    const businesses = await getBusinesses(cityName)
+    return businesses.length
+  },
+)
 
 /** Get deals for a specific business by its Supabase ID */
 export async function getDealsForBusiness(businessId: number) {

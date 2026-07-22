@@ -112,7 +112,12 @@ function getInitialFormData(deal?: Offer): DealFormData {
   }
 }
 
-export function DealForm({ businessId, existingDeal, existingDealId, mode }: DealFormProps) {
+export function DealForm({
+  businessId,
+  existingDeal,
+  existingDealId,
+  mode,
+}: DealFormProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<DealFormData>(() =>
     getInitialFormData(existingDeal),
@@ -165,7 +170,12 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
       if (!file) return
 
       // Validate type
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+      const allowedTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/avif',
+      ]
       if (!allowedTypes.includes(file.type)) {
         setImageError('Invalid file type. Use JPEG, PNG, WebP, or AVIF.')
         return
@@ -337,8 +347,12 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
         unit_type: formData.unit.trim(),
         offer_raw_text: formData.description.trim(),
         template_type: 'FIXED_PRICE',
-        start_date: formData.validFrom ? `${formData.validFrom}T00:00:00Z` : undefined,
-        end_date: formData.validUntil ? `${formData.validUntil}T23:59:59Z` : undefined,
+        start_date: formData.validFrom
+          ? `${formData.validFrom}T00:00:00Z`
+          : undefined,
+        end_date: formData.validUntil
+          ? `${formData.validUntil}T23:59:59Z`
+          : undefined,
         min_unit: formData.minUnits || undefined,
       }
 
@@ -352,7 +366,11 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
           setSubmitStatus('error')
           return
         }
-        result = await updateDealAction(Number(dealId), Number(businessId), mappedData)
+        result = await updateDealAction(
+          Number(dealId),
+          Number(businessId),
+          mappedData,
+        )
       }
 
       if (!result.success) {
@@ -635,7 +653,7 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
               </label>
 
               {/* Preview area */}
-              {(imagePreview || uploadedImageUrl) ? (
+              {imagePreview || uploadedImageUrl ? (
                 <div className="relative group rounded-xl overflow-hidden border border-[#d4c4b0] bg-[#f2ebe2]">
                   <img
                     src={imagePreview ?? uploadedImageUrl ?? ''}
@@ -686,7 +704,11 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
                     transition-all duration-200
                   "
                 >
-                  <ImageIcon size={32} weight="light" className="text-[#92400e]" />
+                  <ImageIcon
+                    size={32}
+                    weight="light"
+                    className="text-[#92400e]"
+                  />
                   <div className="text-center">
                     <p className="text-sm font-medium text-[#78350f]">
                       Click to select an image
@@ -719,7 +741,9 @@ export function DealForm({ businessId, existingDeal, existingDealId, mode }: Dea
                     isLoading={imageUploadStatus === 'uploading'}
                   >
                     <UploadSimple size={16} weight="light" />
-                    {imageUploadStatus === 'uploading' ? 'Uploading...' : 'Upload Image'}
+                    {imageUploadStatus === 'uploading'
+                      ? 'Uploading...'
+                      : 'Upload Image'}
                   </Button>
                   <Button
                     type="button"

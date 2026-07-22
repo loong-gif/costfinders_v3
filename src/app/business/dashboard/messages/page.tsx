@@ -10,10 +10,9 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { getConversationsAction } from '@/lib/actions/messaging'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import type { ConversationWithPreview } from '@/types/messaging'
 
 type FilterTab = 'all' | 'unread'
@@ -319,8 +318,7 @@ function ConversationRow({
         </div>
 
         {/* Status Badge */}
-        <div className="flex-shrink-0">
-        </div>
+        <div className="flex-shrink-0"></div>
       </div>
     </Link>
   )

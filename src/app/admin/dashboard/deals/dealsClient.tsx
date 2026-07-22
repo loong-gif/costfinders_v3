@@ -107,7 +107,10 @@ export function DealModerationClient({
         setDeals((prev) =>
           prev.map((d) =>
             d.id === dealId
-              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              ? {
+                  ...d,
+                  moderationStatus: deal?.moderationStatus ?? 'pending_review',
+                }
               : d,
           ),
         )
@@ -143,7 +146,10 @@ export function DealModerationClient({
         setDeals((prev) =>
           prev.map((d) =>
             d.id === dealId
-              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              ? {
+                  ...d,
+                  moderationStatus: deal?.moderationStatus ?? 'pending_review',
+                }
               : d,
           ),
         )
@@ -180,7 +186,10 @@ export function DealModerationClient({
         setDeals((prev) =>
           prev.map((d) =>
             d.id === dealId
-              ? { ...d, moderationStatus: deal?.moderationStatus ?? 'pending_review' }
+              ? {
+                  ...d,
+                  moderationStatus: deal?.moderationStatus ?? 'pending_review',
+                }
               : d,
           ),
         )

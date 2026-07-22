@@ -18,8 +18,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  type BusinessClaim,
   approveClaimAction,
+  type BusinessClaim,
   getBusinessClaimsAction,
   rejectClaimAction,
 } from '@/lib/actions/admin-actions'
@@ -172,7 +172,10 @@ function ClaimActionModal({
             — {claim.email}
           </p>
           <p>
-            Business: <span className="font-medium text-[#451a03]">{claim.business_name ?? 'Unknown'}</span>
+            Business:{' '}
+            <span className="font-medium text-[#451a03]">
+              {claim.business_name ?? 'Unknown'}
+            </span>
           </p>
         </div>
 
@@ -253,7 +256,9 @@ function PendingClaimsSection({
 
   // Modal state
   const [modalClaim, setModalClaim] = useState<BusinessClaim | null>(null)
-  const [modalAction, setModalAction] = useState<'approve' | 'reject'>('approve')
+  const [modalAction, setModalAction] = useState<'approve' | 'reject'>(
+    'approve',
+  )
 
   useEffect(() => {
     async function fetchClaims() {
@@ -307,9 +312,7 @@ function PendingClaimsSection({
             : 'Claim rejected',
         )
       } else {
-        onFeedback(
-          `Failed to ${modalAction}: ${result.error}`,
-        )
+        onFeedback(`Failed to ${modalAction}: ${result.error}`)
         // Revert on failure — re-fetch
         const refreshed = await getBusinessClaimsAction('pending')
         if (refreshed.success && refreshed.claims) {
@@ -324,7 +327,14 @@ function PendingClaimsSection({
         return next
       })
     },
-    [modalClaim, modalAction, claims.length, onFeedback, onClaimCountChange, closeModal],
+    [
+      modalClaim,
+      modalAction,
+      claims.length,
+      onFeedback,
+      onClaimCountChange,
+      closeModal,
+    ],
   )
 
   if (loading) {
@@ -422,7 +432,9 @@ function PendingClaimsSection({
                           <p className="text-sm font-medium text-[#451a03]">
                             {claim.first_name ?? ''} {claim.last_name ?? ''}
                           </p>
-                          <p className="text-xs text-[#92400e]">{claim.email}</p>
+                          <p className="text-xs text-[#92400e]">
+                            {claim.email}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -535,9 +547,7 @@ function PendingClaimsSection({
 
                 {/* Verification method + document link */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <VerificationMethodBadge
-                    method={claim.verification_method}
-                  />
+                  <VerificationMethodBadge method={claim.verification_method} />
                   {claim.evidence_document_url && (
                     <a
                       href={claim.evidence_document_url}
@@ -753,7 +763,10 @@ export function BusinessesManagementClient({
           }`}
         >
           <span className="flex items-center gap-2">
-            <Storefront size={18} weight={activeTopTab === 'businesses' ? 'fill' : 'light'} />
+            <Storefront
+              size={18}
+              weight={activeTopTab === 'businesses' ? 'fill' : 'light'}
+            />
             Businesses
           </span>
         </button>
@@ -767,7 +780,10 @@ export function BusinessesManagementClient({
           }`}
         >
           <span className="flex items-center gap-2">
-            <ClockCountdown size={18} weight={activeTopTab === 'claims' ? 'fill' : 'light'} />
+            <ClockCountdown
+              size={18}
+              weight={activeTopTab === 'claims' ? 'fill' : 'light'}
+            />
             Pending Claims
             {pendingClaimCount > 0 && (
               <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-800 text-white">
@@ -856,7 +872,8 @@ export function BusinessesManagementClient({
 
           {/* Pagination placeholder */}
           <div className="text-sm text-[#92400e] text-center">
-            Showing {filteredBusinesses.length} of {businesses.length} businesses
+            Showing {filteredBusinesses.length} of {businesses.length}{' '}
+            businesses
           </div>
         </>
       )}

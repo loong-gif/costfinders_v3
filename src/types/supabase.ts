@@ -131,9 +131,7 @@ export function offerItemName(offer: Offer): string {
 export function offerServiceCategory(offer: Offer): string {
   const service = itemService(firstItem(offer))
   return (
-    service?.service_category?.trim() ||
-    offer.service_category?.trim() ||
-    ''
+    service?.service_category?.trim() || offer.service_category?.trim() || ''
   )
 }
 

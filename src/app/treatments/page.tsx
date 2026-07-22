@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { BreadcrumbSchema } from '@/components/seo'
 import { TreatmentsPageContent } from '@/components/features/treatments/treatmentsPageContent'
+import { BreadcrumbSchema } from '@/components/seo'
 import { getUnifiedCategories } from '@/lib/data/unified'
 import { buildCanonicalUrl, SITE_CONFIG } from '@/lib/seo/metadata'
 
@@ -36,10 +36,7 @@ export default async function TreatmentsPage() {
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
-      <TreatmentsPageContent
-        categories={categories}
-        totalDeals={totalDeals}
-      />
+      <TreatmentsPageContent categories={categories} totalDeals={totalDeals} />
     </>
   )
 }

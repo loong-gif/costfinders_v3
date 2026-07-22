@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -68,9 +68,7 @@ export async function createNotificationAction(
       insertPayload.link = link
     }
 
-    const { error } = await supabase
-      .from('notifications')
-      .insert(insertPayload)
+    const { error } = await supabase.from('notifications').insert(insertPayload)
 
     if (error) {
       return { success: false, error: error.message }

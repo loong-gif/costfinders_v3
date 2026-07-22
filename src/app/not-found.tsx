@@ -1,10 +1,16 @@
-import { MagnifyingGlass, House, Tag, Sparkle } from '@phosphor-icons/react/dist/ssr'
+import {
+  House,
+  MagnifyingGlass,
+  Sparkle,
+  Tag,
+} from '@phosphor-icons/react/dist/ssr'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
-  description: 'The page you are looking for does not exist. Browse medspa deals, treatments, and pricing guides on CostFinders.',
+  description:
+    'The page you are looking for does not exist. Browse medspa deals, treatments, and pricing guides on CostFinders.',
 }
 
 export default function NotFound() {
@@ -12,7 +18,11 @@ export default function NotFound() {
     <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-2xl mx-auto text-center py-16">
         <div className="w-16 h-16 rounded-2xl bg-amber-800/10 flex items-center justify-center mx-auto mb-6">
-          <MagnifyingGlass size={32} weight="light" className="text-amber-800" />
+          <MagnifyingGlass
+            size={32}
+            weight="light"
+            className="text-amber-800"
+          />
         </div>
 
         <h1 className="text-4xl font-bold text-[#451a03] mb-4">

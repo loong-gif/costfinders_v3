@@ -106,7 +106,9 @@ export function BusinessAuthProvider({
     const supabase = supabaseRef.current
 
     // Quick check: skip network call for anonymous visitors
-    const { data: { session } } = await supabase.auth.getSession()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
     if (!session) {
       setState({
         owner: null,

@@ -70,11 +70,9 @@ export default function AccountSettingsPage() {
     )
   }
 
-  const handleRemovePaymentMethod = (id: string) => {
-  }
+  const handleRemovePaymentMethod = (_id: string) => {}
 
-  const handleSetDefaultPaymentMethod = (id: string) => {
-  }
+  const handleSetDefaultPaymentMethod = (_id: string) => {}
 
   return (
     <div className="space-y-6">

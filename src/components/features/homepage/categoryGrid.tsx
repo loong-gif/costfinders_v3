@@ -41,39 +41,41 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.filter((c) => c.count >= 2).map((cat, index) => {
-            const IconComponent = CATEGORY_ICONS[cat.slug] ?? FirstAid
-            return (
-              <ScrollRevealItem
-                key={cat.slug}
-                index={index}
-                animation="scaleIn"
-                stagger={80}
-              >
-                <Link
-                  href={`/treatments/${cat.slug}`}
-                  className="group block bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-5 text-center hover:border-amber-800/30 hover:shadow-[0_0_24px_rgba(146,64,14,0.1)] transition-all duration-300 cursor-pointer relative overflow-hidden"
+          {categories
+            .filter((c) => c.count >= 2)
+            .map((cat, index) => {
+              const IconComponent = CATEGORY_ICONS[cat.slug] ?? FirstAid
+              return (
+                <ScrollRevealItem
+                  key={cat.slug}
+                  index={index}
+                  animation="scaleIn"
+                  stagger={80}
                 >
-                  {/* Bottom accent border — appears on hover */}
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-800 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                  <Link
+                    href={`/treatments/${cat.slug}`}
+                    className="group block bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-5 text-center hover:border-amber-800/30 hover:shadow-[0_0_24px_rgba(146,64,14,0.1)] transition-all duration-300 cursor-pointer relative overflow-hidden"
+                  >
+                    {/* Bottom accent border — appears on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-800 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
 
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-800/8 group-hover:bg-amber-800/15 transition-all duration-300 mb-3">
-                    <IconComponent
-                      size={24}
-                      weight="duotone"
-                      className="text-amber-800 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300"
-                    />
-                  </div>
-                  <p className="text-sm font-semibold text-[#451a03] group-hover:text-amber-800 transition-colors duration-300 mb-0.5">
-                    {cat.label}
-                  </p>
-                  <p className="text-xs text-[#92400e]">
-                    {cat.count} {cat.count === 1 ? 'deal' : 'deals'}
-                  </p>
-                </Link>
-              </ScrollRevealItem>
-            )
-          })}
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-800/8 group-hover:bg-amber-800/15 transition-all duration-300 mb-3">
+                      <IconComponent
+                        size={24}
+                        weight="duotone"
+                        className="text-amber-800 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300"
+                      />
+                    </div>
+                    <p className="text-sm font-semibold text-[#451a03] group-hover:text-amber-800 transition-colors duration-300 mb-0.5">
+                      {cat.label}
+                    </p>
+                    <p className="text-xs text-[#92400e]">
+                      {cat.count} {cat.count === 1 ? 'deal' : 'deals'}
+                    </p>
+                  </Link>
+                </ScrollRevealItem>
+              )
+            })}
         </div>
       </div>
     </section>

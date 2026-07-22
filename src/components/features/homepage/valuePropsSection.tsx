@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  MagnifyingGlass,
-  PiggyBank,
-  Scales,
-} from '@phosphor-icons/react'
+import { MagnifyingGlass, PiggyBank, Scales } from '@phosphor-icons/react'
 import Image from 'next/image'
 import { useScrollReveal } from '@/lib/hooks/useScrollReveal'
 
@@ -48,10 +44,7 @@ export function ValuePropsSection() {
       />
 
       {/* Dark warm overlay */}
-      <div
-        className="absolute inset-0 bg-[#451a03]/80"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-[#451a03]/80" aria-hidden="true" />
 
       <div
         ref={ref}

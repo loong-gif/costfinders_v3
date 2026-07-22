@@ -35,8 +35,7 @@ export function ClaimDealModal({
   onSuccess,
 }: ClaimDealModalProps) {
   const [preferredDate, setPreferredDate] = useState('')
-  const [preferredTime, setPreferredTime] =
-    useState<TimePreference>('flexible')
+  const [preferredTime, setPreferredTime] = useState<TimePreference>('flexible')
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -71,7 +70,9 @@ export function ClaimDealModal({
       if (!result.success) {
         // Surface user-friendly message; fall back to error code
         setError(
-          result.message ?? result.error ?? 'Failed to submit claim. Please try again.',
+          result.message ??
+            result.error ??
+            'Failed to submit claim. Please try again.',
         )
         return
       }

@@ -1,9 +1,9 @@
 'use server'
 
-import { logger } from '@/lib/logger'
 import { sendEmailAction } from '@/lib/actions/notifications'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { buildEmailHtml } from '@/lib/email/templates'
+import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,7 +58,10 @@ export async function createBusinessClaimAction(
 
     const role = user.user_metadata?.role as string | undefined
     if (role !== 'business') {
-      return { success: false, error: 'Only business accounts can claim a business.' }
+      return {
+        success: false,
+        error: 'Only business accounts can claim a business.',
+      }
     }
 
     const numericBusinessId = Number(businessId)
@@ -76,7 +79,10 @@ export async function createBusinessClaimAction(
 
     if (existingClaim) {
       if (existingClaim.status === 'approved') {
-        return { success: false, error: 'This business has already been claimed.' }
+        return {
+          success: false,
+          error: 'This business has already been claimed.',
+        }
       }
       return {
         success: false,
@@ -165,7 +171,10 @@ export async function sendVerificationCodeAction(
     // 3. Determine email address — use claimant's email
     const recipientEmail = user.email
     if (!recipientEmail) {
-      return { success: false, error: 'No email address found for your account.' }
+      return {
+        success: false,
+        error: 'No email address found for your account.',
+      }
     }
 
     // 4. Generate 6-digit code
@@ -362,11 +371,7 @@ export async function uploadVerificationDocAction(
       return { success: false, error: 'No file provided.' }
     }
 
-    const allowedTypes = [
-      'application/pdf',
-      'image/jpeg',
-      'image/png',
-    ]
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png']
     if (!allowedTypes.includes(file.type)) {
       return {
         success: false,
@@ -376,7 +381,10 @@ export async function uploadVerificationDocAction(
 
     const maxSize = 5 * 1024 * 1024 // 5MB
     if (file.size > maxSize) {
-      return { success: false, error: 'File is too large. Maximum size is 5MB.' }
+      return {
+        success: false,
+        error: 'File is too large. Maximum size is 5MB.',
+      }
     }
 
     // 4. Upload to Supabase Storage

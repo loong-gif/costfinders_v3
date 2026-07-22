@@ -1,7 +1,7 @@
 'use client'
 
-import { useScrollReveal } from '@/lib/hooks/useScrollReveal'
 import type { ReactNode } from 'react'
+import { useScrollReveal } from '@/lib/hooks/useScrollReveal'
 
 type Animation = 'fadeInUp' | 'fadeIn' | 'scaleIn' | 'slideInLeft'
 

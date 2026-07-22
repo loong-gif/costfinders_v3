@@ -1,16 +1,16 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { claimConfirmationEmail } from '@/lib/email/templates'
 import { getOrCreateConversationAction } from '@/lib/actions/messaging'
 import { createNotificationAction } from '@/lib/actions/notification-actions'
 import {
   sendClaimNotificationEmail,
   sendEmailAction,
 } from '@/lib/actions/notifications'
+import { claimConfirmationEmail } from '@/lib/email/templates'
+import { logger } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { ClaimStatus } from '@/types/claim'
-import { logger } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -225,8 +225,7 @@ export async function createClaimAction(
 
     // --- Best-effort confirmation email to consumer ---
     if (user.email) {
-      const consumerName =
-        user.user_metadata?.full_name ?? user.email
+      const consumerName = user.user_metadata?.full_name ?? user.email
       const { subject, html } = claimConfirmationEmail(
         consumerName,
         dealTitle,
@@ -440,9 +439,7 @@ export async function getBusinessRevealAction(
     // Fetch business details
     const { data: business, error: bizError } = await supabase
       .from('master_business_info')
-      .select(
-        'business_id, name, address, city, website, score, review_count',
-      )
+      .select('business_id, name, address, city, website, score, review_count')
       .eq('business_id', claim.business_id)
       .single()
 

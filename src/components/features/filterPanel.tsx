@@ -2,9 +2,9 @@
 
 import { Funnel, X } from '@phosphor-icons/react'
 import { useState } from 'react'
-import { trackEvent } from '@/lib/analytics'
 import { PriceRangeFilter } from '@/components/patterns/priceRangeFilter'
 import { SortSelector } from '@/components/patterns/sortSelector'
+import { trackEvent } from '@/lib/analytics'
 import type { DealFilters, SortOption } from '@/lib/mock-data'
 
 interface FilterPanelProps {

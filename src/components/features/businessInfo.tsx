@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  CheckCircle,
-  Clock,
-  Globe,
-  MapPin,
-  Star,
-} from '@phosphor-icons/react'
+import { CheckCircle, Clock, Globe, MapPin, Star } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import type { RevealedBusiness } from '@/lib/actions/claims'
@@ -54,10 +48,7 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
           {/* Address */}
           {business.address && (
             <div className="flex items-start gap-2">
-              <MapPin
-                size={18}
-                className="text-[#92400e] mt-0.5 shrink-0"
-              />
+              <MapPin size={18} className="text-[#92400e] mt-0.5 shrink-0" />
               <span className="text-sm text-[#78350f]">
                 {business.address}
                 {business.city && (
@@ -113,11 +104,7 @@ export function BusinessInfo({ business, deal }: BusinessInfoProps) {
             </div>
             <div className="p-3 bg-[#faf5ee] rounded-xl">
               <div className="flex items-center gap-2 text-sm">
-                <Clock
-                  size={16}
-                  weight="regular"
-                  className="text-[#92400e]"
-                />
+                <Clock size={16} weight="regular" className="text-[#92400e]" />
                 <span className="text-[#78350f]">
                   Status:{' '}
                   <span className="text-[#451a03] capitalize">

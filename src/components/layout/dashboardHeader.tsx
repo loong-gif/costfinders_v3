@@ -66,15 +66,15 @@ export function DashboardHeader() {
             href="/dashboard/settings"
             className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
           >
-          <div className="w-8 h-8 rounded-full bg-amber-800/15 flex items-center justify-center">
-            <span className="text-xs font-semibold text-amber-800">
-              {initial}
+            <div className="w-8 h-8 rounded-full bg-amber-800/15 flex items-center justify-center">
+              <span className="text-xs font-semibold text-amber-800">
+                {initial}
+              </span>
+            </div>
+            <span className="hidden sm:block text-sm font-medium text-[#451a03]">
+              {displayName}
             </span>
-          </div>
-          <span className="hidden sm:block text-sm font-medium text-[#451a03]">
-            {displayName}
-          </span>
-        </Link>
+          </Link>
         </div>
       </div>
     </header>

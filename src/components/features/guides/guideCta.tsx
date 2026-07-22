@@ -21,7 +21,10 @@ export function GuideCta({
 }: GuideCtaProps) {
   // Separate same-treatment (other cities) and same-city (other treatments)
   const otherCities = relatedGuides
-    .filter((g) => g.treatment === treatmentSlug && g.city !== dealsLink.split('/').pop())
+    .filter(
+      (g) =>
+        g.treatment === treatmentSlug && g.city !== dealsLink.split('/').pop(),
+    )
     .slice(0, 4)
   const otherTreatments = relatedGuides
     .filter((g) => g.treatment !== treatmentSlug)
@@ -66,8 +69,7 @@ export function GuideCta({
                   className="text-amber-800 shrink-0"
                 />
                 <span className="text-sm font-medium text-[#451a03]">
-                  {treatmentLabel} pricing in{' '}
-                  {formatCitySlug(guide.city)}
+                  {treatmentLabel} pricing in {formatCitySlug(guide.city)}
                 </span>
               </Link>
             ))}

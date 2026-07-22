@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  Check,
-  PencilSimple,
-  Plus,
-  Spinner,
-  X,
-} from '@phosphor-icons/react'
+import { Check, PencilSimple, Plus, Spinner, X } from '@phosphor-icons/react'
 import { useCallback, useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -63,9 +57,7 @@ export default function CategoriesManagementPage() {
       const result = await toggleCategoryAction(id, !currentActive)
       if (result.success) {
         await loadCategories()
-        showFeedback(
-          `Category ${currentActive ? 'deactivated' : 'activated'}`,
-        )
+        showFeedback(`Category ${currentActive ? 'deactivated' : 'activated'}`)
       } else {
         showFeedback(result.error ?? 'Failed to toggle status', 'error')
       }
@@ -355,9 +347,7 @@ export default function CategoriesManagementPage() {
                     >
                       <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          category.is_active
-                            ? 'translate-x-6'
-                            : 'translate-x-1'
+                          category.is_active ? 'translate-x-6' : 'translate-x-1'
                         }`}
                       />
                     </button>

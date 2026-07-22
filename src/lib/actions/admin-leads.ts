@@ -40,7 +40,9 @@ export async function getUnrelayedLeadsAction(): Promise<{
   try {
     const supabase = await createSupabaseServerClient()
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user || user.user_metadata?.role !== 'admin') {
       return { success: false, error: 'Not authorized' }
     }
@@ -76,7 +78,9 @@ export async function getRelayedLeadsAction(): Promise<{
   try {
     const supabase = await createSupabaseServerClient()
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user || user.user_metadata?.role !== 'admin') {
       return { success: false, error: 'Not authorized' }
     }
@@ -112,7 +116,9 @@ export async function markLeadRelayedAction(
   try {
     const supabase = await createSupabaseServerClient()
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user || user.user_metadata?.role !== 'admin') {
       return { success: false, error: 'Not authorized' }
     }

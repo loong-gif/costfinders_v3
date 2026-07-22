@@ -47,14 +47,12 @@ export function BaseSidebar({
   const visibleMobileItems = hasOverflow
     ? navItems.slice(0, mobileNavCount)
     : navItems
-  const overflowItems = hasOverflow
-    ? navItems.slice(mobileNavCount)
-    : []
+  const overflowItems = hasOverflow ? navItems.slice(mobileNavCount) : []
 
   // Close menu on route change
   useEffect(() => {
     setMoreMenuOpen(false)
-  }, [pathname])
+  }, [])
 
   // Close menu on escape key
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -168,7 +166,8 @@ export function BaseSidebar({
                 flex flex-col items-center gap-1 px-3 py-2 rounded-xl
                 transition-all duration-200
                 ${
-                  moreMenuOpen || overflowItems.some((item) => isActive(item.href))
+                  moreMenuOpen ||
+                  overflowItems.some((item) => isActive(item.href))
                     ? 'text-amber-800'
                     : 'text-[#78350f] hover:text-[#451a03]'
                 }
@@ -179,7 +178,8 @@ export function BaseSidebar({
               <DotsThreeCircle
                 size={24}
                 weight={
-                  moreMenuOpen || overflowItems.some((item) => isActive(item.href))
+                  moreMenuOpen ||
+                  overflowItems.some((item) => isActive(item.href))
                     ? 'fill'
                     : 'light'
                 }
@@ -206,9 +206,7 @@ export function BaseSidebar({
           {/* Menu panel */}
           <div className="md:hidden fixed bottom-[72px] left-4 right-4 bg-[#f2ebe2] border border-[#d4c4b0] rounded-2xl shadow-xl z-[60] overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#d4c4b0]">
-              <span className="text-sm font-semibold text-[#451a03]">
-                More
-              </span>
+              <span className="text-sm font-semibold text-[#451a03]">More</span>
               <button
                 type="button"
                 onClick={() => setMoreMenuOpen(false)}

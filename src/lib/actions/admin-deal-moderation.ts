@@ -1,22 +1,19 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import {
-  dealApprovalEmail,
-  dealRejectionEmail,
-} from '@/lib/email/templates'
+import { logAdminAction } from '@/lib/actions/audit'
 import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
-import type { ModerationStatus } from '@/types/deal'
 import {
-  mapModerationDealRow,
   MODERATION_DEAL_SELECT,
+  mapModerationDealRow,
   moderationStatusToIsActive,
   offerDisplayTitle,
 } from '@/lib/data/offer-query'
+import { dealApprovalEmail, dealRejectionEmail } from '@/lib/email/templates'
 import { logger } from '@/lib/logger'
-import { logAdminAction } from '@/lib/actions/audit'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
+import type { ModerationStatus } from '@/types/deal'
 
 // ---------------------------------------------------------------------------
 // Types

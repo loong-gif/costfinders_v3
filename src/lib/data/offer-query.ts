@@ -48,7 +48,8 @@ export function enrichOffer<T extends Offer>(offer: T): T {
   return {
     ...offer,
     original_price: offer.regular_price,
-    service_name: offerItemName(offer) || offer.offer_raw_text?.slice(0, 60) || null,
+    service_name:
+      offerItemName(offer) || offer.offer_raw_text?.slice(0, 60) || null,
     service_category: offerServiceCategory(offer) || null,
     source_url: offerSourceUrl(offer) || null,
     unit_type: offerUnitType(offer) || null,
@@ -57,7 +58,9 @@ export function enrichOffer<T extends Offer>(offer: T): T {
 }
 
 export function offerDisplayTitle(
-  offer: Pick<Offer, 'id' | 'offer_raw_text'> & { service_name?: string | null },
+  offer: Pick<Offer, 'id' | 'offer_raw_text'> & {
+    service_name?: string | null
+  },
 ): string {
   return (
     offer.service_name?.trim() ||
@@ -67,9 +70,7 @@ export function offerDisplayTitle(
 }
 
 /** ponytail: live schema has is_active only — rejected/changes_requested both map to inactive. */
-export function moderationStatusToIsActive(
-  status: string,
-): boolean | null {
+export function moderationStatusToIsActive(status: string): boolean | null {
   if (status === 'approved') return true
   if (
     status === 'pending_review' ||
@@ -85,7 +86,9 @@ export function enrichOffers<T extends Offer>(offers: T[]): T[] {
   return offers.map(enrichOffer)
 }
 
-export function moderationStatusFromActive(isActive: boolean | null | undefined) {
+export function moderationStatusFromActive(
+  isActive: boolean | null | undefined,
+) {
   return isActive ? 'approved' : 'pending_review'
 }
 
@@ -111,11 +114,9 @@ export function buildLiveOfferInsertPayload(
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     business_id: businessId,
-    is_active: options?.pendingReview ? false : true,
+    is_active: !options?.pendingReview,
     offer_raw_text:
-      data.offer_raw_text?.trim() ||
-      data.service_name?.trim() ||
-      null,
+      data.offer_raw_text?.trim() || data.service_name?.trim() || null,
   }
 
   if (data.original_price != null) payload.regular_price = data.original_price

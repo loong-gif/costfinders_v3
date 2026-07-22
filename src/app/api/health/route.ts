@@ -22,13 +22,16 @@ export async function GET() {
 
   const allOk = Object.values(checks).every((v) => v === 'ok')
 
-  return Response.json({
-    status: allOk ? 'healthy' : 'degraded',
-    checks,
-    latency_ms: Math.round(performance.now() - start),
-    timestamp: new Date().toISOString(),
-  }, {
-    status: allOk ? 200 : 503,
-    headers: { 'Cache-Control': 'no-store' },
-  })
+  return Response.json(
+    {
+      status: allOk ? 'healthy' : 'degraded',
+      checks,
+      latency_ms: Math.round(performance.now() - start),
+      timestamp: new Date().toISOString(),
+    },
+    {
+      status: allOk ? 200 : 503,
+      headers: { 'Cache-Control': 'no-store' },
+    },
+  )
 }

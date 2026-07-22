@@ -1,5 +1,5 @@
-import { getBusinesses } from '@/lib/data/businesses'
 import { inferState } from '@/lib/data/adapters'
+import { getBusinesses } from '@/lib/data/businesses'
 import type { Business } from '@/types/business'
 import { BusinessesManagementClient } from './businessesClient'
 

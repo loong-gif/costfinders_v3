@@ -1,6 +1,13 @@
 'use client'
 
-import { Lock, MapPin, ShieldCheck, Sparkle, Star, Syringe } from '@phosphor-icons/react'
+import {
+  Lock,
+  MapPin,
+  ShieldCheck,
+  Sparkle,
+  Star,
+  Syringe,
+} from '@phosphor-icons/react'
 import { BlurredImage } from '@/components/patterns/blurredImage'
 import { SaveButton } from '@/components/patterns/saveButton'
 import { Badge } from '@/components/ui/badge'
@@ -33,7 +40,11 @@ const categoryIcons: Record<TreatmentCategory, typeof Syringe> = {
 
 function getEffectiveDiscount(deal: AnonymousDeal): number {
   if (deal.discountPercent > 0) return deal.discountPercent
-  if (deal.originalPrice > 0 && deal.dealPrice > 0 && deal.originalPrice > deal.dealPrice) {
+  if (
+    deal.originalPrice > 0 &&
+    deal.dealPrice > 0 &&
+    deal.originalPrice > deal.dealPrice
+  ) {
     return Math.round((1 - deal.dealPrice / deal.originalPrice) * 100)
   }
   return 0
@@ -62,9 +73,15 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
       <div
         className={`
           relative bg-[#faf5ee]
-          ${isGrid
-            ? hasImage ? 'aspect-[4/3]' : 'aspect-[3/1]'
-            : hasImage ? 'w-48 shrink-0 aspect-square' : 'w-32 shrink-0'}
+          ${
+            isGrid
+              ? hasImage
+                ? 'aspect-[4/3]'
+                : 'aspect-[3/1]'
+              : hasImage
+                ? 'w-48 shrink-0 aspect-square'
+                : 'w-32 shrink-0'
+          }
         `}
       >
         {hasImage ? (
@@ -77,7 +94,11 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           /* Compact placeholder with category context */
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#faf5ee] to-[#f0e4d4]">
             <div className="w-10 h-10 rounded-full bg-[#f2ebe2] border border-[#d4c4b0] flex items-center justify-center">
-              <CategoryIcon size={20} weight="light" className="text-[#78350f]" />
+              <CategoryIcon
+                size={20}
+                weight="light"
+                className="text-[#78350f]"
+              />
             </div>
             <span className="text-[10px] text-[#92400e] font-medium">
               {categoryLabels[deal.category]}
@@ -144,7 +165,8 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
           {hasDealPrice ? (
             deal.unit === 'unit' && deal.dealPrice < 50 ? (
               <span className="text-xl font-bold font-mono text-amber-800 group-hover:text-amber-700 transition-colors duration-300">
-                ${deal.dealPrice}<span className="text-base font-semibold">/unit</span>
+                ${deal.dealPrice}
+                <span className="text-base font-semibold">/unit</span>
               </span>
             ) : (
               <span className="text-xl font-bold font-mono text-amber-800 group-hover:text-amber-700 transition-colors duration-300">
@@ -156,11 +178,13 @@ export function DealCard({ deal, onClick, variant = 'grid' }: DealCardProps) {
               Contact for pricing
             </span>
           )}
-          {hasOriginalPrice && hasDealPrice && deal.originalPrice > deal.dealPrice && (
-            <span className="text-sm text-[#92400e] line-through">
-              ${deal.originalPrice}
-            </span>
-          )}
+          {hasOriginalPrice &&
+            hasDealPrice &&
+            deal.originalPrice > deal.dealPrice && (
+              <span className="text-sm text-[#92400e] line-through">
+                ${deal.originalPrice}
+              </span>
+            )}
         </div>
 
         {/* Unit Info — hidden when already shown inline */}

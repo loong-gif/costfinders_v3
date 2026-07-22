@@ -39,7 +39,7 @@ export async function generateStaticParams() {
 
   return citiesWithState.flatMap(({ city, state }, i) =>
     providerResults[i].map((provider) => ({
-      state: state!.slug,
+      state: state?.slug,
       city: city.slug,
       slug: provider.slug,
     })),
@@ -168,9 +168,10 @@ export default async function ProviderPage({ params }: ProviderPageProps) {
                 postalCode: '',
               },
               url: provider.website || undefined,
-              rating: provider.rating > 0 && provider.reviewCount > 0
-                ? { value: provider.rating, count: provider.reviewCount }
-                : undefined,
+              rating:
+                provider.rating > 0 && provider.reviewCount > 0
+                  ? { value: provider.rating, count: provider.reviewCount }
+                  : undefined,
             }),
           ),
         }}

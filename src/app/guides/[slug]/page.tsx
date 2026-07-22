@@ -15,14 +15,17 @@ import {
   loadGuideContent,
   parseGuideSlug,
 } from '@/lib/data/guide-content'
-import { getGuideDealsPreview, getGuidePricingStats } from '@/lib/data/guide-stats'
-import type { TreatmentCategory } from '@/types/deal'
+import {
+  getGuideDealsPreview,
+  getGuidePricingStats,
+} from '@/lib/data/guide-stats'
 import {
   buildCanonicalUrl,
   generateGuideMetadata,
   SITE_CONFIG,
 } from '@/lib/seo/metadata'
-import { buildBreadcrumbSchema, buildFaqSchema, buildPricingGuideSchema } from '@/lib/seo/schemas'
+import { buildPricingGuideSchema } from '@/lib/seo/schemas'
+import type { TreatmentCategory } from '@/types/deal'
 
 export const revalidate = 86400 // ISR: regenerate every 24 hours
 

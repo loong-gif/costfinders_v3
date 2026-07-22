@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react'
 import { DealForm } from '@/components/features/dealManagement/dealForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import { getDealByIdForBusinessAction } from '@/lib/actions/deal-management'
+import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import type { Offer } from '@/types/supabase'
 
 export default function EditDealPage() {
@@ -83,10 +83,13 @@ export default function EditDealPage() {
       <Card variant="glass" padding="lg">
         <div className="text-center py-12">
           <h2 className="text-lg font-medium text-[#451a03] mb-2">
-            {loadError === 'Deal not found.' ? 'Deal Not Found' : 'Cannot Load Deal'}
+            {loadError === 'Deal not found.'
+              ? 'Deal Not Found'
+              : 'Cannot Load Deal'}
           </h2>
           <p className="text-[#78350f] mb-6">
-            {loadError ?? 'The deal you are looking for does not exist or has been deleted.'}
+            {loadError ??
+              'The deal you are looking for does not exist or has been deleted.'}
           </p>
           <Button onClick={() => router.push('/business/dashboard/deals')}>
             Back to Deals

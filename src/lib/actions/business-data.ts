@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -118,7 +118,9 @@ export async function searchBusinessesAction(
       address: b.address,
       city: b.city,
       category: b.category,
-      claim_status: (claimMap.get(b.business_id) as BusinessSearchResult['claim_status']) ?? 'unclaimed',
+      claim_status:
+        (claimMap.get(b.business_id) as BusinessSearchResult['claim_status']) ??
+        'unclaimed',
     }))
 
     return { success: true, businesses: results }
@@ -250,16 +252,24 @@ export async function updateBusinessAction(
     }
 
     if (profile.claim_status !== 'approved') {
-      return { success: false, error: 'Your business claim is not yet approved.' }
+      return {
+        success: false,
+        error: 'Your business claim is not yet approved.',
+      }
     }
 
     // Build sanitized update payload
     const payload: Record<string, string | null> = {}
-    if (updates.name !== undefined) payload.name = stripHtml(updates.name.trim())
-    if (updates.address !== undefined) payload.address = stripHtml(updates.address.trim())
-    if (updates.city !== undefined) payload.city = stripHtml(updates.city.trim())
-    if (updates.website !== undefined) payload.website = updates.website.trim() || null
-    if (updates.category !== undefined) payload.category = stripHtml(updates.category.trim())
+    if (updates.name !== undefined)
+      payload.name = stripHtml(updates.name.trim())
+    if (updates.address !== undefined)
+      payload.address = stripHtml(updates.address.trim())
+    if (updates.city !== undefined)
+      payload.city = stripHtml(updates.city.trim())
+    if (updates.website !== undefined)
+      payload.website = updates.website.trim() || null
+    if (updates.category !== undefined)
+      payload.category = stripHtml(updates.category.trim())
 
     if (Object.keys(payload).length === 0) {
       return { success: false, error: 'No valid fields to update.' }

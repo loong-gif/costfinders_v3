@@ -15,12 +15,12 @@ import { DealsGrid } from '@/components/features/dealsGrid'
 import { FilterPanel } from '@/components/features/filterPanel'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
+import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
 import {
   type DealFilters,
   type SortOption,
   sortDeals,
 } from '@/lib/utils/deal-sorting'
-import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
 import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface TreatmentCityPageProps {
@@ -151,7 +151,16 @@ export function TreatmentCityPage({
             Other Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {(['botox', 'fillers', 'facials', 'laser', 'body', 'skincare'] as const)
+            {(
+              [
+                'botox',
+                'fillers',
+                'facials',
+                'laser',
+                'body',
+                'skincare',
+              ] as const
+            )
               .filter((slug) => slug !== treatmentSlug)
               .map((slug) => (
                 <Link

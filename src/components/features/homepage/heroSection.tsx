@@ -39,7 +39,8 @@ export function HeroSection({
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-hero-fade-in [animation-delay:0ms]">
             <TrendUp size={16} weight="bold" className="text-amber-300" />
             <span className="text-sm text-white/90 font-medium">
-              {totalOffers} deals from {totalBusinesses} {totalBusinesses === 1 ? 'provider' : 'providers'}
+              {totalOffers} deals from {totalBusinesses}{' '}
+              {totalBusinesses === 1 ? 'provider' : 'providers'}
             </span>
           </div>
 

@@ -9,12 +9,12 @@ import { FilterPanel } from '@/components/features/filterPanel'
 import { CategoryFilter } from '@/components/patterns/categoryFilter'
 import { Card } from '@/components/ui/card'
 import { Faq } from '@/components/ui/faq'
+import { getCityDealsFaqs } from '@/lib/seo/faq-content'
 import {
   type DealFilters,
   type SortOption,
   sortDeals,
 } from '@/lib/utils/deal-sorting'
-import { getCityDealsFaqs } from '@/lib/seo/faq-content'
 import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
 interface CityDealsPageProps {
@@ -143,7 +143,16 @@ export function CityDealsPage({
             Popular Treatments in {cityName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {(['botox', 'fillers', 'facials', 'laser', 'body', 'skincare'] as const).map((slug) => (
+            {(
+              [
+                'botox',
+                'fillers',
+                'facials',
+                'laser',
+                'body',
+                'skincare',
+              ] as const
+            ).map((slug) => (
               <Link
                 key={slug}
                 href={`/deals/${slug}/${citySlug}`}

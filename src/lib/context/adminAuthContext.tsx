@@ -9,10 +9,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import {
-  adminSignInAction,
-  adminSignOutAction,
-} from '@/lib/actions/admin-auth'
+import { adminSignInAction, adminSignOutAction } from '@/lib/actions/admin-auth'
 import type { AdminProfile } from '@/lib/actions/admin-profile'
 import { getAdminProfileAction } from '@/lib/actions/admin-profile'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
@@ -63,11 +60,7 @@ function profileToAdmin(
 // Provider
 // ---------------------------------------------------------------------------
 
-export function AdminAuthProvider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AdminAuthState>({
     admin: null,
     isAuthenticated: false,

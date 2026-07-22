@@ -94,7 +94,9 @@ export function BottomSheet({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-[#451a03]/40 backdrop-blur-sm animate-in fade-in duration-200"
-        style={{ opacity: dragY > 0 ? Math.max(0.2, 1 - dragY / 300) : undefined }}
+        style={{
+          opacity: dragY > 0 ? Math.max(0.2, 1 - dragY / 300) : undefined,
+        }}
         onClick={onClose}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') onClose()

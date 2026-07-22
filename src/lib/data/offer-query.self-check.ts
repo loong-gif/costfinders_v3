@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import type { Offer } from '@/types/supabase'
 import {
   buildLiveOfferInsertPayload,
   buildLiveOfferUpdatePayload,
@@ -6,7 +7,6 @@ import {
   moderationStatusFromActive,
   moderationStatusToIsActive,
 } from './offer-query'
-import type { Offer } from '@/types/supabase'
 
 const baseOffer: Offer = {
   id: 1,

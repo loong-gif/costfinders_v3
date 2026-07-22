@@ -312,7 +312,8 @@ export function BusinessSearchModal({
                             )}
                             {isClaimed && (
                               <p className="text-xs text-[#92400e] mt-1 italic">
-                                This business has already been claimed by another owner
+                                This business has already been claimed by
+                                another owner
                               </p>
                             )}
                           </div>

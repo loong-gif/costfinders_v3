@@ -1,7 +1,7 @@
 'use server'
 
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 export async function logAdminAction(
   action: string,
@@ -11,7 +11,9 @@ export async function logAdminAction(
 ) {
   try {
     const supabase = await createSupabaseServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
     if (!user) return // silently skip if not authenticated
 

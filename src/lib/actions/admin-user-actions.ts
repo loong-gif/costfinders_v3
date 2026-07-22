@@ -1,10 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { logAdminAction } from '@/lib/actions/audit'
 import type { Profile } from '@/lib/actions/profile'
 import { logger } from '@/lib/logger'
-import { logAdminAction } from '@/lib/actions/audit'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types

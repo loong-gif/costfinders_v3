@@ -3,8 +3,8 @@
 import { ArrowRight, Storefront } from '@phosphor-icons/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { ScrollReveal } from '@/components/patterns/scrollReveal'
+import { Button } from '@/components/ui/button'
 
 export function BusinessCtaSection() {
   return (

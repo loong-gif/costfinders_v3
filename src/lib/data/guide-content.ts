@@ -25,15 +25,17 @@ export function loadGuideContent(slug: string): GuideContent | null {
 export function getAvailableGuides(): GuideEntry[] {
   try {
     const files = fs.readdirSync(GUIDES_DIR).filter((f) => f.endsWith('.json'))
-    return files.map((file) => {
-      const slug = file.replace('.json', '')
-      const parsed = parseGuideSlug(slug)
-      return {
-        treatment: parsed?.treatment ?? '',
-        city: parsed?.city ?? '',
-        slug,
-      }
-    }).filter((g) => g.treatment && g.city)
+    return files
+      .map((file) => {
+        const slug = file.replace('.json', '')
+        const parsed = parseGuideSlug(slug)
+        return {
+          treatment: parsed?.treatment ?? '',
+          city: parsed?.city ?? '',
+          slug,
+        }
+      })
+      .filter((g) => g.treatment && g.city)
   } catch {
     return []
   }

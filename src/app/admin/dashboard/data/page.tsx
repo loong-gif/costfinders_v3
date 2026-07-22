@@ -197,8 +197,7 @@ export default function DataManagementPage() {
   const [userFilter, setUserFilter] = useState<UserFilter>('all')
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all')
 
-  const handleExport = (type: string) => {
-  }
+  const handleExport = (_type: string) => {}
 
   const filteredActivities = filterActivities(mockActivityLog, activityFilter)
 

@@ -14,7 +14,11 @@ function formatSavings(originalPrice: number, dealPrice: number): string {
 
 function getEffectiveDiscount(deal: AnonymousDeal): number {
   if (deal.discountPercent > 0) return deal.discountPercent
-  if (deal.originalPrice > 0 && deal.dealPrice > 0 && deal.originalPrice > deal.dealPrice) {
+  if (
+    deal.originalPrice > 0 &&
+    deal.dealPrice > 0 &&
+    deal.originalPrice > deal.dealPrice
+  ) {
     return Math.round((1 - deal.dealPrice / deal.originalPrice) * 100)
   }
   return 0
@@ -30,13 +34,18 @@ function formatValidityDate(dateStr: string): string | null {
 export function PricingBreakdown({ deal }: PricingBreakdownProps) {
   const hasDealPrice = deal.dealPrice > 0
   const hasOriginalPrice = deal.originalPrice > 0
-  const hasSavings = hasOriginalPrice && hasDealPrice && deal.originalPrice > deal.dealPrice
-  const savings = hasSavings ? formatSavings(deal.originalPrice, deal.dealPrice) : null
+  const hasSavings =
+    hasOriginalPrice && hasDealPrice && deal.originalPrice > deal.dealPrice
+  const savings = hasSavings
+    ? formatSavings(deal.originalPrice, deal.dealPrice)
+    : null
   const effectiveDiscount = getEffectiveDiscount(deal)
   const hasUnitRange = deal.minUnits || deal.maxUnits
   const exampleUnits = deal.minUnits ?? 20
   const exampleTotal = hasDealPrice ? deal.dealPrice * exampleUnits : 0
-  const exampleSavings = hasSavings ? (deal.originalPrice - deal.dealPrice) * exampleUnits : 0
+  const exampleSavings = hasSavings
+    ? (deal.originalPrice - deal.dealPrice) * exampleUnits
+    : 0
 
   const validFromFormatted = formatValidityDate(deal.validFrom)
   const validUntilFormatted = formatValidityDate(deal.validUntil)
@@ -115,7 +124,10 @@ export function PricingBreakdown({ deal }: PricingBreakdownProps) {
               <div className="flex justify-between text-sm">
                 <span className="text-[#92400e]">Regular price</span>
                 <span className="text-[#92400e] line-through">
-                  ${(Math.round(deal.originalPrice * exampleUnits * 100) / 100).toLocaleString()}
+                  $
+                  {(
+                    Math.round(deal.originalPrice * exampleUnits * 100) / 100
+                  ).toLocaleString()}
                 </span>
               </div>
             )}

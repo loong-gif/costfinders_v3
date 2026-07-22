@@ -1,12 +1,12 @@
 import { cache } from 'react'
-import { supabase } from '@/lib/supabase'
-import type { Offer, OfferWithBusiness } from '@/types/supabase'
 import {
   BUSINESS_JOIN,
   enrichOffer,
   enrichOffers,
   OFFER_EMBED,
 } from '@/lib/data/offer-query'
+import { supabase } from '@/lib/supabase'
+import type { Offer, OfferWithBusiness } from '@/types/supabase'
 
 const TABLE = 'promo_offer_master'
 
@@ -151,9 +151,7 @@ export const getOfferCategories = cache(
 
     const { data: raw, error: rawError } = await supabase
       .from(TABLE)
-      .select(
-        'id, promo_offer_items(clinic_services(service_category))',
-      )
+      .select('id, promo_offer_items(clinic_services(service_category))')
       .eq('is_active', true)
       .gt('discount_price', 0)
 

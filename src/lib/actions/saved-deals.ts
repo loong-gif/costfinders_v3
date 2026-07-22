@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -180,12 +180,10 @@ export async function migrateLocalDealsAction(
       deal_id,
     }))
 
-    const { error } = await supabase
-      .from('saved_deals')
-      .upsert(rows, {
-        onConflict: 'consumer_id,deal_id',
-        ignoreDuplicates: true,
-      })
+    const { error } = await supabase.from('saved_deals').upsert(rows, {
+      onConflict: 'consumer_id,deal_id',
+      ignoreDuplicates: true,
+    })
 
     if (error) {
       return { success: false, error: error.message }

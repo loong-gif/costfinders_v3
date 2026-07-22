@@ -12,7 +12,9 @@ const VALID_MODERATION_STATUSES = new Set<ModerationStatus>([
   'changes_requested',
 ])
 
-function toModerationStatus(value: string | null | undefined): ModerationStatus {
+function toModerationStatus(
+  value: string | null | undefined,
+): ModerationStatus {
   if (value && VALID_MODERATION_STATUSES.has(value as ModerationStatus)) {
     return value as ModerationStatus
   }
@@ -40,8 +42,7 @@ export default async function DealModerationPage() {
     dealPrice: offer.discount_price ?? offer.original_price ?? 0,
     discountPercent: offer.discount_percent ?? 0,
     unit: offer.unit_type ?? 'per treatment',
-    validFrom:
-      offer.start_date ?? offer.created_at ?? new Date().toISOString(),
+    validFrom: offer.start_date ?? offer.created_at ?? new Date().toISOString(),
     validUntil: offer.end_date ?? '',
     termsAndConditions: offer.eligibility ?? '',
     isActive: toModerationStatus(offer.moderation_status) === 'approved',

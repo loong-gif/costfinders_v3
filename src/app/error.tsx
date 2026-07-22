@@ -1,6 +1,10 @@
 'use client'
 
-import { ArrowCounterClockwise, House, WarningCircle } from '@phosphor-icons/react'
+import {
+  ArrowCounterClockwise,
+  House,
+  WarningCircle,
+} from '@phosphor-icons/react'
 import { useEffect } from 'react'
 
 export default function Error({

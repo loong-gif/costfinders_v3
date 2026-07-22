@@ -87,11 +87,7 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
             >
               {breadcrumbs[breadcrumbs.length - 2]?.label}
             </Link>
-            <CaretRight
-              size={14}
-              weight="bold"
-              className="text-[#92400e]"
-            />
+            <CaretRight size={14} weight="bold" className="text-[#92400e]" />
             <span className="text-[#451a03] font-medium truncate">
               {breadcrumbs[breadcrumbs.length - 1]?.label}
             </span>

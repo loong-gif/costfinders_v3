@@ -85,7 +85,11 @@ function StatCard({
   icon,
   label,
   value,
-}: { icon: React.ReactNode; label: string; value: string }) {
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+}) {
   return (
     <div className="bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-4">
       <div className="flex items-center gap-2 text-amber-800 mb-1">

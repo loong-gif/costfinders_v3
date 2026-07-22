@@ -9,9 +9,9 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { AuthenticatedDashboardLayout } from '@/components/layout/authenticatedDashboardLayout'
 import { BusinessDashboardSidebar } from '@/components/layout/businessDashboardSidebar'
+import { Button } from '@/components/ui/button'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 
 export default function BusinessDashboardLayout({

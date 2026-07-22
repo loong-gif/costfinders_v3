@@ -24,7 +24,13 @@ import { Input } from '@/components/ui/input'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import type { Business } from '@/types/business'
 
-type ClaimStep = 'confirm' | 'auth' | 'verify' | 'email-code' | 'document' | 'success'
+type ClaimStep =
+  | 'confirm'
+  | 'auth'
+  | 'verify'
+  | 'email-code'
+  | 'document'
+  | 'success'
 type AuthView = 'signUp' | 'signIn'
 type VerifyMethod = 'email' | 'document'
 
@@ -259,9 +265,7 @@ export function ClaimBusinessFlow({
         const remaining = attemptsRemaining - 1
         setAttemptsRemaining(remaining)
         if (remaining <= 0) {
-          setVerifyError(
-            'Maximum attempts reached. Please request a new code.',
-          )
+          setVerifyError('Maximum attempts reached. Please request a new code.')
         } else {
           setVerifyError(
             `Invalid code. ${remaining} attempt${remaining === 1 ? '' : 's'} remaining.`,
@@ -581,7 +585,11 @@ export function ClaimBusinessFlow({
         <div className="text-center space-y-2">
           <div className="flex justify-center">
             <div className="w-16 h-16 rounded-full bg-amber-800/15 flex items-center justify-center">
-              <ShieldCheck size={32} weight="light" className="text-amber-800" />
+              <ShieldCheck
+                size={32}
+                weight="light"
+                className="text-amber-800"
+              />
             </div>
           </div>
           <h2 className="text-xl font-semibold text-[#451a03]">
@@ -619,7 +627,9 @@ export function ClaimBusinessFlow({
                   We&apos;ll send a 6-digit code to {business.email}
                 </p>
               </div>
-              <Badge variant="success" size="sm">Fastest</Badge>
+              <Badge variant="success" size="sm">
+                Fastest
+              </Badge>
             </div>
           </button>
 
@@ -685,7 +695,8 @@ export function ClaimBusinessFlow({
             variant={attemptsRemaining <= 1 ? 'error' : 'default'}
             size="sm"
           >
-            {attemptsRemaining} attempt{attemptsRemaining === 1 ? '' : 's'} remaining
+            {attemptsRemaining} attempt{attemptsRemaining === 1 ? '' : 's'}{' '}
+            remaining
           </Badge>
         </div>
 
@@ -783,14 +794,20 @@ export function ClaimBusinessFlow({
         {/* Accepted formats hint */}
         <Card className="p-4">
           <div className="flex items-start gap-3">
-            <Warning size={20} weight="light" className="text-[#92400e] mt-0.5 flex-shrink-0" />
+            <Warning
+              size={20}
+              weight="light"
+              className="text-[#92400e] mt-0.5 flex-shrink-0"
+            />
             <div className="text-sm text-[#78350f] space-y-1">
               <p className="font-medium text-[#451a03]">Accepted documents</p>
               <p>
                 Business license, utility bill, tax document, or any official
                 document showing the business name and your name.
               </p>
-              <p className="text-xs text-[#92400e]">PDF, JPG, or PNG — Max 5MB</p>
+              <p className="text-xs text-[#92400e]">
+                PDF, JPG, or PNG — Max 5MB
+              </p>
             </div>
           </div>
         </Card>
@@ -830,7 +847,11 @@ export function ClaimBusinessFlow({
                 </div>
               ) : (
                 <div className="w-16 h-16 rounded-lg bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                  <FilePdf size={28} weight="light" className="text-amber-800" />
+                  <FilePdf
+                    size={28}
+                    weight="light"
+                    className="text-amber-800"
+                  />
                 </div>
               )}
 
@@ -910,8 +931,8 @@ export function ClaimBusinessFlow({
         </h2>
         <p className="text-[#78350f]">
           Your claim for{' '}
-          <span className="font-medium text-[#451a03]">{business.name}</span> has
-          been submitted and is pending admin review.
+          <span className="font-medium text-[#451a03]">{business.name}</span>{' '}
+          has been submitted and is pending admin review.
         </p>
       </div>
 
@@ -925,9 +946,9 @@ export function ClaimBusinessFlow({
               What happens next?
             </p>
             <p className="text-sm text-[#78350f]">
-              Our team will review your verification and notify you within
-              24-48 hours. Once approved, you&apos;ll have full access to
-              manage your business profile.
+              Our team will review your verification and notify you within 24-48
+              hours. Once approved, you&apos;ll have full access to manage your
+              business profile.
             </p>
           </div>
         </div>

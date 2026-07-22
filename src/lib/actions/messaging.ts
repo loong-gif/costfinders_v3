@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type {
   ConversationRow,
   ConversationWithPreview,
@@ -188,8 +188,7 @@ export async function getConversationsAction(
     }
 
     // Fetch conversations for the user's role
-    const roleColumn =
-      role === 'business' ? 'business_owner_id' : 'consumer_id'
+    const roleColumn = role === 'business' ? 'business_owner_id' : 'consumer_id'
 
     const { data: conversations, error: convError } = await supabase
       .from('conversations')

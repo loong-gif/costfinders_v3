@@ -29,9 +29,7 @@ export default function FavoritesPage() {
         return
       }
 
-      const results = await Promise.all(
-        savedDeals.map((id) => getDealById(id)),
-      )
+      const results = await Promise.all(savedDeals.map((id) => getDealById(id)))
 
       if (cancelled) return
 

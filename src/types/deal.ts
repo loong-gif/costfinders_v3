@@ -42,7 +42,12 @@ export interface Deal {
 }
 
 // What consumers see before verification
-export type TemplateType = 'FIXED_PRICE' | 'DISCOUNT' | 'BUNDLE' | 'MEMBERSHIP' | 'COMPLIMENTARY'
+export type TemplateType =
+  | 'FIXED_PRICE'
+  | 'DISCOUNT'
+  | 'BUNDLE'
+  | 'MEMBERSHIP'
+  | 'COMPLIMENTARY'
 
 export interface AnonymousDeal extends Omit<Deal, 'businessId'> {
   locationArea: string // e.g., "Downtown Austin"

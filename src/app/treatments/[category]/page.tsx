@@ -143,8 +143,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           __html: JSON.stringify(
             buildTreatmentServiceSchema(category.label, 'Multiple Cities', {
               dealCount: deals.length,
-              minPrice: deals.length > 0 ? Math.min(...deals.map((d) => d.dealPrice)) : undefined,
-              maxPrice: deals.length > 0 ? Math.max(...deals.map((d) => d.dealPrice)) : undefined,
+              minPrice:
+                deals.length > 0
+                  ? Math.min(...deals.map((d) => d.dealPrice))
+                  : undefined,
+              maxPrice:
+                deals.length > 0
+                  ? Math.max(...deals.map((d) => d.dealPrice))
+                  : undefined,
             }),
           ),
         }}

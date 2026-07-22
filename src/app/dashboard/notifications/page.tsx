@@ -11,12 +11,12 @@ import {
 } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import type { NotificationRow } from '@/lib/actions/notification-actions'
 import {
   getNotificationsAction,
   markAllReadAction,
   markAsReadAction,
 } from '@/lib/actions/notification-actions'
-import type { NotificationRow } from '@/lib/actions/notification-actions'
 
 // ---------------------------------------------------------------------------
 // Helpers

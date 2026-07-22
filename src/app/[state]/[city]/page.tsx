@@ -9,7 +9,10 @@ import {
   getCityOfferCount,
   getUnifiedCities,
 } from '@/lib/data/unified'
-import { getNeighborhoodsForCity, slugifyNeighborhood } from '@/lib/mock-data/cities'
+import {
+  getNeighborhoodsForCity,
+  slugifyNeighborhood,
+} from '@/lib/mock-data/cities'
 import { getStateBySlug } from '@/lib/mock-data/states'
 import {
   buildCanonicalUrl,
@@ -198,7 +201,9 @@ export default async function CityPage({ params }: CityPageProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {neighborhoods.map((neighborhood) => {
-                  const neighborhoodSlug = slugifyNeighborhood(neighborhood.name)
+                  const neighborhoodSlug = slugifyNeighborhood(
+                    neighborhood.name,
+                  )
                   // Distribute real counts across neighborhoods
                   const neighborhoodDealCount = Math.ceil(
                     dealCount / Math.max(neighborhoodCount, 1),

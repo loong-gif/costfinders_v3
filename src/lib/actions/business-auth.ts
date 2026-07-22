@@ -1,7 +1,7 @@
 'use server'
 
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 interface AuthResult {
   success: boolean

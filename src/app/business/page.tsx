@@ -2,8 +2,6 @@
 
 import {
   ArrowRight,
-  CheckCircle,
-  ChartLineUp,
   MagnifyingGlass,
   Plus,
   ShieldCheck,
@@ -11,18 +9,25 @@ import {
   Tag,
   Users,
 } from '@phosphor-icons/react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 
 // M8: Dynamic import — only loaded when user clicks search
 const BusinessSearchModal = dynamic(
-  () => import('@/components/features/businessSearchModal').then((m) => m.BusinessSearchModal),
+  () =>
+    import('@/components/features/businessSearchModal').then(
+      (m) => m.BusinessSearchModal,
+    ),
   { ssr: false },
 )
+
 import { AnimatedCounter } from '@/components/patterns/animatedCounter'
-import { ScrollReveal, ScrollRevealItem } from '@/components/patterns/scrollReveal'
+import {
+  ScrollReveal,
+  ScrollRevealItem,
+} from '@/components/patterns/scrollReveal'
 import { Button } from '@/components/ui/button'
 import type { BusinessSearchResult } from '@/lib/actions/business-data'
 

@@ -1,18 +1,22 @@
 'use client'
 
 import { ChartBar } from '@phosphor-icons/react'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { BillingHistory } from '@/components/features/billingHistory'
 import { LeadBalanceCard } from '@/components/features/leadBalanceCard'
 import { LeadCostCard } from '@/components/features/leadCostCard'
 import { LeadPackagesGrid } from '@/components/features/leadPackagesGrid'
-import dynamic from 'next/dynamic'
 
 const LeadPurchaseModal = dynamic(
-  () => import('@/components/features/leadPurchaseModal').then((m) => m.LeadPurchaseModal),
+  () =>
+    import('@/components/features/leadPurchaseModal').then(
+      (m) => m.LeadPurchaseModal,
+    ),
   { ssr: false },
 )
+
 import { PaymentMethods } from '@/components/features/paymentMethods'
 import { PricingHubHeader } from '@/components/features/pricingHubHeader'
 import { Card } from '@/components/ui/card'
@@ -78,11 +82,9 @@ export default function PricingHubPage() {
     )
   }
 
-  const handleRemovePaymentMethod = (id: string) => {
-  }
+  const handleRemovePaymentMethod = (_id: string) => {}
 
-  const handleSetDefaultPaymentMethod = (id: string) => {
-  }
+  const handleSetDefaultPaymentMethod = (_id: string) => {}
 
   // Get max usage for chart scaling
   const maxUsage = Math.max(...usageHistory.map((h) => h.used), 1)

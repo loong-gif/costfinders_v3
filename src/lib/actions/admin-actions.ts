@@ -1,15 +1,12 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import {
-  claimApprovalEmail,
-  claimRejectionEmail,
-} from '@/lib/email/templates'
+import { logAdminAction } from '@/lib/actions/audit'
 import { createNotificationAction } from '@/lib/actions/notification-actions'
 import { sendEmailAction } from '@/lib/actions/notifications'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { claimApprovalEmail, claimRejectionEmail } from '@/lib/email/templates'
 import { logger } from '@/lib/logger'
-import { logAdminAction } from '@/lib/actions/audit'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -112,26 +109,35 @@ export async function getBusinessClaimsAction(
       return { success: false, error: error.message }
     }
 
-    const claims: BusinessClaim[] = (data ?? []).map((row: Record<string, unknown>) => {
-      const bizInfo = row.master_business_info as Record<string, unknown> | null
-      // business_claims is an array (one-to-many); take the first/latest entry
-      const claimRows = row.business_claims as Record<string, unknown>[] | null
-      const latestClaim = claimRows?.[0] ?? null
-      return {
-        id: row.id as string,
-        email: row.email as string,
-        first_name: row.first_name as string | null,
-        last_name: row.last_name as string | null,
-        business_id: row.business_id as number | null,
-        business_name: (bizInfo?.name as string) ?? null,
-        business_city: (bizInfo?.city as string) ?? null,
-        claim_status: row.claim_status as string,
-        verification_status: row.verification_status as string,
-        verification_method: (latestClaim?.verification_method as string) ?? null,
-        evidence_document_url: (latestClaim?.evidence_document_url as string) ?? null,
-        created_at: row.created_at as string,
-      }
-    })
+    const claims: BusinessClaim[] = (data ?? []).map(
+      (row: Record<string, unknown>) => {
+        const bizInfo = row.master_business_info as Record<
+          string,
+          unknown
+        > | null
+        // business_claims is an array (one-to-many); take the first/latest entry
+        const claimRows = row.business_claims as
+          | Record<string, unknown>[]
+          | null
+        const latestClaim = claimRows?.[0] ?? null
+        return {
+          id: row.id as string,
+          email: row.email as string,
+          first_name: row.first_name as string | null,
+          last_name: row.last_name as string | null,
+          business_id: row.business_id as number | null,
+          business_name: (bizInfo?.name as string) ?? null,
+          business_city: (bizInfo?.city as string) ?? null,
+          claim_status: row.claim_status as string,
+          verification_status: row.verification_status as string,
+          verification_method:
+            (latestClaim?.verification_method as string) ?? null,
+          evidence_document_url:
+            (latestClaim?.evidence_document_url as string) ?? null,
+          created_at: row.created_at as string,
+        }
+      },
+    )
 
     return { success: true, claims }
   } catch (err) {

@@ -4,7 +4,9 @@ import type { Business } from '@/types/supabase'
 
 const TABLE = 'master_business_info'
 
-export const getBusinesses = cache(async function getBusinesses(city?: string): Promise<Business[]> {
+export const getBusinesses = cache(async function getBusinesses(
+  city?: string,
+): Promise<Business[]> {
   let query = supabase
     .from(TABLE)
     .select(
@@ -21,7 +23,9 @@ export const getBusinesses = cache(async function getBusinesses(city?: string): 
   return (data ?? []) as Business[]
 })
 
-export const getBusinessById = cache(async function getBusinessById(id: number): Promise<Business | null> {
+export const getBusinessById = cache(async function getBusinessById(
+  id: number,
+): Promise<Business | null> {
   const { data, error } = await supabase
     .from(TABLE)
     .select('*')
@@ -35,58 +39,64 @@ export const getBusinessById = cache(async function getBusinessById(id: number):
   return data as Business
 })
 
-export const getBusinessCities = cache(async function getBusinessCities(): Promise<
-  { city: string; count: number }[]
-> {
-  const { data, error } = await supabase.rpc('get_business_cities')
+export const getBusinessCities = cache(
+  async function getBusinessCities(): Promise<
+    { city: string; count: number }[]
+  > {
+    const { data, error } = await supabase.rpc('get_business_cities')
 
-  // Fallback: if the RPC doesn't exist, query manually
-  if (error) {
+    // Fallback: if the RPC doesn't exist, query manually
+    if (error) {
+      const { data: raw, error: rawError } = await supabase
+        .from(TABLE)
+        .select('city')
+
+      if (rawError) throw rawError
+
+      const counts = new Map<string, number>()
+      for (const row of raw ?? []) {
+        if (!row.city) continue
+        counts.set(row.city, (counts.get(row.city) ?? 0) + 1)
+      }
+
+      return Array.from(counts.entries())
+        .map(([city, count]) => ({ city, count }))
+        .sort((a, b) => b.count - a.count)
+    }
+
+    return data ?? []
+  },
+)
+
+export const getBusinessCategories = cache(
+  async function getBusinessCategories(): Promise<
+    { category: string; count: number }[]
+  > {
+    // M1: Use RPC for SQL-side aggregation
+    const { data, error } = await supabase.rpc('get_business_category_counts')
+
+    if (!error && data) {
+      return data as { category: string; count: number }[]
+    }
+
+    // Fallback: JS-side counting
     const { data: raw, error: rawError } = await supabase
       .from(TABLE)
-      .select('city')
+      .select('category')
 
     if (rawError) throw rawError
 
     const counts = new Map<string, number>()
     for (const row of raw ?? []) {
-      if (!row.city) continue
-      counts.set(row.city, (counts.get(row.city) ?? 0) + 1)
+      if (!row.category) continue
+      counts.set(row.category, (counts.get(row.category) ?? 0) + 1)
     }
 
     return Array.from(counts.entries())
-      .map(([city, count]) => ({ city, count }))
+      .map(([category, count]) => ({ category, count }))
       .sort((a, b) => b.count - a.count)
-  }
-
-  return data ?? []
-})
-
-export const getBusinessCategories = cache(async function getBusinessCategories(): Promise<
-  { category: string; count: number }[]
-> {
-  // M1: Use RPC for SQL-side aggregation
-  const { data, error } = await supabase.rpc('get_business_category_counts')
-
-  if (!error && data) {
-    return data as { category: string; count: number }[]
-  }
-
-  // Fallback: JS-side counting
-  const { data: raw, error: rawError } = await supabase.from(TABLE).select('category')
-
-  if (rawError) throw rawError
-
-  const counts = new Map<string, number>()
-  for (const row of raw ?? []) {
-    if (!row.category) continue
-    counts.set(row.category, (counts.get(row.category) ?? 0) + 1)
-  }
-
-  return Array.from(counts.entries())
-    .map(([category, count]) => ({ category, count }))
-    .sort((a, b) => b.count - a.count)
-})
+  },
+)
 
 export async function searchBusinesses(query: string): Promise<Business[]> {
   const { data, error } = await supabase

@@ -20,10 +20,7 @@ import {
   deleteDealAction,
   getDealsForBusinessAction,
 } from '@/lib/actions/deal-management'
-import {
-  createBoost,
-  getActiveBoosts,
-} from '@/lib/mock-data/sponsorship'
+import { createBoost, getActiveBoosts } from '@/lib/mock-data/sponsorship'
 import type { Deal } from '@/types/deal'
 import type { Offer } from '@/types/supabase'
 
@@ -99,10 +96,7 @@ export function DealList({ businessId }: DealListProps) {
   const handleConfirmDelete = async () => {
     if (!dealToDelete) return
     setIsDeleting(true)
-    const result = await deleteDealAction(
-      dealToDelete.id,
-      Number(businessId),
-    )
+    const result = await deleteDealAction(dealToDelete.id, Number(businessId))
     if (result.success) {
       setAllDeals((prev) => prev.filter((d) => d.id !== dealToDelete.id))
     }
@@ -111,7 +105,7 @@ export function DealList({ businessId }: DealListProps) {
     setDealToDelete(null)
   }
 
-  const handleBoostClick = (deal: Deal) => {
+  const _handleBoostClick = (deal: Deal) => {
     setDealToBoost(deal)
     setBoostModalOpen(true)
   }
@@ -125,7 +119,10 @@ export function DealList({ businessId }: DealListProps) {
     }
   }
 
-  const formatPrice = (price: number | null, unit: string | null | undefined) => {
+  const formatPrice = (
+    price: number | null,
+    unit: string | null | undefined,
+  ) => {
     if (price == null) return '—'
     return `$${price.toFixed(price % 1 === 0 ? 0 : 2)}${unit ? ` ${unit}` : ''}`
   }
@@ -133,14 +130,29 @@ export function DealList({ businessId }: DealListProps) {
   const getModerationBadge = (status: string | null | undefined) => {
     switch (status) {
       case 'pending_review':
-        return <Badge variant="warning" size="sm">Under Review</Badge>
+        return (
+          <Badge variant="warning" size="sm">
+            Under Review
+          </Badge>
+        )
       case 'rejected':
-        return <Badge variant="error" size="sm">Rejected</Badge>
+        return (
+          <Badge variant="error" size="sm">
+            Rejected
+          </Badge>
+        )
       case 'changes_requested':
-        return <Badge variant="warning" size="sm">Changes Needed</Badge>
-      case 'approved':
+        return (
+          <Badge variant="warning" size="sm">
+            Changes Needed
+          </Badge>
+        )
       default:
-        return <Badge variant="success" size="sm">Active</Badge>
+        return (
+          <Badge variant="success" size="sm">
+            Active
+          </Badge>
+        )
     }
   }
 
@@ -149,9 +161,24 @@ export function DealList({ businessId }: DealListProps) {
     return (
       <div className="text-center py-12">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-8 w-8 text-amber-800" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          <svg
+            className="animate-spin h-8 w-8 text-amber-800"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
           </svg>
           <p className="text-[#78350f]">Loading deals...</p>
         </div>
@@ -356,9 +383,10 @@ export function DealList({ businessId }: DealListProps) {
                             {formatPrice(deal.original_price, deal.unit_type)}
                           </p>
                         )}
-                        {deal.discount_price == null && deal.original_price == null && (
-                          <span className="text-sm text-[#92400e]">—</span>
-                        )}
+                        {deal.discount_price == null &&
+                          deal.original_price == null && (
+                            <span className="text-sm text-[#92400e]">—</span>
+                          )}
                       </div>
                     </td>
 
@@ -428,11 +456,7 @@ export function DealList({ businessId }: DealListProps) {
                     </div>
                   </div>
                   {deal.discount_percent != null && (
-                    <Badge
-                      variant="brand"
-                      size="sm"
-                      className="flex-shrink-0"
-                    >
+                    <Badge variant="brand" size="sm" className="flex-shrink-0">
                       {Math.round(deal.discount_percent)}% off
                     </Badge>
                   )}
@@ -504,7 +528,11 @@ export function DealList({ businessId }: DealListProps) {
             >
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleConfirmDelete} isLoading={isDeleting}>
+            <Button
+              variant="danger"
+              onClick={handleConfirmDelete}
+              isLoading={isDeleting}
+            >
               Delete
             </Button>
           </div>

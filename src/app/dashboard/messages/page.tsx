@@ -66,9 +66,7 @@ export default function ConsumerMessagesPage() {
 
   const fetchConversations = useCallback(async () => {
     try {
-      const { getConversationsAction } = await import(
-        '@/lib/actions/messaging'
-      )
+      const { getConversationsAction } = await import('@/lib/actions/messaging')
       const result = await getConversationsAction('consumer')
       if (result.success && result.conversations) {
         setConversations(result.conversations)
@@ -98,9 +96,7 @@ export default function ConsumerMessagesPage() {
   }
   if (searchQuery) {
     const q = searchQuery.toLowerCase()
-    filtered = filtered.filter((c) =>
-      c.deal_title?.toLowerCase().includes(q),
-    )
+    filtered = filtered.filter((c) => c.deal_title?.toLowerCase().includes(q))
   }
 
   const unreadCount = conversations.filter((c) => c.unread_count > 0).length
@@ -142,10 +138,7 @@ export default function ConsumerMessagesPage() {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="h-20 rounded-xl bg-[#f2ebe2] animate-pulse"
-          />
+          <div key={i} className="h-20 rounded-xl bg-[#f2ebe2] animate-pulse" />
         ))}
       </div>
     )
@@ -338,10 +331,7 @@ function ConversationItem({
 
         {/* Status Badge */}
         <div className="flex-shrink-0">
-          <Badge
-            variant={hasUnread ? 'brand' : 'default'}
-            size="sm"
-          >
+          <Badge variant={hasUnread ? 'brand' : 'default'} size="sm">
             {hasUnread ? 'New' : 'Open'}
           </Badge>
         </div>

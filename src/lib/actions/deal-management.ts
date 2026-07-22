@@ -1,9 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
-import { logger } from '@/lib/logger'
-import type { Offer } from '@/types/supabase'
 import {
   buildLiveOfferInsertPayload,
   buildLiveOfferUpdatePayload,
@@ -11,6 +8,9 @@ import {
   enrichOffers,
   OFFER_EMBED,
 } from '@/lib/data/offer-query'
+import { logger } from '@/lib/logger'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
+import type { Offer } from '@/types/supabase'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -78,7 +78,10 @@ async function verifyBusinessOwnership(
   }
 
   if (profile.business_id !== businessId) {
-    return { authorized: false as const, error: 'You do not own this business.' }
+    return {
+      authorized: false as const,
+      error: 'You do not own this business.',
+    }
   }
 
   if (profile.claim_status !== 'approved') {
@@ -247,12 +250,17 @@ export async function updateDealAction(
       .single()
 
     if (existError || !existing) {
-      return { success: false, error: 'Deal not found or not owned by this business.' }
+      return {
+        success: false,
+        error: 'Deal not found or not owned by this business.',
+      }
     }
 
     const payload = buildLiveOfferUpdatePayload({
       ...data,
-      service_name: data.service_name ? stripHtml(data.service_name.trim()) : data.service_name,
+      service_name: data.service_name
+        ? stripHtml(data.service_name.trim())
+        : data.service_name,
       offer_raw_text: data.offer_raw_text
         ? stripHtml(data.offer_raw_text.trim())
         : data.offer_raw_text,

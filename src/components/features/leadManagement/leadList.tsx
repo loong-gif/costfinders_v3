@@ -312,7 +312,9 @@ export function LeadList({ businessId }: LeadListProps) {
           {filteredClaims.map((claim) => {
             const deal = dealMap[claim.deal_id]
             const dealTitle =
-              deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
+              deal?.service_name ??
+              deal?.source_name ??
+              `Deal #${claim.deal_id}`
 
             return (
               <Link
@@ -381,7 +383,10 @@ export function LeadList({ businessId }: LeadListProps) {
 
                     {/* Status & Created Date */}
                     <div className="flex items-center gap-4 sm:flex-col sm:items-end sm:gap-2">
-                      <ClaimStatusBadge status={claim.status as ClaimStatus} size="md" />
+                      <ClaimStatusBadge
+                        status={claim.status as ClaimStatus}
+                        size="md"
+                      />
                       <p className="text-sm text-[#92400e]">
                         {formatRelativeTime(claim.created_at)}
                       </p>

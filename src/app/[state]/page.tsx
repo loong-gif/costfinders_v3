@@ -67,10 +67,7 @@ export default async function StatePage({ params }: StatePageProps) {
 
   // Compute real stats
   const cityCount = stateCities.length
-  const businessCount = stateCities.reduce(
-    (sum, c) => sum + c.businessCount,
-    0,
-  )
+  const businessCount = stateCities.reduce((sum, c) => sum + c.businessCount, 0)
   // Use businessCount as a rough proxy for deals until we fetch offer counts
   const dealCount = businessCount
 
@@ -120,8 +117,8 @@ export default async function StatePage({ params }: StatePageProps) {
               <p className="text-[#78350f] max-w-2xl mb-6">
                 Discover the best medspa deals and aesthetic treatments across{' '}
                 {state.name}. Compare prices on Botox, fillers, laser
-                treatments, and more from verified providers in{' '}
-                {cityCount} {cityCount === 1 ? 'city' : 'cities'}.
+                treatments, and more from verified providers in {cityCount}{' '}
+                {cityCount === 1 ? 'city' : 'cities'}.
               </p>
 
               {/* Stats Row */}

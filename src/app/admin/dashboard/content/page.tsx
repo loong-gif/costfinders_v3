@@ -85,9 +85,7 @@ export default function ContentManagementPage() {
           <p className="text-sm text-[#78350f]">Active Categories</p>
         </Card>
         <Card variant="glass" padding="md">
-          <p className="text-2xl font-bold text-[#451a03]">
-            {activeLocations}
-          </p>
+          <p className="text-2xl font-bold text-[#451a03]">{activeLocations}</p>
           <p className="text-sm text-[#78350f]">Active Locations</p>
         </Card>
         <Card variant="glass" padding="md">
@@ -108,11 +106,7 @@ export default function ContentManagementPage() {
               <Card className="p-5 transition-all duration-200 hover:bg-[#faf5ee] cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-800/8 flex items-center justify-center">
-                    <Icon
-                      size={24}
-                      weight="light"
-                      className="text-amber-800"
-                    />
+                    <Icon size={24} weight="light" className="text-amber-800" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3">

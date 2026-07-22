@@ -34,15 +34,10 @@ export async function getGuidePricingStats(
     .sort((a, b) => a - b)
 
   // Unique providers
-  const providerIds = new Set(
-    offers.map((o) => o.business_id).filter(Boolean),
-  )
+  const providerIds = new Set(offers.map((o) => o.business_id).filter(Boolean))
 
   // Template type breakdown
-  const templateMap = new Map<
-    string,
-    { prices: number[]; count: number }
-  >()
+  const templateMap = new Map<string, { prices: number[]; count: number }>()
   for (const offer of offers) {
     const tt = offer.template_type ?? 'OTHER'
     const entry = templateMap.get(tt) ?? { prices: [], count: 0 }
@@ -75,10 +70,8 @@ export async function getGuidePricingStats(
         templateType,
         count: data.count,
         avgPrice: data.prices.length > 0 ? Math.round(avg(data.prices)) : null,
-        minPrice:
-          data.prices.length > 0 ? Math.min(...data.prices) : null,
-        maxPrice:
-          data.prices.length > 0 ? Math.max(...data.prices) : null,
+        minPrice: data.prices.length > 0 ? Math.min(...data.prices) : null,
+        maxPrice: data.prices.length > 0 ? Math.max(...data.prices) : null,
       }),
     ),
     byUnitType: Array.from(unitMap.entries()).map(([unitType, data]) => ({

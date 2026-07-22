@@ -11,9 +11,13 @@ const AuthModal = dynamic(
   { ssr: false },
 )
 const ClaimDealModal = dynamic(
-  () => import('@/components/features/claimDealModal').then((m) => m.ClaimDealModal),
+  () =>
+    import('@/components/features/claimDealModal').then(
+      (m) => m.ClaimDealModal,
+    ),
   { ssr: false },
 )
+
 import { Card } from '@/components/ui/card'
 
 type AuthView = 'signUp' | 'signIn'

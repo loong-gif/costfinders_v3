@@ -140,8 +140,7 @@ export default function UsersManagementPage() {
         (c) => isVerified(c.verification_status) && c.status === 'active',
       ).length,
       unverified: consumers.filter(
-        (c) =>
-          c.verification_status === 'unverified' && c.status === 'active',
+        (c) => c.verification_status === 'unverified' && c.status === 'active',
       ).length,
       suspended: consumers.filter((c) => c.status === 'suspended').length,
     }

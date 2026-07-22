@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getAvailableGuides } from '@/lib/data/guide-content'
 import {
   getAllActiveCitySlugs,
   getAllTreatmentCityCombos,
@@ -12,7 +13,6 @@ import { getAllDealIds } from '@/lib/mock-data/deals'
 import { getAllNeighborhoodsWithCityAndState } from '@/lib/mock-data/neighborhoods'
 import { getAllProvidersWithCityAndState } from '@/lib/mock-data/providers'
 import { getStates } from '@/lib/mock-data/states'
-import { getAvailableGuides } from '@/lib/data/guide-content'
 
 /**
  * Sitemap Configuration

@@ -1,9 +1,9 @@
 import {
-  CurrencyDollar,
   CurrencyCircleDollar,
+  CurrencyDollar,
+  Gift,
   Package,
   Repeat,
-  Gift,
 } from '@phosphor-icons/react/dist/ssr'
 import type { GuideContent } from '@/types/guide'
 

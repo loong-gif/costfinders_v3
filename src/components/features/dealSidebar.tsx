@@ -71,7 +71,10 @@ export function DealSidebar({ deal }: DealSidebarProps) {
       businessId={deal.businessId}
       dealTitle={deal.title}
       isAuthenticated={isAuthenticated}
-      onClaimSuccess={() => { fetchRevealStatus(); refreshClaims() }}
+      onClaimSuccess={() => {
+        fetchRevealStatus()
+        refreshClaims()
+      }}
     />
   )
 }

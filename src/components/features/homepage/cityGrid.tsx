@@ -6,7 +6,12 @@ import Link from 'next/link'
 import { ScrollRevealItem } from '@/components/patterns/scrollReveal'
 
 interface CityGridProps {
-  cities: { city: string; slug: string; dealCount: number; providerCount: number }[]
+  cities: {
+    city: string
+    slug: string
+    dealCount: number
+    providerCount: number
+  }[]
 }
 
 const CITY_IMAGES = [

@@ -221,7 +221,9 @@ export function ConsumerTable({
                   <span className="text-sm text-[#78350f]">
                     {consumer.location_city && consumer.location_state
                       ? `${consumer.location_city}, ${consumer.location_state}`
-                      : consumer.location_city || consumer.location_state || '-'}
+                      : consumer.location_city ||
+                        consumer.location_state ||
+                        '-'}
                   </span>
                 </td>
                 <td className="px-6 py-4">

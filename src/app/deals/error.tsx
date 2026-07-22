@@ -1,6 +1,10 @@
 'use client'
 
-import { ArrowCounterClockwise, Tag, WarningCircle } from '@phosphor-icons/react'
+import {
+  ArrowCounterClockwise,
+  Tag,
+  WarningCircle,
+} from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 

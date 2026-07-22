@@ -97,7 +97,9 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
     fetchClaims().then(() => {
       if (cancelled) return
     })
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [authState.user, fetchClaims])
 
   /** Re-fetch claims from the server (call after external claim creation) */
@@ -197,7 +199,14 @@ export function ClaimsProvider({ children }: { children: React.ReactNode }) {
       getClaimByDealId,
       getClaimsByStatus,
     }),
-    [state, createClaim, refreshClaims, getClaim, getClaimByDealId, getClaimsByStatus],
+    [
+      state,
+      createClaim,
+      refreshClaims,
+      getClaim,
+      getClaimByDealId,
+      getClaimsByStatus,
+    ],
   )
 
   return (

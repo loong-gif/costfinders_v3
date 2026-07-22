@@ -50,7 +50,7 @@ function formatDate(dateStr: string | null): string {
   })
 }
 
-function formatTime(dateStr: string | null): string {
+function _formatTime(dateStr: string | null): string {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleTimeString('en-US', {
     hour: 'numeric',
@@ -189,27 +189,30 @@ function LeadCard({
         ) : (
           <>
             <span className="text-xs text-[#92400e] mr-1">Via:</span>
-            {(Object.entries(relayMethodConfig) as [RelayMethod, typeof relayMethodConfig.email][]).map(
-              ([method, config]) => {
-                const MethodIcon = config.icon
-                return (
-                  <Button
-                    key={method}
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      onRelay(lead.id, method)
-                      setShowMethods(false)
-                    }}
-                    disabled={isRelaying}
-                    className="gap-1.5"
-                  >
-                    <MethodIcon size={14} />
-                    {config.label}
-                  </Button>
-                )
-              },
-            )}
+            {(
+              Object.entries(relayMethodConfig) as [
+                RelayMethod,
+                typeof relayMethodConfig.email,
+              ][]
+            ).map(([method, config]) => {
+              const MethodIcon = config.icon
+              return (
+                <Button
+                  key={method}
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    onRelay(lead.id, method)
+                    setShowMethods(false)
+                  }}
+                  disabled={isRelaying}
+                  className="gap-1.5"
+                >
+                  <MethodIcon size={14} />
+                  {config.label}
+                </Button>
+              )
+            })}
             <Button
               variant="ghost"
               size="sm"

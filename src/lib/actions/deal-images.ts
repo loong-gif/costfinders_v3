@@ -100,9 +100,7 @@ export async function deleteDealImageAction(
     }
 
     const path = `${businessId}/${dealId}`
-    const { error } = await supabase.storage
-      .from('deal-images')
-      .remove([path])
+    const { error } = await supabase.storage.from('deal-images').remove([path])
 
     if (error) {
       return { success: false, error: error.message }

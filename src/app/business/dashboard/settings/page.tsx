@@ -1,9 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { Bell, CaretRight, CreditCard, Plugs, User } from '@phosphor-icons/react'
+import {
+  Bell,
+  CaretRight,
+  CreditCard,
+  Plugs,
+  User,
+} from '@phosphor-icons/react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 const settingsLinks = [
   {
@@ -34,7 +46,13 @@ interface ToggleRowProps {
   disabled?: boolean
 }
 
-function ToggleRow({ label, description, enabled, onToggle, disabled = false }: ToggleRowProps) {
+function ToggleRow({
+  label,
+  description,
+  enabled,
+  onToggle,
+  disabled = false,
+}: ToggleRowProps) {
   return (
     <div className="flex items-center justify-between py-3 border-b border-[#d4c4b0] last:border-b-0">
       <div className="flex-1 min-w-0 pr-4">
@@ -133,7 +151,8 @@ export default function SettingsPage() {
               disabled
             />
             <p className="text-xs text-[#78350f]/60 mt-3">
-              In-app notifications are always enabled. Notification preferences are enabled by default.
+              In-app notifications are always enabled. Notification preferences
+              are enabled by default.
             </p>
           </div>
         </CardContent>

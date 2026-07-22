@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { Bell, Gear, Shield, SignOut, User } from '@phosphor-icons/react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -20,7 +20,13 @@ interface ToggleRowProps {
   disabled?: boolean
 }
 
-function ToggleRow({ label, description, enabled, onToggle, disabled = false }: ToggleRowProps) {
+function ToggleRow({
+  label,
+  description,
+  enabled,
+  onToggle,
+  disabled = false,
+}: ToggleRowProps) {
   return (
     <div className="flex items-center justify-between py-3 border-b border-[#d4c4b0] last:border-b-0">
       <div className="flex-1 min-w-0 pr-4">
@@ -76,7 +82,9 @@ export default function AdminSettingsPage() {
             <Gear size={20} weight="duotone" className="text-amber-800" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[#451a03]">Admin Settings</h1>
+            <h1 className="text-2xl font-bold text-[#451a03]">
+              Admin Settings
+            </h1>
             <p className="text-sm text-[#78350f] mt-0.5">
               Manage your admin account and preferences
             </p>
@@ -125,7 +133,9 @@ export default function AdminSettingsPage() {
                     </span>
                   ))
                 ) : (
-                  <p className="text-sm text-[#78350f]/60">No permissions assigned</p>
+                  <p className="text-sm text-[#78350f]/60">
+                    No permissions assigned
+                  </p>
                 )}
               </div>
             </div>
@@ -170,7 +180,8 @@ export default function AdminSettingsPage() {
               disabled
             />
             <p className="text-xs text-[#78350f]/60 mt-3">
-              In-app notifications are always enabled. Notification preferences are enabled by default.
+              In-app notifications are always enabled. Notification preferences
+              are enabled by default.
             </p>
           </div>
         </CardContent>

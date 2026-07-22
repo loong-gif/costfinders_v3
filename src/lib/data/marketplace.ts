@@ -1,13 +1,12 @@
 import { cache } from 'react'
-import { supabase } from '@/lib/supabase'
-import type { OfferWithBusiness, PromoOfferItem } from '@/types/supabase'
 import {
   BUSINESS_JOIN,
   enrichOffers,
   OFFER_EMBED,
-  OFFER_ITEM_EMBED,
   SERVICE_BUSINESS_JOIN,
 } from '@/lib/data/offer-query'
+import { supabase } from '@/lib/supabase'
+import type { OfferWithBusiness, PromoOfferItem } from '@/types/supabase'
 
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
