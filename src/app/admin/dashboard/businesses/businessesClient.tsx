@@ -12,7 +12,7 @@ import {
   Storefront,
   User,
 } from '@phosphor-icons/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import { BusinessTable } from '@/components/features/admin/businessTable'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -617,6 +617,7 @@ export function BusinessesManagementClient({
   const [searchQuery, setSearchQuery] = useState('')
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
   const [pendingClaimCount, setPendingClaimCount] = useState(0)
+  const [isFilterPending, startFilterTransition] = useTransition()
 
   // Show feedback briefly then clear
   const showFeedback = useCallback((message: string) => {
@@ -836,7 +837,9 @@ export function BusinessesManagementClient({
               type="text"
               placeholder="Search by name or city..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) =>
+                startFilterTransition(() => setSearchQuery(e.target.value))
+              }
               className="w-full bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#451a03] placeholder:text-[#92400e] focus:outline-none focus:ring-2 focus:ring-amber-800/40"
             />
           </div>
@@ -848,7 +851,9 @@ export function BusinessesManagementClient({
                 key={tab.value}
                 variant={activeFilter === tab.value ? 'primary' : 'secondary'}
                 size="sm"
-                onClick={() => setActiveFilter(tab.value)}
+                onClick={() =>
+                  startFilterTransition(() => setActiveFilter(tab.value))
+                }
                 className="gap-2"
               >
                 {tab.label}

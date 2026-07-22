@@ -1,7 +1,16 @@
+import nextDynamic from 'next/dynamic'
 import { inferState } from '@/lib/data/adapters'
 import { getBusinesses } from '@/lib/data/businesses'
 import type { Business } from '@/types/business'
-import { BusinessesManagementClient } from './businessesClient'
+
+const BusinessesManagementClient = nextDynamic(
+  () => import('./businessesClient').then((m) => m.BusinessesManagementClient),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
+    ),
+  },
+)
 
 export const dynamic = 'force-dynamic'
 

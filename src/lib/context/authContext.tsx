@@ -154,8 +154,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // Fetch profile from server action
-    const profileResult = await getProfileAction()
+    const [profileResult, dealsResult] = await Promise.all([
+      getProfileAction(),
+      getSavedDealsAction(),
+    ])
 
     if (!profileResult.success || !profileResult.profile) {
       // User exists in auth but has no profile row yet (e.g. trigger hasn't fired)
@@ -182,8 +184,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       error: null,
     })
 
-    // Fetch saved deals
-    const dealsResult = await getSavedDealsAction()
     if (dealsResult.success && dealsResult.deals) {
       setSavedDeals(dealsResult.deals.map((d) => String(d.deal_id)))
     }
@@ -466,4 +466,9 @@ export function useAuth(): AuthContextValue {
     throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
+}
+
+/** Returns null when rendered outside AuthProvider (e.g. public SEO pages). */
+export function useOptionalAuth(): AuthContextValue | null {
+  return useContext(AuthContext)
 }

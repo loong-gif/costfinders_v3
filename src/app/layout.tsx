@@ -1,12 +1,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
-import { GlobalHeader } from '@/components/layout/globalHeader'
 import { OrganizationSchema, WebsiteSchema } from '@/components/seo'
-import { AuthProvider } from '@/lib/context/authContext'
-import { BusinessAuthProvider } from '@/lib/context/businessAuthContext'
-import { ClaimsProvider } from '@/lib/context/claimsContext'
-import { isSupabaseConfigured } from '@/lib/supabase-config'
 import './globals.css'
 
 export const viewport: Viewport = {
@@ -15,9 +10,6 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
   themeColor: '#e8ddd0',
 }
-
-// The local demo reads live Supabase data and must not fetch it during static builds.
-export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -89,18 +81,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <WebsiteSchema />
         <OrganizationSchema />
-        {isSupabaseConfigured ? (
-          <AuthProvider>
-            <BusinessAuthProvider>
-              <ClaimsProvider>
-                <GlobalHeader />
-                {children}
-              </ClaimsProvider>
-            </BusinessAuthProvider>
-          </AuthProvider>
-        ) : (
-          children
-        )}
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>

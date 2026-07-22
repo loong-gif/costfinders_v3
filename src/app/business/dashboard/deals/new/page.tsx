@@ -1,7 +1,19 @@
 'use client'
 
-import { DealForm } from '@/components/features/dealManagement/dealForm'
+import nextDynamic from 'next/dynamic'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+
+const DealForm = nextDynamic(
+  () =>
+    import('@/components/features/dealManagement/dealForm').then(
+      (m) => m.DealForm,
+    ),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
+    ),
+  },
+)
 
 export default function NewDealPage() {
   const { state } = useBusinessAuth()

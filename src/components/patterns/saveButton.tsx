@@ -3,7 +3,7 @@
 import { Heart } from '@phosphor-icons/react'
 import { Tooltip } from '@/components/ui/tooltip'
 import { trackEvent } from '@/lib/analytics'
-import { useAuth } from '@/lib/context/authContext'
+import { useOptionalAuth } from '@/lib/context/authContext'
 
 interface SaveButtonProps {
   dealId: string
@@ -16,9 +16,9 @@ export function SaveButton({
   size = 'sm',
   className = '',
 }: SaveButtonProps) {
-  const { state, saveDeal, unsaveDeal, isDealSaved } = useAuth()
-  const { isAuthenticated } = state
-  const saved = isDealSaved(dealId)
+  const auth = useOptionalAuth()
+  const isAuthenticated = auth?.state.isAuthenticated ?? false
+  const saved = auth?.isDealSaved(dealId) ?? false
 
   const iconSize = size === 'sm' ? 20 : 24
   const buttonSize = size === 'sm' ? 'w-11 h-11' : 'w-11 h-11'
@@ -27,13 +27,13 @@ export function SaveButton({
     e.stopPropagation()
     e.preventDefault()
 
-    if (!isAuthenticated) return
+    if (!auth || !isAuthenticated) return
 
     if (saved) {
-      unsaveDeal(dealId)
+      auth.unsaveDeal(dealId)
       trackEvent('deal_unsaved', { dealId })
     } else {
-      saveDeal(dealId)
+      auth.saveDeal(dealId)
       trackEvent('deal_saved', { dealId })
     }
   }

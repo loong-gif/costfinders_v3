@@ -398,3 +398,22 @@ export async function getAllTreatmentCityCombos() {
   }
   return combos
 }
+
+export const getAllOfferIdsForSitemap = cache(
+  async function getAllOfferIdsForSitemap(): Promise<
+    { id: string; updatedAt: string }[]
+  > {
+    const { data, error } = await supabase
+      .from('promo_offer_master')
+      .select('id, created_at')
+      .eq('is_active', true)
+      .gt('discount_price', 0)
+
+    if (error) throw error
+
+    return (data ?? []).map((row) => ({
+      id: String(row.id),
+      updatedAt: row.created_at ?? new Date().toISOString(),
+    }))
+  },
+)

@@ -1,7 +1,16 @@
+import nextDynamic from 'next/dynamic'
 import { dbCategoryToTreatment } from '@/lib/data/adapters'
 import { getOffersWithBusinesses } from '@/lib/data/offers'
 import type { Deal, ModerationStatus } from '@/types/deal'
-import { DealModerationClient } from './dealsClient'
+
+const DealModerationClient = nextDynamic(
+  () => import('./dealsClient').then((m) => m.DealModerationClient),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
+    ),
+  },
+)
 
 export const dynamic = 'force-dynamic'
 

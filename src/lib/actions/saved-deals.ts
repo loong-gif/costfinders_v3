@@ -1,8 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { getDealById } from '@/lib/data/unified'
 import { logger } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import type { AnonymousDeal } from '@/types/deal'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -22,6 +24,12 @@ interface SavedDealsResult {
 interface MutationResult {
   success: boolean
   error?: string
+}
+
+interface SavedDealsWithDetailsResult {
+  success: boolean
+  error?: string
+  deals?: AnonymousDeal[]
 }
 
 // ---------------------------------------------------------------------------
@@ -59,6 +67,37 @@ export async function getSavedDealsAction(): Promise<SavedDealsResult> {
   } catch (error) {
     logger.error('getSavedDealsAction failed', {
       action: 'getSavedDealsAction',
+      error: error instanceof Error ? error.message : String(error),
+    })
+    return { success: false, error: 'An unexpected error occurred.' }
+  }
+}
+
+/**
+ * Fetch saved deals with full offer details in one server round-trip.
+ */
+export async function getSavedDealsWithDetailsAction(): Promise<SavedDealsWithDetailsResult> {
+  try {
+    const savedResult = await getSavedDealsAction()
+    if (!savedResult.success) {
+      return { success: false, error: savedResult.error }
+    }
+
+    const savedRows = savedResult.deals ?? []
+    if (savedRows.length === 0) {
+      return { success: true, deals: [] }
+    }
+
+    const deals = (
+      await Promise.all(
+        savedRows.map((row) => getDealById(String(row.deal_id))),
+      )
+    ).filter((deal): deal is AnonymousDeal => deal !== null)
+
+    return { success: true, deals }
+  } catch (error) {
+    logger.error('getSavedDealsWithDetailsAction failed', {
+      action: 'getSavedDealsWithDetailsAction',
       error: error instanceof Error ? error.message : String(error),
     })
     return { success: false, error: 'An unexpected error occurred.' }

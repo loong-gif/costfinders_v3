@@ -48,14 +48,17 @@ function truncateMessage(message: string, maxLength = 60): string {
   return `${message.slice(0, maxLength)}...`
 }
 
-export default function ConsumerMessagesPage() {
+export function MessagesClient({
+  initialConversations = [],
+}: {
+  initialConversations?: ConversationWithPreview[]
+}) {
   const { state } = useAuth()
   const userId = state.user?.id
 
-  const [conversations, setConversations] = useState<ConversationWithPreview[]>(
-    [],
-  )
-  const [isLoading, setIsLoading] = useState(true)
+  const [conversations, setConversations] =
+    useState<ConversationWithPreview[]>(initialConversations)
+  const [isLoading, setIsLoading] = useState(initialConversations.length === 0)
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedConversationId, setSelectedConversationId] = useState<
@@ -80,13 +83,15 @@ export default function ConsumerMessagesPage() {
 
   // Initial fetch + polling
   useEffect(() => {
-    fetchConversations()
+    if (initialConversations.length === 0) {
+      fetchConversations()
+    }
 
     pollRef.current = setInterval(fetchConversations, POLL_INTERVAL)
     return () => {
       if (pollRef.current) clearInterval(pollRef.current)
     }
-  }, [fetchConversations])
+  }, [fetchConversations, initialConversations.length])
 
   // ---------- Filtering ----------
 

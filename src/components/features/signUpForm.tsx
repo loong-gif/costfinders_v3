@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/context/authContext'
 
 interface SignUpFormProps {
-  onSuccess?: (email: string) => void
+  onSuccess?: () => void
   onSwitchToSignIn?: () => void
 }
 
@@ -31,7 +31,6 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
 
-    // Email validation
     if (!email.trim()) {
       newErrors.email = 'Email is required'
     } else {
@@ -41,14 +40,12 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
       }
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = 'Password is required'
     } else if (password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters'
     }
 
-    // Confirm password validation
     if (!confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password'
     } else if (password !== confirmPassword) {
@@ -73,7 +70,7 @@ export function SignUpForm({ onSuccess, onSwitchToSignIn }: SignUpFormProps) {
         firstName || undefined,
         lastName || undefined,
       )
-      onSuccess?.(email)
+      onSuccess?.()
     } catch {
       // Error is handled by context and displayed via state.error
     } finally {

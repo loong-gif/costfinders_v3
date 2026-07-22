@@ -1,13 +1,25 @@
 'use client'
 
+import nextDynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { DealForm } from '@/components/features/dealManagement/dealForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { getDealByIdForBusinessAction } from '@/lib/actions/deal-management'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
 import type { Offer } from '@/types/supabase'
+
+const DealForm = nextDynamic(
+  () =>
+    import('@/components/features/dealManagement/dealForm').then(
+      (m) => m.DealForm,
+    ),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
+    ),
+  },
+)
 
 export default function EditDealPage() {
   const router = useRouter()

@@ -20,6 +20,7 @@
 10. [Bottleneck Ranking](#10-bottleneck-ranking)
 11. [Baseline Metrics Estimates](#11-baseline-metrics-estimates)
 12. [Critical User Journey Hot Paths](#12-critical-user-journey-hot-paths)
+13. [Vercel React Best Practices Compliance](#13-vercel-react-best-practices-compliance-2026-07-22)
 
 ---
 
@@ -664,9 +665,11 @@ Based on the architectural analysis, estimated performance characteristics for k
 
 | File | Key Concern |
 |---|---|
-| `src/app/layout.tsx` | Root layout with 3 client context providers wrapping all pages |
+| `src/app/layout.tsx` | Root layout — HTML shell, analytics, no auth providers (split to route groups) |
+| `src/app/(public)/layout.tsx` | Public SEO layout — `PublicHeader` only, no Supabase browser client |
+| `src/app/(app)/layout.tsx` | Consumer layout — `AuthProvider`, `ClaimsProvider`, `GlobalHeader` |
 | `src/app/page.tsx` | Homepage -- ISR, 3 parallel Supabase fetches, `getCityDealCounts()` full scan |
-| `src/app/deals/[[...slugs]]/page.tsx` | Deals routing -- redundant metadata queries, 2-query city waterfall |
+| `src/app/(app)/deals/[[...slugs]]/page.tsx` | Deals routing -- redundant metadata queries, 2-query city waterfall |
 | `src/lib/data/offers.ts` | Core data layer -- `getOffersWithBusinesses()` missing cache, city waterfall |
 | `src/lib/data/unified.ts` | Aggregation layer -- `getCityDealCounts()` full table fetch |
 | `src/lib/data/businesses.ts` | Business queries -- `getBusinessCities()` fallback full scan |
@@ -679,3 +682,54 @@ Based on the architectural analysis, estimated performance characteristics for k
 | `src/app/globals.css` | Duplicated CSS vars, scroll animation keyframes |
 | `next.config.ts` | Image optimization (good), package import optimization (good) |
 | `src/lib/mock-data/` | 19 files of dead data still imported by production pages |
+
+---
+
+## 13. Vercel React Best Practices Compliance (2026-07-22)
+
+Remediation aligned with the Vercel React Best Practices audit (`frontend_vercel_audit` plan). Build verified with Next.js 16.2.1 on Node 20.
+
+### Changes Applied
+
+| Rule ID | Fix | Status |
+|---|---|---|
+| `bundle-defer-third-party` | Split root layout: `(public)/` uses `PublicHeader` only; `(app)/` wraps `AuthProvider` + `ClaimsProvider` + `GlobalHeader`; `business/` gets `BusinessAuthProvider` | Done |
+| `async-cheap-condition-before-await` | Removed global `force-dynamic` from root layout; ISR restored on `/` (1h revalidate) and SSG location pages | Done |
+| `async-parallel` | `hydrateUser()` runs `getProfileAction()` + `getSavedDealsAction()` via `Promise.all` | Done |
+| `server-serialization` | Added `getSavedDealsWithDetailsAction()`; favorites page is RSC prefetch + client island | Done |
+| `server-parallel-fetching` | Dashboard favorites, notifications, messages use server page prefetch + client islands; dashboard layout is server wrapper + client auth gate | Done |
+| `bundle-dynamic-imports` | `next/dynamic` on admin businesses/deals clients, business analytics/dealList/dealForm | Done |
+| `bundle-analyzable-paths` | Removed `'use client'` from `Button` and `Input`; `SaveButton` uses `useOptionalAuth()` for public pages | Done |
+| `rerender-transitions` | `useTransition` on admin businesses filter/search | Done |
+| `rendering-conditional-render` | `notificationBell` badge/panel use ternary instead of `&&` | Done |
+| `bundle-barrel-imports` | `sitemap.ts` migrated from mock barrel to Supabase via `unified.ts` (deals, cities, categories); neighborhoods/providers still mock | Partial |
+
+### Build Output Highlights
+
+- Homepage: `○ /` static with **1h revalidate** (was forced dynamic)
+- Public SEO: 411 static/SSG paths generated
+- Dashboard segment: `ƒ` dynamic (auth cookies) — scoped to `/dashboard/*` only
+- Admin live-data pages retain route-level `force-dynamic`
+
+### Remaining Gaps
+
+| Rule ID | Gap | Follow-up |
+|---|---|---|
+| `client-swr-dedup` | No SWR/React Query; dashboard polling still refetches on navigation | Add shared cache layer if repeat-fetch cost grows |
+| `async-suspense-boundaries` | Dashboard sub-sections still client-fetched (claims deal titles, dashboard home sections) | Extend RSC prefetch pattern |
+| `bundle-barrel-imports` | ~25 production files still import mock-data modules (billing, leadPricing, sponsorship) | Wire to Supabase or isolate to dev-only |
+| `rendering-content-visibility` | Long admin tables lack virtualization | Add when row counts exceed ~100 |
+| Bundle analyzer | `@next/bundle-analyzer` not run in CI | Add `ANALYZE=true npm run build` script for periodic audits |
+
+### Bundle Analyzer Setup
+
+To run a local bundle analysis (not executed in this remediation):
+
+```bash
+# Add to next.config.ts when needed:
+# const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' })
+
+ANALYZE=true npm run build
+```
+
+Requires dev dependency: `@next/bundle-analyzer`.

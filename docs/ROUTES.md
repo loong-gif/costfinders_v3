@@ -103,4 +103,4 @@ All routes require admin authentication. Login at `/admin`.
 | Business dashboard | Yes | Business owner |
 | Admin panel | Yes | Admin |
 
-All auth checks are client-side via React Context. No server middleware yet.
+All auth checks use Supabase SSR sessions. `frontend/src/proxy.ts` refreshes cookies and protects `/dashboard/**` on the server; `AuthenticatedDashboardLayout` remains a client-side loading and fallback redirect only.

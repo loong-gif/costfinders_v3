@@ -71,10 +71,15 @@ function getTypeIcon(type: string) {
 // Component
 // ---------------------------------------------------------------------------
 
-export default function NotificationsPage() {
+export function NotificationsClient({
+  initialNotifications = [],
+}: {
+  initialNotifications?: NotificationRow[]
+}) {
   const router = useRouter()
-  const [notifications, setNotifications] = useState<NotificationRow[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [notifications, setNotifications] =
+    useState<NotificationRow[]>(initialNotifications)
+  const [isLoading, setIsLoading] = useState(initialNotifications.length === 0)
 
   const hasUnread = notifications.some((n) => !n.is_read)
 
@@ -93,8 +98,9 @@ export default function NotificationsPage() {
   }, [])
 
   useEffect(() => {
+    if (initialNotifications.length > 0) return
     loadNotifications()
-  }, [loadNotifications])
+  }, [initialNotifications.length, loadNotifications])
 
   const handleMarkAsRead = async (id: string) => {
     // Optimistic update

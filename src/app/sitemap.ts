@@ -2,14 +2,11 @@ import type { MetadataRoute } from 'next'
 import { getAvailableGuides } from '@/lib/data/guide-content'
 import {
   getAllActiveCitySlugs,
+  getAllOfferIdsForSitemap,
   getAllTreatmentCityCombos,
-} from '@/lib/mock-data'
-import {
-  getAllCategorySlugs,
-  getCategoryStateComboSlugs,
-} from '@/lib/mock-data/categories'
-import { getAllCitiesWithState } from '@/lib/mock-data/cities'
-import { getAllDealIds } from '@/lib/mock-data/deals'
+  getUnifiedCategories,
+  getUnifiedCities,
+} from '@/lib/data/unified'
 import { getAllNeighborhoodsWithCityAndState } from '@/lib/mock-data/neighborhoods'
 import { getAllProvidersWithCityAndState } from '@/lib/mock-data/providers'
 import { getStates } from '@/lib/mock-data/states'
@@ -85,15 +82,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Section 3: Location Hierarchy - Cities
   // Count: ~11 URLs (Orange County cities)
   // ═══════════════════════════════════════════════════════════════════
-  const citiesWithState = getAllCitiesWithState()
-  const cityPages: MetadataRoute.Sitemap = citiesWithState.map(
-    ({ stateSlug, citySlug }) => ({
-      url: `${baseUrl}/${stateSlug}/${citySlug}`,
-      lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    }),
+  const citiesWithState = await getUnifiedCities()
+  const stateSlugByCode = new Map(
+    states.map((state) => [state.code, state.slug]),
   )
+  const cityPages: MetadataRoute.Sitemap = citiesWithState.flatMap((city) => {
+    const stateSlug = stateSlugByCode.get(city.stateCode)
+    if (!stateSlug) return []
+    return [
+      {
+        url: `${baseUrl}/${stateSlug}/${city.slug}`,
+        lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      },
+    ]
+  })
 
   // ═══════════════════════════════════════════════════════════════════
   // Section 4: Location Hierarchy - Neighborhoods
@@ -127,7 +131,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Section 6: Category/Treatment Pages
   // Count: 6 URLs (botox, fillers, facials, laser, body, skincare)
   // ═══════════════════════════════════════════════════════════════════
-  const categorySlugs = getAllCategorySlugs()
+  const categorySlugs = (await getUnifiedCategories()).map((c) => c.slug)
   const categoryPages: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
     url: `${baseUrl}/treatments/${slug}`,
     lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
@@ -140,7 +144,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Count: ~12 URLs (active, approved deals)
   // Note: Uses actual deal.updatedAt for accurate lastModified
   // ═══════════════════════════════════════════════════════════════════
-  const dealData = getAllDealIds()
+  const dealData = await getAllOfferIdsForSitemap()
   const dealPages: MetadataRoute.Sitemap = dealData.map(
     ({ id, updatedAt }) => ({
       url: `${baseUrl}/deals/${id}`,
@@ -156,14 +160,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Route: /treatments/[category]/[state] (e.g., /treatments/botox/california)
   // Note: Actual pages planned for Phase 31+ ("Botox in California" landing pages)
   // ═══════════════════════════════════════════════════════════════════
-  const categoryStateCombos = getCategoryStateComboSlugs()
-  const categoryStatePages: MetadataRoute.Sitemap = categoryStateCombos.map(
-    ({ categorySlug, stateSlug }) => ({
-      url: `${baseUrl}/treatments/${categorySlug}/${stateSlug}`,
-      lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
-      changeFrequency: 'weekly',
-      priority: 0.65,
-    }),
+  const categoryStatePages: MetadataRoute.Sitemap = categorySlugs.flatMap(
+    (categorySlug) =>
+      states.map((state) => ({
+        url: `${baseUrl}/treatments/${categorySlug}/${state.slug}`,
+        lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
+        changeFrequency: 'weekly',
+        priority: 0.65,
+      })),
   )
 
   // ═══════════════════════════════════════════════════════════════════
@@ -172,7 +176,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Route: /deals/[city] (e.g., /deals/houston)
   // Target keywords: "medspa deals [city]"
   // ═══════════════════════════════════════════════════════════════════
-  const citySlugs = getAllActiveCitySlugs()
+  const citySlugs = await getAllActiveCitySlugs()
   const cityDealsPages: MetadataRoute.Sitemap = citySlugs.map((citySlug) => ({
     url: `${baseUrl}/deals/${citySlug}`,
     lastModified: SITEMAP_CONFIG.STATIC_CONTENT_DATE,
@@ -186,7 +190,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Route: /deals/[treatment]/[city] (e.g., /deals/botox/houston)
   // Target keywords: "botox houston", "botox deals houston"
   // ═══════════════════════════════════════════════════════════════════
-  const treatmentCityCombos = getAllTreatmentCityCombos()
+  const treatmentCityCombos = await getAllTreatmentCityCombos()
   const treatmentCityPages: MetadataRoute.Sitemap = treatmentCityCombos.map(
     ({ treatment, city }) => ({
       url: `${baseUrl}/deals/${treatment}/${city}`,

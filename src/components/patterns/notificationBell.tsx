@@ -67,14 +67,14 @@ export function NotificationBell() {
           className="text-[#451a03]"
         />
 
-        {unreadCount > 0 && (
+        {unreadCount > 0 ? (
           <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold px-1 leading-none">
             {badgeText}
           </span>
-        )}
+        ) : null}
       </button>
 
-      {isOpen && (
+      {isOpen ? (
         <NotificationPanel
           notifications={notifications}
           isLoading={isLoading}
@@ -82,7 +82,7 @@ export function NotificationBell() {
           onMarkAllRead={markAllRead}
           onClose={handleClose}
         />
-      )}
+      ) : null}
     </div>
   )
 }

@@ -3,71 +3,31 @@
 import { Heart, MagnifyingGlass } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { DealCard } from '@/components/features/dealCard'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
-import { getDealById } from '@/lib/data/unified'
 import type { AnonymousDeal } from '@/types/deal'
 
-export default function FavoritesPage() {
+interface FavoritesClientProps {
+  initialDeals: AnonymousDeal[]
+}
+
+export function FavoritesClient({ initialDeals }: FavoritesClientProps) {
   const router = useRouter()
   const { savedDeals } = useAuth()
-  const [deals, setDeals] = useState<AnonymousDeal[]>([])
-  const [isLoading, setIsLoading] = useState(true)
 
-  // Fetch deal details whenever savedDeals changes
-  useEffect(() => {
-    let cancelled = false
-
-    async function fetchDeals() {
-      setIsLoading(true)
-
-      if (savedDeals.length === 0) {
-        setDeals([])
-        setIsLoading(false)
-        return
-      }
-
-      const results = await Promise.all(savedDeals.map((id) => getDealById(id)))
-
-      if (cancelled) return
-
-      const validDeals = results.filter(
-        (deal): deal is AnonymousDeal => deal !== null,
-      )
-      setDeals(validDeals)
-      setIsLoading(false)
-    }
-
-    fetchDeals()
-
-    return () => {
-      cancelled = true
-    }
-  }, [savedDeals])
-
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="h-8 w-32 bg-[#faf5ee] rounded-lg animate-pulse" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="aspect-[4/5] bg-[#faf5ee] rounded-2xl animate-pulse"
-            />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  const deals = useMemo(() => {
+    if (savedDeals.length === 0) return []
+    const byId = new Map(initialDeals.map((deal) => [deal.id, deal]))
+    return savedDeals
+      .map((id) => byId.get(id))
+      .filter((deal): deal is AnonymousDeal => deal !== undefined)
+  }, [initialDeals, savedDeals])
 
   return (
     <div className="space-y-6">
-      {/* Content */}
       {deals.length === 0 ? (
-        /* Empty State */
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <div className="w-20 h-20 rounded-full bg-[#faf5ee] flex items-center justify-center mb-6">
             <Heart size={40} weight="light" className="text-[#92400e]" />
@@ -85,7 +45,6 @@ export default function FavoritesPage() {
           </Button>
         </div>
       ) : (
-        /* Deals Grid */
         <div>
           <p className="text-sm text-[#92400e] mb-4">
             {deals.length} saved deal{deals.length !== 1 ? 's' : ''}

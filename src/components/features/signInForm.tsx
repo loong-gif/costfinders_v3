@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { resetPasswordAction, sendMagicLinkAction } from '@/lib/actions/auth'
+import { resetPasswordAction } from '@/lib/actions/auth'
 import { useAuth } from '@/lib/context/authContext'
 
 interface SignInFormProps {
@@ -32,15 +32,10 @@ export function SignInForm({
   const [forgotPasswordError, setForgotPasswordError] = useState<string | null>(
     null,
   )
-  const [magicLinkSent, setMagicLinkSent] = useState(false)
-  const [magicLinkError, setMagicLinkError] = useState<string | null>(null)
-  const [isSendingMagicLink, setIsSendingMagicLink] = useState(false)
-  const [emailNotConfirmed, setEmailNotConfirmed] = useState(false)
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
 
-    // Email validation
     if (!email.trim()) {
       newErrors.email = 'Email is required'
     } else {
@@ -50,7 +45,6 @@ export function SignInForm({
       }
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = 'Password is required'
     }
@@ -65,16 +59,12 @@ export function SignInForm({
     if (!validateForm()) return
 
     setIsSubmitting(true)
-    setEmailNotConfirmed(false)
 
     try {
       await signIn(email, password)
       onSuccess?.()
-    } catch (err) {
-      // Check if the error indicates unconfirmed email
-      if (err instanceof Error && err.message.includes('verify your email')) {
-        setEmailNotConfirmed(true)
-      }
+    } catch {
+      // Error is handled by context and displayed via state.error
     } finally {
       setIsSubmitting(false)
     }
@@ -96,28 +86,6 @@ export function SignInForm({
       setTimeout(() => setForgotPasswordSent(false), 5000)
     } else {
       setForgotPasswordError(result.error ?? 'Failed to send reset email')
-    }
-  }
-
-  const handleMagicLink = async () => {
-    setMagicLinkError(null)
-
-    if (!email.trim()) {
-      setMagicLinkError('Enter your email above first')
-      return
-    }
-
-    setIsSendingMagicLink(true)
-
-    const result = await sendMagicLinkAction(email)
-
-    setIsSendingMagicLink(false)
-
-    if (result.success) {
-      setMagicLinkSent(true)
-      setTimeout(() => setMagicLinkSent(false), 5000)
-    } else {
-      setMagicLinkError(result.error ?? 'Failed to send magic link')
     }
   }
 
@@ -145,7 +113,6 @@ export function SignInForm({
         required
       />
 
-      {/* Forgot Password Link */}
       <div className="flex justify-end">
         <button
           type="button"
@@ -156,7 +123,6 @@ export function SignInForm({
         </button>
       </div>
 
-      {/* Forgot Password Toast */}
       {forgotPasswordSent && (
         <p className="text-sm text-emerald-600 bg-emerald-600/10 px-3 py-2 rounded-lg">
           Check your email for password reset instructions.
@@ -169,15 +135,7 @@ export function SignInForm({
         </p>
       )}
 
-      {/* Email not confirmed */}
-      {emailNotConfirmed && (
-        <p className="text-sm text-amber-800 bg-amber-800/10 px-3 py-2 rounded-lg">
-          Please verify your email first. Check your inbox for a confirmation
-          link.
-        </p>
-      )}
-
-      {state.error && !emailNotConfirmed && (
+      {state.error && (
         <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg">
           {state.error}
         </p>
@@ -192,41 +150,6 @@ export function SignInForm({
       >
         Sign in
       </Button>
-
-      {/* Divider */}
-      <div className="relative my-2">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#d4c4b0]" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-white px-2 text-[#78350f]">or</span>
-        </div>
-      </div>
-
-      {/* Magic Link */}
-      <Button
-        type="button"
-        variant="secondary"
-        className="w-full"
-        size="lg"
-        onClick={handleMagicLink}
-        isLoading={isSendingMagicLink}
-        disabled={isSendingMagicLink}
-      >
-        Sign in with magic link
-      </Button>
-
-      {magicLinkSent && (
-        <p className="text-sm text-emerald-600 bg-emerald-600/10 px-3 py-2 rounded-lg">
-          Magic link sent! Check your email.
-        </p>
-      )}
-
-      {magicLinkError && (
-        <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg">
-          {magicLinkError}
-        </p>
-      )}
 
       {onSwitchToSignUp && (
         <p className="text-center text-sm text-[#78350f]">

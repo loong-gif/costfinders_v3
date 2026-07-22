@@ -1,7 +1,19 @@
 'use client'
 
-import { AnalyticsDashboard } from '@/components/features/analytics/analyticsDashboard'
+import nextDynamic from 'next/dynamic'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
+
+const AnalyticsDashboard = nextDynamic(
+  () =>
+    import('@/components/features/analytics/analyticsDashboard').then(
+      (m) => m.AnalyticsDashboard,
+    ),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
+    ),
+  },
+)
 
 export default function AnalyticsPage() {
   const { state } = useBusinessAuth()
