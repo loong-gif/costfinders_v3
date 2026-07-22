@@ -35,7 +35,7 @@ export default async function DealModerationPage() {
     description:
       offer.offer_raw_text ??
       `${offer.service_name ?? 'Treatment'} — ${offer.template_type ?? 'deal'}`,
-    category: dbCategoryToTreatment(offer.service_category),
+    category: dbCategoryToTreatment(offer.service_category ?? null),
     originalPrice: offer.original_price ?? 0,
     dealPrice: offer.discount_price ?? offer.original_price ?? 0,
     discountPercent: offer.discount_percent ?? 0,
