@@ -125,12 +125,12 @@ export function DealList({ businessId }: DealListProps) {
     }
   }
 
-  const formatPrice = (price: number | null, unit: string | null) => {
+  const formatPrice = (price: number | null, unit: string | null | undefined) => {
     if (price == null) return '—'
     return `$${price.toFixed(price % 1 === 0 ? 0 : 2)}${unit ? ` ${unit}` : ''}`
   }
 
-  const getModerationBadge = (status: string | null) => {
+  const getModerationBadge = (status: string | null | undefined) => {
     switch (status) {
       case 'pending_review':
         return <Badge variant="warning" size="sm">Under Review</Badge>

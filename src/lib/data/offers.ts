@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase'
 import type { Offer, OfferWithBusiness } from '@/types/supabase'
 import {
   offerItemName,
+  offerServiceCategory,
   offerSourceUrl,
   offerUnitType,
 } from '@/types/supabase'
@@ -10,16 +11,17 @@ import {
 const TABLE = 'promo_offer_master'
 
 const OFFER_EMBED =
-  'promo_offer_items(offer_item_id,offer_id,service_id,item_name,quantity,unit_type),clinic_promotions(promotion_id,source_url,promotion_title)'
+  'promo_offer_items(offer_item_id,offer_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(promotion_id,source_url,promotion_title)'
 
 const BUSINESS_JOIN =
-  'master_business_info!fk_promo_offer_master_business(business_id, name, address, city, score, review_count, category, website_clean)'
+  'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
 
 function normalizeOfferPrice<T extends Offer>(offer: T): T {
   return {
     ...offer,
     original_price: offer.regular_price,
     service_name: offerItemName(offer),
+    service_category: offerServiceCategory(offer) || offer.service_category,
     source_url: offerSourceUrl(offer),
     unit_type: offerUnitType(offer),
   }
@@ -44,9 +46,6 @@ export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
     .eq('is_active', true)
     .order('created_at', { ascending: false })
 
-  if (filters?.serviceCategory) {
-    query = query.eq('service_category', filters.serviceCategory)
-  }
   if (filters?.minPrice != null) {
     query = query.gte('discount_price', filters.minPrice)
   }
@@ -59,7 +58,13 @@ export async function getOffers(filters?: OfferFilters): Promise<Offer[]> {
 
   const { data, error } = await query
   if (error) throw error
-  return normalizeOfferPrices((data ?? []) as Offer[])
+  let results = normalizeOfferPrices((data ?? []) as Offer[])
+  if (filters?.serviceCategory) {
+    results = results.filter(
+      (offer) => offer.service_category === filters.serviceCategory,
+    )
+  }
+  return results
 }
 
 export const getOfferById = cache(async function getOfferById(
@@ -115,9 +120,6 @@ async function _getOffersWithBusinesses(
       cityBusinesses.map((b) => b.business_id),
     )
   }
-  if (filters?.serviceCategory) {
-    query = query.eq('service_category', filters.serviceCategory)
-  }
   if (filters?.minPrice != null) {
     query = query.gte('discount_price', filters.minPrice)
   }
@@ -131,7 +133,12 @@ async function _getOffersWithBusinesses(
   const { data, error } = await query
   if (error) throw error
 
-  const results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
+  let results = normalizeOfferPrices((data ?? []) as OfferWithBusiness[])
+  if (filters?.serviceCategory) {
+    results = results.filter(
+      (offer) => offer.service_category === filters.serviceCategory,
+    )
+  }
   return results.sort((a, b) => {
     const scoreA =
       a.discount_price &&
@@ -165,20 +172,26 @@ export const getOfferCategories = cache(
 
     const { data: raw, error: rawError } = await supabase
       .from(TABLE)
-      .select('service_category')
+      .select(
+        'id, promo_offer_items(clinic_services(service_category))',
+      )
       .eq('is_active', true)
       .gt('discount_price', 0)
-      .gt('regular_price', 0)
 
     if (rawError) throw rawError
 
     const counts = new Map<string, number>()
     for (const row of raw ?? []) {
-      if (!row.service_category) continue
-      counts.set(
-        row.service_category,
-        (counts.get(row.service_category) ?? 0) + 1,
-      )
+      const items = row.promo_offer_items
+      const list = Array.isArray(items) ? items : items ? [items] : []
+      for (const item of list) {
+        const service = Array.isArray(item.clinic_services)
+          ? item.clinic_services[0]
+          : item.clinic_services
+        const category = service?.service_category?.trim()
+        if (!category) continue
+        counts.set(category, (counts.get(category) ?? 0) + 1)
+      }
     }
 
     return Array.from(counts.entries())

@@ -14,10 +14,10 @@ export async function GET(
 
   const { data: business } = await supabase
     .from('master_business_info')
-    .select('business_id, website_clean, city')
+    .select('business_id, website, city')
     .eq('business_id', businessId)
     .maybeSingle()
-  const destination = toExternalUrl(business?.website_clean)
+  const destination = toExternalUrl(business?.website)
   if (!business || !destination) {
     return new NextResponse('Business website unavailable', { status: 404 })
   }

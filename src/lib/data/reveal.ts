@@ -9,7 +9,7 @@ export async function getBusinessContactDetails(businessId: number) {
   const { data, error } = await supabase
     .from('master_business_info')
     .select(
-      'business_id, name, address, city, website_clean, score, review_count, category, facebook_url, instagram_url',
+      'business_id, name, address, city, website, score, review_count, category, facebook_url, instagram_url',
     )
     .eq('business_id', businessId)
     .single()

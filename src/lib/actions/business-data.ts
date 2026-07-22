@@ -14,7 +14,7 @@ export interface BusinessRow {
   address: string | null
   city: string | null
   website: string | null
-  website_clean: string | null
+  website_clean?: string | null
   review_count: number | null
   score: number | null
   category: string | null

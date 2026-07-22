@@ -5,7 +5,8 @@ export interface Business {
   address: string | null
   city: string | null
   website: string | null
-  website_clean: string | null
+  /** @deprecated DB column is `website`; kept optional for older UI paths */
+  website_clean?: string | null
   review_count: number | null
   score: number | null
   category: string | null
@@ -17,13 +18,22 @@ export interface Business {
   updated_at: string | null
 }
 
+export interface ClinicServiceRef {
+  service_name: string | null
+  service_category: string | null
+  unit_type?: string | null
+}
+
 export interface PromoOfferItem {
   offer_item_id: number
   offer_id: number
   service_id: number | null
-  item_name: string
   quantity: number | null
-  unit_type: string | null
+  unit_price?: number | null
+  /** Derived / legacy */
+  item_name?: string | null
+  unit_type?: string | null
+  clinic_services?: ClinicServiceRef | ClinicServiceRef[] | null
 }
 
 export interface ClinicPromotion {
@@ -53,7 +63,6 @@ export interface Offer {
   discount_price: number | null
   discount_percent: number | null
   discount_amount: number | null
-  service_category: string | null
   is_membership_required: boolean | null
   is_active: boolean
   is_new_customer_required: boolean
@@ -63,10 +72,19 @@ export interface Offer {
   promo_offer_items?: PromoOfferItem[] | PromoOfferItem | null
   clinic_promotions?: ClinicPromotion | ClinicPromotion[] | null
   /** Legacy / derived for UI compatibility */
+  service_category?: string | null
   service_name?: string | null
   source_url?: string | null
+  source_name?: string | null
   unit_type?: string | null
+  min_unit?: number | null
   original_price?: number | null
+  template_type?: string | null
+  start_date?: string | null
+  end_date?: string | null
+  eligibility?: string | null
+  moderation_status?: string | null
+  last_verified_at?: string | null
 }
 
 /** Offer joined with business info for display */
@@ -80,19 +98,41 @@ export interface OfferWithBusiness extends Offer {
     | 'score'
     | 'review_count'
     | 'category'
-    | 'website_clean'
+    | 'website'
   > | null
 }
 
-export function offerItemName(offer: Offer): string {
+function firstItem(offer: Offer): PromoOfferItem | null {
   const items = offer.promo_offer_items
-  if (Array.isArray(items) && items.length > 0) {
-    return items[0]?.item_name?.trim() || ''
-  }
-  if (items && !Array.isArray(items)) {
-    return items.item_name?.trim() || ''
-  }
-  return offer.service_name?.trim() || ''
+  if (Array.isArray(items)) return items[0] ?? null
+  return items ?? null
+}
+
+function itemService(item: PromoOfferItem | null): ClinicServiceRef | null {
+  if (!item?.clinic_services) return null
+  return Array.isArray(item.clinic_services)
+    ? (item.clinic_services[0] ?? null)
+    : item.clinic_services
+}
+
+export function offerItemName(offer: Offer): string {
+  const item = firstItem(offer)
+  const service = itemService(item)
+  return (
+    service?.service_name?.trim() ||
+    item?.item_name?.trim() ||
+    offer.service_name?.trim() ||
+    ''
+  )
+}
+
+export function offerServiceCategory(offer: Offer): string {
+  const service = itemService(firstItem(offer))
+  return (
+    service?.service_category?.trim() ||
+    offer.service_category?.trim() ||
+    ''
+  )
 }
 
 export function offerSourceUrl(offer: Offer): string {
@@ -107,12 +147,12 @@ export function offerSourceUrl(offer: Offer): string {
 }
 
 export function offerUnitType(offer: Offer): string {
-  const items = offer.promo_offer_items
-  if (Array.isArray(items) && items.length > 0) {
-    return items[0]?.unit_type?.trim() || ''
-  }
-  if (items && !Array.isArray(items)) {
-    return items.unit_type?.trim() || ''
-  }
-  return offer.unit_type?.trim() || ''
+  const item = firstItem(offer)
+  const service = itemService(item)
+  return (
+    service?.unit_type?.trim() ||
+    item?.unit_type?.trim() ||
+    offer.unit_type?.trim() ||
+    ''
+  )
 }

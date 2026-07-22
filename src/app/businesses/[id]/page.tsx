@@ -49,7 +49,7 @@ export default async function BusinessProfilePage({
         {business.category} · {business.address ?? business.city} ·{' '}
         {business.score ?? '—'} rating
       </p>
-      {business.website_clean && (
+      {business.website && (
         <a
           href={`/go/business/${business.business_id}?from=business_profile`}
           target="_blank"

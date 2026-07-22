@@ -351,7 +351,7 @@ export async function getDealsForBusiness(businessId: number) {
             score: biz.score,
             review_count: biz.review_count,
             category: biz.category,
-            website_clean: biz.website_clean,
+            website: biz.website ?? biz.website_clean ?? null,
           }
         : null,
     }),

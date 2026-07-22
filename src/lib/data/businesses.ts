@@ -8,7 +8,7 @@ export const getBusinesses = cache(async function getBusinesses(city?: string): 
   let query = supabase
     .from(TABLE)
     .select(
-      'business_id, name, address, city, website_clean, review_count, score, category, facebook_url, instagram_url, created_at, updated_at',
+      'business_id, name, address, city, website, review_count, score, category, facebook_url, instagram_url, created_at, updated_at',
     )
     .order('score', { ascending: false, nullsFirst: false })
 
@@ -92,7 +92,7 @@ export async function searchBusinesses(query: string): Promise<Business[]> {
   const { data, error } = await supabase
     .from(TABLE)
     .select(
-      'business_id, name, address, city, website_clean, review_count, score, category',
+      'business_id, name, address, city, website, review_count, score, category',
     )
     .or(`name.ilike.%${query}%,address.ilike.%${query}%`)
     .order('score', { ascending: false, nullsFirst: false })

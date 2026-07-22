@@ -12,7 +12,7 @@ const VALID_MODERATION_STATUSES = new Set<ModerationStatus>([
   'changes_requested',
 ])
 
-function toModerationStatus(value: string | null): ModerationStatus {
+function toModerationStatus(value: string | null | undefined): ModerationStatus {
   if (value && VALID_MODERATION_STATUSES.has(value as ModerationStatus)) {
     return value as ModerationStatus
   }

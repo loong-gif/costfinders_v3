@@ -390,8 +390,8 @@ export interface RevealedBusiness {
   name: string
   address: string | null
   city: string | null
-  website_clean: string | null
-  website: string | null
+  website?: string | null
+  website_clean?: string | null
   score: number | null
   review_count: number | null
 }
@@ -441,7 +441,7 @@ export async function getBusinessRevealAction(
     const { data: business, error: bizError } = await supabase
       .from('master_business_info')
       .select(
-        'business_id, name, address, city, website_clean, website, score, review_count',
+        'business_id, name, address, city, website, score, review_count',
       )
       .eq('business_id', claim.business_id)
       .single()

@@ -6,9 +6,9 @@ import { offerUnitType } from '@/types/supabase'
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
 const OFFER_EMBED =
-  'promo_offer_items(offer_item_id,item_name,unit_type),clinic_promotions(source_url,promotion_title)'
+  'promo_offer_items(offer_item_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(source_url,promotion_title)'
 const BUSINESS_JOIN =
-  'master_business_info!fk_promo_offer_master_business(business_id, name, address, city, score, review_count, category, website_clean)'
+  'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
 
 export type PromotionSignal = 'price' | 'percent' | 'amount'
 
@@ -165,7 +165,7 @@ export const getPublicBusinesses = cache(async function getPublicBusinesses() {
   const { data, error } = await supabase
     .from('master_business_info')
     .select(
-      'business_id, name, address, city, website_clean, review_count, score, category, facebook_url, instagram_url, created_at, updated_at',
+      'business_id, name, address, city, website, review_count, score, category, facebook_url, instagram_url, created_at, updated_at',
     )
     .order('score', { ascending: false, nullsFirst: false })
 
@@ -195,7 +195,7 @@ export const getPublicBusiness = cache(async function getPublicBusiness(
   }
 })
 
-export function getFreshnessLabel(createdAt: string | null): string {
+export function getFreshnessLabel(createdAt: string | null | undefined): string {
   if (!createdAt) return 'Verification pending'
   return `Updated ${new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(createdAt))}`
 }
