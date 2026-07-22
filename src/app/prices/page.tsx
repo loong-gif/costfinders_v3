@@ -21,8 +21,8 @@ export default async function PricesPage() {
         <main className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-[#451a03]">Compare prices</h1>
           <p className="mt-8 rounded-xl border border-[#d4c4b0] bg-[#f2ebe2] p-6 text-[#78350f]">
-            Recently verified regular-price comparisons will appear here after
-            the freshness data migration is applied.
+            Regular-price comparisons are temporarily unavailable. Please try
+            again later.
           </p>
         </main>
       )
@@ -34,8 +34,8 @@ export default async function PricesPage() {
     <main className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-[#451a03]">Compare prices</h1>
       <p className="mt-2 max-w-3xl text-[#78350f]">
-        Regular prices are grouped by city and service category. Units stay
-        separate, and every price below was verified within the last 30 days.
+        Regular prices from clinic service menus are grouped by city and service
+        category. Units stay separate so comparisons stay apples-to-apples.
       </p>
 
       <div className="mt-8 space-y-5">
@@ -86,7 +86,7 @@ export default async function PricesPage() {
 
       {comparisons.length === 0 && (
         <p className="mt-8 rounded-xl border border-[#d4c4b0] bg-[#f2ebe2] p-6 text-[#78350f]">
-          No recently verified regular prices are available yet.{' '}
+          No regular prices are available yet.{' '}
           <Link href="/promotions" className="underline">
             Browse promotions instead.
           </Link>

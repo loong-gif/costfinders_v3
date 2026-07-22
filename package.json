@@ -11,7 +11,9 @@
     "format": "biome format --write .",
     "generate:guides": "tsx scripts/generate-guides.ts",
     "test:smoke": "k6 run tests/load/smoke.js",
-    "test:load": "k6 run tests/load/average.js"
+    "test:load": "k6 run tests/load/average.js",
+    "test:auth": "tsx --test src/lib/auth-redirect.test.ts",
+    "test:marketplace": "tsx --test src/lib/data/marketplace-regular-prices.test.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

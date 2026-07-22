@@ -1,7 +1,6 @@
 import { cache } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { OfferWithBusiness } from '@/types/supabase'
-import { offerUnitType } from '@/types/supabase'
 
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
@@ -9,6 +8,8 @@ const OFFER_EMBED =
   'promo_offer_items(offer_item_id,service_id,quantity,unit_price,clinic_services(service_name,service_category,unit_type)),clinic_promotions(source_url,promotion_title)'
 const BUSINESS_JOIN =
   'master_business_info!fk_offer_business(business_id, name, address, city, score, review_count, category, website)'
+const SERVICE_BUSINESS_JOIN =
+  'master_business_info!fk_service_business(business_id, name, city)'
 
 export type PromotionSignal = 'price' | 'percent' | 'amount'
 
@@ -27,6 +28,33 @@ export interface PriceComparison {
     maximum: number
     median: number | null
   }>
+}
+
+export interface ClinicServiceWithBusiness {
+  service_id: number
+  business_id: number | null
+  regular_price: number | null
+  service_category: string | null
+  unit_type: string | null
+  service_name: string | null
+  master_business_info?:
+    | {
+        business_id: number
+        name: string | null
+        city: string | null
+      }
+    | {
+        business_id: number
+        name: string | null
+        city: string | null
+      }[]
+    | null
+}
+
+function serviceBusinessCity(service: ClinicServiceWithBusiness): string {
+  const info = service.master_business_info
+  const business = Array.isArray(info) ? (info[0] ?? null) : (info ?? null)
+  return business?.city?.trim() || 'Location unavailable'
 }
 
 function positive(value: unknown): number {
@@ -60,32 +88,31 @@ export function isRegularPrice(offer: OfferWithBusiness): boolean {
 }
 
 export function summarizeRegularPrices(
-  offers: OfferWithBusiness[],
+  services: ClinicServiceWithBusiness[],
 ): PriceComparison[] {
-  const groups = new Map<string, Map<string, OfferWithBusiness[]>>()
+  const groups = new Map<string, Map<string, ClinicServiceWithBusiness[]>>()
 
-  for (const offer of offers) {
-    const city =
-      offer.master_business_info?.city?.trim() || 'Location unavailable'
-    const category = offer.service_category?.trim() || 'Other services'
-    const unitType = offerUnitType(offer) || 'service'
+  for (const service of services) {
+    const city = serviceBusinessCity(service)
+    const category = service.service_category?.trim() || 'Other services'
+    const unitType = service.unit_type?.trim() || 'service'
     const categoryKey = `${city}\u0000${category}`
     const unitGroups =
-      groups.get(categoryKey) ?? new Map<string, OfferWithBusiness[]>()
-    unitGroups.set(unitType, [...(unitGroups.get(unitType) ?? []), offer])
+      groups.get(categoryKey) ?? new Map<string, ClinicServiceWithBusiness[]>()
+    unitGroups.set(unitType, [...(unitGroups.get(unitType) ?? []), service])
     groups.set(categoryKey, unitGroups)
   }
 
   return Array.from(groups, ([key, unitGroups]) => {
     const [city, serviceCategory] = key.split('\u0000')
-    const units = Array.from(unitGroups, ([unitType, unitOffers]) => {
+    const units = Array.from(unitGroups, ([unitType, unitServices]) => {
       const byProvider = new Map<number, number>()
-      for (const offer of unitOffers) {
-        if (offer.business_id === null) continue
-        const price = positive(offer.regular_price)
-        const existing = byProvider.get(offer.business_id)
+      for (const service of unitServices) {
+        if (service.business_id === null) continue
+        const price = positive(service.regular_price)
+        const existing = byProvider.get(service.business_id)
         if (existing === undefined || price < existing)
-          byProvider.set(offer.business_id, price)
+          byProvider.set(service.business_id, price)
       }
       const prices = Array.from(byProvider.values()).sort((a, b) => a - b)
       const middle = Math.floor(prices.length / 2)
@@ -157,7 +184,24 @@ export const getPublicPromotions = cache(async function getPublicPromotions() {
 
 export const getPublicRegularPrices = cache(
   async function getPublicRegularPrices() {
-    return (await getFreshOffers()).filter(isRegularPrice)
+    const rows: ClinicServiceWithBusiness[] = []
+
+    for (let from = 0; ; from += PAGE_SIZE) {
+      const { data, error } = await supabase
+        .from('clinic_services')
+        .select(
+          `service_id, business_id, regular_price, service_category, unit_type, service_name, ${SERVICE_BUSINESS_JOIN}`,
+        )
+        .gt('regular_price', 0)
+        .range(from, from + PAGE_SIZE - 1)
+
+      if (error) throw error
+      const page = (data ?? []) as ClinicServiceWithBusiness[]
+      rows.push(...page)
+      if (page.length < PAGE_SIZE) break
+    }
+
+    return rows
   },
 )
 
@@ -195,7 +239,9 @@ export const getPublicBusiness = cache(async function getPublicBusiness(
   }
 })
 
-export function getFreshnessLabel(createdAt: string | null | undefined): string {
+export function getFreshnessLabel(
+  createdAt: string | null | undefined,
+): string {
   if (!createdAt) return 'Verification pending'
   return `Updated ${new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(createdAt))}`
 }
