@@ -49,6 +49,12 @@ export function PublicHeader() {
             Promotions
           </Link>
           <Link
+            href="/memberships"
+            className="transition-colors hover:text-[#451a03]"
+          >
+            Memberships
+          </Link>
+          <Link
             href="/businesses"
             className="transition-colors hover:text-[#451a03]"
           >

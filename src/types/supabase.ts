@@ -50,7 +50,10 @@ export interface ClinicMembership {
   membership_price: number
   billing_period: string | null
   minimum_commitment_months: number | null
-  perks: string | null
+  benefits: string[] | null
+  source_url: string | null
+  created_at: string | null
+  updated_at: string | null
 }
 
 /** Matches `promo_offer_master` table */

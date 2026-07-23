@@ -6,10 +6,25 @@ import {
   SERVICE_BUSINESS_JOIN,
 } from '@/lib/data/offer-query'
 import { supabase } from '@/lib/supabase'
-import type { OfferWithBusiness, PromoOfferItem } from '@/types/supabase'
+import type {
+  ClinicMembership,
+  OfferWithBusiness,
+  PromoOfferItem,
+} from '@/types/supabase'
 
 const FRESHNESS_DAYS = 30
 const PAGE_SIZE = 1000
+
+export const MEMBERSHIP_BUSINESS_JOIN =
+  'master_business_info!fk_membership_business(business_id, name, city)'
+
+export interface PublicMembership extends ClinicMembership {
+  master_business_info: {
+    business_id: number
+    name: string | null
+    city: string | null
+  } | null
+}
 
 export type PromotionSignal = 'price' | 'percent' | 'amount'
 
@@ -507,3 +522,95 @@ export function isMarketplaceFreshnessError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error)
   return message.includes('is_active') || message.includes('PGRST')
 }
+
+export function normalizeMembershipBenefits(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+  return value
+    .map((entry) => {
+      if (typeof entry === 'string') return entry.trim()
+      if (entry && typeof entry === 'object') {
+        const record = entry as Record<string, unknown>
+        const text =
+          record.text ?? record.description ?? record.benefit ?? record.name
+        if (typeof text === 'string') return text.trim()
+      }
+      return ''
+    })
+    .filter(Boolean)
+}
+
+export function formatBillingPeriod(period: string | null | undefined): string {
+  switch (period) {
+    case 'monthly':
+      return 'per month'
+    case 'quarterly':
+      return 'per quarter'
+    case 'annual':
+      return 'per year'
+    case 'one_time':
+      return 'one-time'
+    default:
+      return period?.trim() || 'per billing period'
+  }
+}
+
+export function formatCommitmentMonths(
+  months: number | null | undefined,
+): string | null {
+  if (months == null || months <= 0) return null
+  return months === 1 ? '1-month minimum' : `${months}-month minimum`
+}
+
+export function summarizeMembershipBenefits(
+  benefits: string[],
+  limit = 5,
+): { visible: string[]; extraCount: number } {
+  if (benefits.length <= limit) {
+    return { visible: benefits, extraCount: 0 }
+  }
+  return {
+    visible: benefits.slice(0, limit),
+    extraCount: benefits.length - limit,
+  }
+}
+
+export function sortPublicMemberships(
+  memberships: PublicMembership[],
+): PublicMembership[] {
+  return [...memberships].sort((a, b) => {
+    const priceDiff =
+      positive(a.membership_price) - positive(b.membership_price)
+    if (priceDiff !== 0) return priceDiff
+    return String(b.updated_at ?? '').localeCompare(String(a.updated_at ?? ''))
+  })
+}
+
+export const getPublicMemberships = cache(
+  async function getPublicMemberships() {
+    const rows: PublicMembership[] = []
+
+    for (let from = 0; ; from += PAGE_SIZE) {
+      const { data, error } = await supabase
+        .from('clinic_memberships')
+        .select(
+          `plan_id, business_id, membership_name, membership_price, billing_period, minimum_commitment_months, benefits, source_url, created_at, updated_at, ${MEMBERSHIP_BUSINESS_JOIN}`,
+        )
+        .gt('membership_price', 0)
+        .order('membership_price', { ascending: true })
+        .order('updated_at', { ascending: false })
+        .range(from, from + PAGE_SIZE - 1)
+
+      if (error) throw error
+      const page = (data ?? []).map((row) => ({
+        ...(row as ClinicMembership),
+        benefits: normalizeMembershipBenefits(
+          (row as { benefits?: unknown }).benefits,
+        ),
+      })) as PublicMembership[]
+      rows.push(...page)
+      if (page.length < PAGE_SIZE) break
+    }
+
+    return sortPublicMemberships(rows)
+  },
+)
