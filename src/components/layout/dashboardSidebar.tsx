@@ -20,13 +20,22 @@ const navItems: NavItem[] = [
   { href: '/dashboard/settings', label: 'Settings', icon: Gear },
 ]
 
-export function DashboardSidebar() {
+/** `showMessages={false}` drops Messages from the rail and the bottom bar, for
+ *  someone with no conversation to open. */
+export function DashboardSidebar({
+  showMessages = true,
+}: {
+  showMessages?: boolean
+}) {
   const { state, signOut } = useAuth()
   const user = state.user
+  const items = showMessages
+    ? navItems
+    : navItems.filter((item) => item.href !== '/dashboard/messages')
 
   return (
     <BaseSidebar
-      navItems={navItems}
+      navItems={items}
       baseRoute="/dashboard"
       user={
         user

@@ -1,53 +1,62 @@
-import nextDynamic from 'next/dynamic'
-import { inferState } from '@/lib/data/adapters'
-import { getBusinesses } from '@/lib/data/businesses'
-import type { Business } from '@/types/business'
-
-const BusinessesManagementClient = nextDynamic(
-  () => import('./businessesClient').then((m) => m.BusinessesManagementClient),
-  {
-    loading: () => (
-      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
-    ),
-  },
-)
+import type { AdminBusinessRow } from '@/components/features/admin/businessTable'
+import { requireAdmin } from '@/lib/auth/guards'
+import { logSupabaseError } from '@/lib/logger'
+import type { BusinessTier } from '@/types/business'
+import { BusinessesManagementClient } from './businessesClient'
 
 export const dynamic = 'force-dynamic'
 
 export default async function BusinessesManagementPage() {
-  // Fetch real businesses from Supabase
-  const supaBusinesses = await getBusinesses()
+  // proxy.ts already gates /admin/dashboard/* on is_admin(), but this page needs an
+  // authenticated client of its own: business_profiles SELECT is (auth.uid() = id) OR
+  // private.is_admin(), so the anon singleton behind getBusinesses() reads it as empty.
+  const { supabase } = await requireAdmin()
 
-  // Map Supabase business shape to frontend Business type
-  const businesses: Business[] = supaBusinesses.map((biz) => {
-    const { state, stateCode } = inferState(biz.city)
-    const slug = (biz.name ?? '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
+  // Read here rather than through getBusinesses(), which selects the public columns only: the
+  // contact editor needs phone and website. 419 rows today, under PostgREST's 1000-row page.
+  const [{ data: supaBusinesses, error: businessError }, { data: profiles }] =
+    await Promise.all([
+      supabase
+        .from('master_business_info')
+        .select(
+          'business_id, name, address, city, phone, website, score, review_count',
+        )
+        .order('name'),
+      supabase
+        .from('business_profiles')
+        .select('business_id, tier, claim_status')
+        .eq('claim_status', 'approved'),
+    ])
+  if (businessError) {
+    logSupabaseError('BusinessesManagementPage', businessError)
+    throw businessError
+  }
 
+  // Tier used to be the literal 'unclaimed' for all 419 rows, so New Look Skin Center —
+  // claimed, approved, tier 'free' — rendered as Unclaimed and the Free/Paid tabs read 0
+  // permanently. It is real now. A business with no approved claim genuinely is unclaimed,
+  // which is why the fallback is honest rather than a placeholder.
+  const tierByBusinessId = new Map<string, BusinessTier>()
+  for (const profile of profiles ?? []) {
+    if (profile.business_id == null) continue
+    const tier = profile.tier
+    if (tier === 'free' || tier === 'paid') {
+      tierByBusinessId.set(String(profile.business_id), tier)
+    }
+  }
+
+  const businesses: AdminBusinessRow[] = (supaBusinesses ?? []).map((biz) => {
+    const id = String(biz.business_id)
     return {
-      id: String(biz.business_id),
-      name: biz.name ?? 'Unknown Business',
-      slug,
-      description: `${biz.category ?? 'Medical spa'} in ${biz.city ?? 'your area'}`,
-      tier: 'unclaimed' as const,
-      status: 'active' as const,
-      address: biz.address ?? '',
+      id,
+      name: biz.name ?? 'Unknown business',
       city: biz.city ?? '',
-      state: stateCode || state,
-      zipCode: '',
-      locationArea: biz.city ?? '',
-      latitude: 0,
-      longitude: 0,
-      phone: '',
-      email: '',
-      website: biz.website_clean ?? biz.website ?? undefined,
+      tier: tierByBusinessId.get(id) ?? 'unclaimed',
       rating: biz.score ?? 0,
       reviewCount: biz.review_count ?? 0,
-      isVerified: false,
-      createdAt: biz.created_at ?? new Date().toISOString(),
-      updatedAt: biz.updated_at ?? new Date().toISOString(),
+      phone: biz.phone ?? null,
+      website: biz.website ?? null,
+      address: biz.address ?? null,
     }
   })
 

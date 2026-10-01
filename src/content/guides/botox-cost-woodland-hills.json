@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "woodland-hills",
+  "cityLabel": "Woodland Hills",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Woodland Hills menus sell a measuring stick, not a bill. Practices along Ventura Boulevard and around Warner Center publish a rate for one unit of toxin, and your total is that rate multiplied by a dose no injector fixes until they have seen your face move. Two quirks make the local lists harder to read than they appear. Five different neurotoxins circulate in this feed and they are not all measured on the same scale, so a per-unit figure only means something once you know which product it belongs to. And while most of the visible listings commit to a per-unit number, they come from a small group of practices — which means the published spread is a self-selected slice of a neighbourhood that also contains dermatology, plastic-surgery and general medical offices injecting quietly with no rate card online.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit on the Botox Scale",
+        "description": "The default structure here, and the one nearly every priced listing in this feed uses; the exception is a prepaid bank of units sold as a block. A practice posts what a single unit costs and multiplies by the count in your plan, so one figure has to serve a first-timer's frown line and a full upper-face maintenance visit alike. Xeomin and Jeuveau are dosed at counts close to Botox's, so their rates read across more directly than Dysport's or Daxxify's, whose labelled doses run to more units, though no two products' units are formally interchangeable. Nearly every posted rate here is a member price or needs a minimum purchase, so ask what applies to you. What the posted rate omits — consultation fee, minimum unit purchase, injection or facility charge, the two-week touch-up — is what to settle on the phone before you book.",
+        "typicalRange": "the Botox-scale listings run from the high single digits per unit up into the low teens, with the middle of the band sitting near, and slightly below, the midpoint of those two extremes"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "Dysport is divided more finely than Botox — published clinical work puts the conversion somewhere near 2.5 to 3 Dysport units for each Botox unit, and treats it as indication-specific rather than a fixed exchange rate. Quoted per true Dysport unit, that would put the advertised rate well below everything on the Botox scale. In this feed it does not: the Dysport listings sit in the upper half of the local spread, at the same rate each clinic charges for Botox, rather than underneath it. Either those figures are quoted on a Botox-equivalent basis, or a Dysport visit here genuinely costs a multiple of a Botox one. Ask the clinic outright which it is, and ask for the planned unit count in the same breath.",
+        "typicalRange": "advertised in the upper half of the local per-unit band rather than below it, which makes the finished visit total the only meaningful comparison"
+      },
+      {
+        "name": "Newer Toxins Rated Against the Botox Line",
+        "description": "Xeomin and Daxxify appear in this market priced at or just under the Botox-scale rate, and the floor of the whole feed is a Xeomin figure — not, as in many Southern California markets, a Dysport one. Neither is a plain discount: the Xeomin floor needs a minimum purchase and its listing states a much higher regular rate, and the Daxxify rates are membership prices. Daxxify is also marketed on duration rather than dose, so the question worth asking is not what one unit costs but how many visits a year the practice expects you to need on it.",
+        "typicalRange": "at or modestly below the Botox-scale rate per unit, with the lowest published figure in the market belonging to this group"
+      },
+      {
+        "name": "No Figure Published, Quoted After Assessment",
+        "description": "Roughly a quarter of the visible Woodland Hills offers name no rate at all: a dollar discount on a new Daxxify area, or free units bundled into a membership or a birthday offer. That is ordinary practice for a medical treatment, and it is still a pricing structure — it simply moves the number into a room where you have less leverage. When you call, ask for the per-unit rate and a planned count together, and ask whether a consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; the total depends entirely on the count agreed in the chair"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A handful of forces set a rate card in this corner of the west San Fernando Valley, and they pull in different directions. This is an affluent, older neighbourhood inside the City of Los Angeles, with expensive commercial frontage, a state that keeps injection firmly inside medicine, and both cheaper Valley addresses and pricier Westside ones within a short drive.",
+    "factors": [
+      {
+        "factor": "California keeps injection inside medicine, with supervision attached",
+        "explanation": "The Medical Board of California treats botulinum toxin injection as a medical treatment. A physician may inject, or may direct a registered nurse or physician assistant to inject under supervision; unlicensed medical assistants, estheticians, cosmetologists and electrologists may not, and RNs and PAs may not practise independently. The machinery behind that — a supervising or delegating physician, written standardized procedures under Business and Professions Code sections 2725 and 3502, patient-specific orders — is a standing overhead line inside every compliant practice, and it sits underneath what Botox costs here. Ask what licence your injector holds, who supervises, and whether that physician is on site."
+      },
+      {
+        "factor": "Ventura Boulevard and Warner Center frontage",
+        "explanation": "Aesthetic practices here cluster on Ventura Boulevard, around Topanga Canyon Boulevard and in the Warner Center office and retail district — addresses that cost meaningfully more per square foot than an equivalent room in Canoga Park, Reseda or Van Nuys, while the vial costs the same everywhere. AreaVibes puts Woodland Hills far above the national baseline on cost of living, driven overwhelmingly by property. Whether that shows up in the rate is another matter: the listings behind this page cover Woodland Hills alone, so they cannot show it."
+      },
+      {
+        "factor": "An older, high-income maintenance market",
+        "explanation": "Neighbourhood estimates put the median age here in the mid-forties and median household income well above the national median. That profile skews toward established maintenance patients treating set lines several times a year rather than the preventative first-timer cohort that dominates younger, denser markets. Repeat patients dose predictably and shop on total visit cost, which supports package and membership structures and discourages the very aggressive introductory rates used to win first visits elsewhere."
+      },
+      {
+        "factor": "Dense competition, thin publication",
+        "explanation": "Review directories list roughly ten medspas inside Woodland Hills alone, and that is before counting dermatology and plastic-surgery offices, and before the catchment widens into Tarzana, Encino, Calabasas and Westlake Village. Only a fraction of that field publishes a per-unit figure. So the visible spread is not a survey of the neighbourhood — it is the subset that chose transparency as a marketing position, usually because their rate competes. Treat it as a floor-finding tool and assume unpublished quotes can land outside it either way."
+      },
+      {
+        "factor": "The Westside sets the ceiling, the Valley sets the floor",
+        "explanation": "Beverly Hills, West Hollywood and Santa Monica anchor the premium end of the regional market and give Woodland Hills practices room to sit below them without looking cheap. Calabasas and Westlake Village compete at similar positioning; the inner Valley undercuts on occupancy cost. Everything over the hill is traffic-dependent — the same route can double at the wrong hour — so cross-town options mostly constrain what a local practice can charge for a large initial course, not for quarterly top-ups."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Little of this is coupon hunting. In a market where several dosing scales circulate and only some clinics publish anything, the money is saved before you book, by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Price a whole appointment in each brand, not the advertised rates",
+        "detail": "Ask any clinic stocking more than one neurotoxin how many units your areas take in each product and what each finished visit costs. Then set the totals side by side. Cross-brand per-unit comparison is the most expensive mistake available here, because the products in this feed are not all divided the same way."
+      },
+      {
+        "tip": "Ask what the Dysport figure is measured on",
+        "detail": "The Dysport rates in this market do not behave the way Dysport rates usually behave — they sit high in the local band rather than well below it. Before you assume anything, ask whether the number is per Dysport unit or a Botox-equivalent quote, and ask for the planned count. One sentence on the phone settles a difference that could be threefold on the invoice."
+      },
+      {
+        "tip": "Find out what condition sits behind the lowest rate",
+        "detail": "A floor rate usually carries a string: new-patient only, a membership tier, a minimum unit purchase, or a prepaid block drawn down over the year. Ask what you pay on the second and third visit, whether a membership fee is refundable, whether prepaid units expire, and whether they transfer if the clinic switches its preferred brand."
+      },
+      {
+        "tip": "Get one quote from a cheaper Valley corridor",
+        "detail": "Canoga Park, Reseda, Winnetka and Van Nuys sit in a different occupancy bracket from Ventura Boulevard and are close enough that the trip is repeatable three or four times a year — which a Westside appointment rarely is. Two comparison quotes cost you an afternoon and move the number more than haggling does. Check the injector's licence and supervision arrangement meet the same standard before you switch."
+      },
+      {
+        "tip": "Enrol in the manufacturer programme before your first visit, and avoid the crush",
+        "detail": "Allergan's Allē, Galderma's Aspire for Dysport and Evolus Rewards accrue on treatments you were having anyway, and signing up afterwards usually forfeits the credit; ask which programme the practice runs and whether points apply at checkout. Then book away from the pinch points — award season in January and February, graduation and wedding months, and the December party stretch all tighten the calendar, and toxin needs about two weeks to settle before a fixed date."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 10.995000000000001,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with Dysport's smaller unit and starting-at prices left out of the local median rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and $13, near the middle of that published band, is the national marker. The median of the priced Woodland Hills offers is $11 per unit — about 15 percent below that marker, which is not what a neighbourhood with this income and property profile would suggest, and partly reflects which practices choose to publish a rate at all and what conditions sit behind the lower ones."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Woodland Hills?",
+      "answer": "No honest page gives one number. Toxin is sold by the unit here, so your bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices actually publish, split by product; the top of the band is roughly half again the bottom, from a small group of practices. Before comparing quotes, settle two things: which product the rate belongs to, and what else the visit carries — consultation fee, minimum purchase, touch-up policy."
+    },
+    {
+      "question": "Why does Dysport cost the same per unit as Botox here, when it is usually the cheap headline?",
+      "answer": "That is the oddity of this feed: every clinic here that lists Dysport charges the same per-unit rate for it as for Botox, and it is worth asking about directly. A Dysport unit is a finer division than a Botox unit — published work puts the conversion near 2.5 to 3 to 1 — so a straight per-unit Dysport rate should normally sit well below the Botox scale. When it does not, either the clinic is quoting a Botox-equivalent figure rather than a true per-unit one, or a Dysport visit there really will cost a multiple of a Botox visit. Ask for the planned count in each product and the finished cost of each appointment; that is the only comparison that survives contact with an invoice."
+    },
+    {
+      "question": "How many units will I need, and what does a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into something you can hold against another clinic's quote. Ask too how the practice handles a plan that grows once you are in the chair, and whether the two-week review is included or billed."
+    },
+    {
+      "question": "Does Botox cost less in Canoga Park, Reseda or Van Nuys than in Woodland Hills?",
+      "answer": "It can, and the mechanism would be occupancy cost rather than product — the vial costs a practice the same in a Reseda suite as it does on Ventura Boulevard. The listings behind this page cover Woodland Hills alone, so they cannot show that gap. Those addresses are close enough that the trip is genuinely repeatable every quarter, which is the test any money-saving drive has to pass. Compare full visit totals rather than per-unit rates, and confirm the injector's licence type and the supervising physician arrangement before you move."
+    },
+    {
+      "question": "Is Botox cheaper in Beverly Hills, Santa Monica or central LA, or does it cost more?",
+      "answer": "Beverly Hills and West Hollywood generally anchor the premium end of the regional market rather than undercutting the Valley, and Santa Monica is not a bargain destination either. Central Los Angeles is deeper and more varied, so individual rates there can beat local ones, but the Sepulveda Pass or the 101 at the wrong hour can turn a short trip into a long one. Price the travel honestly: possibly worth it once for a large initial course, rarely worth it four times a year."
+    },
+    {
+      "question": "Do Daxxify and Xeomin cost less per unit, and is the difference worth switching for?",
+      "answer": "In this market both appear at or a little under the Botox-scale rate, and the lowest published figure in the feed belongs to that group rather than to Dysport. Xeomin is dosed at counts broadly comparable to Botox, so its per-unit comparison is fairly direct; Daxxify's labelled doses run to more units, so compare it on the finished visit. Daxxify is marketed on duration, so ask the practice how many visits a year it expects you to need and multiply out the annual cost — a longer interval can matter more than the rate. Ask also what condition sits behind the lower figure: here the Xeomin floor needs a minimum purchase against a much higher stated regular rate, and the Daxxify rates are membership prices."
+    },
+    {
+      "question": "Who can legally inject Botox in California, and does that change what it costs?",
+      "answer": "The Medical Board of California treats it as a medical treatment: a physician may inject, or may direct a registered nurse or physician assistant to inject under supervision. Estheticians, cosmetologists, electrologists and unlicensed medical assistants may not inject at all, and RNs and PAs may not do so independently — the Board of Registered Nursing and the Physician Assistant Board set the rest, with standardized procedures under Business and Professions Code sections 2725 and 3502. That supervision requirement is a genuine cost inside every compliant practice, and local rates have to carry it. Ask for your injector's licence, the supervising physician's name, and how the delegation is documented."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually a low figure means a smaller dosing unit, a first-visit rate or a membership condition — but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin surfaced in several states and caused harmful reactions; the FDA advised confirming the product came from an authorised source and flagged packaging tells including a 150-unit strength not sold in the US and cartons printed in another language. Asking to see the sealed, labelled vial before it is drawn up is reasonable anywhere, including a well-reviewed Ventura Boulevard clinic."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 195,
+    "medspaDensity": "Dense for a neighbourhood of this size, and tightly strung along commercial frontage rather than spread evenly. Practices concentrate on Ventura Boulevard, around Topanga Canyon Boulevard and in the Warner Center office and retail district, with a review directory listing about ten medspas inside Woodland Hills itself — before counting the dermatology, plastic-surgery and general medical offices that also inject, and before the catchment widens into Tarzana, Encino, Calabasas and Westlake Village. No authoritative registry count of injectors exists, and a directory entry is not the same thing as a licensed injector. What matters more to a buyer is that only some of that field publishes a per-unit rate at all.",
+    "demographicNotes": "Woodland Hills is a neighbourhood of the City of Los Angeles rather than an incorporated city, so there is no single Census place figure for it; private estimates put the population in the mid-seventy-thousands, the median age around 44 and median household income comfortably above the national median reported for the same period. That is an older, settled, high-earning profile, which tends to produce steady maintenance dosing in fixed areas several times a year rather than the large preventative first-timer cohort seen in younger cities. Buyers in that mould shop on annual cost and injector continuity more than on headline rates.",
+    "competitionNotes": "Competition runs in two directions at once. Over the hill, Beverly Hills, West Hollywood and Santa Monica set the regional ceiling and let west Valley practices position just beneath them; along the 101, Calabasas and Westlake Village compete at similar positioning while Canoga Park, Reseda and Van Nuys undercut on occupancy cost. Because all of those are traffic-dependent rather than distant, cross-town options mostly discipline what a local practice can charge for a large first course rather than for quarterly top-ups. Inside the neighbourhood, the small group of clinics willing to publish a figure exerts pressure well beyond its size, because it sets the number every other practice gets asked about on the phone."
+  }
+}

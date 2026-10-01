@@ -1,0 +1,125 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "boulder",
+  "cityLabel": "Boulder",
+  "state": "Colorado",
+  "stateCode": "CO",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Boulder clinics sell a measuring stick rather than a bill. A practice on Pearl Street or out by Twenty Ninth Street publishes what one unit of toxin costs, and your total is that figure multiplied by a dose no injector settles until they have watched your forehead move. Two things make the local lists harder to read than they look. Five neurotoxins carry a stated figure in this feed, and they are not all divided on the same scale, so a per-unit number means nothing until you know which product it belongs to. And while most visible listings name a per-unit rate, they come from a small handful of practices — a self-selected slice of a town that also contains dermatology offices, plastic-surgery practices and injectors who quote nothing online.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit on the Botox Scale",
+        "description": "The structure behind every Botox-branded listing here. The clinic posts a rate for a single unit and multiplies by the count in your plan, so one number has to serve a first-timer's glabella and a full upper-face maintenance visit alike. Almost every posted rate here is a member price, and the lowest is a first-treatment rate for new clients with a unit minimum. What the posted rate leaves out is what decides the invoice: consultation fee, minimum unit purchase, any injection or facility charge, and whether the two-week review is included or billed. Settle those on the phone before you book.",
+        "typicalRange": "a notably narrow band, all of it in the low double digits per unit, with only a couple of dollars separating the lowest Botox listing from the highest"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "Dysport is divided more finely than Botox — published clinical work puts the conversion somewhere near 2.5 to 3 Dysport units per Botox unit, and treats it as indication-specific rather than a fixed exchange rate. That is why the floor of the entire Boulder feed is a Dysport rate sitting in the low single digits per unit, far beneath anything measured on the Botox scale. It is not the cheapest treatment in town; it is a smaller slice of the same kind of thing, and it takes roughly three of them to do one Botox unit's work.",
+        "typicalRange": "low single digits per unit for most Dysport listings, which is the shape you would expect given the unit-size difference"
+      },
+      {
+        "name": "Dysport Quoted on a Botox-Equivalent Basis",
+        "description": "One strand of the Dysport listings does not behave like the rest: it is advertised up at the Botox-scale level rather than a third of it. The listing prices Dysport at the same rate as three other brands, which suggests a Botox-equivalent figure — the cost of the Dysport it takes to match one Botox unit — rather than a true per-unit rate, though it does not say so. It is a defensible way to publish, and far less confusing once you know, but it makes two Dysport listings in the same town look like different products. Ask outright which basis the number uses, and ask for the planned count in the same breath.",
+        "typicalRange": "advertised level with the Botox-scale band rather than below it, so only the finished visit total compares"
+      },
+      {
+        "name": "Discount per Unit off an Unpublished Rate",
+        "description": "A few visible Boulder offers are member discounts of a few dollars off each unit, with no rate stated for them to come off. That is still a pricing structure — it simply moves the number into a room where you have less leverage. Ask for the per-unit rate before and after the discount and the planned unit count together, and ask whether a consultation fee is credited toward treatment on the day.",
+        "typicalRange": "a few dollars off each unit for members; the rate it comes off is not stated"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Boulder is a small, expensive, unusually well-educated city embedded in a much larger Front Range economy, and the forces on a rate card here pull against each other. Occupancy cost and household income push up; a large student population and cheaper addresses twenty minutes east and south push back.",
+    "factors": [
+      {
+        "factor": "Colorado keeps injection inside medicine, with delegation attached",
+        "explanation": "The Colorado Board of Nursing treats botulinum toxin injection as a medical function that can fall within an RN's or advanced practice nurse's delegated scope when the clinician has the knowledge, judgment and demonstrated competency — and states it is not within LPN scope. Physicians and nurse practitioners with prescriptive authority may evaluate, order and inject within their own authority; PAs work under Colorado's collaboration and supervision framework, and delegated nursing functions run through Colorado Revised Statutes section 12-255-131 and Colorado Medical Board rules. That supervising or delegating relationship is a standing overhead line inside every compliant clinic, and it sits underneath what Botox costs here. Ask what licence your injector holds and who the delegating physician is."
+      },
+      {
+        "factor": "Boulder's cost of living, and which index you are reading",
+        "explanation": "Salario publishes a Boulder cost-of-living index well above the national baseline of 100, driven overwhelmingly by housing and commercial rent. That is not the same measure as the Bureau of Economic Analysis regional price parity approach, which sits much closer to the national line for Colorado statewide — the methodologies differ and should not be treated as interchangeable. For a buyer, the useful point is narrower: the vial costs a practice the same in Longmont as it does off Pearl Street, so frontage is doing a lot of the work in any gap you see."
+      },
+      {
+        "factor": "A split demographic: students and a high-earning metro",
+        "explanation": "Census-based profiles put Boulder city's median age around the late twenties and its median household income below the surrounding metro's, because roughly a third of city residents are students, per the City of Boulder. The wider Boulder metro reads older and materially higher-earning. Clinics therefore serve two cohorts at once — occasional younger preventative patients who shop hard on a headline figure, and established maintenance patients who dose predictably three or four times a year and shop on annual total."
+      },
+      {
+        "factor": "Denver is thirty to forty minutes down US 36",
+        "explanation": "Denver's aesthetic market is deeper and more varied, and in light traffic it is a short run down US 36; Louisville, Lafayette and Longmont are closer still, and Fort Collins is roughly an hour north. That proximity disciplines what a Boulder practice can charge for a large initial course. It does far less to quarterly top-ups, because US 36 in snow, ice or peak commuting conditions is a different road than it is on a Tuesday morning."
+      },
+      {
+        "factor": "Thin publication in a market with no reliable provider count",
+        "explanation": "Public search results give no standardised count of Boulder medspas or injectors, and only a handful of practices publish a rate. So the spread you see is not a survey of the town — it is the subset that chose transparency as a position, usually because their rate competes. Treat it as a floor-finding tool and assume unpublished quotes can land outside it in either direction."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Very little of this is coupon hunting. In a market where two dosing scales circulate and some listings appear to convert while others do not, the money is saved before you book, by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Price a whole appointment in each brand, not the advertised rates",
+        "detail": "Ask any clinic stocking more than one toxin how many units your areas take in each product and what each finished visit costs, then set the totals side by side. Cross-brand per-unit comparison is the most expensive mistake available in Boulder, because the cheapest advertised figure in town belongs to the smaller unit."
+      },
+      {
+        "tip": "Ask what basis the Dysport number uses",
+        "detail": "Some Dysport listings here sit in the low single digits per unit and some sit up level with the Botox scale. One sentence on the phone — is that per Dysport unit, or converted to a Botox equivalent? — settles a difference that can be threefold on the invoice. Get the planned count in the same call."
+      },
+      {
+        "tip": "Find out what condition sits behind the floor",
+        "detail": "A floor rate almost always carries a string: new-patient only, a membership tier, a minimum unit purchase, or a prepaid block drawn down over the year. Ask what you pay on the second and third visit, whether membership fees are refundable, whether prepaid units expire, and whether they transfer if the clinic changes its preferred brand."
+      },
+      {
+        "tip": "Take one comparison quote from east or south of town",
+        "detail": "Louisville, Lafayette and Longmont sit in a different occupancy bracket from downtown Boulder and are close enough that the trip repeats comfortably three or four times a year — which is the real test. A Denver quote is worth having for a large first course; it is rarely worth driving US 36 for a maintenance top-up in February. Confirm the injector's licence and delegation arrangement meet the same standard before you switch."
+      },
+      {
+        "tip": "Enrol in the manufacturer programme first, and book away from the pinch points",
+        "detail": "Allergan's Allē covers Botox and Galderma's Aspire programme covers Dysport; points accrue on treatments you were having anyway, and signing up afterwards usually forfeits the credit. Then avoid the crush — CU graduation and wedding season through late spring, the Memorial Day race weekend and the December holidays all tighten injector calendars, and toxin needs about two weeks to settle before a fixed date."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 11,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with Dysport's smaller unit and starting-at prices left out of the local median rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and $13, near the middle of that published band, is the national marker. The median of the priced Boulder offers is $11 per unit — about 15 percent below that marker, which is not what a market with this cost of living would lead you to expect, and partly reflects which practices choose to publish at all and what conditions sit behind their lower figures."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Boulder?",
+      "answer": "No honest page gives one number, because toxin is sold by the unit and the dose is not fixed until an injector has assessed you. The live breakdown beside this text shows what local practices actually publish, split by product. The Botox-scale listings sit in a strikingly tight band — barely a couple of dollars from bottom to top — so in Boulder the product you choose and the conditions attached to a rate move your bill more than shopping between clinics does."
+    },
+    {
+      "question": "Why does the cheapest advertised Botox cost in town belong to Dysport?",
+      "answer": "Because a Dysport unit is a smaller unit. Published work puts the conversion near 2.5 to 3 Dysport units per Botox unit, indication-specific rather than a fixed exchange rate, so a Dysport rate roughly a third of the Botox-scale figure is the normal shape, not a bargain. The floor of the Boulder feed is one of these, and it is not the cheapest treatment in the city — it is the smallest slice on the menu. Ask for the planned Dysport count and the finished visit cost before you compare anything."
+    },
+    {
+      "question": "How many units will I need, and what does a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to any published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into something comparable. Ask how the practice handles a plan that grows once you are in the chair, and whether the two-week review is included."
+    },
+    {
+      "question": "Does Botox cost less in Denver, Longmont or Lafayette than in Boulder?",
+      "answer": "Any difference would come from occupancy cost rather than product — the vial costs a clinic the same in Longmont as it does off Pearl Street — and the listings behind this page are Boulder's own, so they cannot show it. Louisville, Lafayette and Longmont are close enough that the drive repeats every quarter; Denver is thirty to forty minutes down US 36 in light traffic and considerably longer in snow or at rush hour, which makes it a sensible comparison for a large first course and a poor one for maintenance. Compare full visit totals, not per-unit rates."
+    },
+    {
+      "question": "Who can legally inject Botox in Colorado, and does that change what it costs?",
+      "answer": "The Colorado Board of Nursing treats the injection as a medical function that may fall within an RN's or advanced practice nurse's delegated scope where competency is established, and states it is not within LPN scope; physicians and NPs with prescriptive authority may evaluate, order and inject within their authority, and PAs work under the state's physician collaboration framework. Delegation runs through Colorado Revised Statutes section 12-255-131 and Colorado Medical Board rules. That supervisory structure is a real cost inside every compliant clinic. Ask for your injector's licence type, the delegating physician's name, and whether that clinician is reachable on treatment day."
+    },
+    {
+      "question": "Does Botox cost more during graduation and wedding season?",
+      "answer": "List figures rarely move with the calendar, but availability does, and a squeezed calendar removes your ability to shop. Late spring in Boulder stacks CU graduation, wedding season and the Memorial Day race weekend into a few crowded weeks; January tends to bring post-holiday promotion instead. There is no published Boulder-specific seasonal demand data, so treat this as a booking problem rather than a cost one: leave about two weeks between treatment and any fixed date."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually a low figure means a smaller dosing unit, a first-visit rate or a membership condition — but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin surfaced in several states and caused harmful reactions; the FDA advised confirming the product came from an authorised source and flagged packaging tells including a 150-unit strength not sold in the US and cartons printed in another language. Asking to see the sealed, labelled vial before it is drawn up is reasonable at any clinic, including a well-reviewed one downtown."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 138,
+    "medspaDensity": "Dense for a city of roughly a hundred thousand people, and clustered along commercial frontage rather than spread evenly — downtown around Pearl Street, near University Hill, at Twenty Ninth Street and along the larger east Boulder corridors. Medical spas share that field with dermatology practices, plastic-surgery offices and facial-aesthetic clinics, and the catchment runs on into Louisville, Lafayette and Longmont. Public sources do not provide a standardised, reliable count of Boulder medspas or injectors, so no defensible density figure exists, and a directory listing is not the same thing as a licensed injector. What matters more to a buyer is that only part of that field publishes a per-unit figure at all.",
+    "demographicNotes": "Census-based profiles put Boulder city near 107,000 residents with a median age around 29 and median household income in the mid-eighty-thousands, while the wider Boulder metro reads older, near 38, and meaningfully higher-earning. The gap is largely the University of Colorado: the City of Boulder reports students make up roughly a third of city residents, pulling the city's age and income figures down without reflecting the households that actually buy quarterly toxin. Clinics therefore serve a small, affluent, highly educated maintenance market alongside an occasional younger cohort shopping hard on headline figures, and Boulder County's population of around 330,000 is the more realistic base for the aesthetic market.",
+    "competitionNotes": "Competition runs outward more than inward. Denver anchors a far deeper regional market thirty to forty minutes down US 36, Fort Collins sits roughly an hour north, and Colorado Springs is a ninety-minute to two-hour run — close enough to constrain what a Boulder practice can charge for a large initial course, too far to discipline a February top-up when the weather turns. Nearer in, Louisville, Lafayette and Longmont undercut on occupancy cost while drawing from the same population. Inside Boulder itself, the handful of clinics willing to publish a figure exerts influence well beyond its size, because it sets the number every other practice gets asked about on the phone — which is a plausible reason the published Botox-scale band here is so narrow."
+  }
+}

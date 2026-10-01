@@ -35,7 +35,7 @@ This guide provides a single source of truth for all messaging patterns, voice/t
 | Quick pattern lookup | [7. Quick Reference](#7-quick-reference) |
 | Error message copy | [4.1 Error Messages](#41-error-messages) |
 | Form field labels | [5. Form Copy](#5-form-copy) |
-| Email/SMS templates | [6. Notification Copy](#6-notification-copy) |
+| Email templates | [6. Notification Copy](#6-notification-copy) |
 | Voice/tone guidance | [2. Voice & Tone](#2-voice--tone) |
 
 ### When to Deviate
@@ -62,7 +62,7 @@ CostFinders speaks with five consistent traits:
 
 | Trait | Definition | Example |
 |-------|------------|---------|
-| **Trustworthy** | Honest, transparent, reliable | "Prices verified by businesses" not "Best prices guaranteed!" |
+| **Trustworthy** | Honest, transparent, reliable | "These are the prices providers advertise publicly" not "Prices verified by businesses" |
 | **Helpful** | Proactive guidance, anticipates needs | "Need help choosing?" not "Figure it out" |
 | **Clear** | Simple language, no jargon | "Save 40%" not "Realize significant cost efficiencies" |
 | **Confident** | Assured without arrogance | "Find your perfect treatment" not "Maybe you'll find something" |
@@ -78,9 +78,51 @@ CostFinders speaks with five consistent traits:
 | Keep sentences short | Write long, complex sentences |
 | Use positive framing | Focus on limitations |
 
-**Keywords to use:** Save, Discover, Compare, Find, Verified, Trusted, Easy, Simple, Free, Near you
+**Keywords to use:** Save, Discover, Compare, Find, Listed, Advertised, Easy, Simple, Free, Near you
 
-**Words to avoid:** Cheap, Discount (use "savings"), Spam, Hassle, Complicated, Obviously, Just, Simply (when patronizing)
+**Words to avoid:** Cheap, Spam, Hassle, Complicated, Obviously, Just, Simply (when patronizing) — and every word in 2.2.1 below.
+
+### 2.2.1 What CostFinders Can Honestly Claim About Provenance
+
+Read this before writing any sentence about where a price or a provider came from.
+
+Every listing on this site was **compiled from public sources** — the provider's own website
+and booking pages, and public business listings. No provider submitted it, agreed to it, or
+was contacted about it. Business accounts are not open: one test owner account exists, and
+no provider has ever been checked by us. Star ratings and review counts come
+from Google (`master_business_info` keys on `google_place_id`); the site renders no review
+content of its own.
+
+| Never write | Because | Write instead |
+|-------------|---------|---------------|
+| Verified, Vetted, Trusted, Approved, Screened | Nothing on this site verifies a provider or a price | Listed, Advertised, Publicly listed |
+| Exclusive, Only on CostFinders | The offers are scraped from pages anyone can read | Listed here |
+| "4.8 rating" unattributed | It is Google's number, not ours | "4.8 Google rating" |
+| "Save up to N%", "Save N-M%" | A percentage hardcoded into a template is false on most pages the moment the data moves | A figure derived per page from the deals that page actually lists — or no figure at all |
+| "Book today", "Book now" | There is no booking flow anywhere in the product | Compare prices, See the listing |
+| "Prices refreshed daily", "Updated hourly" | Nothing guarantees an ingest cadence | "as listed when this page was last built" |
+| "The business will contact you", any response time | No clinic is told automatically. Our team passes each claim on by hand, and no clinic has promised to reply | "Call or book with the clinic directly" |
+| "Your information is never shared" | A claim shares it with the provider; that is what a claim is | "When you claim, we share your name and contact details with this provider." |
+| "Qualified leads", "ready-to-book clients" | Nothing qualifies a lead or knows whether someone will book | "See when someone claims one of your deals" |
+| "Deal alerts", "text us", "reply STOP" | No deal alert, marketing email or SMS is sent | Leave the feature out until it exists |
+
+**The rule behind the table:** a number in copy must be derivable, at render time, from data the
+page itself is showing. If you cannot point at the query that produces it, delete the sentence
+rather than soften it. Every entry above is a real defect that shipped and had to be removed.
+
+### 2.2.2 What a claim does (canonical wording)
+
+A claim shows the customer the provider's name, address, phone number and website. Our team
+then passes the customer's name, contact details and preferred time to the provider by hand
+(phone, email, the provider's website form or its social accounts). The provider may then
+contact the customer. Nothing else happens automatically. Copy about a claim says exactly this:
+
+| Where | Wording |
+|-------|---------|
+| At the claim step | "When you claim, we share your name and contact details with this provider." |
+| After the claim | "Call or book with the clinic directly. Mention the CostFinders price when you book. Our team also passes your request on to the clinic." |
+| Privacy Policy | "Our team then passes your request on to that provider … The provider may then contact you." |
+| Money | "No business pays CostFinders today. CostFinders may be compensated by businesses for referrals in the future." |
 
 ### 2.3 Tone by Module
 
@@ -89,12 +131,12 @@ Tone adapts while voice remains constant:
 #### Consumer Module
 - **Tone:** Warm, encouraging, trust-building
 - **Goal:** Help users feel confident discovering and saving
-- **Example:** "Great choice! This treatment is popular in your area."
+- **Example:** "Here are the prices providers near you advertise for this treatment."
 
 #### Business Module
 - **Tone:** Professional, efficient, respectful
 - **Goal:** Help businesses grow without feeling sold to
-- **Example:** "Your listing is live. Here's how to get more visibility."
+- **Example:** "We've updated your listing. Here's what it shows now."
 
 #### Admin Module
 - **Tone:** Clear, factual, action-oriented
@@ -177,8 +219,49 @@ Serious ←———————————————————————
 | **Business** | Service provider (medspa/clinic) | "Business dashboard" |
 | **Treatment** | Service category | "Popular treatments" |
 | **Savings** | Price difference from regular | "Your savings: $200" |
+| **Cost** | What the consumer pays. The head term for the guide cluster | "Botox cost in Irvine" |
+| **Pricing** | How a provider *structures* what it charges — a model, not an amount | "Two pricing structures run side by side" |
 
 **Never use:** Discount (use "savings"), Customer (use "client" for business context), Vendor (use "business")
+
+---
+
+### 3.5 "Cost" vs "Pricing" on SEO Guide Pages
+
+Applies to `/guides/*` and any future page built to rank for what a treatment costs.
+
+**The rule: every surface that ranks says "cost".** Slug, `<title>`, H1, every H2, the
+meta description, the keywords array, and FAQ questions.
+
+**Why.** These pages target the cost cluster — `botox cost` (8.1k/mo), `how much does
+botox cost` (8.1k), `cost of botox` (3.6k), `botox cost per unit` (2.9k), `average botox
+cost`, and the `<treatment> cost <city>` geo form. A full keyword export for that cluster
+contains **zero** instances of the word "pricing". Pages targeting `prices`/`pricing` are
+a separate, still-unbuilt cluster; keep the two apart rather than splitting one page's
+intent across both.
+
+**Accuracy outranks the keyword, always.** A heading that is wrong is worth less than a
+heading that says "pricing". Keep the price-family word where it is the true one:
+
+| Keep | Why | Never write |
+|------|-----|-------------|
+| `pricingModels[].name` → "Charged Per Unit" | Labels a billing **structure**; the amount lives in the sibling `typicalRange` | "Per-Unit Cost" |
+| "price list", "price spread", "price parity", "list price" | Fixed collocations naming real objects | "cost list", "cost spread" |
+| "pricing structure" | A **cost structure** is a firm's own costs (rent, wages, product) — a different claim | "cost structure" (when you mean charging) |
+| "the clinic quotes a price" | A vendor quotes a price; a buyer incurs a cost | "quote such different costs" |
+| "price the same plan at two clinics" | "price" as a verb is correct; "cost out" is supplier-side estimating | "cost out the same plan" |
+
+**Verb agreement.** Treatment labels are singular *and* plural, so templated copy must
+agree: "how much **does** Botox cost" against "how much **do** dermal fillers cost". Use
+`treatmentDo()` / `treatmentCost()` from `src/lib/utils/treatment-grammar.ts` — never
+hardcode "does" or "costs".
+
+**Not renamed:** the JSON keys `howPricingWorks`, `whatAffectsPricing` and `pricingModels`
+are internal, carry no SEO weight, and are read by the components. Leave them.
+
+**Enforced in:** the header comment on `generateGuideMetadata()`
+(`src/lib/seo/metadata.ts`) and the VOCABULARY RULE block atop
+`scripts/generate-guides.ts`.
 
 ---
 
@@ -271,7 +354,7 @@ Serious ←———————————————————————
 | Update | "{Item} updated" | "Profile updated" |
 | Delete | "{Item} removed" | "Deal removed from saved" |
 | Send | "{Item} sent" | "Message sent to business" |
-| Submit | "{Item} submitted" | "Review submitted" |
+| Submit | "{Item} submitted" | "Request submitted" |
 
 #### Celebration Intensity
 
@@ -280,7 +363,7 @@ Serious ←———————————————————————
 | None | Routine actions | "Saved" |
 | Low | Standard completions | "Changes saved." |
 | Medium | Notable achievements | "Deal saved! View your collection." |
-| High | Milestones | "Congratulations! Your listing is live." |
+| High | Milestones | "Your first lead is in." |
 | Celebration | First-time events | "You got your first lead! 🎉" |
 
 ### 4.3 Empty States
@@ -300,7 +383,7 @@ Serious ←———————————————————————
 |---------|----------|-------------|-----|
 | Saved deals | "No saved deals yet" | "Save deals to compare them later" | "Browse deals" |
 | Search results | "No results found" | "Try adjusting your filters" | "Clear filters" |
-| Leads | "No leads yet" | "Leads appear when consumers claim your deals" | "Promote your listing" |
+| Leads | "No leads yet" | "Leads appear when our team passes on a claim for one of your deals" | — |
 | Messages | "No messages yet" | "Messages from businesses appear here" | — |
 | Notifications | "All caught up" | "You'll see new notifications here" | — |
 
@@ -347,7 +430,7 @@ Serious ←———————————————————————
 | Email | "Email address" | "you@example.com" | — |
 | Password | "Password" | — | "At least 8 characters" |
 | Name | "Full name" | "Jane Smith" | — |
-| Phone | "Phone number" | "(555) 123-4567" | "For deal notifications" |
+| Phone | "Phone number" | "(555) 123-4567" | "Shared with the provider when you claim a deal" |
 
 </details>
 
@@ -368,8 +451,7 @@ Serious ←———————————————————————
 
 | Field | Label | Placeholder | Help Text |
 |-------|-------|-------------|-----------|
-| Business name | "Business name" | "Glow Medspa" | "As it appears on your license" |
-| License | "License number" | "ME12345" | "Required for verification" |
+| Business name | "Business name" | "Glow Medspa" | "As it appears on CostFinders" |
 | Website | "Website" | "https://example.com" | "Optional" |
 
 </details>
@@ -414,44 +496,32 @@ Body:
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Action needed | "[Action]: [Context]" | "Verify your email address" |
-| Alert | "[Item] [status]" | "New lead from Sarah" |
-| Confirmation | "[Action] confirmed" | "Your claim is confirmed" |
-| Digest | "[Count] [items] this week" | "3 new deals in your area" |
+| Action needed | "[Action]: [Context]" | "Confirm your email address" |
+| Alert | "[Item]: [context]" | "New lead: Botox" |
+| Confirmation | "[Item] [status] — [context]" | "Your claim has been submitted — Botox" |
 
 <details>
 <summary><strong>Consumer Email Templates</strong></summary>
 
-**Welcome Email**
+No welcome email is sent today.
+
+**Deal claimed** (`claimConfirmationEmail` in `src/lib/email/templates.ts`)
 ```
-Subject: Welcome to CostFinders
-Preview: Start saving on treatments near you
+Subject: Your claim has been submitted — {{deal_title}}
 
 Hi {{first_name}},
 
-Welcome to CostFinders! You now have access to verified medspa deals in your area.
+You claimed {{deal_title}}. Here is the clinic offering it.
+{{clinic name, address, phone, website, Get directions}}
 
-[Browse deals near you →]
+The CostFinders price: {{price_label}}
 
-Happy saving,
-The CostFinders Team
-```
+What happens next:
+- Call or book with the clinic directly, and mention the CostFinders price.
+- Our team also passes your request on to the clinic.
+- Your claim and the clinic's details stay on your claims page.
 
-**Deal Claimed**
-```
-Subject: Your deal from {{business_name}}
-Preview: Here's what happens next
-
-Hi {{first_name}},
-
-You claimed "{{deal_title}}" from {{business_name}}.
-
-What's next:
-1. The business will contact you within 24-48 hours
-2. Mention this deal when booking
-3. Enjoy your savings!
-
-[View deal details →]
+[View your claims →]
 ```
 
 </details>
@@ -459,47 +529,34 @@ What's next:
 <details>
 <summary><strong>Business Email Templates</strong></summary>
 
-**New Lead**
+**New lead** (`newLeadEmail` in `src/lib/email/ownerTemplates.ts`; no contact details in the email)
 ```
-Subject: New lead: {{consumer_name}}
-Preview: Someone claimed your {{deal_title}} deal
+Subject: New lead: {{deal_title}}
 
-You have a new lead!
+A customer claimed {{deal_title}} on CostFinders.
+They asked for {{preferred_date}}, {{preferred_time}}.
+Open the lead to see their name and contact details.
 
-{{consumer_name}} claimed "{{deal_title}}"
-
-Contact them at:
-Email: {{consumer_email}}
-Phone: {{consumer_phone}}
-
-[View lead details →]
+[Open the lead →]
 ```
 
-**Listing Approved**
+**Business claim approved** (`claimApprovalEmail` in `src/lib/email/templates.ts`)
 ```
-Subject: Your listing is live
-Preview: Start getting leads today
+Subject: Your business claim has been approved — {{business_name}}
 
-Great news! Your listing for {{business_name}} is now live on CostFinders.
+Your claim for {{business_name}} has been approved.
+Your business dashboard shows your listing, lets you edit your deals' wording and prices,
+and lists the leads our team passes on to you.
 
-What's next:
-- Add your first deal to start getting leads
-- Complete your profile to stand out
-
-[Go to dashboard →]
+[Go to your dashboard →]
 ```
 
 </details>
 
-### 6.2 SMS Templates
+### 6.2 SMS
 
-**Constraint:** 160 characters max
-
-| Type | Template |
-|------|----------|
-| Verification | "CostFinders: Your code is {{code}}. Expires in 10 min." |
-| New lead | "New lead on CostFinders! {{name}} claimed {{deal}}. Check your dashboard." |
-| Claim confirmation | "Claimed! {{business}} will contact you within 48hrs. Details: {{link}}" |
+No text message is sent, and there is no SMS provider or texting consent. Do not write SMS copy
+until both exist.
 
 ### 6.3 In-App Notifications
 
@@ -522,7 +579,6 @@ What's next:
 |------|---------|--------|
 | Warning | "Complete your profile to claim deals" | "Complete profile" |
 | Info | "New features available" | "See what's new" |
-| Promo | "Refer a friend, get $20" | "Learn more" |
 
 #### Badge Notifications
 - Number only (max "99+")
@@ -567,6 +623,8 @@ Confirm:     "Are you sure you want to {action}?"
 | "Try again" | "Retry the operation" |
 | "$150" | "$150.00" |
 | "40% off" | "40 percent discount" |
+| "Botox Cost in Irvine, CA" | "Botox Pricing in Irvine, CA" |
+| "How much do dermal fillers cost?" | "How much does dermal fillers cost?" |
 
 ### 7.3 Copy Checklist
 
@@ -582,6 +640,7 @@ Before shipping new copy:
 - [ ] Empty states have value proposition + CTA
 - [ ] Numbers formatted correctly ($, %, dates)
 - [ ] Uses approved terminology (deal, claim, lead, business)
+- [ ] SEO guide pages: every ranking surface says "cost", not "pricing" (§3.5)
 
 ### 7.4 i18n Variables
 
@@ -606,6 +665,8 @@ Common variables:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-01-12 | Initial release — compiled from Phase 17-22 guides |
+| 1.1 | 2026-09-09 | Removed "Verified" from the Trustworthy voice example and the keyword list, both of which were re-seeding a claim the data cannot support; added 2.2.1 on provenance |
+| 1.2 | 2026-09-24 | Added 2.2.2, the canonical claim wording. Replaced templates that promised a callback, a referral reward, verification, SMS, a welcome email and a digest, none of which exist |
 
 ---
 

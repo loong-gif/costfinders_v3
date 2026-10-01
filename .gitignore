@@ -15,6 +15,8 @@
 
 # next.js
 /.next/
+# the pre-push gate's build (scripts/gate.sh)
+/.next-gate/
 /out/
 
 # production
@@ -42,8 +44,18 @@ yarn-error.log*
 next-env.d.ts
 
 # OpenMemory - IDE/Assistant specific rules
+# NOTE: CLAUDE.md is intentionally TRACKED - do not add it here.
 .cursor/rules/openmemory.mdc
-CLAUDE.md
+openmemory.md
 .env*.local
 .claude/worktrees/
 .performance-optimization/
+
+# accidentally-committed artifacts
+firebase-debug.log
+tucson_aesthetic_businesses.csv
+logo-options/
+generated-videos/
+
+# Supabase CLI scratch state
+supabase/.temp/

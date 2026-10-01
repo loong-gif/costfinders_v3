@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "tustin",
+  "cityLabel": "Tustin",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Tustin menus sell a measuring stick, not a bill. What the practices around The District, Tustin Marketplace and Newport Avenue mostly publish is a rate for one unit of toxin, and the total only exists once an injector has decided how many units your face takes. Two quirks make the local lists harder to read than they look. Only a few practices in this city publish anything at all, so the visible spread is a self-selected slice rather than a survey of the market. And a chunk of what is published is labelled generically as a neurotoxin rather than by brand, which means the product behind the figure is settled in the room rather than on the page.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit",
+        "description": "The default structure here, and the one behind most Tustin figures that state a number. A practice posts what one unit costs and multiplies it by the count in your plan, so a single published rate has to cover a first-timer's frown lines and a full upper-face maintenance visit alike. What the rate omits is the part worth asking about before you book: consultation fee, minimum unit purchase, any injection or facility charge, and whether a two-week touch-up review is included or billed separately.",
+        "typicalRange": "the priced local listings run from the single digits per unit up into the low teens, with the middle of the band sitting right around the bottom of double digits"
+      },
+      {
+        "name": "Quoted as a Generic 'Neurotoxin' Rate",
+        "description": "A meaningful share of the priced Tustin listings advertise a per-unit rate for 'neurotoxin' or simply 'tox' without naming the product. They include the highest rates in the feed and as a group sit above the listings that say Botox outright, though at one practice the unnamed rates match its Botox rates exactly. That is a real pricing structure, not sloppiness — it lets a practice stock whatever it buys best that quarter — but it shifts a units question onto you. Dysport is divided more finely than Botox, roughly three of its units to one, so an unnamed rate is not comparable to a Botox rate until you know which product it buys.",
+        "typicalRange": "high single digits to the low teens per unit, with the middle of these listings above the market median"
+      },
+      {
+        "name": "Member Rate or Prepaid Block",
+        "description": "The gap from the bottom of this feed to the top is close to two to one, and rent differences between a Tustin Legacy suite and an older Newport Avenue building do not explain a spread that wide on their own. In this market the strings are on the listings themselves: every rate published per unit is labelled a member rate, and the lowest figure is worked out from a large block of Botox bought in one go rather than posted as a rate. Ask what the membership costs, what a non-member pays, what the rate becomes on your third visit, and whether unused prepaid units expire or transfer to another product.",
+        "typicalRange": "the lower half of the local band, single digits per unit, with conditions attached"
+      },
+      {
+        "name": "No Figure Published, Quoted After Assessment",
+        "description": "A minority of the visible Tustin offers describe the treatment and the areas without committing to a rate. That is ordinary practice for injectables and still a pricing structure — it simply moves the number into a room where you have less leverage. When you call, ask for the per-unit rate and a planned unit count in the same sentence, and ask whether a consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; the total depends entirely on the count agreed in the chair"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A short list of forces sets a rate card in Tustin, and they pull in different directions. This is an affluent, middling-age, densely built Orange County city with expensive commercial space, a state that keeps injection firmly inside medicine, and both a premium neighbour and cheaper neighbours within twenty minutes.",
+    "factors": [
+      {
+        "factor": "California treats injection as a medical act, with supervision attached",
+        "explanation": "The Medical Board of California's position is that physicians may inject botulinum toxin or direct registered nurses and physician assistants to inject it under physician supervision, and that unlicensed personnel including medical assistants may not inject at all; licensed vocational nurses cannot perform it independently. The governing framework is the Medical Practice Act and the licensing rules administered by the Medical Board and the Board of Registered Nursing. A standing supervising-physician arrangement is an overhead line that a clinic in a looser-delegation state does not carry, and it sits underneath what Botox costs here. Ask your injector's licence type, who the supervising physician is, and whether they are on site."
+      },
+      {
+        "factor": "Occupancy cost along the Tustin corridors",
+        "explanation": "Aesthetic practices here cluster where retail traffic and medical space overlap — The District at Tustin Legacy, Tustin Marketplace, the Newport Avenue corridor and the office nodes near the Irvine border. AreaVibes puts Tustin's overall cost of living well above the national baseline, driven overwhelmingly by housing, while listing health care at about the national figure; that is a household index rather than a medical-price measure, but the same property market sets what a treatment room costs a practice. The vial costs the same in a Legacy storefront as in an older Santa Ana suite, so the address moves the number more than the brand does."
+      },
+      {
+        "factor": "A dense, working-age, high-income catchment",
+        "explanation": "The Census Bureau counted just over 80,000 residents in Tustin in 2020, at roughly 7,000 people per square mile, with a median age in the mid-thirties and median household income a little above $108,000 for 2019–2023 — slightly under Orange County's. That is a concentrated service market with real purchasing power and a mix of preventative first-timers and established maintenance patients. Income supports premium positioning; a young, comparison-shopping cohort pushes back, which is why membership and prepaid structures show up at the bottom of the band."
+      },
+      {
+        "factor": "A handful of publishing practices in a much larger provider market",
+        "explanation": "No public dataset counts Tustin's injectors, and the practices visible with a published rate are a small number against the dermatology offices, plastic-surgery practices, chain medspas and independents operating within a few minutes' drive. So the spread you can see is the subset that chose transparency as a marketing position, usually because their rate competes. Treat published figures as a floor-finding tool and assume unpublished quotes can land outside the band in either direction."
+      },
+      {
+        "factor": "Irvine, Santa Ana and Anaheim are all inside twenty-five minutes",
+        "explanation": "Central Tustin sits roughly ten to fifteen minutes from Irvine and Santa Ana and fifteen to twenty-five from Anaheim, with Los Angeles about forty-five to sixty minutes and San Diego anywhere from eighty minutes to two hours depending on traffic. The Irvine business district materially expands the competitive set, though the per-unit rates Irvine practices publish on this site centre about where Tustin's do rather than above them; Santa Ana and Anaheim run on cheaper occupancy, but too few of their practices publish a Botox-scale rate here to show whether that reaches the price. Because toxin is a three- or four-times-a-year purchase, the deeper metros mostly discipline what a practice can charge for a large first course rather than for routine top-ups."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Almost none of this is coupon hunting. In a market where only a few clinics publish anything and some of what they publish does not name a product, the money is saved before you book — by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Make every quote name the product",
+        "detail": "If a rate is advertised as 'neurotoxin', ask which toxin it buys today and whether that changes by month. Dysport units are a finer division of the same kind of product, near three to one against Botox in published conversion work, so an unnamed rate can be a bargain or a mirage depending on the answer. Ask for the planned unit count in whichever product they intend to use, then compare finished visit totals."
+      },
+      {
+        "tip": "Find out what the lowest advertised rate is conditioned on",
+        "detail": "Where the local band runs close to two to one from floor to ceiling, the bottom usually carries a string. Ask whether it is new-patient only, whether it requires a minimum unit purchase or membership, what the rate becomes on your second and third visits, and whether prepaid units expire, refund or transfer if the clinic switches its preferred brand."
+      },
+      {
+        "tip": "Take one quote from a cheaper rent band",
+        "detail": "Santa Ana and Anaheim are ten to twenty-five minutes from central Tustin and sit in a lower occupancy bracket than The District or the Irvine border. Two comparison calls cost you an afternoon and can move the number more than haggling does, and unlike a Los Angeles trip they are repeatable four times a year. Check the injector's licence and the supervision arrangement meet the same standard before you treat the quotes as equivalent."
+      },
+      {
+        "tip": "Enrol in the manufacturer programme before you are treated, not after",
+        "detail": "Allergan's Allē, Merz's Aspire and Evolus Rewards accrue on treatments you were having anyway, and signing up afterwards usually forfeits the credit. Ask whether points are applied at checkout or banked, and which programme the practice actually runs — that question also flushes out which brand sits behind a generic menu line."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms ahead of spring graduations, summer travel and the December party stretch, and toxin needs roughly two weeks to settle before a fixed date. Nothing public quantifies the swing in Tustin specifically, but quiet stretches are when an introductory rate or a prepaid course is genuinely negotiable; in the crush, the useful ask is a slot. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 10,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with quotes on a smaller-unit product such as Dysport left out rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and the middle of that published band, rounded up, supplies the national marker. The median of the priced Tustin offers is $10 per unit — about 23 percent below that marker, which is lower than a city with this income profile might suggest, and is partly a function of which practices choose to publish a rate at all and what conditions sit behind the cheaper ones."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Tustin?",
+      "answer": "No honest page gives one number. Toxin is sold by the unit here, so your bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices actually publish, split by product; the band runs from single digits per unit into the low teens, and the top is close to double the bottom. Settle two things before comparing quotes: which product the rate buys, and what else the visit carries in fees or minimums."
+    },
+    {
+      "question": "Why does the cheapest advertised Botox cost per unit sit so far below the rest of the market?",
+      "answer": "In this feed the lowest figure names Botox itself rather than a finer-unit alternative, so it is not a dosing-scale illusion — which makes the condition behind it the thing to ask about. Here it is worked out from a large block of Botox bought in one go, and the per-unit rates just above it are member rates. Ask what the rate is on your third visit without a block purchase or a membership, in writing, and whether any prepayment expires."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask how the practice handles a plan that grows once you are in the chair, and whether a two-week review and any touch-up are included."
+    },
+    {
+      "question": "Why does a listing that just says 'neurotoxin' cost more per unit than one that names Botox?",
+      "answer": "Partly positioning and partly flexibility. A brand-agnostic menu line lets a practice use whichever product it stocks that quarter, and in this market those listings tend to sit above the ones that name Botox outright. It also hides the unit question: if the product turns out to be Dysport, whose units are roughly a third the size, the rate is not comparable at all. Ask for the brand, the planned count in that brand, and the finished total."
+    },
+    {
+      "question": "Does Botox cost less in Tustin than in Irvine or Newport Beach?",
+      "answer": "Not on what this site's feed shows. The priced Botox-scale listings in Tustin, Irvine and Newport Beach centre on about the same rate, around the bottom of double digits per unit; Newport Beach's feed simply reaches higher at the top. Where a gap does open, the mechanism is occupancy cost rather than product — the vial costs a practice the same in a Newport Avenue suite as it does at the Spectrum. Santa Ana publishes too few Botox-scale rates here to compare. Compare finished visit totals for your planned count rather than per-unit rates, in both directions."
+    },
+    {
+      "question": "Is it worth driving to Los Angeles or San Diego for a lower Botox cost?",
+      "answer": "Los Angeles is a deeper market with more internal competition, but it is roughly forty-five to sixty minutes away in light traffic and considerably more at the wrong hour; San Diego runs eighty minutes to two hours. Price the trip honestly: possibly worth it once for a large initial course, rarely worth it every quarter. Because toxin is a repeat purchase, the comparisons that actually change your annual spend are the ones inside Orange County."
+    },
+    {
+      "question": "Who can legally inject Botox in California, and does that change what it costs?",
+      "answer": "Injection is a medical act under the Medical Practice Act. The Medical Board of California's guidance is that physicians may inject or may direct registered nurses and physician assistants to inject under supervision, that unlicensed personnel including medical assistants may not inject, and that licensed vocational nurses may not perform it independently. That standing supervision requirement is a genuine overhead inside every compliant Tustin practice, which is part of why California rates do not fall to levels advertised in looser-delegation states. Ask for your injector's licence type, the supervising physician's name and how the delegation is documented."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means an introductory rate or a membership condition, but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in several states and caused harmful reactions; the FDA advised confirming that the product came from an authorised source and flagged packaging tells including a 150-unit strength not sold in the US and cartons printed in another language. Asking to see the sealed, labelled vial before it is drawn up is reasonable at any clinic, including a well-reviewed one at Tustin Legacy."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 182,
+    "medspaDensity": "Dense for a city of this size, but clustered along a few commercial spines rather than spread evenly: The District at Tustin Legacy, Tustin Marketplace, the Newport Avenue corridor and the office and retail nodes near the Irvine border. No authoritative public dataset counts Botox practices or injectors in Tustin, and directory listings conflate medspas with dermatology and plastic-surgery offices that also inject, so any headline count should be treated sceptically. What matters more to a buyer is that only a small number of local practices publish a per-unit rate at all, and a portion of those do not name the product behind it.",
+    "demographicNotes": "The Census Bureau counted 80,276 residents in Tustin in 2020, with a median age around 36 and about 7,193 people per square mile — dense for a suburban city, which supports a concentrated service market rather than a dispersed one. Median household income was $108,435 for 2019–2023, slightly below Orange County's $113,702, so this is an affluent but not extreme catchment by county standards. That combination tends to produce both a preventative, first-timer segment and an established maintenance cohort, though income on its own does not predict cosmetic spending and should not be read as a forecast of what a clinic will quote you.",
+    "competitionNotes": "Competition runs in two directions from a short drive away. Irvine, roughly ten to fifteen minutes out, materially expands the competitive set with dermatology offices, plastic-surgery practices, national chains and independents, though the per-unit rates its practices publish on this site centre about where Tustin's do rather than above them; Santa Ana at ten to fifteen minutes and Anaheim at fifteen to twenty-five run on cheaper occupancy. Los Angeles at about forty-five to sixty minutes and San Diego at eighty minutes to two hours are heavily traffic-dependent and mostly constrain what a Tustin practice can charge for a large initial course rather than for quarterly top-ups. Inside the city, the few clinics willing to publish a figure exert influence out of proportion to their number, because they set the rate every other practice gets asked about on the phone."
+  }
+}

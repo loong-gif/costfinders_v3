@@ -1,6 +1,14 @@
 'use client'
 
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  cloneElement,
+  isValidElement,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
 
 interface TooltipProps {
@@ -21,6 +29,22 @@ export function Tooltip({
   const [mounted, setMounted] = useState(false)
   const triggerRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const contentId = useId()
+
+  // Several icon-only buttons (the analytics dashboard's `Info` glyphs) carry no
+  // text of their own and rely on this tooltip for their whole meaning, which
+  // never reached assistive tech: the tooltip was purely visual. The description
+  // is now always in the DOM as sr-only text, so `aria-describedby` resolves
+  // whether or not the visual bubble happens to be showing — waiting for the
+  // 200ms hover/focus delay to mount it would be too late for a screen reader
+  // announcing on focus.
+  const describedChild = isValidElement<{ 'aria-describedby'?: string }>(
+    children,
+  )
+    ? cloneElement(children, {
+        'aria-describedby': children.props['aria-describedby'] ?? contentId,
+      })
+    : children
 
   // Ensure we only render portal on client
   useEffect(() => {
@@ -99,11 +123,11 @@ export function Tooltip({
         className={`
         fixed z-[9999]
         px-3 py-1.5
-        bg-[#f2ebe2]/95 backdrop-blur-md
-        border border-[#d4c4b0]
+        bg-bg-elevated
+        border border-border-default
         rounded-lg
-        text-sm text-[#451a03]
-        shadow-lg
+        text-sm text-text-primary
+        shadow-md
         whitespace-nowrap
         pointer-events-none
         animate-in fade-in zoom-in-95 duration-150
@@ -113,19 +137,31 @@ export function Tooltip({
           left: position.left,
           transform: getTransformOrigin(),
         }}
+        // The sr-only copy below is the one assistive tech reads; this is the
+        // visual duplicate, so hiding it avoids announcing the text twice.
+        aria-hidden="true"
       >
         {content}
       </div>
     ) : null
 
   return (
+    // Passive wrapper that surfaces a tooltip for its child; the child is the real
+    // control. Giving this div a role would misreport it to assistive tech.
+    // biome-ignore lint/a11y/noStaticElementInteractions: wrapper, not a control
     <div
       ref={triggerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      // Keyboard parity: the tooltip was mouse-only, so keyboard users never saw it.
+      onFocus={handleMouseEnter}
+      onBlur={handleMouseLeave}
       className="inline-flex"
     >
-      {children}
+      {describedChild}
+      <span className="sr-only" id={contentId}>
+        {content}
+      </span>
       {mounted && tooltipContent && createPortal(tooltipContent, document.body)}
     </div>
   )

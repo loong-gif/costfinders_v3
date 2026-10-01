@@ -20,72 +20,98 @@ function BreadcrumbLink({
 }) {
   if (item.href && !isLast) {
     return (
-      <Link href={item.href} className="hover:text-[#451a03] transition-colors">
+      <Link
+        href={item.href}
+        className="inline-flex items-center py-1 hover:text-text-primary transition-colors"
+      >
         {item.label}
       </Link>
     )
   }
-  return <span className={isLast ? 'text-[#451a03]' : ''}>{item.label}</span>
+  return (
+    <span
+      aria-current={isLast ? 'page' : undefined}
+      className={isLast ? 'text-text-primary' : ''}
+    >
+      {item.label}
+    </span>
+  )
 }
 
 function Separator() {
-  return <CaretRight size={12} weight="bold" className="text-[#92400e]" />
+  return (
+    <CaretRight
+      size={12}
+      weight="bold"
+      aria-hidden="true"
+      className="text-text-muted shrink-0"
+    />
+  )
 }
 
 /**
  * Breadcrumb - Visual breadcrumb navigation component
  * Renders Home > Parent > Current style navigation
  *
- * On mobile (< md), collapses intermediate items to "..." when there are 3+ items,
- * showing only the first and last items.
+ * On mobile (< md), trails longer than three levels collapse to
+ * "first > ... > parent > current". The immediate parent stays visible because
+ * it is the link people actually use to go back up a level.
+ *
+ * Each separator trails the crumb before it, in the same <li>, so a trail that wraps breaks
+ * after a "›", never before one. Leading separators left "› Botox in Santa Ana" alone on a
+ * second line at 320px (device matrix, 2026-09-28).
  *
  * Note: For JSON-LD structured data, use BreadcrumbSchema from @/components/seo
  */
 export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
-  const shouldCollapse = items.length > 2
+  const shouldCollapse = items.length > 3
 
-  // Mobile-collapsed items: first item > ... > last item
-  const mobileItems = shouldCollapse
-    ? [items[0], items[items.length - 1]]
-    : items
+  const mobileItems = shouldCollapse ? [items[0], ...items.slice(-2)] : items
 
   return (
     <nav
-      className={`mb-6 text-sm text-[#92400e] ${className}`}
+      className={`mb-6 text-sm text-text-muted ${className}`}
       aria-label="Breadcrumb"
     >
       {/* Desktop: show all items */}
-      <ol className="hidden md:flex items-center gap-2 flex-wrap">
+      <ol className="hidden md:flex items-center gap-x-2 gap-y-1 flex-wrap">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
           return (
-            <li key={item.label} className="flex items-center gap-2">
-              {index > 0 && <Separator />}
+            <li
+              key={`${item.href ?? 'current'}-${item.label}`}
+              className="flex items-center gap-2"
+            >
               <BreadcrumbLink item={item} isLast={isLast} />
+              {!isLast && <Separator />}
             </li>
           )
         })}
       </ol>
 
       {/* Mobile: collapsed with ellipsis for intermediate items */}
-      <ol className="flex md:hidden items-center gap-2 flex-wrap">
+      <ol className="flex md:hidden items-center gap-x-2 gap-y-1 flex-wrap">
         {mobileItems.map((item, index) => {
           const isLast = index === mobileItems.length - 1
           return (
-            <li key={item.label} className="flex items-center gap-2">
-              {index > 0 && <Separator />}
-              {/* Show ellipsis before the last item when collapsing */}
+            <li
+              key={`${item.href ?? 'current'}-${item.label}`}
+              className="flex items-center gap-2"
+            >
+              {/* Stand-in for the levels skipped between home and the parent */}
               {shouldCollapse && index === 1 && (
                 <>
                   <DotsThree
                     size={16}
                     weight="bold"
-                    className="text-[#92400e]"
+                    aria-hidden="true"
+                    className="text-text-muted shrink-0"
                   />
                   <Separator />
                 </>
               )}
               <BreadcrumbLink item={item} isLast={isLast} />
+              {!isLast && <Separator />}
             </li>
           )
         })}

@@ -1,0 +1,123 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "santa-ana",
+  "cityLabel": "Santa Ana",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Santa Ana neurotoxin listings charge per unit and let the dose settle the bill, and the catch sits in the conditions attached: a rate for new patients only, a minimum number of units before a rate or discount applies, a free add-on once you buy enough. Brands complicate all of it, because they are not all counted on the same dosing scale, so a rate written on one brand cannot be ranked against a rate written on another. Sort a quote into its brand and its conditions first; everything else follows from that.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit on the Botox Dosing Scale",
+        "description": "Botox, Xeomin and Letybo are dosed on scales close enough that you can read one posted rate against another without arithmetic. What you owe is that rate times a dose fixed in the chair, so a posted figure is only half a quote. The Botox-scale rate listed here is also for new patients only: ask what a return visit costs. Look at the rest of the invoice too: some practices bill consultation and injection as their own lines, others absorb both.",
+        "typicalRange": "one rate per unit, times the dose; too few Santa Ana clinics state a rate for us to give a local range"
+      },
+      {
+        "name": "Charged Per Unit on the Dysport Dosing Scale",
+        "description": "Dysport carries a finer dosing unit than the products above, and injectors generally reckon two and a half to three of them per Botox unit. Local menus price against that finer unit, which is how a Dysport line can read near a third of a Botox line and still finish at similar money. The Dysport rate listed here also carries a minimum purchase, so check that minimum against your dose, then run the dose through the rate before calling it a saving.",
+        "typicalRange": "a lower rate on a smaller unit; convert it at two and a half to three Dysport units per Botox unit before comparing"
+      },
+      {
+        "name": "Conditions Attached to the Rate",
+        "description": "Santa Ana listings attach terms to the figure rather than drop the unit: a rate for new patients only, a minimum number of units before a rate or a dollar discount applies, a free add-on treatment once you buy enough units. Each changes what one visit costs you, and none carries to the next visit automatically. Ask whether you qualify, what the rate is on a return visit, and whether a minimum sits above the dose you actually need.",
+        "typicalRange": "the per-unit rate, with a condition: new patients only, a minimum purchase, or an add-on above a unit threshold"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Three pressures land on a Santa Ana price list, and just one of the three is decided within the city itself: a regional cost base driven by housing, a county packed tightly enough that every practice prices against its neighbours, and a state that files this injection under medicine. Here is where each of them shows up on a bill.",
+    "factors": [
+      {
+        "factor": "A living-cost score that mostly measures homes",
+        "explanation": "The BestPlaces score for this city, 164.9 where the US benchmark is 100, is dominated by what it costs to buy or rent a home. Clinic overhead is a different basket: commercial suite rent, clinical wages set by an Orange County labour market, and injectable product priced the same everywhere. Only two of those three run high here, so the headline score overstates how far an injection's cost should drift from the national line."
+      },
+      {
+        "factor": "No practice here is the only option within a short drive",
+        "explanation": "Tustin and Costa Mesa touch the city boundary; Orange and Garden Grove lie just over the freeway interchange to the north; Fountain Valley, Anaheim, Irvine and Newport Beach are barely further out. A maintenance injection on a repeating schedule is precisely the kind of appointment someone will drive for, so a price list here answers to neighbouring markets rather than to the next block. That constraint pushes down harder than local demand pushes up."
+      },
+      {
+        "factor": "State law puts a prescriber behind every appointment",
+        "explanation": "Section 2052 of California's Business and Professions Code places cosmetic botulinum toxin inside the practice of medicine. The examining clinician and the patient-specific order have to be a physician, physician assistant or nurse practitioner; a registered nurse can then inject on that order under written standardized procedures. Nurse practitioners certified at the state's 104 tier, reachable from 2026, work without those procedures. Estheticians and medical assistants have no route in. That staffing floor is overhead every local quote carries."
+      },
+      {
+        "factor": "One city serving two very different buyers",
+        "explanation": "American Community Survey five-year figures covering 2020 to 2024 set the median household here at $93,999 in 2024 dollars and record 76.6% of the city as Hispanic or Latino. That is a mid-income base by California standards, but the city sits within one of the state's wealthiest counties and draws customers from it. A market written for both ends at once is why a new-patient rate and incentives aimed at larger purchases, a minimum-unit deal and a free add-on above a unit threshold, sit side by side here."
+      },
+      {
+        "factor": "Two calendars decide when the diary tightens",
+        "explanation": "Booking pressure peaks twice a year here. The national peak runs through November and December, ahead of holiday events. The local one is Tết: Lunar New Year fell on 17 February in 2026, and the Little Saigon district immediately west — Westminster and Garden Grove — observes it on a scale that pulls appointments forward across central Orange County. Neither window moves the posted rate. What they move is how far ahead you have to book."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Every Santa Ana listing we track is a conditional deal — a new-patient rate, a minimum purchase, a free add-on — so a saving depends on whether the condition fits you. Beyond that, two things change what you actually pay: converting every quote onto one scale before you compare it, and making the density of this county work for you. What is left after that is paperwork worth doing.",
+    "tips": [
+      {
+        "tip": "Ask for finished totals, never for rates",
+        "detail": "A practice carrying both dosing scales can price your planned areas each way. Ask for two numbers per brand — the dose and the money owed — in writing, then compare only the totals. Posted per-unit figures rank brands by the size of their unit rather than by what leaves your account, which is exactly backwards."
+      },
+      {
+        "tip": "Make the number cover the whole appointment",
+        "detail": "A per-unit rate is not the price of a visit. Practices differ on whether consultation, injection and follow-up assessment are charged as their own lines, and none of that shows up in a headline figure. Ask each one to commit to a single all-in number for the dose it proposes, then set those figures side by side."
+      },
+      {
+        "tip": "Phone three practices across the city line",
+        "detail": "Tustin, Orange, Garden Grove, Fountain Valley and Costa Mesa sit closer to central Santa Ana than most cross-town errands, and every one of them runs its own injectors on its own rent. Three calls describing identical planned areas take about an hour and move a total further than any attempt at haggling. Ask each one what licence the injector holds."
+      },
+      {
+        "tip": "Book outside the two busy stretches",
+        "detail": "Diaries tighten through mid-November and December for holiday events, then again in the fortnight before Lunar New Year, which the district next door marks at scale. If you can move your timing, late winter and midsummer are the quiet weeks, and a quiet week is when a practice will entertain an introductory rate or a prepaid block."
+      },
+      {
+        "tip": "Pin the brand to the rate, and see the vial",
+        "detail": "A cheap posted rate usually belongs to a different brand than an expensive one. Before booking, ask which product the figure covers, ask to see the vial sealed with its label and expiry showing, and ask where the practice buys it — an authorised US distributor is the answer you want. Any front desk can settle all three."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "comparisonText": "The national marker is one Botox-scale unit: RealSelf reports that most US practices charge $10 to $15 per unit, and $13 is roughly the midpoint of that band. Too few Santa Ana clinics advertise a per-unit Botox price for us to set a local figure beside it, and we draw no gap from what little is published. Nor is Santa Ana's high cost-of-living score a stand-in: it is driven by housing, and says little about what an injection costs here."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Santa Ana?",
+      "answer": "No single number answers that honestly. Practices here price neurotoxin per unit, so what you pay is a posted rate applied to a dose your injector fixes in person. Few Santa Ana practices publish that rate, so ask for it directly — any figure printed on this page comes from a provider listing in this city, not from a national estimate — then get the proposed dose put in writing. Before ranking two practices, settle which brand each rate belongs to and what the appointment itself costs beyond the product. Those two answers reorder quotes more often than the rates do."
+    },
+    {
+      "question": "Which Santa Ana Botox quote genuinely costs the least?",
+      "answer": "Rarely the smallest number on the page. Low per-unit figures on neurotoxin menus usually belong to Dysport, which is measured on a finer unit than Botox — injectors convert at roughly two and a half to three to one — so the rate is low because the unit is small, not because the visit costs less. Others are introductory rates that apply on a first appointment only. Neither is concealed; both are arithmetic. Ask for the full dose, the total owed, the brand behind the number, and the licence of the person injecting."
+    },
+    {
+      "question": "Is Dysport genuinely cheaper than Botox here?",
+      "answer": "Not reliably, and the posted rates will not settle it. Dysport and Botox are counted on different scales, and the conversion in common use runs about two and a half to three to one, so a Dysport rate that looks a fraction of the Botox one can finish at the same money for identical areas. Practices carrying both brands will do that conversion if you ask. Ask for a written quote covering the same areas under each brand, showing dose and total for both, and decide from those two totals alone."
+    },
+    {
+      "question": "Does a doctor have to inject me in Santa Ana?",
+      "answer": "No, but the injector has to be a licensed clinician and a prescriber has to stand behind the appointment. Under section 2052 of the state's Business and Professions Code, cosmetic botulinum toxin counts as medicine, so the examination and the patient-specific order have to come from a physician, physician assistant or nurse practitioner. A registered nurse can then inject on that order under written standardized procedures. Nurse practitioners holding the state's 104 certification work independently of those procedures. No supervision arrangement extends this scope to an esthetician or medical assistant. Ask who examines you, who injects, and what licence sits behind each answer."
+    },
+    {
+      "question": "Is it harder to get an appointment around Tết?",
+      "answer": "Around Lunar New Year, yes, though the pressure falls on the diary rather than on the rate. Tết fell on 17 February in 2026, and the Little Saigon district immediately west of the city — Westminster and Garden Grove — marks it on a scale that pulls appointments forward across central Orange County, including at practices inside Santa Ana itself. If you want a slot in the two weeks beforehand, book several weeks out. Nothing about the posted price changes in that window; only availability does."
+    },
+    {
+      "question": "Does Botox cost more in Irvine and Newport Beach than in Santa Ana?",
+      "answer": "Too few Santa Ana practices publish a rate for us to say, and any answer built on city reputations is guesswork. What differs is positioning: Newport Beach sells into a coastal clientele with surgical practices at its top end, Irvine carries a large professional customer base and a deep stock of medical office space, and Santa Ana has cheaper commercial frontage and a lower median household income than either. None of the three cities has one price, and the drive between them is short. Compare the total for one whole appointment at your own planned dose."
+    },
+    {
+      "question": "Why do two clinics in this city quote such different numbers?",
+      "answer": "Three reasons, and none of them ranks one clinic above another. The brands differ, and a unit under one brand is not a unit under another, so two rates can be measuring different quantities. The conditions differ: a rate for new patients only, or one that needs a minimum purchase, is not the rate a returning patient buying a routine dose pays. And the licence of the injector, together with the prescriber time California requires behind the order, is a payroll cost that varies from practice to practice. Line one complete appointment up against another and most of the spread explains itself."
+    },
+    {
+      "question": "Why do some neurotoxin listings cost far more than others?",
+      "answer": "Usually because they describe a different purchase from a facial-area appointment. Neurotoxin is also used on large muscles — trapezius injections are the usual example — and those are quoted as one fee covering a far larger quantity of product, well above any per-unit rate for a few facial areas. None of the Santa Ana listings we track is of that kind, but a clinic's full price list may include one. If you are comparing facial-area quotes, leave them out. If you are considering one, ask what dose and which brand the fee buys."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 164.9,
+    "medspaDensity": "Moderate for Orange County, and dispersed rather than clustered. Injectors work out of ordinary retail and office space along the city's arterial corridors rather than gathering into one aesthetics district. California licenses clinicians and professional corporations, not medspa premises, so no public register counts these businesses — any density figure quoted anywhere is a directory tally rather than a census.",
+    "demographicNotes": "Census Bureau vintage-2025 estimates put the city a little above 315,000 residents. American Community Survey five-year figures spanning 2020 to 2024 record 76.6% of the population as Hispanic or Latino and set the median household here at $93,999, measured in 2024 dollars. The city also holds a large Vietnamese community and sits alongside the Little Saigon district in neighbouring Garden Grove and Westminster. Commercially that means one price list has to answer to a mid-income local customer and to a wealthy county around it at the same time.",
+    "competitionNotes": "Location is this city's commercial problem. Orange and Garden Grove lie over the freeway interchange on the north side, Tustin and Costa Mesa run up against the city line, Fountain Valley and Anaheim are minutes away, and Irvine and Newport Beach — where the county's most expensive aesthetic work concentrates — are a short drive south and west. The Little Saigon corridor competes directly for the Vietnamese-speaking patients a west-side practice serves. Repeat neurotoxin appointments are among the easiest bookings in aesthetics to take somewhere else, which keeps pricing here defensive."
+  }
+}

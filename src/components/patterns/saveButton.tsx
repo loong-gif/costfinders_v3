@@ -3,7 +3,7 @@
 import { Heart } from '@phosphor-icons/react'
 import { Tooltip } from '@/components/ui/tooltip'
 import { trackEvent } from '@/lib/analytics'
-import { useOptionalAuth } from '@/lib/context/authContext'
+import { useAuth } from '@/lib/context/authContext'
 
 interface SaveButtonProps {
   dealId: string
@@ -16,9 +16,9 @@ export function SaveButton({
   size = 'sm',
   className = '',
 }: SaveButtonProps) {
-  const auth = useOptionalAuth()
-  const isAuthenticated = auth?.state.isAuthenticated ?? false
-  const saved = auth?.isDealSaved(dealId) ?? false
+  const { state, saveDeal, unsaveDeal, isDealSaved } = useAuth()
+  const { isAuthenticated } = state
+  const saved = isDealSaved(dealId)
 
   const iconSize = size === 'sm' ? 20 : 24
   const buttonSize = size === 'sm' ? 'w-11 h-11' : 'w-11 h-11'
@@ -27,13 +27,13 @@ export function SaveButton({
     e.stopPropagation()
     e.preventDefault()
 
-    if (!auth || !isAuthenticated) return
+    if (!isAuthenticated) return
 
     if (saved) {
-      auth.unsaveDeal(dealId)
+      unsaveDeal(dealId)
       trackEvent('deal_unsaved', { dealId })
     } else {
-      auth.saveDeal(dealId)
+      saveDeal(dealId)
       trackEvent('deal_saved', { dealId })
     }
   }
@@ -47,24 +47,21 @@ export function SaveButton({
         ${buttonSize}
         flex items-center justify-center
         rounded-full
-        bg-[#f2ebe2]/80
-        border border-[#d4c4b0]
-        transition-all duration-300
+        bg-bg-elevated
+        border border-border-default
+        shadow-sm
+        transition-colors duration-200
         ${
           isAuthenticated
-            ? 'hover:bg-[#f2ebe2] hover:scale-110 active:scale-90 cursor-pointer'
+            ? 'hover:border-border-hover cursor-pointer'
             : 'cursor-not-allowed opacity-60'
         }
-        ${saved ? 'text-red-500 shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'text-[#78350f] hover:text-[#451a03]'}
+        ${saved ? 'text-accent' : 'text-text-secondary hover:text-text-primary'}
         ${className}
       `}
       aria-label={saved ? 'Remove from favorites' : 'Add to favorites'}
     >
-      <Heart
-        size={iconSize}
-        weight={saved ? 'fill' : 'regular'}
-        className={`transition-transform duration-200 ${saved ? 'scale-110' : ''}`}
-      />
+      <Heart size={iconSize} weight={saved ? 'fill' : 'regular'} />
     </button>
   )
 

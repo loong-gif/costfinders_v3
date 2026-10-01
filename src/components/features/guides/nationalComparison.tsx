@@ -1,96 +1,151 @@
-import type { GuideContent, GuidePricingStats } from '@/types/guide'
+import type { GuideContent } from '@/types/guide'
 
 interface NationalComparisonProps {
   content: GuideContent['nationalComparison']
   cityLabel: string
-  stats: GuidePricingStats
 }
 
+/**
+ * Plots the researched local rate against the researched national rate.
+ *
+ * Both numbers come from the guide's JSON on purpose. This chart used to derive the local
+ * side from live offers by averaging every row whose unit_type read "unit" — but that column
+ * mixes true per-unit rates ($8/unit) with package totals filed under the same unit ($139 for
+ * 20 units), so Tucson's $8/unit market rendered as $173/unit and the chart announced
+ * "Tucson is 1053% above the national average" immediately below prose stating "roughly 47%
+ * below". Live offer data still drives every other figure on the page, where it is comparable.
+ */
 export function NationalComparison({
   content,
   cityLabel,
-  stats,
 }: NationalComparisonProps) {
-  const nationalAvg =
-    content.nationalAvgPerUnit ?? content.nationalAvgPerSyringe
-  if (!nationalAvg) return null
-
-  // Find the comparable local average from byUnitType
-  // For Botox: match "unit"; for Fillers: match "syringe"
-  const isPerUnit = content.nationalAvgPerUnit != null
-  const targetUnitType = isPerUnit ? 'unit' : 'syringe'
-  const matchingUnit = stats.byUnitType.find(
-    (u) => u.unitType.toLowerCase() === targetUnitType,
-  )
-  const localAvg = matchingUnit?.avgPrice ?? stats.avgPrice
-  if (!localAvg) return null
-
-  const diff = localAvg - nationalAvg
-  const pctDiff = Math.round((Math.abs(diff) / nationalAvg) * 100)
-  const isBelow = diff < 0
-  const isAbove = diff > 0
-
-  const unitLabel = isPerUnit ? 'per unit' : 'per syringe'
-
-  // Bar widths (scale relative to the larger value)
-  const maxVal = Math.max(nationalAvg, localAvg)
-  const nationalWidth = Math.round((nationalAvg / maxVal) * 100)
-  const localWidth = Math.round((localAvg / maxVal) * 100)
+  const basis = resolveBasis(content)
 
   return (
-    <section className="mb-10">
-      <h2 className="text-2xl font-bold text-[#451a03] mb-3">
+    <section aria-labelledby="national-comparison-heading" className="mb-10">
+      <h2
+        className="font-display text-2xl font-bold tracking-tight text-text-primary mb-3"
+        id="national-comparison-heading"
+      >
         {cityLabel} vs national average
       </h2>
-      <p className="text-[#78350f]/80 mb-6">{content.comparisonText}</p>
+      <p className="text-text-secondary mb-6">{content.comparisonText}</p>
 
-      <div className="bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-6">
-        <div className="space-y-4">
-          {/* National average bar */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-medium text-[#78350f]/70">
-                National average
-              </span>
-              <span className="text-sm font-semibold text-[#451a03]">
-                ${nationalAvg} {unitLabel}
-              </span>
-            </div>
-            <div className="h-3 bg-[#e8ddd0] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#78350f]/40 rounded-full transition-all duration-500"
-                style={{ width: `${nationalWidth}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Local average bar */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-medium text-[#78350f]/70">
-                {cityLabel} average
-              </span>
-              <span className="text-sm font-semibold text-[#451a03]">
-                ${localAvg} {unitLabel}
-              </span>
-            </div>
-            <div className="h-3 bg-[#e8ddd0] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-amber-800 rounded-full transition-all duration-500"
-                style={{ width: `${localWidth}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {(isBelow || isAbove) && (
-          <p className="mt-4 text-sm text-center text-[#78350f]/70">
-            {isBelow
-              ? `${cityLabel} is ${pctDiff}% below the national average`
-              : `${cityLabel} is ${pctDiff}% above the national average`}
-          </p>
-        )}
-      </div>
+      {basis && (
+        <ComparisonChart
+          cityLabel={cityLabel}
+          localAvg={basis.localAvg}
+          nationalAvg={basis.nationalAvg}
+          unitLabel={basis.unitLabel}
+        />
+      )}
     </section>
+  )
+}
+
+/**
+ * The one national/local pair the guide filled in. Neurotoxins are quoted per unit,
+ * fillers per syringe, everything else per session; a guide that supplies only one side
+ * of a pair renders prose without a chart rather than an invented comparison.
+ */
+function resolveBasis(content: GuideContent['nationalComparison']) {
+  const pairs = [
+    {
+      nationalAvg: content.nationalAvgPerUnit,
+      localAvg: content.localAvgPerUnit,
+      unitLabel: 'per unit',
+    },
+    {
+      nationalAvg: content.nationalAvgPerSyringe,
+      localAvg: content.localAvgPerSyringe,
+      unitLabel: 'per syringe',
+    },
+    {
+      nationalAvg: content.nationalAvgPerSession,
+      localAvg: content.localAvgPerSession,
+      unitLabel: 'per session',
+    },
+  ]
+  const match = pairs.find((p) => p.nationalAvg != null && p.localAvg != null)
+  if (!match?.nationalAvg || !match.localAvg) return null
+  return {
+    nationalAvg: match.nationalAvg,
+    localAvg: match.localAvg,
+    unitLabel: match.unitLabel,
+  }
+}
+
+function ComparisonChart({
+  cityLabel,
+  localAvg,
+  nationalAvg,
+  unitLabel,
+}: {
+  cityLabel: string
+  localAvg: number
+  nationalAvg: number
+  unitLabel: string
+}) {
+  const diff = localAvg - nationalAvg
+  const pctDiff = Math.round((Math.abs(diff) / nationalAvg) * 100)
+  const maxVal = Math.max(nationalAvg, localAvg)
+
+  return (
+    <div className="bg-bg-elevated border border-border-default rounded-xl p-6">
+      <div className="space-y-4">
+        <Bar
+          label="National average"
+          tone="bg-text-muted"
+          value={nationalAvg}
+          unitLabel={unitLabel}
+          widthPct={Math.round((nationalAvg / maxVal) * 100)}
+        />
+        <Bar
+          label={`${cityLabel} average`}
+          tone="bg-accent-graphic"
+          value={localAvg}
+          unitLabel={unitLabel}
+          widthPct={Math.round((localAvg / maxVal) * 100)}
+        />
+      </div>
+
+      {pctDiff > 0 && (
+        <p className="mt-4 text-sm text-center text-text-muted">
+          {cityLabel} is {pctDiff}% {diff < 0 ? 'below' : 'above'} the national
+          average
+        </p>
+      )}
+    </div>
+  )
+}
+
+function Bar({
+  label,
+  tone,
+  unitLabel,
+  value,
+  widthPct,
+}: {
+  label: string
+  tone: string
+  unitLabel: string
+  value: number
+  widthPct: number
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-sm font-medium text-text-muted">{label}</span>
+        <span className="text-sm font-semibold text-text-primary">
+          ${value} {unitLabel}
+        </span>
+      </div>
+      <div className="h-3 bg-bg-surface rounded-full overflow-hidden">
+        <div
+          className={`h-full ${tone} rounded-full transition-all duration-500`}
+          style={{ width: `${widthPct}%` }}
+        />
+      </div>
+    </div>
   )
 }

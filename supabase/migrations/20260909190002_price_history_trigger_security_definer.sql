@@ -1,0 +1,79 @@
+-- A business owner could not edit a price. Any owner UPDATE on promo_offer_master that touched
+-- regular_price, discount_price, discount_percent or discount_amount failed with 42501.
+--
+-- The chain: trg_promo_offer_price_history is an AFTER UPDATE OF (those four columns) trigger
+-- that calls record_promo_offer_price_history(), which INSERTs an audit row into
+-- promo_offer_price_history. That function was SECURITY INVOKER (prosecdef = false), so the
+-- INSERT ran as the owner's `authenticated` role. promo_offer_price_history has RLS enabled and
+-- exactly one policy — a SELECT policy — so there is no INSERT policy for any client role to
+-- satisfy, and the trigger raised:
+--
+--   ERROR 42501: new row violates row-level security policy for table
+--                "promo_offer_price_history"
+--
+-- Proven twice, including once with the `authenticated` INSERT grant temporarily restored, so
+-- this is NOT fallout from 20260909180002's grant revocation — the missing INSERT policy is the
+-- cause, and the grant revoke is orthogonal (and correct). dealForm.tsx is now a three-field
+-- form and two of those three fields are regular_price and discount_price, so this defect
+-- closed the primary reason a provider signs in.
+--
+-- WHY SECURITY DEFINER RATHER THAN GRANTING INSERT — the safer of the two fixes, not the
+-- lazier one. An INSERT policy on promo_offer_price_history would have to be permissive enough
+-- for a client role to write audit rows directly. That hands every signed-in user the ability
+-- to FORGE price history: fabricate a $2,000 "old_regular_price" against a competitor's offer
+-- and the site would render an invented discount as fact. SECURITY DEFINER grants nothing to
+-- the client. The only way to reach this function is by updating a price on a row the caller's
+-- own UPDATE policy already lets them update, and the function builds its row exclusively from
+-- OLD and NEW — it accepts no arguments, so there is no value a caller can influence beyond
+-- the price they were already entitled to set. The audit row cannot disagree with the write
+-- that produced it.
+--
+-- search_path is pinned to '' (empty), re-asserted here so the pin survives in the file that
+-- makes the function definer-rights: an unpinned definer function is a privilege-escalation
+-- vector via a shadowing schema. The body already schema-qualifies public.promo_offer_price_
+-- history, which is what makes an empty search_path workable.
+--
+-- Owner is `postgres` (verified via pg_get_userbyid(proowner)), which has INSERT on the table
+-- and rolbypassrls, so the definer INSERT succeeds. This is deliberate for an audit sink: the
+-- log must accept a row whether or not the offer is currently visible to anyone.
+--
+-- ── PRIOR STATE, verbatim, so this is reversible from the repo alone ───────────────────────
+-- The function BODY is unchanged by this migration; only its security attribute is. To revert:
+--
+--   alter function public.record_promo_offer_price_history() security invoker;
+--
+-- and be aware that reverting reinstates the 42501 on every owner price edit. The body as it
+-- stands (and as it will remain):
+--
+--   CREATE OR REPLACE FUNCTION public.record_promo_offer_price_history()
+--    RETURNS trigger
+--    LANGUAGE plpgsql
+--    SET search_path TO ''
+--   AS $function$
+--   BEGIN
+--       INSERT INTO public.promo_offer_price_history (
+--           offer_id,
+--           old_regular_price, new_regular_price,
+--           old_discount_price, new_discount_price,
+--           old_discount_percent, new_discount_percent,
+--           old_discount_amount, new_discount_amount
+--       ) VALUES (
+--           OLD.id,
+--           OLD.regular_price, NEW.regular_price,
+--           OLD.discount_price, NEW.discount_price,
+--           OLD.discount_percent, NEW.discount_percent,
+--           OLD.discount_amount, NEW.discount_amount
+--       );
+--       RETURN NEW;
+--   END;
+--   $function$
+-- ──────────────────────────────────────────────────────────────────────────────────────────
+
+alter function public.record_promo_offer_price_history() security definer;
+alter function public.record_promo_offer_price_history() set search_path = '';
+
+-- A trigger function cannot be invoked directly (Postgres rejects it with 0A000, "trigger
+-- functions can only be called as triggers"), so there is no EXECUTE surface to revoke. Left
+-- as-is deliberately rather than adding a revoke that reads as protection but does nothing.
+
+notify pgrst, 'reload schema';

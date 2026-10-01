@@ -1,9 +1,15 @@
 'use client'
 
-import { ArrowRight } from '@phosphor-icons/react'
+import {
+  ArrowRight,
+  MagnifyingGlass,
+  WarningCircle,
+} from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { DealCard } from '@/components/features/dealCard'
+import { useCallback, useEffect, useState } from 'react'
+import { DealList } from '@/components/features/dealCard'
+import { DealListSkeleton } from '@/components/features/dealCardSkeleton'
+import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/context/authContext'
 import { getActiveDeals, getDealsByCity } from '@/lib/data/unified'
 import type { AnonymousDeal } from '@/types/deal'
@@ -12,18 +18,25 @@ export function DealsForYouSection() {
   const { state } = useAuth()
   const [deals, setDeals] = useState<AnonymousDeal[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  // Whether the results actually came from the user's city — the heading must
+  // not claim "Deals in Austin" when we fell back to nationwide results.
+  const [isCityMatch, setIsCityMatch] = useState(false)
 
   const userCity = state.user?.locationCity
 
-  useEffect(() => {
-    let cancelled = false
+  const fetchDeals = useCallback(async () => {
+    setIsLoading(true)
+    setHasError(false)
 
-    async function fetchDeals() {
+    try {
       let results: AnonymousDeal[] = []
+      let matchedCity = false
 
       // Try location-based deals first
       if (userCity) {
         results = await getDealsByCity(userCity)
+        matchedCity = results.length > 0
       }
 
       // Fall back to active deals if no location-specific results
@@ -31,59 +44,111 @@ export function DealsForYouSection() {
         results = await getActiveDeals(4)
       }
 
-      if (cancelled) return
+      setIsCityMatch(matchedCity)
       setDeals(results.slice(0, 4))
+    } catch {
+      setDeals([])
+      setHasError(true)
+    } finally {
       setIsLoading(false)
     }
+  }, [userCity])
 
-    fetchDeals()
+  useEffect(() => {
+    let cancelled = false
+    fetchDeals().then(() => {
+      if (cancelled) return
+    })
     return () => {
       cancelled = true
     }
-  }, [userCity])
+  }, [fetchDeals])
+
+  const heading = isCityMatch ? `Deals in ${userCity}` : 'Deals for you'
 
   if (isLoading) {
     return (
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-[#451a03]">
-          Deals {userCity ? `in ${userCity}` : 'for you'}
+        <h2 className="font-display text-lg font-semibold text-text-primary tracking-tight">
+          {heading}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="aspect-[4/5] bg-[#faf5ee] rounded-2xl animate-pulse"
-            />
-          ))}
+        <DealListSkeleton rows={4} />
+      </section>
+    )
+  }
+
+  if (hasError) {
+    return (
+      <section className="space-y-3">
+        <h2 className="font-display text-lg font-semibold text-text-primary tracking-tight">
+          {heading}
+        </h2>
+        <div className="rounded-2xl border border-border-default bg-bg-elevated p-6 text-center">
+          <WarningCircle
+            size={28}
+            weight="light"
+            className="text-text-muted mx-auto mb-2"
+          />
+          <p className="text-sm text-text-secondary mb-4">
+            We couldn&apos;t load deals just now. Check your connection and try
+            again.
+          </p>
+          <Button variant="secondary" size="sm" onClick={fetchDeals}>
+            Try again
+          </Button>
         </div>
       </section>
     )
   }
 
-  if (deals.length === 0) return null
+  if (deals.length === 0) {
+    return (
+      <section className="space-y-3">
+        <h2 className="font-display text-lg font-semibold text-text-primary tracking-tight">
+          {heading}
+        </h2>
+        <div className="rounded-2xl border border-border-default bg-bg-elevated p-6 text-center">
+          <p className="text-sm text-text-secondary mb-4">
+            {userCity
+              ? `No deals in ${userCity} yet. Browse every treatment on offer, or change your city in settings.`
+              : 'No deals to show yet. Browse every treatment on offer to find one near you.'}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/deals">
+              <Button variant="primary" size="sm">
+                <MagnifyingGlass size={16} weight="bold" />
+                Browse all deals
+              </Button>
+            </Link>
+            {userCity && (
+              <Link href="/dashboard/settings">
+                <Button variant="secondary" size="sm">
+                  Change city
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-[#451a03]">
-          Deals {userCity ? `in ${userCity}` : 'for you'}
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-display text-lg font-semibold text-text-primary tracking-tight">
+          {heading}
         </h2>
         <Link
           href="/deals"
-          className="text-sm text-amber-800 hover:text-amber-700 font-medium flex items-center gap-1 transition-colors"
+          className="text-sm text-accent hover:text-accent-hover font-medium flex items-center gap-1 transition-colors shrink-0"
         >
           See all deals
           <ArrowRight size={14} weight="bold" />
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {deals.map((deal) => (
-          <Link key={deal.id} href={`/deals/${deal.id}`}>
-            <DealCard deal={deal} />
-          </Link>
-        ))}
-      </div>
+      <DealList deals={deals} />
     </section>
   )
 }

@@ -1,0 +1,38 @@
+-- 20260910040003_publish_messages_realtime.sql
+--
+-- Add public.messages to the supabase_realtime publication.
+--
+-- WHY
+-- ---
+-- src/components/features/messaging/messageThread.tsx:117-174 subscribes to postgres_changes
+-- INSERT and UPDATE on `messages`, filtered by conversation_id. Those callbacks could never
+-- fire: pg_publication_rel held exactly two rows on 2026-09-10 —
+--
+--   supabase_realtime                       public.notifications
+--   supabase_realtime_messages_publication  realtime.messages   <- Realtime's own broadcast
+--                                                                  table, not public.messages
+--
+-- Nothing polls inside an open thread either (the only interval is the conversation-LIST poll
+-- on the two messages pages), so a reply arrived only if the reader navigated away and back.
+-- The "read" marker never lit up for the same reason — it rides the UPDATE subscription.
+--
+-- THIS DOES NOT WIDEN ACCESS
+-- --------------------------
+-- Realtime evaluates the subscriber's own RLS against each change before delivering it. The
+-- existing SELECT policy on public.messages is
+--
+--   conversation_id IN (select id from conversations
+--                       where consumer_id = auth.uid() or business_owner_id = auth.uid())
+--
+-- so a row still reaches only the two participants, exactly as it does over REST. Publishing
+-- a table changes what the WAL decoder emits, not who is allowed to read it.
+--
+-- Replica identity is left at the default (primary key). The component reads only
+-- payload.new; `replica identity full` would ship every old column to every subscriber for no
+-- gain here.
+--
+-- REVERSIBILITY
+-- -------------
+--   alter publication supabase_realtime drop table public.messages;
+
+alter publication supabase_realtime add table public.messages;

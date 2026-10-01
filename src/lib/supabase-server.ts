@@ -1,11 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { supabasePublishableKey, supabaseUrl } from './supabase-config'
+import { assertSupabaseEnv } from '@/lib/env'
 
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies()
+  const { url, anonKey } = assertSupabaseEnv(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  )
 
-  return createServerClient(supabaseUrl, supabasePublishableKey, {
+  return createServerClient(url, anonKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll()

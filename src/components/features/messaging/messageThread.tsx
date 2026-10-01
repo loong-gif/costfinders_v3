@@ -19,10 +19,17 @@ import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { MessageRow } from '@/types/messaging'
 
 interface MessageThreadProps {
-  claimId: string
-  conversationId?: string
+  /**
+   * The thread keys off this and nothing else. It was optional, and a `claimId` prop sat
+   * beside it that the component never read — so the consumer page passed the claim id,
+   * passed no conversation id, and every consumer got the "not initialized" placeholder
+   * instead of a thread. Required now, so that call site cannot come back.
+   */
+  conversationId: string
   currentUserId: string
   currentUserType: 'business' | 'consumer'
+  /** Header text, e.g. the clinic's name on the customer side. Defaults to "Messages". */
+  title?: string
 }
 
 const TYPING_TIMEOUT_MS = 3_000
@@ -58,10 +65,10 @@ function formatMessageTime(dateString: string): string {
 }
 
 export function MessageThread({
-  claimId,
   conversationId,
   currentUserId,
   currentUserType,
+  title,
 }: MessageThreadProps) {
   const [messages, setMessages] = useState<MessageRow[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -236,12 +243,12 @@ export function MessageThread({
 
     try {
       const result = await sendMessageAction(conversationId, content)
-      if (result.success && result.message) {
+      // Bind to a const so the narrowing survives into the map callback
+      const savedMessage = result.message
+      if (result.success && savedMessage) {
         // Replace the optimistic message with the real one
         setMessages((prev) =>
-          prev.map((m) =>
-            m.id === optimisticMessage.id ? result.message! : m,
-          ),
+          prev.map((m) => (m.id === optimisticMessage.id ? savedMessage : m)),
         )
       }
     } catch {
@@ -263,18 +270,22 @@ export function MessageThread({
   if (!conversationId) {
     return (
       <Card variant="glass" padding="none" className="flex flex-col h-[400px]">
-        <div className="px-4 py-3 border-b border-[#d4c4b0]">
-          <h3 className="text-sm font-medium text-[#78350f] flex items-center gap-2">
-            <ChatCircle size={18} weight="fill" className="text-[#92400e]" />
+        <div className="px-4 py-3 border-b border-border-default">
+          <h3 className="text-sm font-medium text-text-secondary flex items-center gap-2">
+            <ChatCircle size={18} weight="fill" className="text-text-muted" />
             Messages
           </h3>
         </div>
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center py-8">
-            <div className="w-12 h-12 rounded-full bg-[#f2ebe2] flex items-center justify-center mb-3 mx-auto">
-              <ChatCircle size={24} weight="light" className="text-[#92400e]" />
+            <div className="w-12 h-12 rounded-full bg-bg-surface flex items-center justify-center mb-3 mx-auto">
+              <ChatCircle
+                size={24}
+                weight="light"
+                className="text-text-muted"
+              />
             </div>
-            <p className="text-[#78350f] text-sm">
+            <p className="text-text-secondary text-sm">
               Messaging will be available once the conversation is initialized
             </p>
           </div>
@@ -286,10 +297,10 @@ export function MessageThread({
   return (
     <Card variant="glass" padding="none" className="flex flex-col h-[400px]">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-[#d4c4b0]">
-        <h3 className="text-sm font-medium text-[#78350f] flex items-center gap-2">
-          <ChatCircle size={18} weight="fill" className="text-[#92400e]" />
-          Messages
+      <div className="px-4 py-3 border-b border-border-default">
+        <h3 className="text-sm font-medium text-text-secondary flex items-center gap-2">
+          <ChatCircle size={18} weight="fill" className="text-text-muted" />
+          {title ?? 'Messages'}
         </h3>
       </div>
 
@@ -300,17 +311,23 @@ export function MessageThread({
             <SpinnerGap
               size={24}
               weight="light"
-              className="text-[#92400e] animate-spin mb-3"
+              className="text-text-muted animate-spin mb-3"
             />
-            <p className="text-[#78350f] text-sm">Loading messages...</p>
+            <p className="text-text-secondary text-sm">Loading messages...</p>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-8">
-            <div className="w-12 h-12 rounded-full bg-[#f2ebe2] flex items-center justify-center mb-3">
-              <ChatCircle size={24} weight="light" className="text-[#92400e]" />
+            <div className="w-12 h-12 rounded-full bg-bg-surface flex items-center justify-center mb-3">
+              <ChatCircle
+                size={24}
+                weight="light"
+                className="text-text-muted"
+              />
             </div>
-            <p className="text-[#78350f] text-sm">Start the conversation</p>
-            <p className="text-[#92400e] text-xs mt-1">
+            <p className="text-text-secondary text-sm">
+              Start the conversation
+            </p>
+            <p className="text-text-muted text-xs mt-1">
               Send a message to begin chatting
             </p>
           </div>
@@ -326,8 +343,8 @@ export function MessageThread({
                   <div
                     className={`max-w-[80%] ${
                       isOwnMessage
-                        ? 'bg-amber-800 text-white rounded-2xl rounded-br-md'
-                        : 'bg-[#faf5ee] text-[#451a03] rounded-2xl rounded-bl-md'
+                        ? 'bg-accent text-white rounded-2xl rounded-br-md'
+                        : 'bg-bg-elevated text-text-primary rounded-2xl rounded-bl-md'
                     } px-4 py-2.5`}
                   >
                     <p className="text-sm whitespace-pre-wrap break-words">
@@ -335,7 +352,7 @@ export function MessageThread({
                     </p>
                     <div
                       className={`flex items-center gap-1.5 mt-1 ${
-                        isOwnMessage ? 'text-white/70' : 'text-[#92400e]'
+                        isOwnMessage ? 'text-white' : 'text-text-muted'
                       }`}
                     >
                       <span className="text-xs">
@@ -357,7 +374,7 @@ export function MessageThread({
       {/* Typing Indicator */}
       {isOtherTyping && (
         <div className="px-4 pb-1">
-          <div className="flex items-center gap-1.5 text-[#92400e]">
+          <div className="flex items-center gap-1.5 text-text-muted">
             <DotsThree size={18} weight="bold" className="animate-pulse" />
             <span className="text-xs">typing...</span>
           </div>
@@ -365,15 +382,16 @@ export function MessageThread({
       )}
 
       {/* Input Area */}
-      <div className="p-4 border-t border-[#d4c4b0]">
+      <div className="p-4 border-t border-border-default">
         <div className="flex items-end gap-2">
           <textarea
             value={newMessage}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
+            aria-label="Message"
             rows={1}
-            className="flex-1 px-4 py-2.5 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-[#451a03] placeholder:text-[#92400e] resize-none focus:outline-none focus:border-amber-800/40 focus:ring-2 focus:ring-amber-800/15 transition-all text-sm min-h-[42px] max-h-[120px]"
+            className="flex-1 px-4 py-2.5 bg-bg-surface border border-border-default rounded-xl text-text-primary placeholder:text-text-muted resize-none focus:outline-none focus:border-border-accent focus:ring-2 focus:ring-border-accent transition-all text-sm min-h-[42px] max-h-[120px]"
             style={{
               height: 'auto',
               overflow: newMessage.split('\n').length > 3 ? 'auto' : 'hidden',
@@ -384,9 +402,10 @@ export function MessageThread({
             size="sm"
             onClick={handleSend}
             disabled={!newMessage.trim() || isSending}
+            aria-label="Send message"
             className="h-[42px] px-4"
           >
-            <PaperPlaneRight size={18} weight="fill" />
+            <PaperPlaneRight size={18} weight="fill" aria-hidden="true" />
           </Button>
         </div>
       </div>

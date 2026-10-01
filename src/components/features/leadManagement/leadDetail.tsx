@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Calendar,
   CalendarCheck,
-  ChatCircle,
   CheckCircle,
   Clock,
   Envelope,
@@ -23,19 +22,43 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
-  addBusinessResponseAction,
+  type ConsumerContact,
+  getConsumerContactForLeadAction,
   updateClaimStatusForBusinessAction,
 } from '@/lib/actions/business-claims'
 import type { ClaimRow } from '@/lib/actions/claims'
 import { getOrCreateConversationAction } from '@/lib/actions/messaging'
-import { getOfferById } from '@/lib/data/offers'
+import { dealPricing, offerToAnonymousDeal } from '@/lib/data/adapters'
+import { getOfferById, isPubliclyVisible } from '@/lib/data/offers'
+import { formatDateOnly } from '@/lib/utils/dateOnly'
 import type { ClaimStatus } from '@/types/claim'
-import type { OfferWithBusiness } from '@/types/supabase'
+import type { OfferView } from '@/types/supabase'
+
+/** Snapshot columns written at claim time; absent until that migration is applied. */
+type LeadClaim = ClaimRow & {
+  deal_title?: string | null
+  price_label?: string | null
+}
+
+/** A date-only column ('YYYY-MM-DD'). Never through new Date(), which shows it a day early. */
+const LONG_DAY: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+}
 
 interface LeadDetailProps {
-  claim: ClaimRow
+  claim: LeadClaim
   businessId: string
-  onClaimUpdate?: (claim: ClaimRow) => void
+  /**
+   * The owner's auth uid. Distinct from businessId, which is the bigint primary key of
+   * master_business_info — MessageThread stamps this onto optimistic messages and compares it
+   * against messages.sender_id, so passing the business id there made the owner's own message
+   * render twice and fired a redundant read receipt per message.
+   */
+  ownerId: string
+  onClaimUpdate?: (claim: LeadClaim) => void
 }
 
 function formatDate(dateString: string): string {
@@ -70,14 +93,11 @@ function getCustomerDisplay(consumerId: string): string {
 export function LeadDetail({
   claim: initialClaim,
   businessId,
+  ownerId,
   onClaimUpdate,
 }: LeadDetailProps) {
-  const [claim, setClaim] = useState(initialClaim)
-  const [businessNotes, setBusinessNotes] = useState(
-    claim.business_response || '',
-  )
-  const [isSaving, setIsSaving] = useState(false)
-  const [deal, setDeal] = useState<OfferWithBusiness | null>(null)
+  const [claim, setClaim] = useState<LeadClaim>(initialClaim)
+  const [deal, setDeal] = useState<OfferView | null>(null)
   const [isDealLoading, setIsDealLoading] = useState(true)
   const [conversationId, setConversationId] = useState<string | undefined>(
     undefined,
@@ -89,9 +109,11 @@ export function LeadDetail({
       const result = await getOrCreateConversationAction(initialClaim.id)
       if (result.success && result.conversation) {
         setConversationId(result.conversation.id)
+      } else {
+        console.error('[LeadDetail] no conversation for claim:', result.error)
       }
-    } catch {
-      // Non-critical — messaging just won't be available
+    } catch (err) {
+      console.error('[LeadDetail] conversation lookup threw:', err)
     }
   }, [initialClaim.id])
 
@@ -127,30 +149,60 @@ export function LeadDetail({
     }
   }
 
-  const handleSaveNotes = async () => {
-    if (!businessNotes.trim()) return
-    setIsSaving(true)
+  const [contact, setContact] = useState<ConsumerContact | null>(null)
+  const [contactError, setContactError] = useState<string | null>(null)
 
-    const result = await addBusinessResponseAction(
-      claim.id,
-      Number(businessId),
-      businessNotes,
-    )
-    if (result.success && result.claim) {
-      setClaim(result.claim)
-      onClaimUpdate?.(result.claim)
+  // Not for a lead that has ended: a customer who cancelled, or whose claim expired, has not
+  // asked to be contacted (claim_consumer_contact's own status check is a separate change).
+  const leadEnded = claim.status === 'cancelled' || claim.status === 'expired'
+  const canShowContactInfo = claim.status !== 'pending' && !leadEnded
+
+  // The consumer's details are not on the claim row: the phone lives on `profiles` (which an
+  // owner cannot read) and the email is not in the `public` schema at all. They are fetched
+  // through a per-claim accessor that authorises the caller server-side, so this screen can
+  // keep its promise instead of rendering the old "Available after consumer profile
+  // integration" placeholder. Fetched only once the lead is out of `pending`, matching the
+  // reveal rule the copy states.
+  useEffect(() => {
+    if (!canShowContactInfo) return
+    let cancelled = false
+    getConsumerContactForLeadAction(claim.id).then((result) => {
+      if (cancelled) return
+      if (result.success && result.contact) {
+        setContact(result.contact)
+        setContactError(null)
+      } else {
+        setContactError(
+          result.error ?? 'Could not load the customer’s details.',
+        )
+      }
+    })
+    return () => {
+      cancelled = true
     }
-    setIsSaving(false)
-  }
-
-  const canShowContactInfo = claim.status !== 'pending'
+  }, [canShowContactInfo, claim.id])
 
   // Derive deal display values
-  const dealTitle =
-    deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
+  // source_name has no successor in the normalized schema; service_name already falls back
+  // to offer_raw_text, so the `Deal #n` case is now genuinely "the deal is gone".
+  // The deal as it is now; else the title snapshotted when the customer claimed. "Deal #8556"
+  // told the owner nothing about a deal the pipeline had since removed.
+  const dealTitle = deal?.service_name ?? claim.deal_title ?? null
+  const dealListed = deal ? isPubliclyVisible(deal) : false
   const dealCategory = deal?.service_category ?? null
-  const dealPrice = deal?.discount_price ?? null
-  const dealUnit = deal?.unit_type ?? null
+  // The deal's current price, as the site prints it — not what the consumer saw when they
+  // claimed: claims store no price, and getOfferById reads the offer as it is now. This printed
+  // `$${discount_price}` then
+  // `unit_type` — the service's unit vocabulary, not what the price buys — so a 40-unit package
+  // read "$299 unit" and a $79 lip flip "$79 unit". 'none' ("Contact for pricing") is dropped:
+  // it tells the owner nothing about their own deal.
+  const pricing = deal ? dealPricing(offerToAnonymousDeal(deal)) : null
+  // What the customer saw when they claimed, when the claim carries it; the live price otherwise.
+  const priceText =
+    claim.price_label ??
+    (pricing && pricing.kind !== 'none'
+      ? [pricing.lead, pricing.basis].filter(Boolean).join(' ')
+      : null)
 
   // Status transition buttons
   const statusActions: {
@@ -209,14 +261,18 @@ export function LeadDetail({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Link href="/business/dashboard/leads">
-          <Button variant="ghost" size="sm">
-            <ArrowLeft size={20} weight="light" />
+        {/* Both the <a> and the <button> it wraps are focusable, so both
+            need the name. */}
+        <Link href="/business/dashboard/leads" aria-label="Back to leads">
+          <Button variant="ghost" size="sm" aria-label="Back to leads">
+            <ArrowLeft size={20} weight="light" aria-hidden="true" />
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-[#451a03]">Lead Details</h1>
-          <p className="text-[#78350f] mt-1">
+          <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+            Lead Details
+          </h1>
+          <p className="text-text-secondary mt-1">
             {getCustomerDisplay(claim.consumer_id)}
           </p>
         </div>
@@ -230,16 +286,20 @@ export function LeadDetail({
           <Card variant="glass" padding="lg">
             <div className="space-y-6">
               {/* Header with created date */}
-              <div className="flex items-center justify-between pb-4 border-b border-[#d4c4b0]">
+              <div className="flex items-center justify-between pb-4 border-b border-border-default">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-amber-800/8 flex items-center justify-center">
-                    <User size={24} weight="fill" className="text-amber-800" />
+                  <div className="w-12 h-12 rounded-full bg-bg-surface flex items-center justify-center">
+                    <User
+                      size={24}
+                      weight="fill"
+                      className="text-text-secondary"
+                    />
                   </div>
                   <div>
-                    <p className="font-semibold text-[#451a03] text-lg">
+                    <p className="font-semibold text-text-primary text-lg">
                       {getCustomerDisplay(claim.consumer_id)}
                     </p>
-                    <p className="text-sm text-[#92400e]">
+                    <p className="text-sm text-text-muted">
                       Requested {formatRelativeTime(claim.created_at)}
                     </p>
                   </div>
@@ -248,24 +308,30 @@ export function LeadDetail({
 
               {/* Deal Info */}
               {isDealLoading ? (
-                <div className="p-4 bg-[#faf5ee] rounded-xl flex items-center gap-3">
+                <div className="p-4 bg-bg-elevated rounded-xl flex items-center gap-3">
                   <SpinnerGap
                     size={20}
                     weight="light"
-                    className="text-[#92400e] animate-spin"
+                    className="text-text-muted animate-spin"
                   />
-                  <span className="text-sm text-[#78350f]">
+                  <span className="text-sm text-text-secondary">
                     Loading deal info...
                   </span>
                 </div>
               ) : (
-                <div className="p-4 bg-[#faf5ee] rounded-xl">
+                <div className="p-4 bg-bg-elevated rounded-xl">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-800/8 flex items-center justify-center flex-shrink-0">
-                      <Tag size={20} weight="fill" className="text-amber-800" />
+                    <div className="w-10 h-10 rounded-xl bg-bg-surface flex items-center justify-center flex-shrink-0">
+                      <Tag
+                        size={20}
+                        weight="fill"
+                        className="text-text-secondary"
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-[#451a03]">{dealTitle}</p>
+                      <p className="font-medium text-text-primary">
+                        {dealTitle ?? 'This deal is no longer listed'}
+                      </p>
                       <div className="flex items-center gap-3 mt-1">
                         {dealCategory && (
                           <Badge variant="default" size="sm">
@@ -273,17 +339,17 @@ export function LeadDetail({
                               dealCategory.slice(1)}
                           </Badge>
                         )}
-                        {dealPrice != null && (
-                          <span className="text-amber-800 font-semibold">
-                            ${dealPrice}{' '}
-                            {dealUnit && (
-                              <span className="text-[#92400e] font-normal">
-                                {dealUnit}
-                              </span>
-                            )}
+                        {priceText && (
+                          <span className="font-display font-semibold tabular-nums text-text-primary">
+                            {priceText}
                           </span>
                         )}
                       </div>
+                      {dealTitle && !dealListed && (
+                        <p className="text-sm text-text-muted mt-1">
+                          This deal is no longer listed
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -291,30 +357,31 @@ export function LeadDetail({
 
               {/* Customer Request */}
               <div>
-                <h3 className="text-sm font-medium text-[#78350f] mb-3">
+                <h3 className="text-sm font-medium text-text-secondary mb-3">
                   Customer Request
                 </h3>
                 <div className="space-y-3">
                   {(claim.preferred_date || claim.preferred_time) && (
                     <div className="flex flex-wrap gap-4">
                       {claim.preferred_date && (
-                        <div className="flex items-center gap-2 text-[#451a03]">
+                        <div className="flex items-center gap-2 text-text-primary">
                           <Calendar
                             size={18}
                             weight="regular"
-                            className="text-[#92400e]"
+                            className="text-text-muted"
                           />
                           <span>
-                            Preferred: {formatDate(claim.preferred_date)}
+                            Preferred:{' '}
+                            {formatDateOnly(claim.preferred_date, LONG_DAY)}
                           </span>
                         </div>
                       )}
                       {claim.preferred_time && (
-                        <div className="flex items-center gap-2 text-[#451a03]">
+                        <div className="flex items-center gap-2 text-text-primary">
                           <Clock
                             size={18}
                             weight="regular"
-                            className="text-[#92400e]"
+                            className="text-text-muted"
                           />
                           <span>{claim.preferred_time}</span>
                         </div>
@@ -322,8 +389,8 @@ export function LeadDetail({
                     </div>
                   )}
                   {claim.notes && (
-                    <div className="p-3 bg-[#f2ebe2] rounded-xl">
-                      <p className="text-sm text-[#78350f] italic">
+                    <div className="p-3 bg-bg-surface rounded-xl">
+                      <p className="text-sm text-text-secondary italic">
                         "{claim.notes}"
                       </p>
                     </div>
@@ -331,7 +398,7 @@ export function LeadDetail({
                   {!claim.preferred_date &&
                     !claim.preferred_time &&
                     !claim.notes && (
-                      <p className="text-[#92400e] text-sm">
+                      <p className="text-text-muted text-sm">
                         No specific preferences provided.
                       </p>
                     )}
@@ -340,8 +407,8 @@ export function LeadDetail({
 
               {/* Status Actions */}
               {statusActions.length > 0 && (
-                <div className="pt-4 border-t border-[#d4c4b0]">
-                  <h3 className="text-sm font-medium text-[#78350f] mb-3">
+                <div className="pt-4 border-t border-border-default">
+                  <h3 className="text-sm font-medium text-text-secondary mb-3">
                     Update Status
                   </h3>
                   <div className="flex flex-wrap gap-3">
@@ -361,48 +428,13 @@ export function LeadDetail({
             </div>
           </Card>
 
-          {/* Business Notes */}
-          <Card variant="glass" padding="lg">
-            <h3 className="text-sm font-medium text-[#78350f] mb-3 flex items-center gap-2">
-              <ChatCircle size={18} weight="fill" className="text-[#92400e]" />
-              Business Notes
-            </h3>
-            <div className="space-y-4">
-              <textarea
-                value={businessNotes}
-                onChange={(e) => setBusinessNotes(e.target.value)}
-                placeholder="Add internal notes about this lead..."
-                className="w-full h-32 px-4 py-3 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-[#451a03] placeholder:text-[#92400e] resize-none focus:outline-none focus:border-amber-800/40 focus:ring-2 focus:ring-amber-800/15 transition-all"
-              />
-              <div className="flex items-center justify-between">
-                {claim.responded_at && (
-                  <p className="text-xs text-[#92400e]">
-                    Last updated: {formatRelativeTime(claim.responded_at)}
-                  </p>
-                )}
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleSaveNotes}
-                  disabled={
-                    isSaving ||
-                    !businessNotes.trim() ||
-                    businessNotes === claim.business_response
-                  }
-                  className="ml-auto"
-                >
-                  {isSaving ? 'Saving...' : 'Save Notes'}
-                </Button>
-              </div>
-            </div>
-          </Card>
-
-          {/* Messaging - only show if not pending */}
-          {claim.status !== 'pending' && (
+          {/* The thread opens with the claim, not with the first status change: the consumer
+              can message the moment they claim, and a lead the owner cannot answer until they
+              have clicked "Mark Contacted" is a lead that goes cold. */}
+          {conversationId && (
             <MessageThread
-              claimId={claim.id}
               conversationId={conversationId}
-              currentUserId={businessId}
+              currentUserId={ownerId}
               currentUserType="business"
             />
           )}
@@ -412,35 +444,60 @@ export function LeadDetail({
         <div className="space-y-6">
           {/* Contact Info Card */}
           <Card variant="glass" padding="lg">
-            <h3 className="text-sm font-medium text-[#78350f] mb-4">
+            <h3 className="text-sm font-medium text-text-secondary mb-4">
               Contact Information
             </h3>
             {canShowContactInfo ? (
               <div className="space-y-4">
+                {contactError ? (
+                  <p className="text-sm text-error-text" role="alert">
+                    {contactError}
+                  </p>
+                ) : null}
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-success-bg flex items-center justify-center">
                     <Envelope
                       size={20}
                       weight="fill"
-                      className="text-green-500"
+                      className="text-success"
                     />
                   </div>
-                  <div>
-                    <p className="text-xs text-[#92400e]">Email</p>
-                    <p className="text-[#451a03] text-sm">
-                      Available after consumer profile integration
-                    </p>
+                  <div className="min-w-0">
+                    <p className="text-xs text-text-muted">Email</p>
+                    {contact?.email ? (
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="text-text-primary text-sm underline break-all"
+                      >
+                        {contact.email}
+                      </a>
+                    ) : (
+                      <p className="text-text-secondary text-sm">
+                        {contact ? 'Not provided' : 'Loading…'}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                    <Phone size={20} weight="fill" className="text-blue-500" />
+                  <div className="w-10 h-10 rounded-xl bg-info-bg flex items-center justify-center">
+                    <Phone size={20} weight="fill" className="text-info" />
                   </div>
-                  <div>
-                    <p className="text-xs text-[#92400e]">Phone</p>
-                    <p className="text-[#451a03] text-sm">
-                      Available after consumer profile integration
-                    </p>
+                  <div className="min-w-0">
+                    <p className="text-xs text-text-muted">Phone</p>
+                    {contact?.phone ? (
+                      <a
+                        href={`tel:${contact.phone}`}
+                        className="text-text-primary text-sm underline"
+                      >
+                        {contact.phone}
+                      </a>
+                    ) : (
+                      <p className="text-text-secondary text-sm">
+                        {/* Honest: a phone is optional on the consumer's profile, and most
+                            have not set one. Email is the handle that always exists. */}
+                        {contact ? 'Not provided — use email' : 'Loading…'}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -449,9 +506,10 @@ export function LeadDetail({
                 <div className="w-12 h-12 rounded-full bg-warning-bg mx-auto mb-3 flex items-center justify-center">
                   <User size={24} weight="fill" className="text-warning" />
                 </div>
-                <p className="text-sm text-[#78350f]">
-                  Contact info will be revealed after you mark this lead as
-                  contacted.
+                <p className="text-sm text-text-secondary">
+                  {leadEnded
+                    ? `Contact details are hidden because this lead was ${claim.status}.`
+                    : 'Contact info will be revealed after you mark this lead as contacted.'}
                 </p>
               </div>
             )}
@@ -459,15 +517,15 @@ export function LeadDetail({
 
           {/* Timeline Card */}
           <Card variant="glass" padding="lg">
-            <h3 className="text-sm font-medium text-[#78350f] mb-4">
+            <h3 className="text-sm font-medium text-text-secondary mb-4">
               Activity
             </h3>
             <div className="space-y-4">
               <div className="flex gap-3">
-                <div className="w-2 h-2 rounded-full bg-amber-800 mt-2 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-[#451a03]">Lead received</p>
-                  <p className="text-xs text-[#92400e]">
+                  <p className="text-sm text-text-primary">Lead received</p>
+                  <p className="text-xs text-text-muted">
                     {formatRelativeTime(claim.created_at)}
                   </p>
                 </div>
@@ -476,8 +534,10 @@ export function LeadDetail({
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-info mt-2 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-[#451a03]">Contacted customer</p>
-                    <p className="text-xs text-[#92400e]">
+                    <p className="text-sm text-text-primary">
+                      Contacted customer
+                    </p>
+                    <p className="text-xs text-text-muted">
                       {formatRelativeTime(claim.responded_at)}
                     </p>
                   </div>
@@ -488,13 +548,13 @@ export function LeadDetail({
                   <div className="flex gap-3">
                     <div className="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-[#451a03]">
+                      <p className="text-sm text-text-primary">
                         {claim.status === 'completed'
                           ? 'Appointment completed'
                           : 'Appointment booked'}
                       </p>
-                      <p className="text-xs text-[#92400e]">
-                        {formatDate(claim.booked_date)}
+                      <p className="text-xs text-text-muted">
+                        {formatDateOnly(claim.booked_date, LONG_DAY)}
                       </p>
                     </div>
                   </div>
@@ -503,8 +563,8 @@ export function LeadDetail({
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-error mt-2 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-[#451a03]">Lead cancelled</p>
-                    <p className="text-xs text-[#92400e]">
+                    <p className="text-sm text-text-primary">Lead cancelled</p>
+                    <p className="text-xs text-text-muted">
                       {formatRelativeTime(claim.updated_at)}
                     </p>
                   </div>

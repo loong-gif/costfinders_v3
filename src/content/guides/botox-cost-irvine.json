@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "irvine",
+  "cityLabel": "Irvine",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Irvine menus sell a measuring stick rather than a bill. What most practices publish here is a rate for one unit of toxin, and your total is that rate multiplied by a dose your injector does not fix until your face is in front of them. Two things make the local lists harder to read than they look. More than one neurotoxin circulates in this feed and the brands are not measured on the same scale, so the lowest figure on the page is not the cheapest Botox in the city. And the number of Irvine practices willing to publish any figure at all is small next to the number actually injecting in the Spectrum, Los Olivos and Waterworks Way clusters, so the visible spread is a self-selected slice of the market.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit, on the Botox Scale",
+        "description": "The default structure here, and the one nearly every priced Irvine listing uses. A practice posts what a single unit costs and multiplies it by the count in your plan, so one published figure has to cover a first-timer's glabella and a full upper-face maintenance visit alike. Xeomin and Jeuveau are planned at counts close to Botox's, so their rates read across more directly than Dysport's, though no two products' units are formally interchangeable. What the figure omits — consultation fee, minimum unit purchase, injection or facility charge — is what you should be asking about before you book.",
+        "typicalRange": "the published Botox-scale listings run from the middle of the single digits per unit up to the low double digits, with most of them in the low double digits"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "Dysport is divided more finely than Botox, so a Dysport unit buys less and its advertised rate sits well underneath everything measured on the Botox scale. The floor of the Irvine feed is exactly that: a Dysport rate in the low single digits per unit, which converts back into the ordinary local band once you account for the dosing difference. Published clinical work puts the conversion near 2.5 to 3 Dysport units for each Botox unit and treats it as indication-specific rather than a fixed exchange rate. Treat any headline that looks like a third of the going rate as a units question first.",
+        "typicalRange": "low single digits per Dysport unit at the floor, converting back to roughly the same finished visit cost as the Botox-scale listings"
+      },
+      {
+        "name": "Per-Unit Rate Conditioned on a Minimum or Membership",
+        "description": "Inside the single brand that dominates the priced Irvine listings, the gap from bottom to top is close to two to one. Rent between the Spectrum and a business-park suite does not explain a spread that wide on its own; in this market the lowest Botox rate carries a large minimum unit purchase and another low one is a membership price. That is a legitimate pricing structure, but the rate you see is not necessarily the rate you pay in month eight. Ask whether the advertised figure is the walk-in rate, what it becomes on a second visit, and whether unused prepaid units expire.",
+        "typicalRange": "the lower half of the Botox-scale band, single digits per unit, mostly with conditions attached"
+      },
+      {
+        "name": "Prepaid Unit Bank, Sold as a Package",
+        "description": "One Irvine practice sells toxin as a prepaid bank rather than by the visit — Botox, Jeuveau and Dysport packages advertised from several hundred dollars, with bigger banks promising bigger savings. The listings give a starting price without tying it to a unit count, so they cannot be set against a per-unit rate as advertised. Ask how many units the entry package holds, what that works out to per unit, whether banked units expire, and whether they can be moved to another brand.",
+        "typicalRange": "several hundred dollars for the entry bank, with the per-unit rate left for you to work out"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A short list of forces sets a rate card in Irvine, and they do not all push the same way. This is an affluent, young, master-planned city with expensive commercial space, a state that keeps injection firmly inside medicine, and three cheaper Orange County neighbours within half an hour.",
+    "factors": [
+      {
+        "factor": "California keeps injection inside medicine, with supervision attached",
+        "explanation": "Botulinum toxin injection is a medical act in California. The Medical Board of California regulates physicians, the Board of Registered Nursing regulates RNs and advanced practice nurses, and physician assistants practise under supervision set out in the Business and Professions Code. An esthetician or unlicensed medical assistant cannot independently inject, and an RN generally needs a patient-specific order and written standardized procedures. A supervising or delegating physician is an overhead line that a med spa in a looser-delegation state does not carry, and it sits underneath what Botox costs here. Ask who the supervising physician is, whether they are on site, and what licence your injector holds."
+      },
+      {
+        "factor": "Occupancy cost in the Spectrum and the medical corridor",
+        "explanation": "Irvine's aesthetic practices cluster where retail traffic, office employment and medical space overlap — Irvine Center Drive and Los Olivos around the Spectrum, the medical corridor near Waterworks Way, and the office nodes along Jamboree and Bake Parkway. Those addresses cost a practice considerably more per square foot than an equivalent room in Tustin, Santa Ana or Lake Forest, while the vial costs the same in all of them. Cost-of-living compilations put Irvine at roughly twice the national baseline, driven overwhelmingly by property — yet Tustin's published per-unit rates centre about where Irvine's do, so do not assume a cheaper address means a cheaper rate."
+      },
+      {
+        "factor": "A young, high-income, highly educated patient base",
+        "explanation": "Census estimates put Irvine's median household income near $130,000 and its median age in the mid-thirties, which is an unusual combination for injectables. It produces a large preventative and first-timer segment alongside established maintenance patients, and it is why membership plans, prepaid unit blocks and chain-format clinics do well here. Strong purchasing power supports premium positioning; a young, price-literate cohort that compares rates online pulls in the other direction."
+      },
+      {
+        "factor": "A dense provider market with a thin publishing pool",
+        "explanation": "Directory listings show multiple medspa and medical-aesthetic addresses inside Irvine alone, and that is before counting dermatology and plastic-surgery offices that also inject. The number of those practices posting a per-unit figure publicly is a small fraction. So the visible spread is not a survey of the city — it is the subset that chose transparency as a marketing position, usually because their rate competes. Treat what is published as a floor-finding tool and assume unpublished quotes can sit outside it either way."
+      },
+      {
+        "factor": "Newport and Costa Mesa next door, Los Angeles and San Diego beyond",
+        "explanation": "Newport Beach, Costa Mesa and Anaheim are roughly fifteen to thirty-five minutes away and are the comparisons Irvine buyers actually make; Newport in particular has the premium reputation in Orange County, though its published per-unit rates centre about where Irvine's do. Los Angeles is about forty-five to sixty minutes in light traffic and San Diego seventy-five to a hundred, both highly traffic-dependent. Those deeper markets restrain what a local practice can charge for a large initial course, but toxin is a three-or-four-times-a-year purchase, so routine top-ups are governed by purely local forces."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Very little of this is coupon hunting. In a market where two dosing scales circulate and only a few clinics publish anything, the money is saved before you book — by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Price a whole appointment in each brand, not the two advertised rates",
+        "detail": "Ask any clinic stocking more than one neurotoxin how many units your areas take in each product and what each finished visit costs. Then set the totals side by side. Comparing per-unit rates across brands is the most expensive mistake available in Irvine, because the cheapest figure in this feed is quoted on Dysport's smaller unit."
+      },
+      {
+        "tip": "Find out what the low advertised rate is conditioned on",
+        "detail": "Where a single brand's local listings span close to two to one, the bottom usually carries a string: new-patient only, a membership fee, a minimum unit purchase, or prepayment. Ask what the rate is on your second and third visit, whether the membership fee is refundable, and whether prepaid units expire or transfer to another product."
+      },
+      {
+        "tip": "Get one quote from a different rent band",
+        "detail": "Tustin, Santa Ana, Lake Forest and Anaheim are fifteen to thirty-five minutes from central Irvine and sit in a cheaper occupancy bracket than the Spectrum. Two comparison quotes cost you an afternoon and, unlike an LA trip, are repeatable four times a year; Tustin's published per-unit rates centre about where Irvine's do, so compare finished visit totals rather than expecting a cheaper headline. If you stay near Los Olivos anyway, use the outside quote as a reference point in the conversation."
+      },
+      {
+        "tip": "Ask which loyalty programme the practice runs before your first visit",
+        "detail": "Allergan's Allē, Galderma's Aspire for Dysport and Evolus Rewards accrue on treatments you were having regardless, and enrolling after the fact usually forfeits the credit. Ask whether points are applied at checkout or banked, and what happens to your balance if the clinic switches its preferred brand mid-year."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms ahead of weddings, graduation season around UC Irvine, summer travel and the December party stretch, and toxin needs roughly two weeks to settle before a fixed date. Quiet stretches are when an introductory rate or a prepaid course is genuinely negotiable; in the crush, the useful ask is a slot. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 10,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with Dysport's smaller unit and starting-at prices left out of the local median rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and $13, near the middle of that published band, is the national marker. The median of the priced Irvine offers is $10 per unit — about 23 percent below that marker, which is not what a city with this income profile would suggest, and is partly a function of which practices choose to publish a rate at all and what conditions sit behind the lower ones."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Irvine?",
+      "answer": "No honest page gives you one number. Toxin is sold by the unit here, so your bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices actually publish, split by product; the Botox-scale listings run roughly two to one from the top of the band to the bottom, and the figure below all of them belongs to a different dosing scale. Settle two things before you compare quotes: which product the rate belongs to, and what else the visit carries."
+    },
+    {
+      "question": "Why does one Irvine clinic's advertised Botox cost per unit look like a third of another's?",
+      "answer": "Because it is almost certainly not Botox. The floor of this market is a Dysport rate, and a Dysport unit is a finer division of the same kind of product — published work puts the conversion near 2.5 to 3 to 1 and treats it as indication-specific rather than a fixed rate of exchange. Converted onto the Botox scale, that floor lands back inside the ordinary local band. Ask for your planned unit count in each product and the finished cost of each visit; that is the only comparison that survives contact with an invoice."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician, not to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask as well how the practice handles a plan that grows once you are in the chair, and whether the two-week review is included or billed."
+    },
+    {
+      "question": "Does Botox cost less in Tustin, Santa Ana or Lake Forest than in Irvine?",
+      "answer": "Not on what is published: Tustin's advertised per-unit rates centre about where Irvine's do, and too few Santa Ana or Lake Forest clinics publish a rate to say. Where a gap exists, the mechanism is occupancy cost rather than product — the vial costs a practice the same in a Santa Ana suite as it does off Irvine Center Drive. The drive is short enough that an out-of-city clinic is genuinely repeatable three or four times a year, which is rarely true of a Los Angeles option. Get one outside quote for your planned count and compare full visit totals rather than per-unit rates, and check that the injector and supervision arrangement meet the same standard."
+    },
+    {
+      "question": "Is Botox cheaper in Los Angeles or San Diego than what it costs in Irvine?",
+      "answer": "Los Angeles is a far deeper market with more internal competition, but it is forty-five to sixty minutes away in light traffic and considerably more at the wrong hour; San Diego runs seventy-five to a hundred. Price the trip honestly: possibly worth it once for a large initial course, rarely worth it every quarter. Closer in, Newport Beach and Costa Mesa are the real comparison set; Newport's published per-unit rates centre about where Irvine's do, though its dearest listing sits higher, and too few Costa Mesa clinics publish a rate to compare."
+    },
+    {
+      "question": "Why does Botox cost so much less at some Irvine clinics than at others?",
+      "answer": "Partly overhead and injector seniority, partly volume, and partly what the advertised rate is conditioned on: here the lowest Botox rate needs a large minimum purchase and another low one is a membership price. Clinics that buy in volume use a low headline rate to fill the calendar, recovering margin through memberships, prepaid blocks and add-on treatments, while a physician-led dermatology or surgery office may quote a flatter rate with the physician injecting. Ask both for a finished visit total on your planned count, and ask who is actually holding the syringe."
+    },
+    {
+      "question": "Who can legally inject Botox in California, and does that change what it costs?",
+      "answer": "Injection is a medical act under California's Medical Practice Act. Physicians may inject or delegate appropriately; registered nurses and advanced practice nurses work under Board of Registered Nursing rules and generally require a patient-specific order and standardized procedures; physician assistants work under supervision per the Business and Professions Code. An esthetician cannot independently inject. That standing supervision requirement is a real cost inside every compliant Irvine practice, and local rates have to carry it. Ask for your injector's licence type, the supervising physician's name and how the delegation is documented, and confirm current board guidance if anything sounds unusual."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a smaller dosing unit, a first-visit rate or a membership condition — but the question is a fair one. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in several states and caused harmful reactions. The FDA advised confirming with the practice that the product came from an authorised source, and flagged packaging tells including a 150-unit strength not sold in the US and cartons printed in another language. Asking to see the sealed, labelled vial before it is drawn up is reasonable anywhere, including a well-reviewed clinic in the Spectrum."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 208,
+    "medspaDensity": "Dense but tightly clustered rather than spread evenly across the city's villages. Practices concentrate around the Irvine Spectrum and Los Olivos on Irvine Center Drive, in the medical corridor near Waterworks Way, and in the office and retail nodes along Jamboree Road, Laguna Canyon Road, Corporate Park and Bake Parkway, with national and regional chain formats well represented. Directory counts of Irvine medspa addresses run into the high single figures, but a directory listing is not the same thing as a licensed injector and does not capture the dermatology and plastic-surgery offices that also inject. What matters more to a buyer is that only a handful of local practices publish a per-unit rate at all.",
+    "demographicNotes": "The Census Bureau estimated Irvine's population near 308,000 in 2023, with a median household income of about $129,647 and a median age around 34 — a young, highly educated, heavily professional city with a large Asian American population. That combination of high purchasing power and a relatively young median produces more preventative and first-time dosing than a classic maintenance market, alongside an established repeat cohort. It also produces price-literate shoppers who arrive having already compared advertised rates, which pushes clinics toward membership and prepaid structures rather than a straightforwardly higher rate. Orange County's median income is lower than Irvine's, so the city is not representative of the surrounding catchment its clinics draw from.",
+    "competitionNotes": "Competition runs in two directions at once. Within Orange County, Newport Beach and Costa Mesa carry the premium reputation fifteen to thirty-five minutes away while Tustin, Santa Ana and Anaheim offer cheaper occupancy, leaving Irvine practices positioned in between and exposed to comparison shopping — though Newport's and Tustin's published per-unit rates centre about where Irvine's do. Los Angeles at roughly forty-five to sixty minutes and San Diego at seventy-five to a hundred are traffic-dependent and mostly constrain what a local practice can charge for a large initial course rather than for quarterly top-ups. Inside the city, the small group of clinics willing to publish a figure exerts pressure well beyond its size, because it sets the number every other practice gets asked about on the phone."
+  }
+}

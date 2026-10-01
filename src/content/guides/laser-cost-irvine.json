@@ -1,0 +1,123 @@
+{
+  "treatment": "laser",
+  "treatmentLabel": "Laser Treatments",
+  "city": "irvine",
+  "cityLabel": "Irvine",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Laser work in Irvine is quoted by the body zone and by the platform, never by the hour. Nearly every Irvine listing is laser hair removal from a single clinic, and the same zone can appear twice at very different numbers depending on whether the figure buys one appointment or a planned run of them. Pigment, tattoo and resurfacing work is charged per treatment instead, because operator settings and chair time move more than surface area does; the only such listing here is a percentage off tattoo removal with no price stated. California's rules on who may hold the handpiece put a clinician-level labour floor under all of it.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Session",
+        "description": "One appointment, one body area, one figure. The Irvine listings use this format for single-zone hair removal — lower arms, full legs, a bikini-and-underarm pair — most of them printed beside a higher regular price, and some with a small zone such as the neck added free. It is the easiest number to compare between providers. It is also the least complete, since hair removal is sold as a series: read a session rate as a comparison unit, not as the cost of finishing the zone.",
+        "typicalRange": "one figure for one zone in one visit; too few Irvine clinics state one for us to give a local range"
+      },
+      {
+        "name": "A Package of Sessions on One Area",
+        "description": "Here the zone is still the unit — underarms, neck, bikini, full arms, back and shoulders — but the figure buys a run of visits: the Irvine listings sell five sessions with one or two more added free. The spread inside this format is mostly surface area: a small zone sits at the bottom, while a large one like the back and shoulders climbs toward the top. Divide the total by every session it includes before setting it beside a single-visit figure, and establish how many visits the area actually needs.",
+        "typicalRange": "one figure for a course on one area; divide by every session it includes, free ones counted, before comparing"
+      },
+      {
+        "name": "Charged Per Treatment",
+        "description": "Picosecond and resurfacing devices carry a per-treatment figure because the clinician selects wavelength, energy and pass count for the concern in front of them rather than for the size of a zone. No Irvine listing prices this work; the only related one is a percentage off tattoo removal, with the price it comes off left unstated. A per-treatment figure looks simple to compare — but that only holds when two quotes name the same device, the same pass count and the same follow-up schedule.",
+        "typicalRange": "one figure per treatment, with any follow-up treatments quoted separately; no Irvine listing states one"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four things move a laser quote in Irvine further than the badge on the device does: the licence California demands of whoever operates it, what the room around it costs, how many substitutes a patient can reach without rearranging their week, and where a clinic's booking calendar is under pressure.",
+    "factors": [
+      {
+        "factor": "California's Laser Operator Rules",
+        "explanation": "The state treats firing a cosmetic laser as the practice of medicine. Under section 7320.5 of the Business and Professions Code, a Barbering and Cosmetology licensee who uses a laser on a person commits a misdemeanor, and Medical Board of California guidance permits these devices to be run by a physician, or by a registered nurse or physician assistant working under physician supervision. Markets that let an esthetician operate the device get cheaper labour; Irvine practices have no such lever."
+      },
+      {
+        "factor": "Overhead, and Where the Suite Sits",
+        "explanation": "Irvine carries a high cost baseline — Sperling's BestPlaces scores the city at 164.9 against a US average of 100 — and a laser practice absorbs that on top of equipment. Every platform is a capital purchase trailing service contracts and consumables, so a clinic amortising two or three of them needs throughput to stay solvent. Medical-office and business-park space here still leases below Newport Beach storefront, and some of that gap can reach a quote."
+      },
+      {
+        "factor": "A Twenty-Minute Ring of Substitutes",
+        "explanation": "Tustin, Santa Ana, Costa Mesa and the Korean-language clinics clustered around Garden Grove and Buena Park all sit a short drive from most Irvine addresses, and the 405 and the 5 put Long Beach and Los Angeles inside weekend range. Local practices quote knowing a patient can gather comparisons across four cities in an afternoon, which keeps a lid on the upper end of what Irvine can ask."
+      },
+      {
+        "factor": "Calendar Pressure Rather Than a Season",
+        "explanation": "Colder markets get a natural winter low season for laser work; Southern California does not, so what moves locally is patient planning. Course bookings tend to open early in the year among people counting backwards from summer, while interest in pigment and resurfacing work tends to build once beach season ends. Ask a clinic which weeks it is trying to fill, because the looser stretches on either side of those runs are where flexibility appears."
+      },
+      {
+        "factor": "A Patient Base Spanning Many Skin Tones",
+        "explanation": "Census QuickFacts records Irvine's Asian-alone population near 44 percent, and UC Irvine adds more than 36,000 students to a city with a median age of 33, young by California standards. A practice serving that mix has reason to run several laser platforms rather than one. Ask which device a clinic proposes for your skin and why, and whether a broader equipment roster is reflected in the figure you are quoted."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Nearly all the leverage in Irvine comes from two moves: making every clinic restate its quote on one shared basis before you compare anything, and booking into the weeks when local calendars are soft rather than the weeks everyone else wants.",
+    "tips": [
+      {
+        "tip": "Price the finished zone, not the appointment",
+        "detail": "A session rate and a course rate answer different questions, and Irvine listings hold both. Ask each clinic how many visits its quote covers for your specific area, what a further visit costs once that allowance is used up, and whether touch-ups sit inside the figure. Only afterwards do two providers become comparable, because the cheapest visit on a listing is frequently the shortest plan."
+      },
+      {
+        "tip": "Open a hair-removal course in winter",
+        "detail": "Visits in a course are separated by weeks, so a series opened in May is still running once summer arrives — awkward, given that sun-exposure limits are part of standard aftercare. Starting in January or February also drops the series into a quieter stretch for local clinics, when there is more room to negotiate a multi-zone plan than during the spring rush."
+      },
+      {
+        "tip": "Collect quotes across the drive-time ring first",
+        "detail": "Tustin, Santa Ana, Costa Mesa and the Garden Grove corridor are short hops from most Irvine addresses down the 5 or the 55, each on its own rent, and Newport Beach sits at the premium end of the county. Gather three written quotes across that ring before you commit; a documented competing price gives a clinic something concrete to respond to."
+      },
+      {
+        "tip": "Confirm the operator's licence before you pay",
+        "detail": "California allows a physician, or a supervised registered nurse or physician assistant, to operate the device, so ask in advance for the operator's licence type and the name of the supervising physician. Then establish what sits outside the quoted figure: consultations, patch tests, numbing and take-home aftercare are folded in at some practices and invoiced separately at others."
+      },
+      {
+        "tip": "Put small zones into a single appointment",
+        "detail": "Setup and chair time drive a laser clinic's costs further than the energy delivered does, which is why adding a small area to a visit you have already booked usually costs less than a separate appointment for it. Ask for one combined quote covering every zone you intend to treat this year, then ask what changes if the course is paid upfront."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSession": 389,
+    "comparisonText": "The national marker is a single laser hair removal session: the $389 average physician fee ASPS published for the procedure in its 2020 Plastic Surgery Statistics Report — the last edition to break laser hair removal out on its own, as the society now reports it inside a broader combination-laser category. It averages across body areas of every size and describes one visit, not a completed course. Too few Irvine clinics advertise a laser price for us to set a local figure beside it — one clinic's price list, however long, is not a market — so we draw no gap."
+  },
+  "faqs": [
+    {
+      "question": "How much do laser treatments cost in Irvine, CA?",
+      "answer": "It depends which unit the number is attached to. The Irvine listings use two that do not convert into one another: a single visit on one hair-removal zone, and a package of visits on one zone with sessions added free. Picosecond and resurfacing work adds a third, a per-treatment figure with any follow-up priced on its own, though no Irvine listing states one. Any price printed on this page comes from too few clinics for us to call it the local rate. Establish which unit a quote uses before you compare it with another, then ask both clinics to restate it as the total to finish one named area."
+    },
+    {
+      "question": "What is the cheapest laser treatment in Irvine, and what is the catch?",
+      "answer": "In the Irvine listings the floor is a single hair-removal visit on a small zone, listed against a higher regular price. More generally, a low number is one of four things. An introductory price a clinic holds open for new patients, which stops applying the moment you are not one. A figure written on a small zone — lower arms, underarms — sitting in a list beside large-area quotes. A course total broken into a per-visit number, or a per-visit number that only holds if you buy the whole course. Or a rate with the consultation, patch test, numbing or aftercare invoiced on top. A low number is not a verdict, only an incomplete one. Confirm which applies, what the same appointment costs on a return visit, and who operates the device."
+    },
+    {
+      "question": "Who may legally operate a cosmetic laser in California?",
+      "answer": "The state treats use of a cosmetic laser or IPL device as the practice of medicine. Section 7320.5 of the Business and Professions Code makes laser use a misdemeanor for anyone licensed under the Barbering and Cosmetology Act, and Medical Board of California guidance describes this work as a physician's, or a supervised registered nurse's or physician assistant's. A private laser-training certificate does not substitute for that licence. Ask any Irvine clinic outright who operates the device and which physician supervises them."
+    },
+    {
+      "question": "Does laser cost less in Santa Ana or Garden Grove than in Irvine?",
+      "answer": "Too few Irvine clinics publish a laser price for us to compare the cities, but the cost pressures do differ. Practices in Santa Ana, Garden Grove and the Buena Park corridor work out of older retail stock at lower rent and compete for a more price-sensitive, frequently bilingual catchment, while Irvine's master-planned centres and Newport Beach carry more overhead. Operator licensing is a statewide rule, so any gap would not be a staffing-standard one. Whether a longer drive repeated across a whole course earns a saving is arithmetic only you can run."
+    },
+    {
+      "question": "Which months leave the most negotiating room in Irvine?",
+      "answer": "Advice built around a cold-weather laser season only half applies here, since Southern California hands clinics no natural winter trough. What genuinely moves is booking pressure: courses tend to be opened early in the year by patients counting back from summer, and pigment and resurfacing interest tends to build once beach season closes. The looser weeks flanking those runs leave the most room to negotiate. Whichever month you choose, request the before-and-after sun-exposure instructions in writing."
+    },
+    {
+      "question": "What should I check before booking a Picosure or pigment session?",
+      "answer": "Get the device and wavelength named, the number of passes inside the quoted treatment, and how many treatments the clinic expects to recommend overall. Establish who assesses your skin beforehand and what licence they hold, since state law puts a physician, or an RN or PA under physician supervision, at the controls. Confirm whether a patch test sits inside the price and what aftercare involves. Given the range of skin tones across Irvine's patient base, ask what the clinic's approach is for yours specifically."
+    },
+    {
+      "question": "Does laser hair removal beat waxing on cost over time?",
+      "answer": "Treat it as arithmetic rather than a verdict. Total your current spend on waxing or electrolysis for that same area across two or three years, then set a written quote for a full course plus its quoted maintenance beside the total. Gather several Irvine quotes before running the comparison, because one quote is not a market. Outcomes differ between individuals, so ask what a clinic charges if you need more visits than its plan assumes instead of asking it to promise a result."
+    },
+    {
+      "question": "Does UC Irvine's student population affect what clinics charge?",
+      "answer": "Indirectly. The university adds tens of thousands of students and staff to a catchment whose median age is already young for California, which gives practices near campus and around the Spectrum a steady, budget-conscious segment to compete over. The Irvine listings show no student or introductory rate — they are single-visit prices and packaged courses — so it is worth asking whether a clinic charges less for students, first visits or weekday off-peak slots, since those arrangements are not always published."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 164.9,
+    "medspaDensity": "high",
+    "demographicNotes": "Census QuickFacts records Irvine at roughly 314,600 residents, a median household income near $129,600, a median age of 33.0 and an Asian-alone population of about 44 percent. UC Irvine reports more than 36,000 students, adding a large young cohort to the surrounding catchment.",
+    "competitionNotes": "Irvine practices compete inside a dense Orange County aesthetics market and against short-drive alternatives in Tustin, Santa Ana, Costa Mesa and the Garden Grove corridor, with Newport Beach anchoring the premium end. National hair-removal chains selling prepaid package plans sit alongside independent medspas and physician-owned dermatology practices."
+  }
+}

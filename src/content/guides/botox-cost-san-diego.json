@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "san-diego",
+  "cityLabel": "San Diego",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-25",
+  "howPricingWorks": {
+    "intro": "San Diego menus advertise a measuring stick, not a bill. Nearly everything published here is quoted by the unit, and your total is that advertised rate multiplied by a dose your injector fixes once your face is in front of them. Two things make the local lists harder to read than they look. Several neurotoxins share the same shorthand — Botox, Dysport and Daxxify all appear in the feed for this city — and one brand's unit does not buy what another's does. And only a very short list of practices publishes a rate at all, so the spread you see is a self-selected slice of a county with thousands of injectors.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit, on the Botox Scale",
+        "description": "The default. A practice posts what one unit costs and multiplies it by the count in your plan, so a single published figure covers a first-timer's glabella and a full upper-face maintenance visit alike. Xeomin and Jeuveau are generally planned at counts close to Botox's, so their rates read across more directly than Dysport's, though no two products' units are formally interchangeable. What the figure leaves out — consult fee, minimum unit purchase, injection or facility charges — is the part worth asking about before you book.",
+        "typicalRange": "high single digits to the low teens per unit, with the bulk of the branded listings bunched just into double digits"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "Dysport is measured in a finer division than Botox, so the floor of this market is a Dysport rate that buys less per unit. Published clinical work puts the conversion near 2.5 to 3 Dysport units for each Botox unit and treats it as indication-specific rather than a fixed exchange rate. Note that not every local Dysport listing sits at the bottom: the Dysport rates in this feed run from low single digits all the way up into the band the Botox-scale offers occupy, which tells you the quoted unit alone does not tell you what a visit costs.",
+        "typicalRange": "low-to-mid single digits per Dysport unit at the bottom, converting back into roughly the same band as the Botox-scale listings"
+      },
+      {
+        "name": "Daxxify Quoted at a Premium Per Unit",
+        "description": "Revance's peptide-stabilised toxin shows up in San Diego at the top of the published range and shares the market ceiling with the dearest Botox listings. It is sold on duration rather than on rate, so the only honest comparison is annual: what the clinic expects your visit count to be over a year in each product, multiplied out. Ask for that arithmetic rather than accepting the duration claim as a given, and ask what happens if your result fades on the same schedule as Botox.",
+        "typicalRange": "low teens per unit, at or near the top of everything published locally"
+      },
+      {
+        "name": "No Figure Published, Quoted After Assessment",
+        "description": "A minority of the visible San Diego offers describe the treatment without committing to a rate. That is normal for injectables and it is still a pricing structure — it just moves the number into a room where you have less leverage. When you call, ask for the per-unit rate and a planned unit count in the same sentence, and ask whether a consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; the total depends entirely on the count agreed in the chair"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four or five forces set a rate card in this county, and they pull in different directions. San Diego is a large, affluent, relatively young market with expensive coastal real estate, a state that keeps injection firmly inside medicine, and both a deeper metro to the north and a border to the south.",
+    "factors": [
+      {
+        "factor": "California keeps injection inside medicine, with supervision attached",
+        "explanation": "The Medical Board of California states that physicians may inject botulinum toxin or direct registered nurses or physician assistants to do so under physician supervision, and that unlicensed medical assistants, estheticians, cosmetologists and licensed vocational nurses may not inject. Registered nurses generally need a patient-specific order and written standardized procedures under the Business and Professions Code and Board of Registered Nursing rules; physician assistants practise under supervision per Business and Professions Code sections 3502 and 3502.3. A supervising physician is an overhead line a med spa in a full-practice-authority state does not carry, and it sits underneath what treatment costs here. Ask who the supervising physician is and what licence your injector holds."
+      },
+      {
+        "factor": "Coastal occupancy cost, and how fast it drops inland",
+        "explanation": "C2ER puts San Diego's composite cost of living near 160 against a US baseline of 100, and that composite is driven mostly by housing. The mechanism matters more than the index: a suite in La Jolla, UTC, Del Mar or Carmel Valley costs a practice far more per square foot than an equivalent room in Mission Valley, Kearny Mesa or the South Bay, while the vial costs the same in both. Clinics cluster where incomes and medical offices overlap, so the corridor you shop in is a bigger lever than the brand you choose."
+      },
+      {
+        "factor": "Three brands competing for the same face, on different scales",
+        "explanation": "The local listings show Botox holding the middle, Dysport anchoring the floor on its smaller unit, and Daxxify positioned above both. Manufacturer loyalty programmes — Allergan's Allē, Evolus Rewards, Xeomin's Aspire — move money around without touching the per-unit rate on the wall, and which one a clinic enrols you in can be worth more over a year than the gap between two advertised rates."
+      },
+      {
+        "factor": "A thin publishing pool for a very large county",
+        "explanation": "San Diego County is home to roughly 3.3 million people, and the practices that post a per-unit rate publicly number in the handful. That means the visible spread here is not a survey of the market; it is the subset of clinics that chose transparency as a marketing position, usually because their rate is competitive. Treat the published range as a floor-finding tool and assume unpublished quotes can sit outside it in either direction."
+      },
+      {
+        "factor": "Los Angeles above, the border below",
+        "explanation": "Los Angeles is roughly two to three hours by car depending on traffic and destination, Riverside–San Bernardino two to two and a half, Palm Springs two and a half to three — all traffic-sensitive, none a guarantee. Those markets restrain what a San Diego practice can charge for a large initial course while leaving three-times-a-year maintenance to purely local forces. Cross-border clinics in Tijuana are close enough to be a live comparison for some buyers, but they sit outside the Medical Board of California's remit and outside FDA supply-chain oversight, which is a different transaction rather than a cheaper version of the same one."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Almost none of this is coupon hunting. In a market where three dosing scales circulate and only a few clinics publish anything, the money is saved before you book — by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Price a whole appointment in each brand, not the two rates",
+        "detail": "Ask any clinic that stocks more than one neurotoxin how many units your areas take in each product and what each finished visit costs. Then set the totals side by side. Comparing advertised per-unit rates across brands is the most expensive error available in San Diego, because the cheapest figure on the page is quoted on Dysport's smaller unit."
+      },
+      {
+        "tip": "Get the full visit costed in writing before the day",
+        "detail": "A per-unit rate says nothing about a consultation fee, a minimum unit purchase that lifts the floor under a small appointment, or whether a two-week review is included or billed. Ask for the whole visit costed against your planned count by email, so the figure you were quoted and the figure on the card reader match."
+      },
+      {
+        "tip": "Collect one quote from a different rent band",
+        "detail": "Mission Valley, Kearny Mesa, Clairemont and the South Bay are twenty minutes from the coastal corridors and sit in a different occupancy bracket. Two comparison quotes from inland cost you an afternoon and move the number more than haggling does. If you stay in La Jolla or Del Mar anyway, use the inland quote as a reference point in the conversation."
+      },
+      {
+        "tip": "Ask which loyalty programme the practice runs before your first visit",
+        "detail": "Allē, Evolus Rewards and Aspire accrue on treatments you were having regardless, and enrolling after the fact usually forfeits the credit. Ask whether points are applied at checkout or banked, and whether switching brands mid-year strands what you have built up."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms ahead of weddings, graduations, the December party stretch, summer travel and the big downtown convention weeks, and toxin needs around two weeks to settle before a fixed date. Quiet stretches are when a first-visit rate or a prepaid course is genuinely negotiable; in the crush, the useful ask is a slot. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 11,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with any quote given on a brand's smaller unit converted before it counts. RealSelf reports $10 to $15 per unit at most US practices, and the middle of that published band supplies the national marker. The median of the priced offers in San Diego is $11 per unit — roughly 15 percent below that marker, which is not what a county with this income profile would suggest, and is partly a function of which practices choose to publish a rate at all."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in San Diego?",
+      "answer": "No honest page gives you one number. Toxin is sold by the unit here, so your bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices actually publish, split by product; the branded Botox listings sit in a fairly tight band and the outliers in either direction are explained by which product is being measured. Settle two things before comparing quotes: which product the rate belongs to, and what else the visit carries."
+    },
+    {
+      "question": "Why does one San Diego clinic's advertised Botox cost per unit look like a third of another's?",
+      "answer": "Because it is almost certainly not Botox. The floor of this market is a Dysport rate, and a Dysport unit is a finer division — published work puts the conversion near 2.5 to 3 to 1 and treats it as indication-specific rather than a fixed rate of exchange. Converted onto the Botox scale, that floor lands back inside the ordinary local band. Ask for your planned unit count in each product and the finished cost of each visit; that is the only comparison that survives contact with an invoice."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written beside the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask too how the practice handles a plan that grows once you are in the chair, and whether a follow-up assessment is billed."
+    },
+    {
+      "question": "Does Botox cost less inland than it does in La Jolla, Del Mar or Carmel Valley?",
+      "answer": "Often, and the mechanism is rent rather than product — the vial costs a practice the same in Mission Valley as it does above the cove. The drive is short enough that an inland clinic is genuinely repeatable for maintenance three or four times a year, which is rarely true of an out-of-town option. Get one inland quote for your planned count and compare full visit totals, not per-unit rates."
+    },
+    {
+      "question": "Is Botox cheaper in Los Angeles, Riverside or Tijuana than what it costs in San Diego?",
+      "answer": "Los Angeles is a far deeper market with its own internal competition, and the Inland Empire undercuts the coast more consistently than LA does — but drive times on the 5 and the 15 swing hard with departure time, and toxin is a repeat purchase. Price the trip honestly: possibly worth it once for a large initial course, rarely worth it every quarter. Cross-border clinics are a genuinely different transaction, outside California medical board oversight and outside the FDA-regulated supply chain, so weigh that as a recourse question rather than a cost one."
+    },
+    {
+      "question": "Does Daxxify cost more per unit, and does the longer duration make it cheaper over a year?",
+      "answer": "In this feed Daxxify sits at the top of the published range and shares the ceiling with the dearest Botox listings, so per unit it is a premium product locally. Whether it is cheaper annually depends entirely on how many visits you would actually drop, which varies by person and by area treated. Ask the clinic for a costed twelve-month comparison in both products, and ask what it does if your Daxxify result fades on a Botox schedule."
+    },
+    {
+      "question": "Who can legally inject Botox in California, and does that change what it costs?",
+      "answer": "The Medical Board of California states that physicians may inject, or may direct registered nurses or physician assistants to inject under physician supervision; unlicensed personnel including medical assistants may not, and neither may estheticians, cosmetologists or licensed vocational nurses. Treatment may be delivered in a med spa provided those supervision requirements are met. That standing supervision requirement is a real cost inside every compliant practice, which is part of why California rates do not sink to the levels advertised in looser-delegation states. Confirm your injector's licence, the supervising physician's name and how the delegation is documented."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a smaller dosing unit, an introductory rate or a quiet-week promotion — but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in several states, with the CDC describing harmful reactions across multiple states. The FDA advised confirming with the practice that the product came from an authorised source, and flagged packaging tells including lot number C3709C3, the wording \"Botulinum Toxin Type A\" where the approved product reads \"OnabotulinumtoxinA\", a 150-unit strength not sold in the US, and cartons printed in another language. Asking to see the sealed vial is reasonable anywhere."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 160,
+    "medspaDensity": "Dense but clustered rather than evenly spread. Aesthetic practices concentrate in La Jolla and UTC, along the Del Mar–Carmel Valley–Encinitas coastal run, and in Pacific Beach, Mission Valley, North Park and downtown, where higher incomes, medical office space and retail corridors overlap. No public registry supplies a complete count of San Diego med spas, dermatology practices and plastic-surgery offices, and directory listings are not the same thing as licensed injectors, so treat any published density figure with suspicion. What matters more to a buyer is that only a small number of local practices publish a per-unit rate at all.",
+    "demographicNotes": "Census Reporter puts the City of San Diego near 1.40 million residents with a median age of about 36.6 and median household income around $111,032, while the San Diego–Chula Vista–Carlsbad metro runs to roughly 3.29 million at a similar income level. That is a younger profile than the classic maintenance-injectable market, which shows up as a larger share of first-timers and preventative dosing alongside established repeat patients. Income is unevenly distributed across the county, so the coastal and northern neighbourhoods where clinics cluster are not representative of the region's median.",
+    "competitionNotes": "Competition here runs along two axes at once. Within the county, coastal practices compete on positioning and inland ones on rate, and the short list of clinics willing to publish a figure exerts pressure well beyond its size because it sets the number everyone else gets asked about. Outside the county, Los Angeles and the Inland Empire are two to three traffic-dependent hours away and mostly cap what a San Diego practice can charge for a large initial course rather than for routine top-ups, while cross-border options near Tijuana sit outside California oversight and compete on a different basis entirely."
+  }
+}

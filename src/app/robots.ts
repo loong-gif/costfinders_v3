@@ -1,26 +1,25 @@
 import type { MetadataRoute } from 'next'
+import { isCanonicalDeployment, SITE_CONFIG } from '@/lib/seo/metadata'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || 'https://www.costfinders.ai'
-
-  // Check for production environment (Vercel or standard Node)
-  const isProduction =
-    process.env.VERCEL_ENV === 'production' ||
-    process.env.NODE_ENV === 'production'
-
   return {
-    rules: isProduction
+    rules: isCanonicalDeployment()
       ? {
           userAgent: '*',
           allow: '/',
-          disallow: ['/api/', '/admin/', '/dashboard/', '/business/dashboard/'],
+          // No trailing slashes: "/admin/" leaves /admin itself crawlable.
+          disallow: ['/api', '/admin', '/dashboard', '/business/dashboard'],
         }
       : {
-          // Block all crawlers on preview/staging deployments
+          // Not the canonical host. Every page here emits a canonical pointing at
+          // SITE_CONFIG.url, and Google discards a canonical whose target 404s and re-picks
+          // from the duplicate cluster — which on a preview or pre-cutover deployment means
+          // it would index the throwaway hostname instead. Staying out of the index until
+          // the real domain is attached is strictly better than indexing under a host that
+          // gets discarded at cutover.
           userAgent: '*',
           disallow: '/',
         },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_CONFIG.url}/sitemap.xml`,
   }
 }

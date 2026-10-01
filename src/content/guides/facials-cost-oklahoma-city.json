@@ -1,0 +1,119 @@
+{
+  "treatment": "facials",
+  "treatmentLabel": "Facials",
+  "city": "oklahoma-city",
+  "cityLabel": "Oklahoma City",
+  "state": "Oklahoma",
+  "stateCode": "OK",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "A facial in Oklahoma City is sold as a named appointment at one flat number — nothing is metered, so the label on the menu carries all the information about what you are buying. The complication is that most local listings advertise a discount or a membership perk without the figure it comes off, so the visible menu is several times larger than the priced one. Too few clinics publish a figure to give a local range or midpoint. What is published starts just under a hundred dollars, on a limited-time monthly special, and the others — a stacked two-service appointment and a named premium treatment — run well above it: different purchases, not competing quotes for the same hour.",
+    "pricingModels": [
+      {
+        "name": "Flat Menu Price Per Appointment",
+        "description": "The structure behind every published figure here: one named service, one number, one visit. Because nothing is counted, the same treatment name can mean a short cleanse, steam and extraction at one address in Edmond and a ninety-minute appointment with a device step and a mask on Memorial Road. Establish stated length, whether extractions are included, and which steps bill separately before setting two Oklahoma City menus side by side.",
+        "typicalRange": "one figure per visit; the lowest published here is just under a hundred dollars, on a limited-time monthly special"
+      },
+      {
+        "name": "Tiered by Length and Steps",
+        "description": "The few published figures here do not cluster, and the lowest and highest are one clinic's limited-time monthly specials: a named enzyme facial at the bottom and a named premium treatment at around four times as much, with a stacked appointment pairing a device facial and dermaplaning between them. What separates tiers like these is usually time in the room, a device or peel step, and product grade. Ask what the top tier includes that the entry tier omits, and what the entry appointment costs once the special ends.",
+        "typicalRange": "too few Oklahoma City clinics publish a figure for us to give a local range; the lowest is just under a hundred dollars"
+      },
+      {
+        "name": "Discount or Membership Perk, No Figure",
+        "description": "Most facial listings in the Oklahoma City feed state what comes off rather than what you pay: a percentage off for members, a fixed amount off a first device facial or off chemical peels, or a facial or peel included in a membership each quarter. None can be costed from the listing. Ask by email for the list price of the single appointment the offer applies to and its stated length, and for a membership, the recurring charge and minimum term, so you can set the perk against paying per visit.",
+        "typicalRange": "no figure published; a discount off an unstated list price or a facial included in a membership, the large majority of local listings"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Five things set the number on an Oklahoma City facial menu, and the protocol itself is the least of them: what a treatment room costs here, which Oklahoma licence may legally perform the service, who the clinic built its menu for, where in the metro it sits, and which month you walk in.",
+    "factors": [
+      {
+        "factor": "Low overhead, but labour still sets the floor",
+        "explanation": "The Council for Community and Economic Research put Oklahoma City's composite cost of living well below the national baseline in 2025, with housing the deepest discount of any component. That keeps rent out of the number in a way it cannot be in coastal markets. What it does not discount is an hour of a licensed esthetician's time and the consumables a device protocol burns per appointment, which is why low rent alone does not set what a facial costs here."
+      },
+      {
+        "factor": "Where Oklahoma draws the line on depth",
+        "explanation": "Routine facials — including hydradermabrasion, massage and mild peels that do not breach the top layer of skin — sit with the Oklahoma Board of Cosmetology and Barbering under Oklahoma Administrative Code 175:10-7-29. Once a service involves prescription products, deeper peels, microneedling or lasers, medical spa rules apply, including the physician supervision requirements at 59 O.S. §492(E). Menus price that staffing difference in, which is most of the gap between a 'medical' facial and a spa facial here."
+      },
+      {
+        "factor": "A younger, middle-income catchment",
+        "explanation": "Census Reporter's 2024 American Community Survey figures give Oklahoma City a median age in the mid-thirties and a median household income near seventy thousand dollars, with the metro only slightly higher. That buyer books maintenance — congestion, texture, event prep — more often than long corrective courses, which fits a local feed dominated by memberships and member discounts rather than by long-form treatments."
+      },
+      {
+        "factor": "Clustering in the north and northwest",
+        "explanation": "Business listings put most of the metro's medspas and skin clinics along the northwest and north-central corridors — Nichols Hills, Classen Curve, Quail Springs, Memorial Road and Edmond — with a thinner, visibility-driven presence in Midtown, Automobile Alley and Bricktown. A short list of providers accounts for the visible facial listings, so the same few menus set the reference points buyers compare against, and a clinic ten minutes further south may not benchmark against them at all."
+      },
+      {
+        "factor": "An event-driven calendar",
+        "explanation": "Demand strengthens before weddings, proms, graduations, holiday parties and the larger downtown conventions, which concentrates bookings in spring and autumn. No published Oklahoma City utilisation series confirms the size of those swings, so treat them as a scheduling effect first. Peel and resurfacing courses are conventionally sequenced toward the cooler months and away from heavy sun exposure, which is when promotions on them tend to surface."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "In a market where most listings name a treatment without a number, the saving comes from making the menu legible before you are in the chair. Four moves do most of the work.",
+    "tips": [
+      {
+        "tip": "Get the list price in writing before you book",
+        "detail": "Email and ask for the single-appointment figure, the stated length, and whether a skin consultation carries its own fee or is credited against treatment. A clinic that will only give the number in person has told you how the conversation in the room will go. Ask for the add-on sheet at the same time."
+      },
+      {
+        "tip": "Pin the minutes, then the inclusions",
+        "detail": "The clearest cost difference between two Oklahoma City facials sharing a name is time in the room. Ask which steps — extractions, dermaplaning, LED, a peel step, boosters, a mask — sit inside the quoted figure and which are charged on top. Two menus that look close can finish far apart once the upgrades are applied."
+      },
+      {
+        "tip": "Ask what the entry appointment leaves out",
+        "detail": "The lowest published figure here is a limited-time monthly special on a named facial, not a standing entry price, and a cheaper line is often a shorter, simpler service as well. Ask what the same appointment costs once the special ends, what the highest-tier treatment adds, and what that add costs à la carte."
+      },
+      {
+        "tip": "Shop the metro before you shop Tulsa or Dallas",
+        "detail": "Tulsa is roughly an hour and three quarters away, Wichita over two hours and Dallas–Fort Worth three or more, so none is a routine substitute for a maintenance facial. The useful comparison is within the metro: quote one identically named treatment at one stated length across the northwest corridor and a downtown or south-side address, and ask each what a series would cost per visit, including rollover and cancellation terms."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSession": 245,
+    "comparisonText": "RealSelf's member-reported national average for a facial is about $245 per session. The Oklahoma City feed does not currently state a price on a single-session basis — the figures published here attach to specific named appointments rather than to a generic session — so there is no local number to set against that benchmark. Qualitatively, the lowest figure advertised in this city — a limited-time monthly special — sits well below the national figure, and the few others published run from about level with it to well above it; too few clinics publish a figure to give a local midpoint. What a facial costs here depends almost entirely on how many minutes and how many steps the name on the menu covers."
+  },
+  "faqs": [
+    {
+      "question": "How much do facials cost in Oklahoma City?",
+      "answer": "There is no unit to multiply — a facial here is one named appointment at one number. Most local listings advertise a discount or a membership perk without a figure, and too few clinics publish one to give a local range or midpoint; the lowest published is just under a hundred dollars, on a limited-time monthly special. The “Starting at” figure on this page is the lowest current listing, rebuilt daily; for anything else, ask the clinic for the total, then pin down stated length and included steps before comparing anything."
+    },
+    {
+      "question": "Why do so few Oklahoma City medspas say what a facial costs online?",
+      "answer": "Most local listings advertise a member discount, an amount off a first visit or a facial included in a membership, rather than the price those apply to. Quoting after a skin assessment lets a clinic match the treatment to you — and introduce a membership or package before a number appears. It is a legitimate pricing structure, but it puts you at a disadvantage if you first hear the figure in the treatment room. Ask by email for the list price of the single appointment, the length, and whether any consultation fee is credited. If the answer only comes in person, that is information too."
+    },
+    {
+      "question": "What is the cheapest facial cost in Oklahoma City, and what is the catch?",
+      "answer": "The lowest published figure is a named facial on a limited-time monthly special, so the first catch is the date: ask what the identical appointment costs once the special ends. A cheaper line is also often less time in the room and fewer steps, and some local offers are an amount off a first device facial, which applies once. Ask what the entry tier omits, what a return visit costs, and what the add-on list costs in writing."
+    },
+    {
+      "question": "Does a HydraFacial cost more than a basic facial in Oklahoma City?",
+      "answer": "The local feed cannot show it directly: HydraFacial appears here only as an amount off a first visit or a member discount, never with a stated figure. In general it does, because the clinic pays a per-treatment consumable cost — a branded tip and serums — on every appointment that a manual cleanse-and-extract protocol does not carry. These treatments are also typically sold in tiers, with boosters and LED separating them. Ask which tier the quote covers, which boosters are inside it, and whether the machine on site is the branded system or a comparable hydradermabrasion device."
+    },
+    {
+      "question": "Do facials cost less in Oklahoma City than in Tulsa or Dallas?",
+      "answer": "Oklahoma City's overall cost of living runs below the national baseline, and Tulsa's is broadly comparable, so any gap between the two Oklahoma metros is more likely to come from individual clinic positioning than from the city. Dallas–Fort Worth generally sits higher on overhead. Given drive times of roughly an hour and three quarters to Tulsa and three hours or more to DFW, neither makes sense for a maintenance visit — compare inside the metro instead."
+    },
+    {
+      "question": "Why does a medical facial cost more than a spa facial in Oklahoma?",
+      "answer": "Because scope of practice determines staffing. Routine facials, including mild peels that do not breach the top skin layer, fall under the Oklahoma Board of Cosmetology and Barbering at OAC 175:10-7-29. Deeper peels, microneedling, lasers and prescription products bring in medical spa rules and physician supervision obligations under 59 O.S. §492(E). Ask which licence will perform your specific booking and confirm the service sits inside it — the word 'facial' on a menu settles nothing."
+    },
+    {
+      "question": "Do memberships and packages actually lower what facials cost here?",
+      "answer": "Only if your real booking habit matches the billing cycle, since a recurring charge bills whether you attend or not. Divide the charge across the full minimum term by the number of facials you actually booked in the last twelve months, not the number you meant to. Then read three clauses: rollover of unused visits, the minimum term, and the notice required to cancel."
+    },
+    {
+      "question": "Does the time of year change what facials cost in Oklahoma City?",
+      "answer": "Availability moves, and so do some headline figures: the lowest and highest published figures here are one clinic's limited-time monthly specials. Bookings tighten ahead of weddings, proms, graduations, holiday parties and the bigger downtown conventions, which concentrates demand in spring and autumn at the northwest-corridor clinics. Peel and resurfacing courses are usually sequenced toward cooler months and away from heavy sun exposure, so promotions on those tend to appear before that season. Ask whether weekday appointments are charged differently from weekends."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 81.9,
+    "medspaDensity": "No authoritative public count of Oklahoma City medspas or facial providers exists, so provider-per-capita density here is genuinely unknown. Commercial directories show practices clustering along the northwest and north-central corridors — Nichols Hills, Classen Curve, Quail Springs, Memorial Road and Edmond — with a thinner, visibility-oriented presence in Bricktown, Midtown, Automobile Alley and downtown. For facials specifically, the number of local listings comfortably exceeds the number that publish a figure, and those listings trace back to a short list of providers, so the visible menu is much wider than the priced one.",
+    "demographicNotes": "Census Reporter's 2024 American Community Survey figures give the city a median age of 35.2 and median household income of $70,040, with the metro of roughly 1.46 million people at 36.4 and $72,930. That is a younger, more middle-income catchment than the markets where facial menus are built around long corrective courses. Expect menus weighted toward maintenance appointments, event prep and memberships, with the longer stacked treatments positioned as occasional upgrades rather than the default booking.",
+    "competitionNotes": "Competition here is local rather than regional: Tulsa is about an hour and three quarters by road, Wichita roughly two hours and twenty minutes, and Dallas–Fort Worth three to three and a half hours depending on destination and traffic, so none functions as a routine alternative for a facial. Within the metro, clinics compete on convenience, membership terms, device menus and add-ons more than on published figures, and the concentration of providers in the north and northwest means a few menus set the reference points everyone else is measured against. Drive times are traffic-sensitive rather than fixed."
+  }
+}

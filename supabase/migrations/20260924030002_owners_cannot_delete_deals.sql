@@ -1,0 +1,36 @@
+-- Business owners can no longer delete offers.
+--
+-- WHY
+-- "Owners can delete their own deals" covered every offer on the owner's business, including the
+-- ones the ingestion pipeline collected (all 47 of business 765's on 2026-09-23). Deleting one
+-- cascades through claims (fk_claims_deal ON DELETE CASCADE), saved_deals, promo_offer_terms,
+-- promo_offer_price_history and promo_offer_items — so an owner tidying their list silently
+-- destroyed customers' leads and saved copies. The confirmation said only "This action cannot be
+-- undone."
+--
+-- The intended rule was "an owner may delete only a deal they created", but promo_offer_master
+-- has no column that marks who created a row (checked live: no created_by / source column, and
+-- offer_fingerprint is computed for owner inserts too). Without a marker the rule cannot be
+-- written, so delete is removed entirely: the app's deleteDealAction and its button are gone in
+-- the same change, and this closes the direct PostgREST path an owner's JWT would still have.
+--
+-- Unchanged: owners keep SELECT and UPDATE (text and price edits); the owner INSERT policy stays
+-- (the app no longer calls it, and guard_offer_publication forces any owner insert inactive).
+-- No admin DELETE policy exists or is added.
+--
+-- ROLLBACK:
+--   create policy "Owners can delete their own deals"
+--     on public.promo_offer_master
+--     for delete
+--     to authenticated
+--     using (
+--       exists (
+--         select 1
+--         from public.business_profiles bp
+--         where bp.id = auth.uid()
+--           and bp.business_id = promo_offer_master.business_id
+--           and bp.claim_status = 'approved'
+--       )
+--     );
+
+drop policy if exists "Owners can delete their own deals" on public.promo_offer_master;

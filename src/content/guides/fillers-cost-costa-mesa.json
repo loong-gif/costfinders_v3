@@ -1,0 +1,127 @@
+{
+  "treatment": "fillers",
+  "treatmentLabel": "Dermal Fillers",
+  "city": "costa-mesa",
+  "cityLabel": "Costa Mesa",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Costa Mesa's filler feed is small, and it is dominated by a handful of practices rather than a broad field. What is unusual is that most of the visible listings do attach a figure at all — and that not one of them says what a single syringe costs. Every published number here is a treatment fee or a single-product fee, one of them charged by the vial, which means the spread from the floor to the top of the feed is mostly a statement about how much product and how many areas got counted, not about who charges more per unit of gel. Read any Costa Mesa filler figure as an answer to a question you have not asked yet: how many syringes, of what, over how many visits.",
+    "pricingModels": [
+      {
+        "name": "One Flat Fee for the Treatment",
+        "description": "The workhorse structure locally. A figure is attached to a treatment name and nothing else — no syringe count, no formulation, no indication of whether a follow-up sits inside it. These are quotable and bookable, but they are not comparable between clinics until you force a unit onto them. Ask how many syringes the fee assumes, which gel, and what an additional syringe costs on the day if the injector wants more volume than the plan allows.",
+        "typicalRange": "The bulk of the published figures, from the low four figures up to the top of the feed"
+      },
+      {
+        "name": "Quoted Against a Generic 'Dermal Filler' Line",
+        "description": "Some listings name no brand — just the category, or at most an area — and these sit in the upper half of the local feed rather than near its bottom. A generic label at a high figure usually describes multi-syringe or multi-area work, sometimes staged across appointments. The brand is often missing because the plan has not been built yet, so treat the number as a budget ceiling being signalled in advance and ask what the smallest version of that plan costs.",
+        "typicalRange": "Clustered well above the floor, in the upper half of the local range and reaching its top"
+      },
+      {
+        "name": "A Member Rate on a Single Product",
+        "description": "The cheapest published figures in this market are member rates on single products, each set against a slightly higher regular figure: SkinVive, a hyaluronic acid skin-quality treatment rather than a filler used to add volume or contour, and Sculptra charged by the vial. Neither is the entry price for lips, cheeks or jawline work. Nothing is wrong with buying at the floor provided you know what it contains. Ask what the membership costs, get the volume written next to the figure, confirm whether the consultation and the good-faith examination California requires are inside it, and ask what the same appointment costs without the membership.",
+        "typicalRange": "The high hundreds, for members; several times below the top of the feed"
+      },
+      {
+        "name": "Quoted Only After Consultation",
+        "description": "A share of the Costa Mesa listings publish no fee at all, only a percentage off injectables for members. The stated reason is medical — filler injection is a medical act in California and a quote before an examination is a guess — and the commercial reason is that plan-based practices dislike being ranked on a unit rate they never sell. Neither obliges you to arrive blind. Ask on the phone for a written estimate range for the plan under discussion before you give up an appointment slot.",
+        "typicalRange": "No figure published; the quote arrives as a plan total"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four things are settled before you dial: who California lets hold the syringe, what a suite costs between South Coast Metro and 17th Street, how many alternatives sit within a fifteen-minute drive, and who the local menu was written for. Seasonality is the one variable you can work around.",
+    "factors": [
+      {
+        "factor": "California treats the injection as the practice of medicine",
+        "explanation": "This is a staffing cost before it is a safety rule. The Medical Board of California holds that physicians may inject and may direct registered nurses or physician assistants to inject under supervision; unlicensed staff, licensed vocational nurses, cosmetologists, electrologists and estheticians may not. A registered nurse needs a patient-specific order, appropriate supervision and written standardized procedures under Business and Professions Code section 2725 and 16 CCR section 1474; physician assistants work under sections 3502 and 3502.3. Maintaining that supervisory structure costs money, and it sits inside every quote you collect."
+      },
+      {
+        "factor": "Where the suite is, within a few square miles",
+        "explanation": "Costa Mesa is not one rent market. A ground-floor space near South Coast Plaza or on Avenue of the Arts, a suite in the South Coast Metro office towers, and a unit on the 17th Street corridor are three different leases in the same city, and coastal Orange County operating costs generally run above the national baseline even where no clean city index exists. The gel itself costs every practice roughly the same, so overhead is a larger share of the gap between two local quotes than the product is."
+      },
+      {
+        "factor": "The competitive set ignores the city line",
+        "explanation": "Newport Beach and Fashion Island are minutes away, Irvine and Santa Ana closer still, and Huntington Beach and Tustin are easy runs. Filler is bought a few times a year at most, so patients tolerate a longer drive for it than they would for a neurotoxin top-up. That makes Costa Mesa an overlapping node in a coastal-county cluster rather than a self-contained market, and it caps what any single practice can charge for otherwise identical work."
+      },
+      {
+        "factor": "Who the menu is built for",
+        "explanation": "The Census Bureau put Costa Mesa near 109,000 residents in 2024, with a median age around 36.7 and median household income around $110,000 in 2023 dollars, inside a county of about 3.19 million with a similar income profile. That is a younger buyer than the beachfront cities next door but a well-funded one, which supports menus built around multi-syringe structural plans and maintenance schedules — and plan-based menus are precisely the ones that never publish a syringe rate."
+      },
+      {
+        "factor": "Dates rather than seasons",
+        "explanation": "Demand bends around weddings and graduations in spring and early summer, vacation season, and the run-up to year-end events, with South Coast Plaza's holiday calendar pulling local foot traffic at the same time. No Costa Mesa-specific utilisation data exists to quantify any of that, so treat it as an availability question rather than a discount hunt: ask how far out the specific injector you want is booked, and whether the quoted figure holds if you book a quieter month."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "In a market where most published figures are treatment totals, savings come from making two quotes describe the same purchase. These run in the order a first phone call should take them.",
+    "tips": [
+      {
+        "tip": "Force a syringe count onto every figure",
+        "detail": "No local listing states a per-syringe cost, so the only way to compare a Costa Mesa quote with anything is to divide it yourself. Ask which specific gel is planned, how many syringes the figure assumes, and what one more syringe costs on the day. A high plan total covering several syringes can work out cheaper per syringe than a modest single-area fee."
+      },
+      {
+        "tip": "Ask for one written all-in total",
+        "detail": "Consultation fees, the good-faith examination, injection charges and a two-week review sit inside some local figures and outside others, and the listing never says which. Ask each practice to put one number against the plan it proposes, in writing, then rank those. Headline figures reorder themselves once the extras surface."
+      },
+      {
+        "tip": "Take one quote from over the city line",
+        "detail": "Irvine, Santa Ana, Tustin and Huntington Beach are short drives on different rent bases, and Newport Beach practices cross-shop into Costa Mesa constantly in the other direction. Collect one written quote from outside the city on the identical product and syringe count. If it comes back lower you have a fact to negotiate with; if it does not, you have stopped wondering."
+      },
+      {
+        "tip": "Price the year, not the appointment",
+        "detail": "Hyaluronic acid gels fade and collagen stimulators are given as a course, so any single figure is a step rather than a total. Ask how long the clinic expects the result to hold, what the full course costs from first visit to last, and what a maintenance visit will cost twelve months out. That annualised number is the real comparison."
+      },
+      {
+        "tip": "Verify the license and the carton",
+        "detail": "Ask which license the injector holds and, for a registered nurse, who signed the standardized procedure or patient-specific order covering your treatment. Ask to see the sealed product carton and lot number and have it opened in front of you. The FDA advises patients to know exactly which product is being injected and warns against unapproved injection sites; a practice that will not answer this on the phone has told you something useful."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSyringe": 715,
+    "comparisonText": "The American Society of Plastic Surgeons publishes roughly $715 as an average physician charge for one syringe of hyaluronic acid filler nationally. Costa Mesa's feed states no price on that unit at all — every published local figure is a treatment fee or a single-product fee with no syringe count attached, and the one unit rate is Sculptra by the vial — so there is no like-for-like percentage to compute here. Qualitatively, the local floor — a member rate on SkinVive — already sits just above the ASPS per-syringe average and the middle of the feed sits well above it, which is what you would expect when most of the numbers describe whole treatments rather than single syringes. Note too that the ASPS figure is the physician's charge alone, while an advertised local figure usually folds in the room and the product."
+  },
+  "faqs": [
+    {
+      "question": "How much do dermal fillers cost in Costa Mesa?",
+      "answer": "There is no single number, and the local feed does not give you one honestly. The published Costa Mesa figures are mostly treatment fees, with single-product member rates at the floor, spanning from the high hundreds to several times that at the top, with the middle sitting in the low four figures. The breakdown beside this text separates them. From any clinic you call, get three things: the specific product, the number of syringes assumed, and one written all-in total."
+    },
+    {
+      "question": "Why does no Costa Mesa listing say what a syringe of filler costs?",
+      "answer": "Mostly because the practices publishing here quote treatments rather than units — the one unit rate in the feed is Sculptra by the vial, not a syringe. A syringe rate invites direct comparison with Irvine and Newport Beach on a number that has little to do with what the patient actually pays, so local menus quote the finished treatment instead. You can still get the unit: ask how many syringes the quoted plan includes and divide. Ask the cost of one additional syringe too, since that is the figure that moves on the day."
+    },
+    {
+      "question": "What does the cheapest filler cost in Costa Mesa actually buy?",
+      "answer": "The floor of this feed is a member rate on SkinVive, a hyaluronic acid skin-quality treatment rather than a filler used to add volume or contour, so it is not the entry price for lips, cheeks or jawline work. It is not a bad purchase, just a different one. Before booking on that figure, ask what the membership costs, get the syringe count written beside it, confirm whether the consultation and examination charges sit inside, and ask what the identical appointment costs on a return visit."
+    },
+    {
+      "question": "Why do the generic 'dermal filler' listings cost so much more than the floor here?",
+      "answer": "Because they are describing more work. The entries that name no brand — at most an area — sit in the upper half of the local range, and in practice that means multiple syringes across multiple areas, sometimes staged over more than one appointment. The unit cost inside them is not necessarily higher than the floor's. Ask what the smallest version of that plan costs and how the practice would phase it if you wanted to spread the spend."
+    },
+    {
+      "question": "Who can legally inject filler in California, and does that change what it costs?",
+      "answer": "Only certain licensed medical roles. The Medical Board of California allows physicians to inject and to direct registered nurses and physician assistants to do so under supervision; estheticians, cosmetologists, electrologists, licensed vocational nurses and unlicensed staff may not. An RN needs a patient-specific order and written standardized procedures under Business and Professions Code section 2725 and 16 CCR section 1474. Maintaining that supervision is a real overhead, so yes, it sits inside the quote — ask who the supervising physician is."
+    },
+    {
+      "question": "Do lip fillers cost less than cheek or under-eye filler in Costa Mesa?",
+      "answer": "Usually, because lips take less product and are quoted as one area, while midface and temple work is planned across several syringes. Under-eye treatment is generally booked as its own appointment and sits in higher-risk territory — the FDA identifies unintentional injection into a blood vessel as the most serious filler risk, with possible tissue loss and vision problems. Whether it suits you is an in-person judgement; what you can settle by phone is who injects and whether a review visit is included."
+    },
+    {
+      "question": "Is it worth driving to Los Angeles or San Diego to cut what fillers cost?",
+      "answer": "Rarely for the drive alone. Los Angeles runs roughly forty-five to sixty minutes in light traffic and considerably longer in it, San Diego around seventy-five minutes to well over an hour and a half, and Riverside–San Bernardino about an hour to ninety minutes. The useful comparison is nearer: Irvine, Santa Ana, Tustin, Huntington Beach and Newport Beach are all short runs on different rent bases, and follow-ups stay convenient."
+    },
+    {
+      "question": "Does a filler cost quoted in Costa Mesa include follow-ups and touch-ups?",
+      "answer": "Sometimes, and the listing never says. A two-week review, a small top-up to even out a result, and any dissolving agent needed later are three separate line items that some practices fold into a plan fee and others bill after the fact. Ask specifically which of those are inside the written total, and what a touch-up costs if it falls outside the review window."
+    }
+  ],
+  "cityContext": {
+    "medspaDensity": "Dense but uncounted. No public register of Orange County medical spas exists, so any provider number in circulation reflects somebody's undisclosed inclusion rule rather than a census. What is observable is the geography: injectors cluster around South Coast Plaza and South Coast Metro, along Avenue of the Arts, and on the 17th Street corridor, with more practices immediately over the lines in Newport Beach, Fashion Island and Irvine. Many of them are plastic surgery or dermatology practices for which filler is one line on a broader clinical menu, which is part of why plan-based quoting dominates the published figures.",
+    "demographicNotes": "The Census Bureau put Costa Mesa at roughly 109,000 residents in 2024, with a median age near 36.7 and median household income around $110,073 in 2023 dollars — a younger profile than the wealthier beachfront cities next door, inside an Orange County of about 3.19 million people with median household income near $116,289 for 2020–2024. That combination, a large affluent county catchment and a comparatively young city population, supports a market that sells both first-time single-area treatments and multi-syringe structural plans. C2ER, formerly the Council for Community and Economic Research, sets its Cost of Living Index baseline at 100, but no current verifiable Costa Mesa city value was available for this guide, so none is stated here. Coastal Orange County housing and services generally run above the national baseline, which shows up in clinic leases rather than in the cost of the gel.",
+    "competitionNotes": "The comparison problem here is one of units, not of supply. A small number of providers account for the visible listings, most of those listings do state a figure, and none states it per syringe — so the top of the local range ends up several times the floor without either being the better deal. Beyond the city line, a Costa Mesa practice is cross-shopped into Newport Beach and Fashion Island, inland to Irvine, Santa Ana and Tustin, and up the coast to Huntington Beach, all close enough that location is a weak differentiator. What remains comparable before you book is verifiable by phone: the injector's license and supervising physician, the specific product stocked, how many syringes a quote assumes, and what the written total includes."
+  }
+}

@@ -1,19 +1,24 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { fetchUserEmails } from '@/lib/actions/admin-user-emails'
 import { logAdminAction } from '@/lib/actions/audit'
 import type { Profile } from '@/lib/actions/profile'
-import { logger } from '@/lib/logger'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { requireAdmin } from '@/lib/auth/guards'
+import { publicErrorMessage } from '@/lib/errors/publicMessage'
+import { logger, logSupabaseError } from '@/lib/logger'
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
+/** A profile plus its sign-in email, which lives in auth.users rather than profiles. */
+export type AdminConsumer = Profile & { email: string | null }
+
 interface ConsumersResult {
   success: boolean
   error?: string
-  consumers?: Profile[]
+  consumers?: AdminConsumer[]
 }
 
 interface CountResult {
@@ -32,28 +37,13 @@ interface ConsumerFilters {
   verificationStatus?: string
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function verifyAdmin() {
-  const supabase = await createSupabaseServerClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    throw new Error('Not authenticated')
-  }
-
-  const role = user.user_metadata?.role as string | undefined
-  if (role !== 'admin') {
-    throw new Error('Unauthorized: admin access required')
-  }
-
-  return { supabase, user }
-}
+/**
+ * Every field of `Profile`, and nothing else. Deliberately omits
+ * profiles.unsubscribe_token — a bearer credential the subject-access export in
+ * src/lib/actions/profile.ts already strips for the same reason.
+ */
+const PROFILE_COLUMNS =
+  'id, first_name, last_name, avatar_url, phone, phone_verified_at, verification_status, location_city, location_state, alerts_email, alerts_sms, favorite_categories, status, created_at, updated_at, last_login_at, deletion_requested_at'
 
 // ---------------------------------------------------------------------------
 // Actions
@@ -66,11 +56,17 @@ export async function getConsumersAction(
   filters?: ConsumerFilters,
 ): Promise<ConsumersResult> {
   try {
-    const { supabase } = await verifyAdmin()
+    const { supabase } = await requireAdmin()
 
+    // Explicit column list, not select('*'): profiles carries unsubscribe_token,
+    // the sole authenticator on /unsubscribe — anyone holding it can change that
+    // person's email preferences without signing in. select('*') shipped it to
+    // every admin browser even though nothing here reads it, and it is not even a
+    // field of Profile. An explicit list also stops the next column added to
+    // profiles from silently joining the payload.
     let query = supabase
       .from('profiles')
-      .select('*')
+      .select(PROFILE_COLUMNS)
       .order('created_at', { ascending: false })
 
     if (filters?.status) {
@@ -84,10 +80,37 @@ export async function getConsumersAction(
     const { data, error } = await query
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getConsumersAction', error)
+      return {
+        success: false,
+        error: publicErrorMessage(error, "We couldn't load users."),
+      }
     }
 
-    return { success: true, consumers: (data ?? []) as Profile[] }
+    // A customer who writes in identifies themselves by email, so the list carries it.
+    // A failed lookup fails the screen rather than showing every row as "no email".
+    const profiles = (data ?? []) as Profile[]
+    const lookup = await fetchUserEmails(
+      supabase,
+      profiles.map((profile) => profile.id),
+    )
+    if (lookup.error)
+      return {
+        success: false,
+        error: publicErrorMessage(
+          lookup.error,
+          "We couldn't load users' email addresses.",
+        ),
+      }
+    const emails = lookup.emails ?? new Map<string, string>()
+
+    return {
+      success: true,
+      consumers: profiles.map((profile) => ({
+        ...profile,
+        email: emails.get(profile.id) ?? null,
+      })),
+    }
   } catch (err) {
     logger.error('getConsumersAction failed', {
       action: 'getConsumersAction',
@@ -107,19 +130,29 @@ export async function updateConsumerStatusAction(
   status: 'active' | 'suspended',
 ): Promise<ActionResult> {
   try {
-    const { supabase } = await verifyAdmin()
+    const { supabase } = await requireAdmin()
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', userId)
+    // profiles.status is no longer writable by the client — a direct UPDATE let any
+    // suspended user reinstate themselves. It goes through a SECURITY DEFINER function
+    // that re-checks admin membership server-side instead.
+    const { error } = await supabase.rpc('admin_set_user_status', {
+      target_user_id: userId,
+      new_status: status,
+    })
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('updateConsumerStatusAction', error, { userId })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't update this user's status.",
+        ),
+      }
     }
 
     revalidatePath('/admin/dashboard/users')
-    logAdminAction('user_status_updated', 'user', userId, { status })
+    await logAdminAction('user_status_updated', 'user', userId, { status })
     return { success: true }
   } catch (err) {
     logger.error('updateConsumerStatusAction failed', {
@@ -137,14 +170,18 @@ export async function updateConsumerStatusAction(
  */
 export async function getConsumerCountAction(): Promise<CountResult> {
   try {
-    const { supabase } = await verifyAdmin()
+    const { supabase } = await requireAdmin()
 
     const { count, error } = await supabase
       .from('profiles')
       .select('*', { count: 'exact', head: true })
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getConsumerCountAction', error)
+      return {
+        success: false,
+        error: publicErrorMessage(error, "We couldn't count users."),
+      }
     }
 
     return { success: true, count: count ?? 0 }
@@ -164,7 +201,7 @@ export async function getConsumerCountAction(): Promise<CountResult> {
  */
 export async function getPendingClaimsCountAction(): Promise<CountResult> {
   try {
-    const { supabase } = await verifyAdmin()
+    const { supabase } = await requireAdmin()
 
     const { count, error } = await supabase
       .from('business_profiles')
@@ -172,7 +209,11 @@ export async function getPendingClaimsCountAction(): Promise<CountResult> {
       .eq('claim_status', 'pending')
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getPendingClaimsCountAction', error)
+      return {
+        success: false,
+        error: publicErrorMessage(error, "We couldn't count pending claims."),
+      }
     }
 
     return { success: true, count: count ?? 0 }

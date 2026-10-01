@@ -1,0 +1,74 @@
+-- The SECOND blocker on the same defect: a business owner still could not edit a price after
+-- 20260909190002 fixed the price-history trigger.
+--
+-- Two independent triggers fire on an owner's price edit, and BOTH were SECURITY INVOKER
+-- writing to a table `authenticated` has no write grant on. Fixing one only moves the 42501:
+--
+--   before 20260909190002:  42501 permission denied for table promo_offer_price_history
+--   after  20260909190002:  42501 permission denied for table promo_offer_items   <- this file
+--
+-- Measured, not inferred — the attack that found it, as the approved owner of business 1481
+-- updating its own offer 1336:
+--
+--   step 0  invoker record_promo_offer_price_history
+--             42501 :: permission denied for table promo_offer_price_history
+--   step 1  definer record_promo_offer_price_history (20260909190002 applied)
+--             42501 :: permission denied for table promo_offer_items
+--
+-- The second one is trg_sync_promo_offer_item_unit_prices, an AFTER UPDATE OF discount_price,
+-- price_model trigger calling sync_promo_offer_item_unit_prices(), which re-derives
+-- promo_offer_items.unit_price from the offer's new total:
+--
+--   update public.promo_offer_items set unit_price = … where offer_id = new.id …
+--
+-- `authenticated` holds SELECT and nothing else on promo_offer_items (INSERT / UPDATE / DELETE
+-- all false, correctly — 20260909180002 revoked the client write grants on the six offer
+-- tables and that revocation should stand). So the trigger cannot write, and the owner's edit
+-- aborts. discount_price is one of the three fields dealForm.tsx submits, so this fires on the
+-- ordinary path, not an edge case.
+--
+-- Same fix and the same reasoning as 20260909190002, for the same class of object: a
+-- zero-argument trigger function that derives every value it writes from NEW, OLD and the rows
+-- already attached to the offer. It cannot be invoked directly, it cannot be reached except
+-- through an UPDATE the caller's own RLS policy already permits, and it accepts no input a
+-- caller could steer. Granting `authenticated` UPDATE on promo_offer_items instead would be
+-- strictly worse: unit_price is what the guide cost tables and the /deals unit suffix read, so
+-- a client-writable unit_price lets any signed-in user restate any clinic's per-unit price
+-- directly, with no offer-level ownership check anywhere in the path.
+--
+-- search_path was already pinned to 'public'; re-asserted here because an unpinned definer
+-- function is a privilege-escalation vector, and the pin belongs in the file that grants the
+-- privilege. 'public' rather than '' because the body's queries are already schema-qualified
+-- but its numeric/aggregate operator resolution is not — this matches how
+-- 20260909180007 pinned the other definer functions on this project.
+--
+-- NOT changed, deliberately: clear_package_item_unit_prices() and
+-- clear_package_item_unit_prices_for_offer() are also invoker and also write promo_offer_items,
+-- but their trigger fires only on INSERT/UPDATE OF offer_id, service_id ON promo_offer_items —
+-- and no client role can write that table at all, so nothing an owner or consumer does reaches
+-- them. Leaving them invoker keeps the definer surface as small as the defect requires.
+-- fn_auto_fix_offer_prices(), fn_compute_offer_fingerprint() and update_updated_at_column() are
+-- invoker too and stay that way: all three are BEFORE triggers that only mutate NEW and write
+-- no table.
+--
+-- ── PRIOR STATE, so this is reversible from the repo alone ─────────────────────────────────
+-- The body is unchanged by this migration; only its security attribute is. To revert:
+--
+--   alter function public.sync_promo_offer_item_unit_prices() security invoker;
+--
+-- which reinstates `42501 permission denied for table promo_offer_items` on every owner edit
+-- that touches discount_price. Read the body with
+-- `select pg_get_functiondef('public.sync_promo_offer_item_unit_prices()'::regprocedure)`;
+-- it is the schema-repair set's, not this repo's, and is not reproduced here because nothing
+-- in this migration depends on its text.
+-- ──────────────────────────────────────────────────────────────────────────────────────────
+
+alter function public.sync_promo_offer_item_unit_prices() security definer;
+alter function public.sync_promo_offer_item_unit_prices() set search_path = public;
+
+-- ponytail: four price-derivation triggers now agree only by having been read once, today.
+-- Upgrade path if a fifth appears: assert the invariant in one place (a check constraint or a
+-- single AFTER trigger that owns all derived price columns) instead of a chain. Two definer
+-- functions do not justify that yet.
+
+notify pgrst, 'reload schema';

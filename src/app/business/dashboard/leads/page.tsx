@@ -7,13 +7,9 @@ export default function LeadsPage() {
   const { state } = useBusinessAuth()
   const businessId = state.owner?.businessId
 
-  if (!businessId) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#78350f]">No business linked to your account.</p>
-      </div>
-    )
-  }
+  // The dashboard layout renders its own screen for an account with no approved business, so
+  // this only covers the render before the owner loads.
+  if (!businessId) return null
 
   return <LeadList businessId={businessId} />
 }

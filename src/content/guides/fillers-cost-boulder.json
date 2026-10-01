@@ -1,0 +1,123 @@
+{
+  "treatment": "fillers",
+  "treatmentLabel": "Dermal Fillers",
+  "city": "boulder",
+  "cityLabel": "Boulder",
+  "state": "Colorado",
+  "stateCode": "CO",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Filler quotes in Boulder do not all arrive in the same currency, and none of the prices local listings state is for a single syringe or a single vial. What they price are bundles: hyaluronic acid filler as a set of three syringes on a buy-two-get-one-free offer, and Sculptra as a multi-vial course. Each comes at one figure for non-members and lower ones for members, and the rest of the local feed is a member discount off a price it does not state. Before you can rank two Boulder providers against each other, establish which unit each quote counts — syringe, vial or whole course — and whether it assumes a membership.",
+    "pricingModels": [
+      {
+        "name": "Per Vial, Sold as a Course (Sculptra)",
+        "description": "Sculptra arrives as vials to be reconstituted, not as pre-loaded syringes, and it is planned as a series of visits rather than one. Boulder listings price it the way it is planned: as a prepaid multi-vial course with a complimentary laser session included, at one figure for non-members and a lower one for members, rather than by the single vial. That total buys the whole course, so it sits far above any one syringe of hyaluronic acid. Ask whether the course matches the plan your injector actually proposes.",
+        "typicalRange": "one figure for a whole multi-vial course, lower for members; divide by the vials before comparing a per-vial quote"
+      },
+      {
+        "name": "Per Syringe (Hyaluronic Acid Filler)",
+        "description": "The currency for Juvéderm, Restylane and the rest of the hyaluronic acid shelf. Most HA products ship about a millilitre to the syringe, though several run smaller. Boulder listings do not state a single-syringe rate: the syringe prices they carry are a three-syringe bundle on a buy-two-get-one-free offer, at a non-member figure and two lower member tiers. Because the syringe count gets settled in the chair rather than on the price list, the figure to pin down beforehand is how many the provider expects to use, and whether you would use all three.",
+        "typicalRange": "one rate per syringe, times the count settled in the chair; the per-syringe figures on this page are a three-syringe bundle worked out per syringe, at member and non-member rates, not a local syringe rate"
+      },
+      {
+        "name": "Member Rate Off the Listed Figure",
+        "description": "Most Boulder filler listings are conditional on a membership. Some quote the same bundle at a non-member figure and at a lower figure for each membership tier; others advertise a percentage off filler and Sculptra for members without stating the price it comes off. Either way the membership is its own charge with its own term, so add it to the treatment before counting the saving.",
+        "typicalRange": "a member figure below the listed one, or a percentage off an unstated price; the membership fee comes on top"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Boulder is a strange place to buy injectables: punishing overhead, a commercial footprint the city has spent sixty years declining to enlarge, and cheaper competition in every direction inside half an hour. Five local pressures decide what lands on your quote.",
+    "factors": [
+      {
+        "factor": "Scarce Clinical Space, Priced Accordingly",
+        "explanation": "On Sperling's BestPlaces composite, where the national baseline reads 100, Boulder lands at 141.3 — and housing carries almost the whole gap. Boulder has also spent six decades refusing to build its way out of that, so clinical square footage near Pearl Street or along the 29th Street corridor is genuinely scarce. Whatever a clinic here quotes, that lease is sitting underneath it."
+      },
+      {
+        "factor": "Which Credential Holds the Syringe",
+        "explanation": "Colorado's Division of Professions and Occupations answers the injector question for botulinum toxin rather than filler: the nursing board does not regulate the injection itself, treats it as a delegated medical function an RN or APN may carry out with supervision and demonstrated competence, and places it outside LPN practice. Filler is not named in that guidance. The staffing model behind a Boulder quote is therefore worth asking about directly rather than inferring."
+      },
+      {
+        "factor": "The Ring of Alternatives Around the City",
+        "explanation": "Denver's Cherry Creek cluster is roughly half an hour south on US-36 and is positioned toward the premium end of the Front Range. Longmont, Lafayette, Louisville, Superior and Broomfield lie fifteen to thirty minutes the other way on far lower lease costs. That ring caps how much a Boulder practice can add to a syringe rate before the patient simply books the drive instead."
+      },
+      {
+        "factor": "A Local List Built From Bundles",
+        "explanation": "What Boulder listings publish under the filler heading is not single-syringe hyaluronic acid. The prices they state are bundles — three syringes on a buy-two-get-one-free offer, and a multi-vial Sculptra course with a laser session included — and both sit in the same category. That composition is what makes a published filler figure here so easy to misread: a multi-visit course total and a three-syringe bundle sit under the same heading, and neither is what one syringe costs."
+      },
+      {
+        "factor": "Two Populations Shopping at Once",
+        "explanation": "The 2020–2024 American Community Survey puts median household income across the county near $104,000, against a county median age around 38 — a settled professional cohort that can absorb a prepaid multi-vial plan. Against that, the university counted 38,808 students in autumn 2025, a group with far less room for a prepaid course or a membership. Yet what Boulder listings price is the prepaid end: bundles, courses and member rates."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "The money genuinely available to save in Boulder is mostly clerical. Local listings price bundles, courses and member rates rather than single units, and cheaper towns sit fifteen to thirty minutes out — reading a quote properly and widening the search beat sitting on your hands until a promotion appears.",
+    "tips": [
+      {
+        "tip": "Get the plan total before you look at the vial price",
+        "detail": "Vial-priced products are structured as a series, so a per-vial figure is a deposit against a longer commitment. Boulder listings price Sculptra the other way round, as a whole course, which is easier to budget but harder to compare: divide it by the vials before setting it against a per-vial quote from elsewhere, and check that the course matches the plan your injector proposes. Ask for the total the provider expects to bill across the whole course, in writing, before you compare it against anything."
+      },
+      {
+        "tip": "Check you need every syringe in the bundle",
+        "detail": "The syringe offer Boulder listings price is a set of three, buy two and get one free, so its per-syringe figure only holds if all three go in. If your injector plans on one or two, ask for the single-syringe rate the bundle is discounted from — the listing states a saving but not that rate — and whether an unused syringe can be kept for a later visit. Then compare totals, not the per-syringe figure."
+      },
+      {
+        "tip": "Collect one quote from beyond the city limits",
+        "detail": "Longmont, Lafayette, Louisville, Superior and Broomfield sit fifteen to thirty minutes out on much lower commercial rent, dispensing identical branded products. Cherry Creek, the other way, is positioned toward the premium end. Two or three numbers from the surrounding towns give you an anchor before you negotiate in Boulder, and occasionally they end the search outright."
+      },
+      {
+        "tip": "Join the manufacturer rewards programme before the appointment, not after",
+        "detail": "Allergan Aesthetics runs Allē across Juvéderm and SkinVive; Galderma runs ASPIRE across Restylane and Sculptra. Both are free to join, and both credit points only once the treating provider logs the session — so signing up in the waiting room does nothing for the invoice you are about to settle. Check that your Boulder practice actually participates first."
+      },
+      {
+        "tip": "Force the quote to itemise",
+        "detail": "A quote can omit the consultation fee, or quietly assume the least expensive person on that day's schedule. Before agreeing, establish the product and brand going in, the credential of whoever is injecting, whether a follow-up visit is priced in, and whether the practice keeps hyaluronidase on the premises. Each of those answers can move the real number."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSyringe": 715,
+    "comparisonText": "Compared on one honest footing — one hyaluronic acid syringe, one appointment — the national reference point is the $715 average physician fee reported by the American Society of Plastic Surgeons. No Boulder listing advertises a single-syringe price — the per-syringe figure on this page is a three-syringe bundle worked out per syringe, from too few clinics to stand for the city — so we draw no gap. Nor is the city's composite cost of living, well above the national baseline, a stand-in for one: that premium sits in housing, and cheaper competition half an hour out presses on every syringe rate."
+  },
+  "faqs": [
+    {
+      "question": "How much do dermal fillers cost in Boulder, CO?",
+      "answer": "That depends on which unit the quote is written in, and Boulder listings do not state the simplest one. A syringe of hyaluronic acid buys one finished appointment, but no Boulder listing states a single-syringe rate: the \"Starting at\" figure on this page is a members' price for a bundle of three syringes, and the other local prices are that bundle for non-members and a Sculptra course of several vials. A vial of Sculptra buys one instalment of a course, so a per-vial figure prices an increment rather than a finished result. Pin down the unit, the quantity your provider expects to use, whether the figure assumes a membership, and the finished plan total before ranking anything."
+    },
+    {
+      "question": "Does filler cost less in Longmont or Broomfield?",
+      "answer": "Too few Boulder clinics publish a syringe rate for us to compare the towns, but the overhead case is strong. Boulder caps building height in its city charter and rings itself with voter-purchased open space, so the supply of clinical premises inside the city is small and the rent is not. Longmont, Lafayette, Louisville and Broomfield have room to build and lease rates to match, and providers there dispense the same branded products on that cheaper footing. The drive runs fifteen to thirty minutes each way. Whether that trade is worth making depends largely on how many appointments your plan actually requires."
+    },
+    {
+      "question": "How many syringes will I actually need?",
+      "answer": "Nobody can answer that from a price list. It turns on the region being treated and how the injector intends to approach it, and any count offered before someone has assessed you is a guess. What you can control is making the estimate part of the written quote. Ask what number the provider is planning for, what happens if that changes partway through the appointment, and whether the rate holds for syringes after the first. Practices differ on that last point, and a buy-two-get-one-free bundle only pays if the third syringe goes in."
+    },
+    {
+      "question": "Is Sculptra cheaper than hyaluronic acid filler here?",
+      "answer": "The two do not compare on a single number. Sculptra is dosed by the vial inside a plan that runs across months, and Boulder listings price it as that whole course, so its figure is a finished plan rather than one visit. A hyaluronic acid syringe is one visit, start to end, though here it is priced in a bundle of three. Because a course total and a syringe bundle sit in the same list, the larger Boulder figures overstate what one visit costs. Divide the course by its vials and the bundle by its syringes, and ask what your own plan needs, before you weigh them against each other."
+    },
+    {
+      "question": "Who is allowed to inject filler in Colorado?",
+      "answer": "Colorado's nursing board publishes its position on botulinum toxin rather than on filler: it does not regulate the injection itself, treats it as a delegated medical function an RN or APN may carry out under supervision and within demonstrated competence, and places it outside LPN practice. Filler is not named there, and esthetician licensure in Colorado carries no injection privileges. Rather than assume the rules map across, ask your Boulder practice who holds the syringe, what licence they carry, and which prescriber supervises them."
+    },
+    {
+      "question": "Why are there so few filler providers inside Boulder?",
+      "answer": "The city has constrained its own growth deliberately for nearly sixty years. It began taxing itself to buy an open space greenbelt in 1967, voters wrote a building height cap into the charter in 1971, and a residential growth limit followed in the mid-seventies. The result is a small, expensive stock of commercial space and no room for the strip-mall clinic density found further out along the Front Range. Competition inside the city limits is thin, and many of the practical alternatives sit just beyond them."
+    },
+    {
+      "question": "Is driving to Denver worth it for filler?",
+      "answer": "For price alone, there is little reason to expect it. Cherry Creek's boutique practices are positioned toward the premium end of the Front Range rather than the cheap end, and too few Boulder clinics publish a syringe rate for us to compare the two. The genuine argument for the drive is selection — Denver carries far more providers, which matters when you want a particular product, a particular credential, or an unaffiliated second opinion on a plan somebody has proposed to you. If a lower number is the goal, look east into the county, where rent is lower, instead."
+    },
+    {
+      "question": "What should I settle before handing over a card?",
+      "answer": "Five things, all answerable before payment. Which product and brand is going in, and whether the packaging can be shown to you. Who is injecting, their licence, and their supervising prescriber. Whether the quote is written by the syringe, by the vial or by the zone — and for a vial, what the completed course totals. Whether the consultation fee stands separately or credits against treatment. And what the practice's policy is should you want the result adjusted later."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 141,
+    "medspaDensity": "Thin inside the city, denser just beyond it. Boulder's injectable supply splits between physician-led dermatology and plastic surgery practices and a smaller set of nurse-injector studios, and public directory counts swing widely depending on whether IV, laser and skincare-only businesses get folded in.",
+    "demographicNotes": "Boulder County holds roughly 327,000 people. The 2020–2024 American Community Survey puts median household income near $104,000 and the county median age around 38, while the university counted 38,808 students in autumn 2025 — layering a large younger population with very different price tolerance over the resident professional base.",
+    "competitionNotes": "Two competitive pressures bracket the city. Denver and the Cherry Creek cluster lie roughly thirty minutes south on US-36 and are positioned at the premium end of the Front Range. Longmont, Lafayette, Louisville and Superior in eastern Boulder County, plus neighbouring Broomfield, run on much lower commercial rent and dispense identical products."
+  }
+}

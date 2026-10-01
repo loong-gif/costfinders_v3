@@ -1,0 +1,124 @@
+{
+  "treatment": "fillers",
+  "treatmentLabel": "Dermal Fillers",
+  "city": "irvine",
+  "cityLabel": "Irvine",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Irvine is unusual among Orange County filler markets in that most of the listings collected here do publish a figure — and unusual again in that almost none of those figures says what volume it buys. The feed carries no per-syringe rates at all. What it carries instead is flat treatment fees, most of them attached to a product family and clustered in a narrow band in the eight hundreds, with a new-guest lip listing in the high four hundreds and a two-syringe skin-booster package in the mid five hundreds sitting well underneath the rest. It is also a shallow feed drawn from a very small number of publishing practices, so the tightness of that band mostly describes one practice's product-by-product menu rather than a consensus across the city. Read every number below as a starting figure for a plan, not a rate you can multiply.",
+    "pricingModels": [
+      {
+        "name": "Flat Fee Attached to a Brand Family",
+        "description": "The dominant structure locally. A listing names Juvéderm or Restylane and attaches one number, with no syringe count and no treatment area stated. That figure can describe a single filled syringe of one formulation within the line, or a session covering one area with whatever volume the injector judges necessary. Two questions turn it into something comparable: which specific formulation within the family, and how many syringes the figure assumes before the cost of an additional syringe starts.",
+        "typicalRange": "A tight band in the eight hundreds, with the branded listings barely separating from one another"
+      },
+      {
+        "name": "Flat Fee for a Collagen Stimulator",
+        "description": "Radiesse is quoted the same way but sits at the top of the local band. It is calcium hydroxylapatite rather than hyaluronic acid, it is usually given as a course rather than a single appointment, and it cannot be dissolved the way an HA gel can. A per-session figure therefore understates the commitment more than an HA figure does. Ask how many sessions the practice expects, what the interval is, and what the full course costs from first visit to last.",
+        "typicalRange": "The top of the local band, running into the high hundreds but short of four figures"
+      },
+      {
+        "name": "One Fee for an Unbranded 'Filler' Treatment",
+        "description": "A small number of listings drop the product name and attach a single figure to the treatment itself. These produce both the floor of the Irvine feed and a figure near the top of it, which tells you the format carries no consistent meaning. Here both are new-guest rates — one for lips, one for a jawline package that also bundles a laser session and an exosome treatment — so neither is a price for a stated volume of filler, and the consultation and injection charges may sit outside the number. Get the product and the volume written next to it before you treat it as a bargain.",
+        "typicalRange": "The widest spread in the feed — from the high four hundreds up into the range the branded listings occupy"
+      },
+      {
+        "name": "Quoted Only After Consultation",
+        "description": "A minority of visible Irvine offers publish no fee at all, only a dollar amount off one — in places for members only, or tied to buying two or three syringes and using them the same day. Part of the reason fees stay off the page is the medical framing California imposes, since a quote before a good-faith examination is arguably meaningless; part is commercial positioning in an affluent market. Treat it as a scheduling cost rather than a hidden one, and ask on the phone for a written estimate covering the proposed plan before you take the appointment.",
+        "typicalRange": "No fee published, only an amount off; expect a plan total rather than a unit rate"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four forces set the range before you call anyone: what California permits the person holding the syringe to do, what an Irvine commercial suite costs, how many alternatives sit within a fifteen-minute drive, and who a master-planned city of young professional households buys filler for.",
+    "factors": [
+      {
+        "factor": "California treats filler injection as the practice of medicine",
+        "explanation": "This is a staffing cost as much as a safety rule. Physicians licensed by the Medical Board of California may inject within their competence; physician assistants work under Business and Professions Code section 3502 and nurse practitioners under section 2836.1, each within scope and the applicable practice arrangement. A registered nurse may inject only under lawful delegation with a patient-specific order or a compliant standardized procedure, generally after the required physician, NP or PA evaluation. Estheticians, cosmetologists, medical assistants and licensed vocational nurses may not inject at all — the Medical Board says so expressly. Maintaining supervision and prescribing responsibility costs money, and it sits inside the quote."
+      },
+      {
+        "factor": "Irvine operating costs, driven by a housing component a clinic never pays",
+        "explanation": "HomeSnacks puts Irvine's overall cost-of-living index near 209 against a national baseline of 100, a figure dominated by housing rather than by commercial rent. What actually reaches a filler quote is the lease on a suite near Irvine Spectrum or along Barranca Parkway versus a medical office in Tustin, plus staffing in one of the more expensive labour markets in the country. The gel itself costs every practice in Orange County roughly the same."
+      },
+      {
+        "factor": "The competitive set ignores the city line",
+        "explanation": "Newport Beach, Costa Mesa, Tustin and Anaheim are all short drives from most Irvine addresses, and injectors cluster along the Spectrum, Alton and Irvine Center Drive corridors as well as in nearby medical-office parks. Filler is bought a few times a year at most, so patients tolerate a longer trip for it than they would for a neurotoxin touch-up. That widens the effective market and keeps any single practice's published figures honest."
+      },
+      {
+        "factor": "A younger, high-income buyer than the coastal cities nearby",
+        "explanation": "The Census Bureau put Irvine near 318,000 residents with a median household income around $129,600 in 2019–2023 dollars and a median age around 34 — substantially younger than the Orange County coast. A younger buyer buys lips, chin and cheek definition, often one area at a time, rather than multi-syringe structural restoration. That is part of why the published figures here are single-product fees rather than staged plan totals."
+      },
+      {
+        "factor": "Dates rather than a season",
+        "explanation": "Demand bends around weddings, graduations, holiday parties and travel, with a noticeable run-up in autumn and early winter. No public Irvine-specific time series measures any of this, so treat it as an availability question rather than a discount question. Ask how far out the specific injector you want is currently booked, and whether a two-week review visit is included."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "With no per-syringe rates published anywhere in this feed, the savings come from forcing the quotes you collect to describe the same purchase. Take these in the order a first phone call should take them.",
+    "tips": [
+      {
+        "tip": "Make every quote state a volume",
+        "detail": "Ask each practice how many syringes or vials the advertised figure covers and what an additional one costs on the day. A flat fee in the eight hundreds is excellent value for two syringes and ordinary for a partial one, and the listing will not tell you which. Once volume is written down, the local band stops looking uniform."
+      },
+      {
+        "tip": "Ask for one written all-in total",
+        "detail": "Confirm in writing whether the consultation, the good-faith examination California requires, the injection charge and any follow-up review are inside the number or added at the front desk. Then rank practices by total, not by headline figure. This is where a cheap unbranded listing usually reorders itself."
+      },
+      {
+        "tip": "Name the exact product before comparing anything",
+        "detail": "Formulations within the Juvéderm and Restylane families differ in cost to the clinic and in what they are used for, and Radiesse is a different class of product with a different longevity profile and no dissolving option. Fix the product, then take that same specification to the next clinic."
+      },
+      {
+        "tip": "Collect one quote from outside Irvine",
+        "detail": "Costa Mesa, Tustin, Anaheim and Newport Beach are all short drives on different rent bases, and follow-up visits stay convenient. Los Angeles is roughly 45 to 60 minutes and San Diego 75 to 105 depending on traffic — rarely worth the trip for the figure alone. One outside written quote on the identical product is a negotiating fact."
+      },
+      {
+        "tip": "Verify the license and see the carton",
+        "detail": "Ask which license the injector holds and, if it is an RN, who signed the standardized procedure or patient-specific order covering your treatment. Ask to see the sealed product carton and lot number and have it opened in front of you. The FDA advises patients to know exactly what is being injected; a practice that will not answer these on the phone has told you something useful."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSyringe": 715,
+    "comparisonText": "The American Society of Plastic Surgeons publishes roughly $715 as the average physician fee for one syringe of hyaluronic acid filler nationally. The Irvine feed states no cost on that unit — almost every advertised figure here is a flat fee with no syringe count attached, and the one that names a count prices a pair of skin-booster syringes together — so the chart has nothing to divide and no percentage gap to compute. Qualitatively, most local flat fees sit above the national syringe average while the feed's lowest figure sits below it, but neither comparison means anything until a clinic tells you how much product its fee buys. Note too that the ASPS figure is the physician's charge alone, while a local advertised figure normally folds in the product and the room."
+  },
+  "faqs": [
+    {
+      "question": "How much do dermal fillers cost in Irvine?",
+      "answer": "There is no single answer, because the local listings quote flat treatment fees rather than syringe rates. Most published figures cluster in a narrow band in the eight hundreds, with a new-guest lip listing and a two-syringe skin-booster package well below that. Use the breakdown beside this text to find the row matching the offer you are looking at, then ask any clinic for three things: the exact product, the number of syringes the fee covers, and one written all-in total."
+    },
+    {
+      "question": "Why do almost all Irvine filler listings cost about the same?",
+      "answer": "Because the feed is shallow. Only a handful of Irvine practices publish figures at all, and the tight band is mostly one practice's product-by-product menu rather than a citywide consensus. It also reflects a format: when a menu lists one fee per product with no volume stated, the numbers converge even when the treatments behind them differ. Ask how much product each fee in that band includes and the apparent agreement usually dissolves."
+    },
+    {
+      "question": "What does the cheapest filler cost in Irvine actually buy?",
+      "answer": "The floor of this feed is an unbranded lip listing in the high four hundreds, several hundred below the branded band and offered to new guests only, against a regular figure the practice states in that band. So it is a first-visit rate for a single small area, and it may also exclude the consultation and injection charges or cover a partial syringe. It is not necessarily a bad purchase, but it is an incomplete one. Get the product name and volume written beside the number, and ask what the same appointment costs the second time."
+    },
+    {
+      "question": "Does one syringe cost the advertised fee, or does the fee cover more?",
+      "answer": "Almost no Irvine listing in this feed says — the exception is a skin-booster package priced for a pair of syringes — which is the single most important gap in the local market. A per-session fee can cover one syringe, two, or a stated area treated to the injector's judgement. Until you know, you cannot compare an Irvine fee against a per-syringe quote from Costa Mesa or against any national average. Ask for the syringe count in writing and the cost of an extra one on the day."
+    },
+    {
+      "question": "Do Radiesse and Juvéderm cost different amounts in Irvine?",
+      "answer": "Slightly, in this feed — the Radiesse listings sit at the top of the local band while the HA brands sit just under it. The more meaningful difference is not the figure but the commitment. Radiesse is a collagen stimulator usually given as a course over months and cannot be dissolved if you dislike the result; an HA gel is a single-session product that can be reversed. Ask for the cost of the full course, not one session."
+    },
+    {
+      "question": "Who can legally inject filler in California, and does that affect what it costs?",
+      "answer": "Only certain licensed medical roles, and the boundary is statutory. Physicians work within their competence under the Medical Practice Act; physician assistants under Business and Professions Code section 3502; nurse practitioners under section 2836.1. A registered nurse may inject only under lawful delegation with a patient-specific order or standardized procedure, after the required evaluation. Estheticians, medical assistants and LVNs may not inject. Those supervision arrangements are a real overhead, so yes, the staffing model is inside the quote — ask who injects and who carries prescribing responsibility."
+    },
+    {
+      "question": "Is it worth driving to Newport Beach, Los Angeles or San Diego to cut what fillers cost?",
+      "answer": "Not for the big metros. Los Angeles runs roughly 45 to 60 minutes and San Diego 75 to 105, and traffic makes both unreliable for a follow-up visit. The useful comparisons are within Orange County: Costa Mesa, Tustin and Anaheim sit on lower rent bases minutes away, while Newport Beach's listings more often state how many syringes a figure buys. Get one written outside quote on the same named product and volume, then decide."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 209,
+    "medspaDensity": "No authoritative registry counts Irvine's medical spas or filler injectors, so any provider total in circulation is a directory scrape against an undisclosed inclusion rule. What is observable is the clustering: practices concentrate around Irvine Spectrum Center and the Alton, Irvine Center Drive and Barranca Parkway corridors, with more in the medical-office areas near Tustin, Costa Mesa and Newport Beach. Many are dermatology, plastic surgery or primary-care-adjacent practices for which filler is one line on a wider clinical menu, which is part of why so few publish a price list.",
+    "demographicNotes": "The Census Bureau estimated Irvine at roughly 318,000 residents in 2023, with a median household income near $129,647 in 2019–2023 dollars and a median age around 34 — younger and higher-earning than Orange County's roughly 3.2 million residents overall, inside the 13-million Los Angeles–Long Beach–Anaheim metro. HomeSnacks reports an overall cost-of-living index near 209 on a 100 baseline, driven heavily by housing rather than by anything a clinic pays. The practical result is a market weighted toward younger buyers treating one area at a time, alongside a large university and professional population and a substantial Asian-American community whose aesthetic preferences shape which products local menus stock.",
+    "competitionNotes": "The comparison problem in Irvine is not that clinics hide what treatments cost — most of the listings gathered here state a figure — but that the figures are flat session fees with no volume attached, published by a handful of practices. That makes the narrow band in the eight hundreds look like market consensus when it is mostly one practice's menu sharing one format. An Irvine practice is cross-shopped against Newport Beach and Costa Mesa within minutes, and against Tustin and Anaheim on a lower rent base, so proximity is a weak differentiator. What is left to compare is verifiable before booking: the injector's license, the specific formulation stocked, the syringe count behind the fee, and what a written quote actually includes."
+  }
+}

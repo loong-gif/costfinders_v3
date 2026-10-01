@@ -1,15 +1,18 @@
 'use client'
 
 import { useState } from 'react'
+import { MagicLinkButton } from '@/components/patterns/magicLinkButton'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { resetPasswordAction } from '@/lib/actions/auth'
+import { resetPasswordAction, sendMagicLinkAction } from '@/lib/actions/auth'
 import { useAuth } from '@/lib/context/authContext'
 
 interface SignInFormProps {
   onSuccess?: () => void
   onSwitchToSignUp?: () => void
   onForgotPassword?: () => void
+  /** Where the emailed sign-in link lands. See AuthModal. */
+  returnTo?: string
 }
 
 interface FormErrors {
@@ -21,6 +24,7 @@ export function SignInForm({
   onSuccess,
   onSwitchToSignUp,
   onForgotPassword,
+  returnTo,
 }: SignInFormProps) {
   const { signIn, state } = useAuth()
 
@@ -32,10 +36,12 @@ export function SignInForm({
   const [forgotPasswordError, setForgotPasswordError] = useState<string | null>(
     null,
   )
+  const [emailNotConfirmed, setEmailNotConfirmed] = useState(false)
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
 
+    // Email validation
     if (!email.trim()) {
       newErrors.email = 'Email is required'
     } else {
@@ -45,6 +51,7 @@ export function SignInForm({
       }
     }
 
+    // Password validation
     if (!password) {
       newErrors.password = 'Password is required'
     }
@@ -59,12 +66,16 @@ export function SignInForm({
     if (!validateForm()) return
 
     setIsSubmitting(true)
+    setEmailNotConfirmed(false)
 
     try {
       await signIn(email, password)
       onSuccess?.()
-    } catch {
-      // Error is handled by context and displayed via state.error
+    } catch (err) {
+      // Check if the error indicates unconfirmed email
+      if (err instanceof Error && err.message.includes('verify your email')) {
+        setEmailNotConfirmed(true)
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -78,14 +89,20 @@ export function SignInForm({
       return
     }
 
-    const result = await resetPasswordAction(email)
+    try {
+      const result = await resetPasswordAction(email)
 
-    if (result.success) {
-      setForgotPasswordSent(true)
-      onForgotPassword?.()
-      setTimeout(() => setForgotPasswordSent(false), 5000)
-    } else {
-      setForgotPasswordError(result.error ?? 'Failed to send reset email')
+      if (result.success) {
+        setForgotPasswordSent(true)
+        onForgotPassword?.()
+        setTimeout(() => setForgotPasswordSent(false), 5000)
+      } else {
+        setForgotPasswordError(result.error ?? 'Failed to send reset email')
+      }
+    } catch {
+      // Rejected outright (offline, Next refusing the request): without this the click
+      // did nothing visible at all.
+      setForgotPasswordError('Failed to send reset email. Please try again.')
     }
   }
 
@@ -113,30 +130,51 @@ export function SignInForm({
         required
       />
 
+      {/* Forgot Password Link */}
       <div className="flex justify-end">
         <button
           type="button"
           onClick={handleForgotPassword}
-          className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
+          className="text-sm text-accent hover:text-accent-hover transition-colors"
         >
           Forgot password?
         </button>
       </div>
 
+      {/* Forgot Password Toast */}
+      {/* <output> rather than <p role="status">: same implicit role, and
+          Biome's useSemanticElements rule prefers the native element. */}
       {forgotPasswordSent && (
-        <p className="text-sm text-emerald-600 bg-emerald-600/10 px-3 py-2 rounded-lg">
+        <output className="block text-sm text-success bg-success-bg px-3 py-2 rounded-lg">
           Check your email for password reset instructions.
-        </p>
+        </output>
       )}
 
       {forgotPasswordError && (
-        <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg">
+        <p
+          role="alert"
+          className="text-sm text-error bg-error-bg px-3 py-2 rounded-lg"
+        >
           {forgotPasswordError}
         </p>
       )}
 
-      {state.error && (
-        <p className="text-sm text-red-600 bg-red-400/10 px-3 py-2 rounded-lg">
+      {/* Email not confirmed */}
+      {emailNotConfirmed && (
+        <p
+          role="alert"
+          className="text-sm text-accent-hover bg-accent-muted px-3 py-2 rounded-lg"
+        >
+          Please verify your email first. Check your inbox for a confirmation
+          link.
+        </p>
+      )}
+
+      {state.error && !emailNotConfirmed && (
+        <p
+          role="alert"
+          className="text-sm text-error bg-error-bg px-3 py-2 rounded-lg"
+        >
           {state.error}
         </p>
       )}
@@ -151,13 +189,30 @@ export function SignInForm({
         Sign in
       </Button>
 
+      {/* Divider */}
+      <div className="relative my-2">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border-default" />
+        </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-bg-elevated px-2 text-text-secondary">or</span>
+        </div>
+      </div>
+
+      {/* Magic Link */}
+      <MagicLinkButton
+        email={email}
+        sendAction={(address) => sendMagicLinkAction(address, returnTo)}
+        disabled={isSubmitting}
+      />
+
       {onSwitchToSignUp && (
-        <p className="text-center text-sm text-[#78350f]">
+        <p className="text-center text-sm text-text-secondary">
           Don&apos;t have an account?{' '}
           <button
             type="button"
             onClick={onSwitchToSignUp}
-            className="text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors font-medium"
+            className="text-accent hover:text-accent-hover transition-colors font-medium"
           >
             Sign up
           </button>

@@ -1,36 +1,18 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js"]
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.js",
+      "scripts/**/*.ts",
+      "tests/**/*.ts"
+    ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
-    "rules": {
-      "recommended": true,
-      "a11y": {
-        "noLabelWithoutControl": "warn",
-        "noStaticElementInteractions": "warn",
-        "noSvgWithoutTitle": "warn",
-        "useSemanticElements": "warn"
-      },
-      "security": {
-        "noDangerouslySetInnerHtml": "warn"
-      },
-      "style": {
-        "noNonNullAssertion": "warn"
-      },
-      "correctness": {
-        "noUnusedFunctionParameters": "warn",
-        "noUnusedVariables": "warn",
-        "useExhaustiveDependencies": "warn"
-      },
-      "suspicious": {
-        "noArrayIndexKey": "warn",
-        "noAssignInExpressions": "warn",
-        "noShadowRestrictedNames": "warn"
-      }
-    }
+    "rules": { "recommended": true }
   },
   "formatter": {
     "enabled": true,

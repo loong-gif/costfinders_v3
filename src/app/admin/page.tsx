@@ -3,13 +3,14 @@
 import { ShieldCheck } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { MagicLinkButton } from '@/components/patterns/magicLinkButton'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { AdminAuthProvider, useAdminAuth } from '@/lib/context/adminAuthContext'
 
 function AdminLoginContent() {
   const router = useRouter()
-  const { state, signIn } = useAdminAuth()
+  const { state, signIn, sendMagicLink } = useAdminAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,7 +42,8 @@ function AdminLoginContent() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="animate-spin h-8 w-8 text-amber-800"
+            aria-hidden="true"
+            className="animate-spin h-8 w-8 text-accent"
             viewBox="0 0 24 24"
           >
             <circle
@@ -59,7 +61,7 @@ function AdminLoginContent() {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
             />
           </svg>
-          <p className="text-[#78350f]">Loading...</p>
+          <p className="text-text-secondary">Loading...</p>
         </div>
       </div>
     )
@@ -74,14 +76,20 @@ function AdminLoginContent() {
     <div className="min-h-screen flex items-center justify-center px-4 pt-20">
       <div className="w-full max-w-md">
         {/* Login Card */}
-        <div className="bg-[#f2ebe2] border border-[#d4c4b0] rounded-2xl p-8">
+        <div className="bg-bg-surface border border-border-default rounded-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-800/15 mb-4">
-              <ShieldCheck size={32} weight="fill" className="text-amber-800" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-bg-surface mb-4">
+              <ShieldCheck
+                size={32}
+                weight="fill"
+                className="text-text-secondary"
+              />
             </div>
-            <h1 className="text-2xl font-bold text-[#451a03]">Admin Portal</h1>
-            <p className="text-[#78350f] mt-2">
+            <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+              Admin portal
+            </h1>
+            <p className="text-text-secondary mt-2">
               Sign in to access the admin dashboard
             </p>
           </div>
@@ -117,9 +125,20 @@ function AdminLoginContent() {
               isLoading={isSubmitting}
               disabled={!email || !password || isSubmitting}
             >
-              Sign In
+              Sign in
             </Button>
           </form>
+
+          {/* Passwordless path. The link only establishes a session — admin
+              authorization is is_admin() against admin_profiles, re-checked by
+              src/proxy.ts on every /admin/dashboard request. */}
+          <div className="mt-6 pt-6 border-t border-border-default">
+            <MagicLinkButton
+              email={email}
+              sendAction={sendMagicLink}
+              disabled={isSubmitting}
+            />
+          </div>
         </div>
       </div>
     </div>

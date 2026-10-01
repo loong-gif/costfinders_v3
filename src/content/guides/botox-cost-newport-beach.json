@@ -1,0 +1,128 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "newport-beach",
+  "cityLabel": "Newport Beach",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-25",
+  "howPricingWorks": {
+    "intro": "What you see on a Newport Beach menu is a measuring stick, not an invoice. Almost everything published locally is quoted by the unit, and your total is that advertised rate multiplied by a dose nobody fixes until an injector has watched your face move. Two things make the local price spread harder to read than it looks. Several toxins share one shorthand here — Botox, Jeuveau and Dysport all turn up in the feed — and a unit of one does not buy what a unit of another does. And only a minority of the visible Newport Beach offers commit to a figure at all, so the range you can see is a self-selected slice of a very crowded stretch of coastline.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit, on the Botox Scale",
+        "description": "The local default, and the structure most of the branded listings use. A practice posts what one unit costs and multiplies it by the count in your plan, so the same published figure covers a first-timer's frown lines and a full upper-face maintenance visit. What the figure omits is where the money moves: consultation fees, minimum unit purchases that put a floor under a small appointment, and whether a two-week touch-up review is included or billed. Ask for all three before you compare two clinics' rates.",
+        "typicalRange": "clustered tightly at the threshold of double digits per unit, with very little daylight between the Botox-labelled listings"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "The floor of the Newport Beach feed is a Dysport rate, and a Dysport unit is a finer division than a Botox unit — published clinical work puts the conversion somewhere near 2.5 to 3 Dysport units per Botox unit and treats it as indication-specific rather than a fixed exchange rate. Converted onto the Botox scale, that headline figure lands back near, or a little under, the band the branded listings occupy. It is a genuine saving in some cases, but not the three-fold one the number implies.",
+        "typicalRange": "low single digits per Dysport unit as advertised; broadly comparable to the branded band once converted"
+      },
+      {
+        "name": "Listed Only as \"Neurotoxin\"",
+        "description": "A few local offers advertise a per-unit rate without naming the product. These are the widest-spread listings in the market: the unbranded figures straddle everything else, with one sitting below the branded floor and another holding the ceiling in the mid-teens. Without a brand you cannot tell whether the rate is quoted on a Botox-scale unit or a smaller one, which makes the number close to meaningless for comparison. Call and ask which products are stocked and which one that rate belongs to.",
+        "typicalRange": "from below the branded floor to the top of everything published locally"
+      },
+      {
+        "name": "No Figure Published, Quoted After Assessment",
+        "description": "Most of the Newport Beach offers on this page describe the treatment and stop short of a rate. That is ordinary for injectables and it is still a pricing structure — it simply moves the conversation into a consultation room where you have less leverage and no written comparison. When you phone, ask for the per-unit rate and a planned unit count in the same sentence, and ask whether a consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; the total rests entirely on the count agreed in the chair"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A handful of forces set a rate card on this peninsula, and they do not all pull the same way. Newport Beach is a small, unusually wealthy, older-skewing coastal city inside an enormous metro, with expensive commercial rent, a state that keeps injection firmly inside medicine, and cheaper clinics fifteen minutes inland.",
+    "factors": [
+      {
+        "factor": "California keeps injection inside medicine, with supervision attached",
+        "explanation": "The Medical Board of California allows a physician to inject botulinum toxin or to direct a registered nurse or physician assistant to inject under physician supervision; unlicensed personnel, medical assistants included, may not inject. Registered nurses generally need a patient-specific order and written standardized procedures under Business and Professions Code section 2725 and Title 16 of the California Code of Regulations section 1474, and physician assistants work under supervision and a practice agreement. A supervising physician is a standing overhead line that med spas in looser-delegation states do not carry, and it sits underneath what treatment costs here. Ask who the supervising physician is, what licence your injector holds, and how the delegation is documented."
+      },
+      {
+        "factor": "Coastal occupancy cost, and how quickly it falls inland",
+        "explanation": "A suite near Fashion Island, in Lido Marina Village, along Pacific Coast Highway or in Corona del Mar carries a rent per square foot that a comparable room in a Costa Mesa or Santa Ana medical building does not, while the vial costs both practices the same. That gap is the single largest controllable lever in this market, and it is a ten to twenty minute drive rather than a day trip. The corridor you shop in usually moves your total more than the brand you pick."
+      },
+      {
+        "factor": "An affluent, older resident base that buys maintenance, not experiments",
+        "explanation": "The Census Bureau put Newport Beach's median household income near $158,000 for 2019–2023, well above Orange County's roughly $116,000, and non-Census compilations place the median age in the mid-forties. That profile means a large share of repeat patients on three- or four-visit-a-year schedules, which supports steady rates without heavy discounting, and it also means clinics compete on injector reputation and results more than on the headline figure."
+      },
+      {
+        "factor": "Three brands chasing the same forehead, on different scales",
+        "explanation": "Botox and Jeuveau sit essentially on top of each other in the published local band, while Dysport anchors the floor on its smaller unit. Manufacturer loyalty schemes — Allergan's Allē for Botox, Evolus Rewards for Jeuveau, Galderma's ASPIRE for Dysport — shift money around without touching the rate on the wall, and over a year of maintenance the programme you are enrolled in can be worth more than the gap between two advertised figures."
+      },
+      {
+        "factor": "A thin publishing pool in a dense market",
+        "explanation": "Newport Beach has fewer than a hundred thousand residents but an unusually high concentration of physician-led cosmetic practices and med spas, and only a short list of them publishes a per-unit rate publicly. The visible spread is therefore not a survey of the city; it is the subset that chose transparency as a marketing position, generally because their figure is competitive. Treat it as a floor-finding tool and assume unpublished quotes can land outside it in either direction."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Very little of this is coupon hunting. Where three dosing scales circulate and most clinics publish nothing, the money is saved before the appointment is booked, by forcing every quote onto a basis you can actually hold side by side.",
+    "tips": [
+      {
+        "tip": "Cost a whole appointment in each brand, not the two rates",
+        "detail": "Ask any practice that stocks more than one toxin how many units your areas take in each product, then what each finished visit costs. Comparing advertised per-unit rates across brands is the most expensive mistake available here, because the cheapest figure in the market is quoted on Dysport's smaller unit."
+      },
+      {
+        "tip": "Make an unbranded rate name its product",
+        "detail": "If a listing says only \"neurotoxin,\" the figure tells you nothing until you know the brand and the scale behind it. Ask which toxins are in the fridge, which one the advertised rate applies to, and whether that rate changes if you switch products mid-year."
+      },
+      {
+        "tip": "Collect one quote from outside the coastal strip",
+        "detail": "Costa Mesa, Santa Ana, Irvine's business parks and inland Huntington Beach sit in a different rent bracket and are close enough to be repeatable three or four times a year. Two inland comparison quotes cost you an afternoon and move the number further than haggling does — and they give you a reference point if you decide to stay near home anyway."
+      },
+      {
+        "tip": "Get the visit costed in writing, including the floor",
+        "detail": "A per-unit rate says nothing about a consultation fee, a minimum unit purchase, or whether the two-week review is billed. Ask for the whole appointment costed against your planned count by email, so the figure quoted on the phone matches the one on the card reader."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms up before weddings, graduations, the December party stretch, summer travel and the boating and tourism season that fills this harbour. Toxin needs roughly two weeks to settle before a fixed date, so in the busy stretches the useful ask is a slot, not a discount; quiet weeks are when a first-visit rate or a prepaid course is genuinely negotiable."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 10,
+    "comparisonText": "Both figures rest on the same footing: one unit measured on the Botox scale, with anything quoted on a brand's smaller unit converted before it counts. RealSelf's member-reported figures put most US practices between $10 and $15 per unit, and the middle of that band gives the national marker used on the chart. The median of the priced Newport Beach offers is $10 per unit — about 23 percent below that marker, which is not what a city with this income profile would lead you to expect, and is partly an artefact of which practices choose to publish a figure at all."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Newport Beach?",
+      "answer": "There is no single honest number, because toxin is sold by the unit and your dose is set in the chair. The live breakdown beside this text shows what local practices actually publish, split by product: the Botox-labelled listings sit in a notably tight band at the threshold of double digits, and the outliers in either direction are explained by which product is being measured or by a listing that never names one. Settle two things before you compare quotes — which product the rate belongs to, and what else the visit carries."
+    },
+    {
+      "question": "Why does one Newport Beach clinic's advertised cost per unit look a third of another's?",
+      "answer": "Because it is almost certainly not Botox. The floor of this market is a Dysport rate, and a Dysport unit is a finer division — published work puts the conversion near 2.5 to 3 to 1 and treats it as indication-specific rather than a fixed rate of exchange. Converted onto the Botox scale, that floor lands close to the ordinary local band. Ask for your planned unit count in each product and the finished cost of each visit; that is the only comparison that survives an invoice."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask as well how the practice handles a plan that grows once you are in the chair, and whether the follow-up assessment is billed."
+    },
+    {
+      "question": "Does Botox cost less in Costa Mesa, Irvine or Santa Ana than in Newport Beach?",
+      "answer": "Often, and the mechanism is rent rather than product — the vial costs a practice the same in a Santa Ana medical building as it does off Pacific Coast Highway. The drive is short enough that an inland clinic is realistically repeatable for maintenance several times a year, which is rarely true of an out-of-county option. Get one inland quote for your planned count and compare finished visit totals, not per-unit rates."
+    },
+    {
+      "question": "Is Botox cheaper in Los Angeles or San Diego, and does the drive change what it costs overall?",
+      "answer": "Los Angeles is roughly an hour to an hour and a half away and San Diego about an hour and a half to two, both entirely at the mercy of the 405 and the 5, and the Inland Empire sits at a similar distance with generally lower occupancy costs. Those markets tend to cap what a Newport Beach practice can charge for a large initial course while leaving routine top-ups to purely local forces. Price the trip honestly: possibly worth it once, rarely worth it every quarter."
+    },
+    {
+      "question": "Does Jeuveau cost less per unit than Botox here?",
+      "answer": "In this feed the Jeuveau listings sit essentially inside the same band as the Botox ones, with no meaningful headline gap, and both products are planned at broadly similar unit counts. Any real difference is likelier to come from loyalty credit — Evolus Rewards against Allergan's Allē — or from an introductory offer than from the rate on the wall. Ask the clinic to cost twelve months in each product, including whatever points you would accrue."
+    },
+    {
+      "question": "Who can legally inject Botox in California, and does that affect what it costs?",
+      "answer": "The Medical Board of California allows physicians to inject, or to direct registered nurses and physician assistants to inject under physician supervision; unlicensed personnel, including medical assistants, may not. Registered nurses generally need a patient-specific order and written standardized procedures under Business and Professions Code section 2725 and Title 16 CCR section 1474. That standing supervision requirement is a real overhead inside every compliant practice, which is part of why California rates do not fall to the levels advertised in states with looser delegation. Confirm the injector's licence, the supervising physician's name and how the examination and orders are documented."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a smaller dosing unit, a first-visit rate or a quiet-week promotion — but the question is a fair one. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in multiple states, with the FDA advising patients to confirm with the practice that the product came from an authorised source and flagging packaging tells including a 150-unit strength not sold in the US and cartons printed in another language. Asking to watch the sealed vial be opened is reasonable at any clinic."
+    }
+  ],
+  "cityContext": {
+    "medspaDensity": "Dense for a city of this size, and tightly clustered rather than spread out. Aesthetic practices concentrate around Fashion Island and the Newport Center office towers, along Pacific Coast Highway through Corona del Mar, and around Lido Marina Village and the Balboa Peninsula approaches, with a deep secondary ring in Costa Mesa, Irvine and Huntington Beach that most Newport Beach buyers can reach in under twenty minutes. No authoritative directory count of med spas in the city was available, and directory listings are not the same thing as licensed injectors, so treat any published density figure sceptically. What matters more to a buyer is that only a short list of these practices publishes a per-unit rate at all.",
+    "demographicNotes": "The Census Bureau counted 85,239 residents in 2020 and put median household income at $158,461 in 2019–2023 dollars, against roughly $116,289 for Orange County as a whole in 2020–2024 dollars. Non-Census compilations place the local median age near the mid-forties, older than the county profile, where about 18.5 percent of residents are 65 or over. That combination — high income, older skew, small resident base — produces a market weighted toward established maintenance patients rather than first-timers, topped up by visitors and by patients driving in from wealthier inland Orange County.",
+    "competitionNotes": "Competition runs on two axes here. Within a short drive, coastal practices compete largely on injector reputation and positioning while Costa Mesa, Santa Ana and inland Irvine compete on rate, and the handful of clinics willing to publish a figure exerts pressure well past its number because it sets the rate everyone else gets asked to match. Further out, Los Angeles is generally an hour to an hour and a half by car, San Diego an hour and a half to two, and Riverside–San Bernardino about the same as LA, all subject to traffic that no schedule survives. Those markets restrain what a Newport Beach practice can charge for a large first course more than they affect quarterly maintenance, which stays local by default."
+  }
+}

@@ -1,5 +1,9 @@
 {
-  "regions": ["iad1"],
+  "regions": ["sfo1"],
+  "crons": [
+    { "path": "/api/cron/gates", "schedule": "17 */6 * * *" },
+    { "path": "/api/cron/rebuild", "schedule": "55 3 * * *" }
+  ],
   "headers": [
     {
       "source": "/images/(.*)",

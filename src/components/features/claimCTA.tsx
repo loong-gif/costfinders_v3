@@ -1,6 +1,6 @@
 'use client'
 
-import { Lock, Sparkle, UserPlus } from '@phosphor-icons/react'
+import { Lock, UserPlus } from '@phosphor-icons/react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -27,6 +27,8 @@ interface ClaimCTAProps {
   businessId: string
   dealTitle: string
   isAuthenticated: boolean
+  /** The clinic is already shown (a claim on another of its deals); this claims this one too. */
+  alreadyRevealed?: boolean
   onClaimSuccess: () => void
 }
 
@@ -35,6 +37,7 @@ export function ClaimCTA({
   businessId,
   dealTitle,
   isAuthenticated,
+  alreadyRevealed = false,
   onClaimSuccess,
 }: ClaimCTAProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
@@ -73,19 +76,31 @@ export function ClaimCTA({
     return (
       <>
         <Card variant="glass" padding="lg">
-          <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center">
-              <Sparkle size={32} weight="fill" className="text-amber-800" />
-            </div>
+          <div className="space-y-4">
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[#451a03]">
-                Business Details Hidden
-              </h3>
-              <p className="text-sm text-[#78350f]">
-                Claim this deal to reveal the business name, location, and
-                contact details. The business will contact you to schedule your
-                appointment.
-              </p>
+              {alreadyRevealed ? (
+                <>
+                  <h3 className="font-display text-lg font-semibold text-text-primary">
+                    Claim this deal too
+                  </h3>
+                  <p className="text-sm text-text-secondary">
+                    Our team passes each claim on to the clinic, so claim this
+                    one if it is the deal you want.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-text-primary">
+                    <Lock size={18} weight="bold" className="text-text-muted" />
+                    Clinic details hidden
+                  </h3>
+                  <p className="text-sm text-text-secondary">
+                    Claim this deal to see the clinic&apos;s name, address,
+                    phone number and website. You then call or book with the
+                    clinic directly, and our team also passes your request on.
+                  </p>
+                </>
+              )}
             </div>
             <Button
               size="lg"
@@ -93,7 +108,7 @@ export function ClaimCTA({
               onClick={handleClaimClick}
               type="button"
             >
-              Claim This Deal
+              Claim this deal
             </Button>
           </div>
         </Card>
@@ -114,17 +129,15 @@ export function ClaimCTA({
   return (
     <>
       <Card variant="glass" padding="lg">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-amber-800/8 flex items-center justify-center">
-            <Lock size={32} weight="fill" className="text-amber-800" />
-          </div>
+        <div className="space-y-4">
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-[#451a03]">
-              Business Details Hidden
+            <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-text-primary">
+              <Lock size={18} weight="bold" className="text-text-muted" />
+              Clinic details hidden
             </h3>
-            <p className="text-sm text-[#78350f]">
-              Create a free account to reveal the business name, location, and
-              contact details — then claim this deal.
+            <p className="text-sm text-text-secondary">
+              Create a free account, then claim this deal to see the
+              clinic&apos;s name, address, phone number and website.
             </p>
           </div>
           <div className="w-full space-y-3">
@@ -135,19 +148,16 @@ export function ClaimCTA({
               type="button"
             >
               <UserPlus size={20} weight="bold" />
-              Create Free Account
+              Create a free account
             </Button>
             <button
               type="button"
               onClick={handleSignIn}
-              className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors"
+              className="w-full min-h-[44px] text-sm font-medium text-accent hover:text-accent-hover transition-colors"
             >
               Already have an account? Sign in
             </button>
           </div>
-          <p className="text-xs text-[#92400e]">
-            Your information is secure and never shared without permission.
-          </p>
         </div>
       </Card>
 

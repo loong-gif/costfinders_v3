@@ -4,12 +4,18 @@ import { CurrencyDollar } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 
 interface PriceRangeFilterProps {
+  /**
+   * The legend. Say what the bounds compare when it is not the price you pay — a page whose
+   * deals rank per unit passes "Price per unit", or "$10" reads as a cap on the whole bill.
+   */
+  label?: string
   minPrice?: number
   maxPrice?: number
   onChange: (min: number | undefined, max: number | undefined) => void
 }
 
 export function PriceRangeFilter({
+  label = 'Price range',
   minPrice,
   maxPrice,
   onChange,
@@ -42,8 +48,8 @@ export function PriceRangeFilter({
 
   return (
     <fieldset className="space-y-2">
-      <legend className="text-sm font-medium text-[#78350f]">
-        Price Range
+      <legend className="text-sm font-medium text-text-secondary">
+        {label}
       </legend>
       <div className="flex items-center gap-2">
         {/* Min Price Input */}
@@ -51,7 +57,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           />
           <input
@@ -63,10 +69,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5 min-h-[44px]
-              bg-[#f2ebe2]
-              border border-[#d4c4b0] rounded-xl
-              text-[#451a03] placeholder:text-[#92400e]
-              focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15
+              bg-bg-elevated
+              border border-border-default rounded-xl
+              text-text-primary placeholder:text-text-muted
+              focus:border-border-accent
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none
@@ -75,7 +81,7 @@ export function PriceRangeFilter({
           />
         </div>
 
-        <span className="text-[#92400e]" aria-hidden="true">
+        <span className="text-text-muted" aria-hidden="true">
           —
         </span>
 
@@ -84,7 +90,7 @@ export function PriceRangeFilter({
           <CurrencyDollar
             size={18}
             weight="light"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           />
           <input
@@ -96,10 +102,10 @@ export function PriceRangeFilter({
             min={0}
             className="
               w-full pl-8 pr-3 py-2.5 min-h-[44px]
-              bg-[#f2ebe2]
-              border border-[#d4c4b0] rounded-xl
-              text-[#451a03] placeholder:text-[#92400e]
-              focus:outline-none focus:border-amber-800/40 focus:ring-1 focus:ring-amber-800/15
+              bg-bg-elevated
+              border border-border-default rounded-xl
+              text-text-primary placeholder:text-text-muted
+              focus:border-border-accent
               transition-all duration-200
               [appearance:textfield]
               [&::-webkit-outer-spin-button]:appearance-none

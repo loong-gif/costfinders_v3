@@ -1,0 +1,119 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "costa-mesa",
+  "cityLabel": "Costa Mesa",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Three quoting formats share Costa Mesa neurotoxin listings, and none of them converts cleanly into the others. Some practices publish a rate per unit — here a member rate — and settle the total after an injector maps your dose. Others sell a fixed number of units as one figure. Others advertise only what a membership takes off, a percentage or a dollar per unit, from a rate the listing does not state. Brand layers on top: this market's listings name Botox, Dysport, Xeomin and Daxxify, and each product's units are labelled as specific to that product. Sort quotes by structure before you argue about the rate.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit",
+        "description": "A published rate per unit, multiplied by whatever dose the injector maps at your visit; the per-unit rates listed in Costa Mesa are member rates, so the membership charge belongs in the sum. It is the only structure that supports a clean provider-to-provider comparison, and only when both quotes name the same product, since each botulinum toxin is labelled with units that are specific to that preparation.",
+        "typicalRange": "one rate per unit, times the dose; too few Costa Mesa clinics state a rate for us to give a local range"
+      },
+      {
+        "name": "Sold as a Fixed Number of Units",
+        "description": "One figure buys a set quantity of one product — the Costa Mesa example is a block of Botox units at a single price — so the per-unit rate is there, but only after you divide. It suits you only if your plan calls for about that many units: ask whether unused units carry over to a later visit, and what the same dose costs at the practice's plain per-unit rate.",
+        "typicalRange": "one figure for a set number of units; divide by the count before comparing it with a per-unit rate"
+      },
+      {
+        "name": "Membership Discount Off an Unstated Rate",
+        "description": "Much of the Costa Mesa feed advertises only what a membership takes off — a percentage off, or a dollar off each unit of a named product — without the rate it comes off. The discount cannot be costed until you hold the non-member rate and the membership charge, so ask for both in writing and spread the charge across the visits you actually book in a year.",
+        "typicalRange": "no rate published; a percentage or a dollar per unit off, for members"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Two forces pull local injection prices in opposite directions: high operating costs, and an unusual number of alternatives within a short drive. What lands on your invoice depends less on the city's rent bill than on how easily you could walk into the practice one exit away, which product sits in the fridge, and which licence the state requires behind the syringe.",
+    "factors": [
+      {
+        "factor": "Four Neighbouring Cities, All Minutes Away",
+        "explanation": "Costa Mesa's city limits meet Huntington Beach, Fountain Valley, Santa Ana and Newport Beach, and Irvine sits a short hop further east near John Wayne Airport. The 405, the 55 and the 73 make every one of them a brief drive. A patient who dislikes a quote on Harbor Boulevard has real alternatives without leaving the county, and that substitutability pushes against per-unit rates simply tracking the city's cost base."
+      },
+      {
+        "factor": "A High Cost Base Without the Beachfront Premium",
+        "explanation": "Cost of living here runs about 65% above the US average on the BestPlaces index, and Orange County labour rates set what an injector earns. What the city does not carry is oceanfront rent: Costa Mesa has no shoreline of its own, and the Fashion Island and Balboa addresses sit one city south. Bristol, Harbor and Newport Boulevard storefronts are the cheaper tier of that geography."
+      },
+      {
+        "factor": "Who California Lets Hold the Syringe",
+        "explanation": "State law treats a neurotoxin injection as a medical act. A physician, nurse practitioner or physician assistant has to conduct a good-faith examination and write a patient-specific order first; a registered nurse may then administer against that order. Estheticians and medical assistants fall outside that scope entirely. Prescriber time is a real cost sitting inside every rate you are quoted, so ask who does which part."
+      },
+      {
+        "factor": "AB 890 and the Shape of a Small Practice",
+        "explanation": "California's AB 890 created two certified nurse practitioner categories. The Board of Registered Nursing has certified the first, which still requires a setting where a physician practises, since January 2023; the statute set January 2026 as the earliest date for the second, which drops that setting requirement. Ownership rules for the clinical entity are unchanged. Staffing is the largest line item behind a price, so this stays a live local variable."
+      },
+      {
+        "factor": "Who Buys Here, and When",
+        "explanation": "Census estimates put the median age near 36 and median household income around $110,000, so the typical local buyer skews younger and enters a maintenance habit earlier than the classic medspa demographic. Orange Coast College sits inside the city limits, with Vanguard University a few blocks over, holding a price-attentive early-career population. Booking pressure also bunches around the OC Fair in high summer, the Segerstrom Center season, and South Coast Plaza's holiday trade."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Which structure you agree to moves the invoice about as much as which practice you walk into. These five levers are the ones that actually change the number on a Costa Mesa menu.",
+    "tips": [
+      {
+        "tip": "Ask for a total, never just a rate",
+        "detail": "A per-unit figure is half a price. Find out which product is stocked, how many units of that product your plan calls for, and what the whole visit comes to with every fee folded in. Compare those totals only. A low rate on a product that needs more units is a different ruler, not a discount."
+      },
+      {
+        "tip": "Convert a block of units into a per-unit number",
+        "detail": "Divide the block's price by the units in it, and set the result against the per-unit rates you have collected. Then check it against your own dose: units you do not need are not a saving. Get in writing whether unused units carry over to a later visit, so the comparison holds at checkout."
+      },
+      {
+        "tip": "Cost the membership before the discount",
+        "detail": "Most Costa Mesa listings are for members: a member-only rate per unit, a percentage off, or a dollar off each unit. Add the membership charge to the member price and spread it across the visits you actually book in a year. Before signing, pin down the non-member rate, the minimum term and the notice needed to cancel."
+      },
+      {
+        "tip": "Get a comparison quote from the next city over",
+        "detail": "Providers in Santa Ana, Huntington Beach, Fountain Valley, Newport Beach and Irvine are all a short drive on the 55, the 405 or the 73. Pull two outside quotes before booking, if only to calibrate what you are hearing locally. Then price the drive honestly, because these appointments repeat several times in a year."
+      },
+      {
+        "tip": "Join the rewards program tied to the product you are actually getting",
+        "detail": "Manufacturer loyalty schemes do not transfer between brands. Allergan's Alle covers Botox; Xeomin and Daxxify each sit with their own manufacturer's program. Since practices here stock more than one neurotoxin, confirm the product before the appointment, enrol under that brand, and ask the front desk to apply the reward at checkout rather than chasing it afterwards."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "comparisonText": "The national marker is RealSelf's: most US practices charge $10 to $15 per unit, and $13 is roughly the midpoint of that band. Too few Costa Mesa clinics advertise a per-unit Botox price for us to set a local figure beside it, so we draw no gap. The city's cost of living, well above the US average, is no stand-in either, because alternatives on every side push against rates simply tracking rent. And a rate is not a bill: units and package structure decide the total."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Costa Mesa, CA?",
+      "answer": "Costa Mesa menus answer that in three incompatible currencies, so the first thing to settle is which one you are being quoted in. Few practices here publish a per-unit rate, and a rate only becomes a bill once a prescriber fixes your dose and names the product, since units are specific to each neurotoxin. A block of units sold as one figure hides the rate until you divide. A membership discount hides it until you know the non-member rate and the membership charge. Reduce whatever you are handed to one visit, one product, one written unit count, and compare only after that."
+    },
+    {
+      "question": "Does Botox cost more in Newport Beach than in Costa Mesa?",
+      "answer": "Too few Costa Mesa practices publish a rate for us to say. What differs is positioning and overhead: Costa Mesa has no coastline of its own, so its commercial corridors on Bristol, Harbor and Newport Boulevard sit outside the premium a Newport Center or Fashion Island address commands one city south, and practices there market to a wealthier catchment. None of that tells you anything about the product in the syringe. Ask each practice which brand it stocks, who performs the exam and who injects, then compare on those answers rather than on the postcode."
+    },
+    {
+      "question": "A cheaper per-unit rate on a different brand, is that actually cheaper?",
+      "answer": "Not necessarily, and this is where local menus catch people out. Each botulinum toxin product is labelled with units specific to that preparation, and the labels state they are not interchangeable with other products. So a rate quoted on Dysport, Xeomin or Daxxify cannot be laid beside a Botox rate as though the units matched — and in Costa Mesa one member rate is listed at the same figure per unit for Dysport as for Botox, which on Dysport's smaller unit is not the same cost for a treatment. The only comparison that survives is total-to-total: name the product, get the number of units of that product your plan calls for, and compare the resulting bills."
+    },
+    {
+      "question": "How many units will I be quoted for?",
+      "answer": "That count comes from a licensed prescriber at consultation, not from a price guide. California requires a physician, nurse practitioner or physician assistant to complete a good-faith examination and issue a patient-specific order before treatment, and the count on that order is what your bill is calculated from. It varies with the area being treated, the product in use, and the individual plan. Budgeting from a number found online is how people get surprised at the desk, so ask for the proposed count in writing and use it to compare quotes."
+    },
+    {
+      "question": "What should I ask before I book?",
+      "answer": "Six questions. Who performs the good-faith examination, and what licence do they hold. Who physically injects, and under whose patient-specific order. Which brand and product will be used, and that it came through the manufacturer's US supply channel. Whether consultation time and injection work are inside the price or billed on top. What your unit count brings the visit to in total. And for any prepaid block: the expiry date, the refund terms, and whether unused units transfer. Get those answers before a deposit changes hands."
+    },
+    {
+      "question": "Is a cross-city trip worth it for a lower rate?",
+      "answer": "Run the whole sum before deciding. These appointments recur through the year, so a few dollars off a unit has to survive repeated round trips on the 55 or the 405 at whatever slot you can book. A nearby practice also makes a follow-up visit easier to keep. The more reliable use of an outside quote is calibration and leverage: it tells you whether a Costa Mesa number sits in line with the surrounding market before you commit to anything."
+    },
+    {
+      "question": "Does the city's event calendar change availability?",
+      "answer": "It moves booking pressure more than it moves price. The OC Fair occupies the Fair & Event Center from mid-July into August, the Segerstrom Center for the Arts runs a performance season from autumn through spring, and South Coast Plaza dominates local traffic in November and December. Demand for appointments tends to cluster ahead of those windows and ahead of spring wedding season. If you are treating with a specific date in mind, ask the practice how far ahead they suggest scheduling, and hold the slot early."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 165,
+    "medspaDensity": "high",
+    "demographicNotes": "Census ACS 2019-2023 estimates put Costa Mesa at roughly 112,000 residents, a median age near 36, and median household income around $110,000. Two campuses keep a sizable student and early-career cohort in the city, set against an older, higher-income Orange County catchment.",
+    "competitionNotes": "The city sits between the Newport Beach and Irvine aesthetic clusters, with Santa Ana, Huntington Beach and Fountain Valley providers also minutes away on the 55, 405 and 73. Membership terms dominate local listings — member-only rates per unit and member discounts off an unstated rate — with a block of units sold at one figure alongside them, and more than one neurotoxin brand is stocked across the market."
+  }
+}

@@ -57,17 +57,17 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
                   <CaretRight
                     size={14}
                     weight="bold"
-                    className="text-[#92400e]"
+                    className="text-text-muted"
                   />
                 )}
                 {crumb.isCurrentPage ? (
-                  <span className="text-[#451a03] font-medium">
+                  <span className="text-text-primary font-medium">
                     {crumb.label}
                   </span>
                 ) : (
                   <Link
                     href={crumb.href}
-                    className="text-[#78350f] hover:text-[#451a03] transition-colors"
+                    className="text-text-secondary hover:text-text-primary transition-colors"
                   >
                     {crumb.label}
                   </Link>
@@ -83,12 +83,12 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
           >
             <Link
               href={breadcrumbs[breadcrumbs.length - 2]?.href || '/'}
-              className="text-[#78350f] hover:text-[#451a03] transition-colors"
+              className="text-text-secondary hover:text-text-primary transition-colors"
             >
               {breadcrumbs[breadcrumbs.length - 2]?.label}
             </Link>
-            <CaretRight size={14} weight="bold" className="text-[#92400e]" />
-            <span className="text-[#451a03] font-medium truncate">
+            <CaretRight size={14} weight="bold" className="text-text-muted" />
+            <span className="text-text-primary font-medium truncate">
               {breadcrumbs[breadcrumbs.length - 1]?.label}
             </span>
           </nav>
@@ -101,13 +101,15 @@ export function PageHeader({ title, showBack, backUrl }: PageHeaderProps) {
           <button
             type="button"
             onClick={handleBack}
-            className="p-2 -ml-2 rounded-xl text-[#78350f] hover:text-[#451a03] hover:bg-[#d4c4b0]/30 transition-all"
+            className="p-2 -ml-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-surface transition-all"
             aria-label="Go back"
           >
             <ArrowLeft size={20} weight="light" />
           </button>
         )}
-        <h1 className="text-2xl font-bold text-[#451a03]">{pageTitle}</h1>
+        <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+          {pageTitle}
+        </h1>
       </div>
     </div>
   )

@@ -21,21 +21,9 @@ export const routeConfig: Record<string, RouteConfig> = {
     label: 'Deals',
     parent: '/business/dashboard',
   },
-  '/business/dashboard/deals/new': {
-    label: 'New Deal',
-    parent: '/business/dashboard/deals',
-  },
-  '/business/dashboard/deals/sponsored': {
-    label: 'Sponsored',
-    parent: '/business/dashboard/deals',
-  },
   '/business/dashboard/leads': {
     label: 'Leads',
     parent: '/business/dashboard',
-  },
-  '/business/dashboard/leads/pricing': {
-    label: 'Lead Pricing',
-    parent: '/business/dashboard/leads',
   },
   '/business/dashboard/messages': {
     label: 'Messages',
@@ -52,18 +40,6 @@ export const routeConfig: Record<string, RouteConfig> = {
   '/business/dashboard/settings': {
     label: 'Settings',
     parent: '/business/dashboard',
-  },
-  '/business/dashboard/settings/integrations': {
-    label: 'Integrations',
-    parent: '/business/dashboard/settings',
-  },
-  '/business/dashboard/settings/account': {
-    label: 'Account & Billing',
-    parent: '/business/dashboard/settings',
-  },
-  '/business/dashboard/settings/account/checkout': {
-    label: 'Checkout',
-    parent: '/business/dashboard/settings/account',
   },
 
   // Admin dashboard

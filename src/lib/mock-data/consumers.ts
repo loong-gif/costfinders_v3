@@ -125,8 +125,6 @@ export const claims: Claim[] = [
     preferredDate: '2024-02-15',
     preferredTime: '10:00 AM',
     notes: 'First time getting Botox, a bit nervous!',
-    businessResponse:
-      'Looking forward to seeing you! Our injector will walk you through everything.',
     respondedAt: '2024-02-02T09:00:00Z',
     bookedDate: '2024-02-15',
     bookedTime: '10:30 AM',
@@ -142,7 +140,6 @@ export const claims: Claim[] = [
     status: 'booked',
     preferredDate: '2024-03-20',
     preferredTime: '2:00 PM',
-    businessResponse: 'Confirmed for March 20th at 2 PM!',
     respondedAt: '2024-03-16T10:00:00Z',
     bookedDate: '2024-03-20',
     bookedTime: '2:00 PM',
@@ -170,8 +167,6 @@ export const claims: Claim[] = [
     businessId: 'biz-5',
     status: 'contacted',
     preferredDate: '2024-03-18',
-    businessResponse:
-      'Thanks for your interest! We have availability on the 18th. What time works for you?',
     respondedAt: '2024-03-16T11:00:00Z',
     createdAt: '2024-03-15T09:00:00Z',
     updatedAt: '2024-03-16T11:00:00Z',
@@ -219,30 +214,6 @@ export function updateClaimStatus(
     // Track when business first responded
     respondedAt:
       allClaims[index].respondedAt || (status !== 'pending' ? now : undefined),
-  }
-
-  dynamicClaims[index] = updatedClaim
-  return updatedClaim
-}
-
-/**
- * Add business response to a claim
- */
-export function addBusinessResponse(
-  claimId: string,
-  response: string,
-): Claim | null {
-  const allClaims = getDynamicClaims()
-  const index = allClaims.findIndex((c) => c.id === claimId)
-
-  if (index === -1) return null
-
-  const now = new Date().toISOString()
-  const updatedClaim: Claim = {
-    ...allClaims[index],
-    businessResponse: response,
-    respondedAt: allClaims[index].respondedAt || now,
-    updatedAt: now,
   }
 
   dynamicClaims[index] = updatedClaim
