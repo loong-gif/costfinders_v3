@@ -1,25 +1,18 @@
 // Raw data exports
 
-export { admins } from './admins'
 export { businesses } from './businesses'
 export {
   businessOwners,
   findBusinessOwnerByEmail,
   findBusinessOwnerById,
 } from './businessOwners'
+// ./categories and ./treatments are gone. Both fixtures existed only to feed
+// /admin/dashboard/content/{categories,treatments}, and those screens are gone:
+// treatments invented 15 treatments with invented average prices behind an editor
+// whose saves evaporated, and the categories fixture was a second, competing
+// six-value vocabulary (Botox/Fillers/Facials/Laser/Body/Skincare) that disagreed
+// with both content_categories and the real one in @/lib/data/categories.
 export {
-  type Category,
-  createCategory,
-  deleteCategory,
-  getCategories,
-  getCategoryById,
-  getCategoryBySlug,
-  getCategoryStats,
-  toggleCategoryStatus,
-  updateCategory,
-} from './categories'
-export {
-  addBusinessResponse,
   claims,
   consumers,
   getClaimByIdDynamic,
@@ -32,21 +25,13 @@ export {
   getDealsForBusiness,
   toAnonymousDeal,
 } from './deals'
-export {
-  type BusinessCredits,
-  type BusinessTier,
-  type CreditPackage,
-  type CreditUsageHistory,
-  calculateTierSavings,
-  getAllLeadPricing,
-  getBusinessCredits,
-  getCreditPackageById,
-  getCreditPackages,
-  getCreditUsageHistory,
-  getLeadPricing,
-  purchaseCredits,
-  type TierPricing,
-} from './leadPricing'
+// ./leadPricing is gone entirely. It held a simulated credit purchase (a module-level balance
+// and a purchaseCredits() that incremented it in the browser tab, behind a Stripe trust mark
+// with no processor), a per-tier price list, and eight names this barrel re-exported that
+// nothing ever imported. Its one live reader was platformSettings.ts, which now carries the
+// credit-package list itself. Its BusinessTier was a second, 'free' | 'paid' definition
+// competing with the real one in @/types/business — re-exporting it from here was the only
+// thing keeping that ambiguity alive.
 export {
   cities,
   getAllActiveCitySlugs,
@@ -65,17 +50,6 @@ export {
   markMessagesAsRead,
   sendMessage,
 } from './messages'
-export {
-  createTreatment,
-  deleteTreatment,
-  getTreatmentById,
-  getTreatmentStats,
-  getTreatments,
-  getTreatmentsByCategory,
-  type Treatment,
-  toggleTreatmentStatus,
-  updateTreatment,
-} from './treatments'
 
 // Query utilities
 export {
@@ -118,32 +92,6 @@ export {
   sortDeals,
 } from './utils'
 
-import type { TreatmentCategory } from '@/types/deal'
-import { getCategories } from './categories'
-// SEO Static Params Generation
-import { getAllActiveCitySlugs } from './locations'
-
-/**
- * Get all treatment+city combinations for static params generation
- * Used by /deals/[treatment]/[city] pages
- */
-export function getAllTreatmentCityCombos(): Array<{
-  treatment: TreatmentCategory
-  city: string
-}> {
-  const cities = getAllActiveCitySlugs()
-  const categories = getCategories().filter((c) => c.isActive)
-
-  const combos: Array<{ treatment: TreatmentCategory; city: string }> = []
-
-  for (const city of cities) {
-    for (const category of categories) {
-      combos.push({
-        treatment: category.slug,
-        city,
-      })
-    }
-  }
-
-  return combos
-}
+// getAllTreatmentCityCombos used to live here, built from the deleted ./categories
+// fixture. The one the app actually calls is in @/lib/data/unified.ts and reads the
+// live schema; this copy had no callers.

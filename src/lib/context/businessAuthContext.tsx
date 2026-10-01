@@ -11,19 +11,15 @@ import {
 } from 'react'
 import {
   businessSignInAction,
-  businessSignOutAction,
-  businessSignUpAction,
+  sendBusinessMagicLinkAction,
 } from '@/lib/actions/business-auth'
 import type { BusinessProfile } from '@/lib/actions/business-profile'
 import {
   getBusinessProfileAction,
-  linkBusinessAction,
-  updateClaimStatusAction,
   updateVerificationStatusAction,
 } from '@/lib/actions/business-profile'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type {
-  BusinessClaimStatus,
   BusinessOwner,
   BusinessVerificationStatus,
 } from '@/types/businessOwner'
@@ -41,17 +37,19 @@ interface BusinessAuthState {
 
 interface BusinessAuthContextValue {
   state: BusinessAuthState
-  signUp: (
-    email: string,
-    password: string,
-    firstName?: string,
-    lastName?: string,
-  ) => Promise<void>
+  // No signUp: business onboarding is closed at launch. Existing owners sign in (password or
+  // magic link); new owner accounts are not created from the app.
   signIn: (email: string, password: string) => Promise<void>
+  /**
+   * Request a sign-in link. Resolves with the result instead of throwing, and never touches
+   * `state.error`: the caller is still sitting on the sign-in form with the password path
+   * intact, so a failed send is not a failed sign-in. MagicLinkButton renders the outcome.
+   */
+  sendMagicLink: (
+    email: string,
+  ) => Promise<{ success: boolean; error?: string }>
   signOut: () => void
   updateVerificationStatus: (status: BusinessVerificationStatus) => void
-  updateClaimStatus: (status: BusinessClaimStatus) => void
-  linkBusiness: (businessId: string) => void
 }
 
 const BusinessAuthContext = createContext<BusinessAuthContextValue | null>(null)
@@ -133,18 +131,6 @@ export function BusinessAuthProvider({
       return
     }
 
-    // Only hydrate if the user has a business role
-    const userRole = authUser.user_metadata?.role as string | undefined
-    if (userRole !== 'business') {
-      setState({
-        owner: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
-      return
-    }
-
     // Fetch business profile from server action
     const profileResult = await getBusinessProfileAction()
 
@@ -207,50 +193,6 @@ export function BusinessAuthProvider({
   }, [hydrateUser])
 
   // -------------------------------------------------------------------
-  // signUp — calls server action, sets state for email verification
-  // -------------------------------------------------------------------
-  const signUp = useCallback(
-    async (
-      email: string,
-      password: string,
-      firstName?: string,
-      lastName?: string,
-    ): Promise<void> => {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }))
-
-      const result = await businessSignUpAction(
-        email,
-        password,
-        firstName,
-        lastName,
-      )
-
-      if (!result.success) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: result.error ?? 'Sign up failed',
-        }))
-        throw new Error(result.error ?? 'Sign up failed')
-      }
-
-      // If email verification is needed, don't sign in yet
-      if (result.needsEmailVerification) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: null,
-        }))
-        return
-      }
-
-      // If auto-confirmed, hydrate user
-      await hydrateUser()
-    },
-    [hydrateUser],
-  )
-
-  // -------------------------------------------------------------------
   // signIn — calls server action, then hydrates user from session
   // -------------------------------------------------------------------
   const signIn = useCallback(
@@ -274,16 +216,25 @@ export function BusinessAuthProvider({
   )
 
   // -------------------------------------------------------------------
-  // signOut — calls server action, clears state
+  // signOut — through the shared browser client, then clears state
   // -------------------------------------------------------------------
+  // Through the shared browser client, as in authContext's signOut: one call revokes the
+  // session, clears the cookies and emits SIGNED_OUT to the header's consumer context too.
   const signOut = useCallback(() => {
-    businessSignOutAction().then(() => {
-      setState({
-        owner: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
+    supabaseRef.current.auth.signOut().then(({ error }) => {
+      setState(
+        error
+          ? (prev) => ({
+              ...prev,
+              error: "We couldn't sign you out. Please try again.",
+            })
+          : {
+              owner: null,
+              isAuthenticated: false,
+              isLoading: false,
+              error: null,
+            },
+      )
     })
   }, [])
 
@@ -314,80 +265,20 @@ export function BusinessAuthProvider({
   )
 
   // -------------------------------------------------------------------
-  // updateClaimStatus — calls server action, optimistic update
-  // -------------------------------------------------------------------
-  const updateClaimStatus = useCallback(
-    (status: BusinessClaimStatus) => {
-      setState((prev) => {
-        if (!prev.owner) return prev
-        return {
-          ...prev,
-          owner: {
-            ...prev.owner,
-            claimStatus: status,
-            updatedAt: new Date().toISOString(),
-          },
-        }
-      })
-
-      updateClaimStatusAction(status).then((result) => {
-        if (!result.success) {
-          hydrateUser()
-        }
-      })
-    },
-    [hydrateUser],
-  )
-
-  // -------------------------------------------------------------------
-  // linkBusiness — calls server action, optimistic update
-  // -------------------------------------------------------------------
-  const linkBusiness = useCallback(
-    (businessId: string) => {
-      setState((prev) => {
-        if (!prev.owner) return prev
-        return {
-          ...prev,
-          owner: {
-            ...prev.owner,
-            businessId,
-            claimStatus: 'pending' as BusinessClaimStatus,
-            updatedAt: new Date().toISOString(),
-          },
-        }
-      })
-
-      linkBusinessAction(Number(businessId)).then((result) => {
-        if (!result.success) {
-          hydrateUser()
-        }
-      })
-    },
-    [hydrateUser],
-  )
-
-  // -------------------------------------------------------------------
   // Context value
   // -------------------------------------------------------------------
   const value = useMemo<BusinessAuthContextValue>(
     () => ({
       state,
-      signUp,
       signIn,
+      // Passed straight through: a module-level server action is already a stable
+      // reference, and there is no session state to hydrate until the emailed link is
+      // followed — that lands on /auth/callback, in a fresh request.
+      sendMagicLink: sendBusinessMagicLinkAction,
       signOut,
       updateVerificationStatus,
-      updateClaimStatus,
-      linkBusiness,
     }),
-    [
-      state,
-      signUp,
-      signIn,
-      signOut,
-      updateVerificationStatus,
-      updateClaimStatus,
-      linkBusiness,
-    ],
+    [state, signIn, signOut, updateVerificationStatus],
   )
 
   return (

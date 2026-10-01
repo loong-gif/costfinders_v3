@@ -1,10 +1,9 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { getDealById } from '@/lib/data/unified'
-import { logger } from '@/lib/logger'
+import { publicErrorMessage } from '@/lib/errors/publicMessage'
+import { logger, logSupabaseError } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
-import type { AnonymousDeal } from '@/types/deal'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -24,12 +23,6 @@ interface SavedDealsResult {
 interface MutationResult {
   success: boolean
   error?: string
-}
-
-interface SavedDealsWithDetailsResult {
-  success: boolean
-  error?: string
-  deals?: AnonymousDeal[]
 }
 
 // ---------------------------------------------------------------------------
@@ -57,7 +50,14 @@ export async function getSavedDealsAction(): Promise<SavedDealsResult> {
       .order('saved_at', { ascending: false })
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getSavedDealsAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't load your saved deals. Please try again.",
+        ),
+      }
     }
 
     return {
@@ -67,37 +67,6 @@ export async function getSavedDealsAction(): Promise<SavedDealsResult> {
   } catch (error) {
     logger.error('getSavedDealsAction failed', {
       action: 'getSavedDealsAction',
-      error: error instanceof Error ? error.message : String(error),
-    })
-    return { success: false, error: 'An unexpected error occurred.' }
-  }
-}
-
-/**
- * Fetch saved deals with full offer details in one server round-trip.
- */
-export async function getSavedDealsWithDetailsAction(): Promise<SavedDealsWithDetailsResult> {
-  try {
-    const savedResult = await getSavedDealsAction()
-    if (!savedResult.success) {
-      return { success: false, error: savedResult.error }
-    }
-
-    const savedRows = savedResult.deals ?? []
-    if (savedRows.length === 0) {
-      return { success: true, deals: [] }
-    }
-
-    const deals = (
-      await Promise.all(
-        savedRows.map((row) => getDealById(String(row.deal_id))),
-      )
-    ).filter((deal): deal is AnonymousDeal => deal !== null)
-
-    return { success: true, deals }
-  } catch (error) {
-    logger.error('getSavedDealsWithDetailsAction failed', {
-      action: 'getSavedDealsWithDetailsAction',
       error: error instanceof Error ? error.message : String(error),
     })
     return { success: false, error: 'An unexpected error occurred.' }
@@ -127,7 +96,14 @@ export async function saveDealAction(dealId: number): Promise<MutationResult> {
       )
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('saveDealAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't save this deal. Please try again.",
+        ),
+      }
     }
 
     revalidatePath('/deals')
@@ -166,7 +142,14 @@ export async function unsaveDealAction(
       .eq('deal_id', dealId)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('unsaveDealAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't remove this deal from your saved list. Please try again.",
+        ),
+      }
     }
 
     revalidatePath('/deals')
@@ -225,7 +208,14 @@ export async function migrateLocalDealsAction(
     })
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('migrateLocalDealsAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't move your saved deals to your account. Please try again.",
+        ),
+      }
     }
 
     revalidatePath('/deals')

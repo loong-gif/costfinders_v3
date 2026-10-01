@@ -1,0 +1,128 @@
+{
+  "treatment": "facials",
+  "treatmentLabel": "Facials",
+  "city": "irvine",
+  "cityLabel": "Irvine",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "A facial in Irvine is sold as a named appointment at a single flat figure — nothing is metered or counted, so the words on the menu carry all the information about what you are buying. Most of the Irvine listings we track do state a figure — a larger share than in Newport Beach — but they come from too few clinics to give a local range or midpoint. What is published is promotional: plainly named facials marked down a little from their stated regular rates, the lowest comfortably under a hundred dollars, and a ninety-minute HydraFacial offered to first-time customers at more than twice that. Read those as different purchases — minutes, steps and first-visit terms — not as competing quotes for the same hour.",
+    "pricingModels": [
+      {
+        "name": "Flat Menu Price Per Appointment",
+        "description": "The structure behind every published figure here: one named service, one number, one visit. Because nothing is counted, the same generic name can mean a short cleanse, steam and extraction at one Irvine address and a longer protocol with a device step, a mask and LED at the next. Before setting two menus side by side, establish stated length, whether extractions are included, and which steps are billed on top.",
+        "typicalRange": "one flat figure per visit; too few Irvine clinics state one for us to give a local range"
+      },
+      {
+        "name": "Marked Down From a Stated Regular Rate",
+        "description": "The floor of the Irvine feed is a plainly named facial listed at a small markdown from its own stated regular rate, and the same menu marks a second facial down the same way. The saving is real but modest, and a markdown can end: ask what the identical appointment costs once the offer lapses and what it includes, because a lower line is often less time in the room and fewer steps as well.",
+        "typicalRange": "the lowest published figure here, comfortably under a hundred dollars a visit and a little below its stated regular rate"
+      },
+      {
+        "name": "Advanced or Device-Led Tier",
+        "description": "The highest published figure in Irvine attaches to a named device treatment rather than a generic facial — a ninety-minute HydraFacial — and it is a first-time-customer special, so it applies once. It is still a single flat figure, but it buys more minutes and a device step. Ask what a return visit costs, and what the equivalent looks like at a shorter length, because clinics rarely volunteer either.",
+        "typicalRange": "more than twice the lowest published figure, on a first-visit special rather than a standing rate"
+      },
+      {
+        "name": "Percentage Off an Unstated Price",
+        "description": "The rest of the Irvine facial listings advertise a percentage off without the price it comes off, some for members only. A discount cannot be costed from the listing alone. Ask by email for the list price of the single appointment it applies to, whether membership is required and what it costs, and whether any assessment fee is credited against treatment.",
+        "typicalRange": "no figure published; a percentage off a list price you have to ask for, on a meaningful share of local listings"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Five things set the number on an Irvine menu, and the protocol itself is the least of them: what a treatment room costs in a master-planned commercial market, which California licence may legally perform the service, who the clinic built its menu for, how many substitutes sit within fifteen minutes, and which month you walk in.",
+    "factors": [
+      {
+        "factor": "Commercial rent in a master-planned city",
+        "explanation": "HomeSnacks puts Irvine's overall cost of living at 209 against a national baseline of 100, and AreaVibes lands close to it; a BEA regional price-parity dashboard reads far lower, around 114, because it measures something different. Whichever you prefer, the premium is housing and the labour that housing implies, not consumables. A facial is an hour of a room plus an hour of a licensed person, and neither input shrinks to absorb rent in the Spectrum or Irvine Business Complex office parks where most of these suites sit."
+      },
+      {
+        "factor": "Where California draws the line on depth",
+        "explanation": "California ties who may treat you to what is being done. The Board of Barbering and Cosmetology regulates estheticians under the Barbering and Cosmetology Act, and a basic facial — cleansing, exfoliation, extraction, massage — sits inside that licence when it falls within the licensee's training. Prescription products, injections, lasers and peels that penetrate or remove living tissue fall under the Medical Practice Act and the Medical Board of California and require medical qualification or a supervised delegation arrangement. Menus price that staffing difference in, which is most of why a 'medical' facial and a spa facial diverge here."
+      },
+      {
+        "factor": "A young, high-earning, working catchment",
+        "explanation": "Census figures put Irvine's median household income near $130,000 with a median age around 34 — affluent, but far younger than the coastal cities a few miles west. That pushes menus toward maintenance, congestion and brightening work booked around a job, plus memberships aimed at repeat visits, rather than toward the long corrective appointments that dominate older catchments. It also supports an entry line low enough to bring students and early-career professionals through the door."
+      },
+      {
+        "factor": "Density along two or three corridors",
+        "explanation": "Directory counts for Irvine medspas run from roughly a dozen to the high teens depending on the publisher, and the listings cluster — along Laguna Canyon Road near Irvine Spectrum, around the Endeavor address in 92618, and through the medical-office blocks near the 405 and 5 interchange. Clinics in those clusters can see each other's menus, which is part of why Irvine publishes figures more readily than Newport Beach does. Branded multi-site operators competing on weekend hours and membership terms add further pressure on the entry line."
+      },
+      {
+        "factor": "A calendar of weddings, graduations and holidays",
+        "explanation": "Demand lifts ahead of spring and summer weddings, UC Irvine commencement season and the holiday party run, and a year-round affluent client base flattens the troughs rather than removing them. No Irvine-specific monthly demand series is published, so treat that as a pattern, not a schedule. Peel and resurfacing courses are conventionally sequenced toward cooler months and away from heavy sun exposure — a clinical question for your provider — which is why promotions on those tend to appear before that season rather than during it."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Irvine states a figure on more of its facial listings than Newport Beach does, so the saving comes less from prising out a figure and more from checking that two published figures describe the same hour. Five moves do the work.",
+    "tips": [
+      {
+        "tip": "Get the full list price in writing, including add-ons",
+        "detail": "Where a listing names the treatment without a figure, email and ask for the single-appointment cost, the stated length, and whether a consultation fee is credited against treatment. Then ask for the add-on sheet — dermaplaning, LED, boosters, a peel step, extractions — because two Irvine menus a few tens of dollars apart can finish a long way apart once those are applied. A clinic that will not put a single-visit figure in writing has told you how the conversation in the room will go."
+      },
+      {
+        "tip": "Pin the minutes before comparing anything",
+        "detail": "The published Irvine figures attach to differently named treatments, and the difference between two of them is often time in the room rather than superior technique. Ask for stated treatment time as distinct from booked appointment time, and which steps sit inside it. If the shorter version does the job you actually want done, the longer one is not a better deal at any figure."
+      },
+      {
+        "tip": "Check whether a figure is a markdown or a first-visit rate",
+        "detail": "Every published Irvine figure is promotional: the lowest are markdowns from a stated regular rate, and the highest is a first-time-customer special. Ask what the same booking costs on the second and third visit, whether the rate is limited to weekday daytime slots, and whether it is tied to signing a membership. Price your real pattern of visits, not the first one."
+      },
+      {
+        "tip": "Make Tustin, Costa Mesa and Santa Ana bid",
+        "detail": "Those markets sit ten to twenty minutes away depending on traffic and carry none of Irvine's office-park rent, though the few facial figures Tustin and Costa Mesa publish sit above Irvine's, so treat an outside quote as a check rather than a presumed saving. Gather quotes across that corridor for one identically named treatment at one stated length, then decide what the shorter drive is worth. Los Angeles is roughly forty-five to sixty minutes in light traffic and San Diego well over an hour, so neither is a routine substitute for a maintenance facial."
+      },
+      {
+        "tip": "Do the membership arithmetic across the full term",
+        "detail": "Some Irvine discounts are for members only, and a membership's recurring charge bills whether you attend or not. Divide the annual commitment by the number of facials you genuinely booked in the last twelve months, not the number you intended to, then read three clauses: rollover of unused visits, minimum term, and notice required to cancel. With this many alternatives inside fifteen minutes, a long lock-in is worth much less than the advertised discount implies."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSession": 245,
+    "comparisonText": "RealSelf's member-reported national average for a facial is about $245 per session. The Irvine feed does not currently state a cost on a generic per-session basis, so there is no local figure to set against that benchmark — everything published here attaches to a specific named treatment at a specific length rather than to an undifferentiated session. Qualitatively, every published Irvine figure we track sits below that national benchmark, including the highest, which is unusual for a market with this cost of living and reflects that every one of them is promotional: markdowns on plainly named facials and a first-time-customer HydraFacial special. Too few clinics publish a figure to give a local midpoint; what you pay depends almost entirely on how many minutes and how many steps the name on the menu covers, and on whether the offer still applies to you."
+  },
+  "faqs": [
+    {
+      "question": "How much do facials cost in Irvine, CA?",
+      "answer": "There is no unit to multiply — a facial here is one named appointment at one flat number, which is why two menus can share a name and describe different purchases. Too few Irvine clinics publish a figure to give a local range or midpoint, and what is published is promotional: the lowest, comfortably under a hundred dollars, is a small markdown on a plainly named facial, and the highest is a first-visit HydraFacial special. The “Starting at” figure on this page is the lowest current listing, rebuilt daily; for anything else, ask the clinic for the total. Then pin down stated length, included steps, and which licence performs the service before comparing anything."
+    },
+    {
+      "question": "Why do some Irvine medspas not say what a facial costs online?",
+      "answer": "Because quoting after an assessment lets the clinic match the treatment to your skin and, more practically, introduce a package or membership before a number appears. Irvine states a figure on more of its facial listings than Newport Beach does, but a meaningful share still advertise only a percentage off, without the price it comes off. Ask by email for the list price of the single appointment, its length, and whether any consultation fee is credited against treatment. If the figure only arrives in person, treat that as information about how the clinic sells."
+    },
+    {
+      "question": "What is the cheapest facial cost in Irvine, and what is the catch?",
+      "answer": "The floor of this feed is a plainly named facial at a small markdown from its stated regular rate, so the first catch is how long the markdown lasts; the second is usually time rather than quality, since a cheaper line is often a shorter appointment with fewer steps. Ask what the identical booking costs on a return visit, whether the rate is restricted to weekday daytime slots, and what the add-on list costs in writing. An express appointment that covers the cleanse and extraction you actually wanted is not a compromise; one that omits extractions and then charges for them is."
+    },
+    {
+      "question": "Does a HydraFacial or other branded device facial cost more in Irvine?",
+      "answer": "Generally yes, because the clinic pays a per-treatment consumable cost — a branded tip and serums — on every appointment that a manual cleanse-and-extract protocol does not carry, and because these treatments are usually sold in tiers. The HydraFacial figure in the Irvine feed is a first-time-customer special on a ninety-minute appointment, and it does not settle which tier you would be quoted on a return visit, so ask directly: which tier the figure covers, which boosters sit inside it, and whether the machine on site is the branded system or a comparable hydradermabrasion device. Listings almost never say."
+    },
+    {
+      "question": "Do facials cost less in Tustin, Costa Mesa or Santa Ana than in Irvine?",
+      "answer": "Not on the figures we can see: the few facial prices Tustin and Costa Mesa publish sit above Irvine's, Santa Ana's listings state none, and all of those markets are too thin to call. Those inland cities are ten to twenty minutes out depending on traffic, which makes them realistic alternatives for a routine visit. Los Angeles is roughly forty-five to sixty minutes in light traffic and San Diego roughly an hour and a quarter to an hour and three quarters, so treat those as destinations for a course, not a maintenance facial. Compare one identically named treatment at one stated length across the corridor before deciding what the shorter drive is worth."
+    },
+    {
+      "question": "Why does a medical facial cost more than a spa facial in California?",
+      "answer": "Because scope of practice determines staffing, and staffing is most of what you are paying for. The Board of Barbering and Cosmetology regulates estheticians under the Barbering and Cosmetology Act, and a basic facial falls inside that licence when performed within the licensee's training. Anything involving prescription products, injections, lasers or peels that penetrate or remove living tissue falls under the Medical Practice Act and the Medical Board of California and requires medical qualification or a supervised delegation arrangement. Ask which licence will perform your specific booking and confirm the service sits inside it, because the word 'facial' on a menu settles nothing."
+    },
+    {
+      "question": "Do memberships and packages actually lower what facials cost in Irvine?",
+      "answer": "Only if your real booking habit matches the billing cycle, since a recurring charge bills whether you attend or not. Some Irvine discounts are for members only, so run the charge across the full minimum term and divide by the visits you actually made last year. Then read the rollover clause for unused visits, the minimum term, and the notice period to cancel. In a city with this many clinics within a short drive, a long lock-in is worth less than the headline discount suggests."
+    },
+    {
+      "question": "Does the time of year change what a facial costs in Irvine?",
+      "answer": "Availability moves more than anything, and the published figures here are markdowns and specials that can end at any time. Bookings tighten ahead of spring and summer weddings, graduation season around UC Irvine, and the holiday party run, particularly at the clinics clustered near Irvine Spectrum and along the Endeavor corridor. Peel and resurfacing courses are conventionally sequenced toward cooler months and away from heavy sun exposure, so promotions on those tend to surface before that season rather than during it. Ask whether weekday and weekend appointments are charged differently."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 209,
+    "medspaDensity": "Dense for a city of this size, though no authoritative government count exists: directory results for Irvine medspas range from roughly a dozen to the high teens depending on the publisher, and those counts should be read as indicators rather than a census. Listings cluster along Laguna Canyon Road near Irvine Spectrum, around the Endeavor address in the 92618 business park, and through the medical-office blocks near the 405 and 5. Branded multi-site operators advertising weekend hours sit alongside independent skin studios and cosmetic dermatology practices. For facials specifically, most of the Irvine listings we track do state a figure, which makes this market easier to compare than Newport Beach next door.",
+    "demographicNotes": "The 2020 decennial Census recorded 307,670 residents and a later American Community Survey estimate puts the city near 308,000, with a median age of about 33.9 and a median household income of $129,647. That combination — high earnings and a young, heavily professional and student population anchored by UC Irvine — is unusual, and it shapes the menus: maintenance, congestion and brightening protocols booked around work, with memberships aimed at repeat visits. It may also help explain why the few published Irvine figures are modest by Orange County standards, though too few clinics here state one to call that a pattern.",
+    "competitionNotes": "Competition in Irvine runs on convenience, membership terms, physician oversight and add-ons rather than on dramatic differences in what a visit costs, partly because so many clinics sit in the same two or three corridors and can see each other's menus. Tustin, Costa Mesa and Santa Ana are ten to twenty minutes away depending on traffic, though the few facial figures they publish do not undercut Irvine's, while Newport Beach a few miles west prices for its address. Los Angeles is roughly forty-five to sixty minutes in light traffic and San Diego roughly seventy-five minutes to nearly two hours, which makes both plausible for a course of treatment but not for a routine facial. Every one of those drive times is traffic-sensitive rather than fixed."
+  }
+}

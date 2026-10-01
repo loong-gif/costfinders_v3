@@ -9,7 +9,10 @@ import {
   useRef,
   useState,
 } from 'react'
-import { adminSignInAction, adminSignOutAction } from '@/lib/actions/admin-auth'
+import {
+  adminSignInAction,
+  sendAdminMagicLinkAction,
+} from '@/lib/actions/admin-auth'
 import type { AdminProfile } from '@/lib/actions/admin-profile'
 import { getAdminProfileAction } from '@/lib/actions/admin-profile'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
@@ -29,6 +32,14 @@ interface AdminAuthState {
 interface AdminAuthContextValue {
   state: AdminAuthState
   signIn: (email: string, password: string) => Promise<void>
+  /**
+   * Request a sign-in link. Resolves with the result instead of throwing, and never touches
+   * `state.error`: the caller is still sitting on the login form with the password path
+   * intact, so a failed send is not a failed sign-in. MagicLinkButton renders the outcome.
+   */
+  sendMagicLink: (
+    email: string,
+  ) => Promise<{ success: boolean; error?: string }>
   signOut: () => void
 }
 
@@ -82,18 +93,6 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     } = await supabase.auth.getUser()
 
     if (!authUser?.email) {
-      setState({
-        admin: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
-      return
-    }
-
-    // Only hydrate if the user has an admin role
-    const userRole = authUser.user_metadata?.role as string | undefined
-    if (userRole !== 'admin') {
       setState({
         admin: null,
         isAuthenticated: false,
@@ -179,16 +178,27 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   // -------------------------------------------------------------------
-  // signOut — calls server action, clears state
+  // signOut — through the shared browser client, then clears state
   // -------------------------------------------------------------------
+  // Through the shared browser client, as in authContext's signOut: one call revokes the
+  // session, clears the cookies and emits SIGNED_OUT to the header's contexts. The old server
+  // action's result was ignored, so a failed sign-out still flipped this state, landed on
+  // /admin, and /admin's own provider found the live session and sent the admin straight back.
   const signOut = useCallback(() => {
-    adminSignOutAction().then(() => {
-      setState({
-        admin: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
+    supabaseRef.current.auth.signOut().then(({ error }) => {
+      setState(
+        error
+          ? (prev) => ({
+              ...prev,
+              error: "We couldn't sign you out. Please try again.",
+            })
+          : {
+              admin: null,
+              isAuthenticated: false,
+              isLoading: false,
+              error: null,
+            },
+      )
     })
   }, [])
 
@@ -199,6 +209,10 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       state,
       signIn,
+      // Passed straight through: a module-level server action is already a stable
+      // reference, and there is no session state to hydrate until the emailed link is
+      // followed — that lands on /auth/callback, in a fresh request.
+      sendMagicLink: sendAdminMagicLinkAction,
       signOut,
     }),
     [state, signIn, signOut],

@@ -1,205 +1,126 @@
-/** Matches `master_business_info` table */
-export interface Business {
-  business_id: number
-  name: string | null
-  address: string | null
-  city: string | null
-  website: string | null
-  /** @deprecated DB column is `website`; kept optional for older UI paths */
-  website_clean?: string | null
-  review_count: number | null
-  score: number | null
-  category: string | null
-  facebook_url: string | null
-  instagram_url: string | null
-  membership: Record<string, unknown> | null
-  process_flag: string | null
-  created_at: string | null
-  updated_at: string | null
+/**
+ * App-facing aliases over the generated schema types.
+ *
+ * This file used to be 67 hand-written lines declaring 31 columns on a 16-column table. That
+ * is how a reference to a nonexistent `original_price` — and later 22 dropped columns — passed
+ * a clean typecheck. Every row shape now comes from `./supabase.generated.ts`, which is
+ * regenerated from the live schema. Only the composites the app assembles itself live here.
+ */
+import type { Database } from './supabase.generated'
+
+type Row<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Row']
+
+/** `master_business_info`. `membership` and `process_flag` are gone; `google_place_id` and `logo` are new. */
+export type Business = Row<'master_business_info'>
+
+/**
+ * `public_business_directory`, the only business relation anon may read: no business_id, phone,
+ * website or socials, and the provider route's slug computed in SQL.
+ */
+export type PublicBusiness =
+  Database['public']['Views']['public_business_directory']['Row']
+
+/**
+ * The TRUE `promo_offer_master` row: 18 columns and not one more.
+ *
+ * Everything the app used to read off this row — service_name, service_category, unit_type,
+ * start_date, end_date — now lives in a joined table. Read those from `OfferView`, which the
+ * data layer resolves. See `src/lib/data/offers.ts`.
+ */
+export type Offer = Row<'promo_offer_master'>
+
+export type ClinicService = Row<'clinic_services'>
+
+/**
+ * The service taxonomy, as the database's own enum.
+ *
+ * Typed rather than `string` because this vocabulary has now been replaced under the repo
+ * TWICE, and both times every lookup keyed on it had a total fallback, so the site quietly
+ * bucketed real inventory into "Other" with no error anywhere. Keying CATEGORY_MAP and
+ * DB_TO_TREATMENT on this type makes both drift directions a compile error instead: a key that
+ * no longer exists fails, and a new enum member that nothing maps fails too.
+ */
+export type ClinicServiceCategory = ClinicService['service_category']
+export type ClinicPromotion = Row<'clinic_promotions'>
+export type ClinicMembership = Row<'clinic_memberships'>
+export type OfferItem = Row<'promo_offer_items'>
+
+/**
+ * The business columns joined onto offer queries.
+ *
+ * This is the admin shape (BUSINESS_JOIN_WITH_IDENTITY in `src/lib/data/offers.ts`). A consumer
+ * row comes from the public_offers view, whose master_business_info carries business_id and city
+ * and nulls for every identity field.
+ */
+export type OfferBusiness = Pick<
+  Business,
+  | 'business_id'
+  | 'name'
+  | 'address'
+  | 'city'
+  | 'score'
+  | 'review_count'
+  | 'category'
+  | 'website'
+>
+
+/** An offer row plus its embedded business. */
+export interface OfferWithBusiness extends Offer {
+  master_business_info: OfferBusiness | null
 }
 
-export interface ClinicServiceRef {
+/**
+ * An offer with the normalized schema flattened back onto it.
+ *
+ * The app reads `offer.service_name` / `offer.service_category` / `offer.unit_type` in 20
+ * files. Rather than rewrite all of them against the join, the data layer resolves those
+ * fields once — in `flattenOffer()` — and hands back this shape. The field names are
+ * deliberately the ones the old denormalized table used, so components did not change.
+ *
+ * Fields with NO carrier in the new schema are absent, not faked: `template_type`, `channel`,
+ * `source_name`, `is_package`, `min_unit`, `cancellation_policy` and free-text `eligibility`
+ * are gone. `is_new_customer_required` and `is_membership_required` survive on `Offer` and are
+ * the structured replacement for the last of those.
+ *
+ * Most of these resolve for a MINORITY of offers. Coverage, measured over 1000 rows:
+ * service_name 999, service_category 849, unit_type 266, end_date 104, start_date 68,
+ * service_area 135, membership_name 325. Treat absence as the normal case.
+ */
+export interface OfferView extends OfferWithBusiness {
+  /** `promo_offer_items.item_name` of the lowest `offer_item_id`, else `offer_raw_text`. */
   service_name: string | null
-  service_category: string | null
-  unit_type?: string | null
-}
-
-export interface PromoOfferItem {
-  offer_item_id: number
-  offer_id: number
-  service_id: number | null
-  quantity: number | null
-  unit_price?: number | null
-  /** Derived / legacy */
-  item_name?: string | null
-  unit_type?: string | null
-  clinic_services?: ClinicServiceRef | ClinicServiceRef[] | null
-}
-
-export interface ClinicPromotion {
-  promotion_id: number
-  business_id: number
-  promotion_title: string
-  source_url: string
-}
-
-export interface ClinicMembership {
-  plan_id: number
-  business_id: number
-  membership_name: string
-  membership_price: number
+  /** `clinic_services.service_category` of the lowest item that resolves one. 151/1000 resolve none. */
+  service_category: ClinicServiceCategory | null
+  /**
+   * The SERVICE's unit vocabulary (Botox is sold in units), NOT this offer's price basis — a
+   * "40 units for $299" package has unit_type 'unit' too. NULL on 874 of 1056 services. Never
+   * print it next to a price; `offerPriceBasis()` in src/lib/data/adapters.ts reads it as one
+   * input among several.
+   */
+  unit_type: string | null
+  /**
+   * How many `promo_offer_items` the offer has. A bundle of different treatments shares one
+   * price across them, so its representative item's `delivered_units` is not what the price buys.
+   */
+  item_count: number
+  /** 135/1000 — 5% of services. Do not build a filter or facet on this. */
+  service_area: string | null
+  /** `clinic_services.source_url`, else the promotion's. */
+  source_url: string | null
+  /** `promo_offer_items.delivered_units` of the representative item — the delivered count. */
+  delivered_units: number | null
+  /** `promo_offer_items.unit_price`. DB-computed by trigger; never app-supplied. */
+  unit_price: number | null
+  /** `clinic_promotions.campaign_start_date`. 68/1000. */
+  start_date: string | null
+  /** `clinic_promotions.campaign_end_date`. 104/1000, and only 41 of 678 active offers. */
+  end_date: string | null
+  promotion_title: string | null
+  /** 325/1000, but 100% of the 261 membership rows are named. */
+  membership_name: string | null
+  membership_price: number | null
+  /** Clean 4-value enum: monthly / annual / one_time / quarterly. */
   billing_period: string | null
   minimum_commitment_months: number | null
-  benefits: string[] | null
-  source_url: string | null
-  created_at: string | null
-  updated_at: string | null
-}
-
-/** Matches `promo_offer_master` table */
-export interface Offer {
-  id: number
-  business_id: number | null
-  membership_plan_id: number | null
-  promotion_id: number | null
-  regular_price: number | null
-  discount_price: number | null
-  discount_percent: number | null
-  discount_amount: number | null
-  is_membership_required: boolean | null
-  is_active: boolean
-  is_new_customer_required: boolean
-  offer_fingerprint: string | null
-  offer_raw_text: string | null
-  price_model?: string | null
-  created_at: string | null
-  updated_at?: string | null
-  promo_offer_items?: PromoOfferItem[] | PromoOfferItem | null
-  clinic_promotions?: ClinicPromotion | ClinicPromotion[] | null
-  /** Legacy / derived for UI compatibility */
-  service_category?: string | null
-  service_name?: string | null
-  source_url?: string | null
-  source_name?: string | null
-  unit_type?: string | null
-  min_unit?: number | null
-  original_price?: number | null
-  template_type?: string | null
-  start_date?: string | null
-  end_date?: string | null
-  eligibility?: string | null
-  moderation_status?: string | null
-  last_verified_at?: string | null
-}
-
-/** Offer joined with business info for display */
-export interface OfferWithBusiness extends Offer {
-  master_business_info: Pick<
-    Business,
-    | 'business_id'
-    | 'name'
-    | 'address'
-    | 'city'
-    | 'score'
-    | 'review_count'
-    | 'category'
-    | 'website'
-  > | null
-}
-
-function firstItem(offer: Offer): PromoOfferItem | null {
-  const items = offer.promo_offer_items
-  if (Array.isArray(items)) return items[0] ?? null
-  return items ?? null
-}
-
-function itemService(item: PromoOfferItem | null): ClinicServiceRef | null {
-  if (!item?.clinic_services) return null
-  return Array.isArray(item.clinic_services)
-    ? (item.clinic_services[0] ?? null)
-    : item.clinic_services
-}
-
-export function offerItemName(offer: Offer): string {
-  const item = firstItem(offer)
-  const service = itemService(item)
-  return (
-    service?.service_name?.trim() ||
-    item?.item_name?.trim() ||
-    offer.service_name?.trim() ||
-    ''
-  )
-}
-
-export function offerServiceCategory(offer: Offer): string {
-  const service = itemService(firstItem(offer))
-  return (
-    service?.service_category?.trim() || offer.service_category?.trim() || ''
-  )
-}
-
-export function offerSourceUrl(offer: Offer): string {
-  const promo = offer.clinic_promotions
-  if (Array.isArray(promo) && promo.length > 0) {
-    return promo[0]?.source_url?.trim() || ''
-  }
-  if (promo && !Array.isArray(promo)) {
-    return promo.source_url?.trim() || ''
-  }
-  return offer.source_url?.trim() || ''
-}
-
-export function offerUnitType(offer: Offer): string {
-  const item = firstItem(offer)
-  const service = itemService(item)
-  return (
-    service?.unit_type?.trim() ||
-    item?.unit_type?.trim() ||
-    offer.unit_type?.trim() ||
-    ''
-  )
-}
-
-export function offerItemQuantity(offer: Offer): number | null {
-  return firstItem(offer)?.quantity ?? null
-}
-
-export function offerItemUnitPrice(offer: Offer): number | null {
-  const price = firstItem(offer)?.unit_price
-  return price ?? null
-}
-
-/** e.g. "3 units · $100/unit" — null when nothing meaningful to show */
-export function formatItemDetailLine(
-  quantity: number | null | undefined,
-  unitPrice: number | null | undefined,
-  unitType: string,
-): string | null {
-  const hasQty = quantity != null
-  const hasUnitPrice = unitPrice != null && unitPrice > 0
-  if (!hasQty && !hasUnitPrice) return null
-
-  const unit = unitType.trim() || 'unit'
-  const perLabel = unit !== 'package' ? unit : 'unit'
-  const parts: string[] = []
-
-  if (hasQty) {
-    if (unit === 'unit') {
-      parts.push(quantity === 1 ? '1 unit' : `${quantity} units`)
-    } else {
-      parts.push(`${quantity} ${unit}`)
-    }
-  }
-  if (hasUnitPrice) {
-    parts.push(`$${unitPrice.toLocaleString()}/${perLabel}`)
-  }
-  return parts.join(' · ')
-}
-
-export function offerItemDetailLine(offer: Offer): string | null {
-  return formatItemDetailLine(
-    offerItemQuantity(offer),
-    offerItemUnitPrice(offer),
-    offerUnitType(offer),
-  )
 }

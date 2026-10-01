@@ -18,30 +18,35 @@ const factorIcons = [
 interface CityFactorsProps {
   content: GuideContent['whatAffectsPricing']
   cityLabel: string
+  treatmentLabel: string
 }
 
-export function CityFactors({ content, cityLabel }: CityFactorsProps) {
+export function CityFactors({
+  content,
+  cityLabel,
+  treatmentLabel,
+}: CityFactorsProps) {
   return (
     <section className="mb-10">
-      <h2 className="text-2xl font-bold text-[#451a03] mb-3">
-        What affects pricing in {cityLabel}
+      <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary mb-3">
+        What affects {treatmentLabel.toLowerCase()} cost in {cityLabel}
       </h2>
-      <p className="text-[#78350f]/80 mb-6">{content.intro}</p>
+      <p className="text-text-secondary mb-6">{content.intro}</p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {content.factors.map((item, i) => (
           <div
             key={item.factor}
-            className="flex gap-4 bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-5"
+            className="flex gap-4 bg-bg-elevated border border-border-default rounded-xl p-5"
           >
-            <div className="text-amber-800 shrink-0 mt-0.5">
+            <div className="text-text-muted shrink-0 mt-0.5">
               {factorIcons[i % factorIcons.length]}
             </div>
             <div>
-              <h3 className="font-semibold text-[#451a03] mb-1">
+              <h3 className="font-display font-semibold text-text-primary mb-1">
                 {item.factor}
               </h3>
-              <p className="text-sm text-[#78350f]/80">{item.explanation}</p>
+              <p className="text-sm text-text-secondary">{item.explanation}</p>
             </div>
           </div>
         ))}

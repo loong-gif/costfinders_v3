@@ -7,10 +7,12 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean
 }
 
+// A card is white with a hairline (MASTER.md); grey is for bands, pills and inputs. The
+// variant names are Warm Sand's — 'glass' is just the default card now.
 const variants = {
-  glass: 'bg-[#f2ebe2] border border-[#d4c4b0] rounded-[10px]',
-  solid: 'bg-[#f2ebe2] border border-[#d4c4b0] shadow-md',
-  outline: 'bg-transparent border border-[#d4c4b0]',
+  glass: 'bg-bg-elevated border border-border-default',
+  solid: 'bg-bg-elevated border border-border-default shadow-md',
+  outline: 'bg-transparent border border-border-default',
 }
 
 const paddings = {
@@ -31,10 +33,10 @@ export function Card({
   return (
     <div
       className={`
-        rounded-2xl
+        rounded-xl
         ${variants[variant]}
         ${paddings[padding]}
-        ${hover ? 'transition-all duration-200 hover:border-[#c4b09a] hover:shadow-elevated cursor-pointer' : ''}
+        ${hover ? 'transition-all duration-200 hover:border-border-hover hover:shadow-md cursor-pointer' : ''}
         ${className}
       `}
       {...props}
@@ -62,7 +64,9 @@ export function CardTitle({
   className?: string
 }) {
   return (
-    <h3 className={`text-lg font-semibold text-[#451a03] ${className}`}>
+    <h3
+      className={`font-display text-lg font-semibold text-text-primary ${className}`}
+    >
       {children}
     </h3>
   )
@@ -76,7 +80,9 @@ export function CardDescription({
   className?: string
 }) {
   return (
-    <p className={`text-sm text-[#78350f] mt-1 ${className}`}>{children}</p>
+    <p className={`text-sm text-text-secondary mt-1 ${className}`}>
+      {children}
+    </p>
   )
 }
 
@@ -98,7 +104,7 @@ export function CardFooter({
   className?: string
 }) {
   return (
-    <div className={`mt-4 pt-4 border-t border-[#d4c4b0] ${className}`}>
+    <div className={`mt-4 pt-4 border-t border-border-default ${className}`}>
       {children}
     </div>
   )

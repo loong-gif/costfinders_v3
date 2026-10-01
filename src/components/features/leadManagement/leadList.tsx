@@ -3,7 +3,6 @@
 import {
   Calendar,
   Clock,
-  CurrencyDollar,
   Envelope,
   MagnifyingGlass,
   SpinnerGap,
@@ -19,8 +18,9 @@ import { Input } from '@/components/ui/input'
 import { getClaimsForBusinessAction } from '@/lib/actions/business-claims'
 import type { ClaimRow } from '@/lib/actions/claims'
 import { getOfferById } from '@/lib/data/offers'
+import { formatDateOnly } from '@/lib/utils/dateOnly'
 import type { ClaimStatus } from '@/types/claim'
-import type { Offer } from '@/types/supabase'
+import type { OfferView } from '@/types/supabase'
 
 type FilterTab = 'all' | 'pending' | 'active' | 'completed' | 'cancelled'
 
@@ -45,17 +45,19 @@ function formatRelativeTime(dateString: string): string {
   return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) === 1 ? '' : 's'} ago`
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  })
-}
-
 function getCustomerDisplay(consumerId: string): string {
   // Show a short hash of the consumer UUID for display
   return `Customer #${consumerId.slice(-4).toUpperCase()}`
+}
+
+/** The deal as it is now, else the title snapshotted at claim time (when that column exists). */
+function leadDealTitle(
+  claim: ClaimRow & { deal_title?: string | null },
+  deal: OfferView | null | undefined,
+): string {
+  return (
+    deal?.service_name ?? claim.deal_title ?? 'This deal is no longer listed'
+  )
 }
 
 function getTabFilter(tab: FilterTab): (claim: ClaimRow) => boolean {
@@ -77,7 +79,7 @@ export function LeadList({ businessId }: LeadListProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [allClaims, setAllClaims] = useState<ClaimRow[]>([])
-  const [dealMap, setDealMap] = useState<Record<number, Offer | null>>({})
+  const [dealMap, setDealMap] = useState<Record<number, OfferView | null>>({})
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -125,9 +127,7 @@ export function LeadList({ businessId }: LeadListProps) {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter((claim) => {
-        const deal = dealMap[claim.deal_id]
-        const dealTitle =
-          deal?.service_name ?? deal?.source_name ?? `Deal #${claim.deal_id}`
+        const dealTitle = leadDealTitle(claim, dealMap[claim.deal_id])
         return (
           dealTitle.toLowerCase().includes(query) ||
           getCustomerDisplay(claim.consumer_id).toLowerCase().includes(query)
@@ -166,8 +166,10 @@ export function LeadList({ businessId }: LeadListProps) {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
-          <p className="text-[#78350f] mt-1">
+          <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+            Leads
+          </h1>
+          <p className="text-text-secondary mt-1">
             Manage customer inquiries and bookings
           </p>
         </div>
@@ -176,9 +178,9 @@ export function LeadList({ businessId }: LeadListProps) {
             <SpinnerGap
               size={48}
               weight="light"
-              className="mx-auto text-[#92400e] mb-4 animate-spin"
+              className="mx-auto text-text-muted mb-4 animate-spin"
             />
-            <p className="text-[#78350f]">Loading leads...</p>
+            <p className="text-text-secondary">Loading leads...</p>
           </div>
         </Card>
       </div>
@@ -190,8 +192,10 @@ export function LeadList({ businessId }: LeadListProps) {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
-          <p className="text-[#78350f] mt-1">
+          <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+            Leads
+          </h1>
+          <p className="text-text-secondary mt-1">
             Manage customer inquiries and bookings
           </p>
         </div>
@@ -200,12 +204,12 @@ export function LeadList({ businessId }: LeadListProps) {
             <WarningCircle
               size={48}
               weight="light"
-              className="mx-auto text-amber-800 mb-4"
+              className="mx-auto text-text-secondary mb-4"
             />
-            <h3 className="text-lg font-medium text-[#451a03] mb-2">
+            <h3 className="text-lg font-medium text-text-primary mb-2">
               Unable to load leads
             </h3>
-            <p className="text-[#78350f] max-w-sm mx-auto">{error}</p>
+            <p className="text-text-secondary max-w-sm mx-auto">{error}</p>
           </div>
         </Card>
       </div>
@@ -215,23 +219,13 @@ export function LeadList({ businessId }: LeadListProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-[#451a03]">Leads</h1>
-          <p className="text-[#78350f] mt-1">
-            Manage customer inquiries and bookings
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          {/* View Pricing Link */}
-          <Link
-            href="/business/dashboard/leads/pricing"
-            className="flex items-center gap-2 px-3 py-2 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl text-sm font-medium text-[#78350f] hover:text-[#451a03] hover:border-[#d4c4b0]-hover transition-colors"
-          >
-            <CurrencyDollar size={18} weight="light" />
-            <span>View Pricing</span>
-          </Link>
-        </div>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-text-primary tracking-tight">
+          Leads
+        </h1>
+        <p className="text-text-secondary mt-1">
+          Manage customer inquiries and bookings
+        </p>
       </div>
 
       {/* Filters and Search */}
@@ -247,8 +241,8 @@ export function LeadList({ businessId }: LeadListProps) {
                   px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2
                   ${
                     activeTab === tab.id
-                      ? 'bg-amber-800 text-white'
-                      : 'bg-[#f2ebe2] text-[#78350f] hover:text-[#451a03] hover:bg-[#faf5ee]'
+                      ? 'bg-text-primary text-white'
+                      : 'bg-bg-surface text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
                   }
                 `}
                 type="button"
@@ -256,8 +250,7 @@ export function LeadList({ businessId }: LeadListProps) {
                 {tab.label}
                 <span
                   className={`
-                    px-1.5 py-0.5 rounded-md text-xs font-medium
-                    ${activeTab === tab.id ? 'bg-[#faf5ee]' : 'bg-[#faf5ee]'}
+                    px-1.5 py-0.5 rounded-md text-xs font-medium bg-bg-elevated text-text-primary
                   `}
                 >
                   {tabCounts[tab.id]}
@@ -272,7 +265,7 @@ export function LeadList({ businessId }: LeadListProps) {
               <MagnifyingGlass
                 size={20}
                 weight="light"
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#92400e]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
               />
               <Input
                 type="text"
@@ -293,12 +286,12 @@ export function LeadList({ businessId }: LeadListProps) {
             <Envelope
               size={48}
               weight="light"
-              className="mx-auto text-[#92400e] mb-4"
+              className="mx-auto text-text-muted mb-4"
             />
-            <h3 className="text-lg font-medium text-[#451a03] mb-2">
+            <h3 className="text-lg font-medium text-text-primary mb-2">
               {searchQuery ? 'No leads found' : 'No leads yet'}
             </h3>
-            <p className="text-[#78350f] max-w-sm mx-auto">
+            <p className="text-text-secondary max-w-sm mx-auto">
               {searchQuery
                 ? 'Try adjusting your search query'
                 : activeTab === 'all'
@@ -310,11 +303,7 @@ export function LeadList({ businessId }: LeadListProps) {
       ) : (
         <div className="space-y-4">
           {filteredClaims.map((claim) => {
-            const deal = dealMap[claim.deal_id]
-            const dealTitle =
-              deal?.service_name ??
-              deal?.source_name ??
-              `Deal #${claim.deal_id}`
+            const dealTitle = leadDealTitle(claim, dealMap[claim.deal_id])
 
             return (
               <Link
@@ -324,28 +313,28 @@ export function LeadList({ businessId }: LeadListProps) {
                 <Card
                   variant="glass"
                   padding="lg"
-                  className="hover:border-[#d4c4b0]-hover transition-colors cursor-pointer"
+                  className="hover:border-border-default-hover transition-colors cursor-pointer"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     {/* Customer & Deal Info */}
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center flex-shrink-0">
                           <Users
                             size={20}
                             weight="fill"
-                            className="text-amber-800"
+                            className="text-text-secondary"
                           />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-[#451a03]">
+                          <p className="font-medium text-text-primary">
                             {getCustomerDisplay(claim.consumer_id)}
                           </p>
-                          <div className="flex items-center gap-1.5 text-sm text-[#78350f]">
+                          <div className="flex items-center gap-1.5 text-sm text-text-secondary">
                             <Tag
                               size={14}
                               weight="fill"
-                              className="text-[#92400e] flex-shrink-0"
+                              className="text-text-muted flex-shrink-0"
                             />
                             <span className="truncate">{dealTitle}</span>
                           </div>
@@ -354,16 +343,20 @@ export function LeadList({ businessId }: LeadListProps) {
 
                       {/* Preferred Date/Time */}
                       {(claim.preferred_date || claim.preferred_time) && (
-                        <div className="flex items-center gap-4 text-sm text-[#78350f] ml-13">
+                        <div className="flex items-center gap-4 text-sm text-text-secondary ml-13">
                           {claim.preferred_date && (
                             <div className="flex items-center gap-1.5">
                               <Calendar
                                 size={14}
                                 weight="regular"
-                                className="text-[#92400e]"
+                                className="text-text-muted"
                               />
                               <span>
-                                Requested: {formatDate(claim.preferred_date)}
+                                Requested:{' '}
+                                {formatDateOnly(claim.preferred_date, {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
                               </span>
                             </div>
                           )}
@@ -372,7 +365,7 @@ export function LeadList({ businessId }: LeadListProps) {
                               <Clock
                                 size={14}
                                 weight="regular"
-                                className="text-[#92400e]"
+                                className="text-text-muted"
                               />
                               <span>{claim.preferred_time}</span>
                             </div>
@@ -387,7 +380,7 @@ export function LeadList({ businessId }: LeadListProps) {
                         status={claim.status as ClaimStatus}
                         size="md"
                       />
-                      <p className="text-sm text-[#92400e]">
+                      <p className="text-sm text-text-muted">
                         {formatRelativeTime(claim.created_at)}
                       </p>
                     </div>

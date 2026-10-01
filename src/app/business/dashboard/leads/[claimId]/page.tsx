@@ -16,6 +16,8 @@ export default function LeadDetailPage({ params }: LeadDetailPageProps) {
   const { claimId } = use(params)
   const { state } = useBusinessAuth()
   const businessId = state.owner?.businessId
+  // The auth uid, not the bigint business id — MessageThread keys off it (see LeadDetail).
+  const ownerId = state.owner?.id
 
   const [claim, setClaim] = useState<ClaimRow | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -52,10 +54,12 @@ export default function LeadDetailPage({ params }: LeadDetailPageProps) {
     loadClaim()
   }, [loadClaim])
 
-  if (!businessId) {
+  if (!businessId || !ownerId) {
     return (
       <div className="text-center py-12">
-        <p className="text-[#78350f]">No business linked to your account.</p>
+        <p className="text-text-secondary">
+          No business linked to your account.
+        </p>
       </div>
     )
   }
@@ -67,9 +71,9 @@ export default function LeadDetailPage({ params }: LeadDetailPageProps) {
           <SpinnerGap
             size={48}
             weight="light"
-            className="mx-auto text-[#92400e] mb-4 animate-spin"
+            className="mx-auto text-text-muted mb-4 animate-spin"
           />
-          <p className="text-[#78350f]">Loading lead details...</p>
+          <p className="text-text-secondary">Loading lead details...</p>
         </div>
       </Card>
     )
@@ -82,14 +86,14 @@ export default function LeadDetailPage({ params }: LeadDetailPageProps) {
           <WarningCircle
             size={48}
             weight="light"
-            className="mx-auto text-amber-800 mb-4"
+            className="mx-auto text-text-secondary mb-4"
           />
-          <h3 className="text-lg font-medium text-[#451a03] mb-2">
+          <h3 className="text-lg font-medium text-text-primary mb-2">
             {error === 'Claim not found.' || error === 'Lead not found'
               ? 'Lead not found'
               : 'Unable to load lead'}
           </h3>
-          <p className="text-[#78350f] max-w-sm mx-auto">
+          <p className="text-text-secondary max-w-sm mx-auto">
             {error ?? 'The lead could not be found.'}
           </p>
         </div>
@@ -97,5 +101,5 @@ export default function LeadDetailPage({ params }: LeadDetailPageProps) {
     )
   }
 
-  return <LeadDetail claim={claim} businessId={businessId} />
+  return <LeadDetail claim={claim} businessId={businessId} ownerId={ownerId} />
 }

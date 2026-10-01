@@ -12,26 +12,22 @@ export function GuideFaq({ faqs, treatmentLabel, cityLabel }: GuideFaqProps) {
 
   return (
     <section className="mb-10">
-      <h2 className="text-2xl font-bold text-[#451a03] mb-6">
-        Frequently asked questions about {treatmentLabel.toLowerCase()} in{' '}
-        {cityLabel}
+      <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary mb-4">
+        {treatmentLabel} cost in {cityLabel}: frequently asked questions
       </h2>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-border-default border-y border-border-default">
         {faqs.map((faq) => (
-          <details
-            key={faq.question}
-            className="group bg-[#faf5ee] border border-[#d4c4b0] rounded-xl overflow-hidden"
-          >
-            <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none text-[#451a03] font-medium hover:bg-[#f2ebe2] transition-colors">
+          <details key={faq.question} className="group">
+            <summary className="flex items-center justify-between gap-4 min-h-[44px] py-4 cursor-pointer list-none text-text-primary font-medium">
               <span>{faq.question}</span>
               <CaretDown
                 size={18}
                 weight="bold"
-                className="shrink-0 text-[#78350f]/60 group-open:rotate-180 transition-transform"
+                className="shrink-0 text-text-muted group-open:rotate-180 transition-transform"
               />
             </summary>
-            <div className="px-5 pb-5 text-sm text-[#78350f]/80 leading-relaxed">
+            <div className="pb-5 pr-8 text-sm text-text-secondary leading-relaxed">
               {faq.answer}
             </div>
           </details>

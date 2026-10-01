@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "oklahoma-city",
+  "cityLabel": "Oklahoma City",
+  "state": "Oklahoma",
+  "stateCode": "OK",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Oklahoma City menus publish a measuring stick rather than a bill. Everything priced in this feed is quoted by the unit, so what you pay is an advertised rate multiplied by a dose your injector settles once your face is in front of them. Two things make the local lists harder to read than they look: several neurotoxins circulate here under the same per-unit shorthand, and one brand's unit does not buy what another's does. About three in four visible listings commit to a per-unit figure — the rest offer a discount, free units or a membership perk instead — and the practices that publish a rate are a short, self-selected list for a metro this size.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit, on the Botox Scale",
+        "description": "The default structure across the metro. A clinic posts what one unit costs and multiplies it by the count in your plan, so the same published figure covers a first-timer's frown lines and a full upper-face maintenance visit. Xeomin and Jeuveau are generally planned at counts close to Botox's, and in this feed their rates read almost interchangeably with the Botox listings, though no two products' units are formally equivalent. Most of the Botox-scale rates posted here are member prices, so ask what a non-member pays; beyond that, what the figure omits — consult fee, minimum unit purchase, injection or facility charge — is what to pin down before booking.",
+        "typicalRange": "high single digits into the low double digits per unit, with the branded Botox listings bunched just above the ten-dollar line"
+      },
+      {
+        "name": "Quoted on Dysport's Smaller Unit",
+        "description": "Dysport is measured in a finer division than Botox, and the cheapest advertised figure in the whole Oklahoma City feed is a Dysport rate — a number that buys correspondingly less. Published clinical work puts the conversion somewhere near 2.5 to 3 Dysport units per Botox unit and treats it as indication-specific rather than a fixed exchange rate. Note that most local Dysport listings are nowhere near that floor: the rest of them sit right inside the same band as the Botox-scale offers, which tells you the unit named on the wall does not by itself tell you what a visit costs.",
+        "typicalRange": "low single digits per Dysport unit at the very bottom, with the rest of the Dysport listings quoted inside the ordinary local band as they stand"
+      },
+      {
+        "name": "Introductory or New-Patient Per-Unit Rate",
+        "description": "Some advertised rates here carry a condition the headline figure hides. The cheapest Daxxify listing is a one-day-a-week promotion well below where the Botox-scale offers live, while the brand's other listings sit shoulder to shoulder with them; another clinic advertises its new-patient toxin as a starting price. Ask directly whether the advertised figure applies to your second and third visits, and whether it carries a minimum unit purchase or a package commitment.",
+        "typicalRange": "mid single digits per unit for the weekday Daxxify promotion; the new-patient offers start in the high single digits"
+      },
+      {
+        "name": "No Figure Published, Quoted After Assessment",
+        "description": "Roughly a quarter of the visible Oklahoma City offers name a discount, free units or a membership perk without stating the rate it applies to. That is normal for injectables, and it is still a pricing structure — it just moves the number into a room where you have less leverage. When you call, ask for the per-unit rate and the planned unit count in the same breath, and ask whether any consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; the total rests entirely on the count agreed in the chair"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four forces set a rate card in this metro, and they do not all pull the same way. Oklahoma City is a young, mid-income, unusually spread-out market with cheap commercial space, a state that keeps injection firmly inside medicine, and a much deeper aesthetic market three hours down I-35.",
+    "factors": [
+      {
+        "factor": "Oklahoma treats neuromodulator injection as medical practice",
+        "explanation": "The Oklahoma State Board of Medical Licensure and Supervision and the Oklahoma State Board of Osteopathic Examiners set out in their 2024 med-spa guidance that injecting a neuromodulator is the practice of medicine. Physicians may perform it; nurse practitioners and physician assistants work within their authorised scope and required physician relationships; registered nurses may inject where properly delegated and supervised. Oklahoma has not adopted full practice authority for nurse practitioners, so a med spa here generally carries a standing physician relationship as overhead — an expense a clinic in a looser-delegation state does not. Ask who the supervising or collaborating physician is, what licence your injector holds, and whether that physician ever sees patients on site."
+      },
+      {
+        "factor": "Occupancy cost well below the national baseline",
+        "explanation": "C2ER's 2025 Cost of Living Index put the Oklahoma City metro around 81 against a US baseline of 100, driven largely by housing and commercial rent. The vial costs a practice the same here as it does in Dallas, so the difference in what treatment costs shows up in rent, staffing and marketing rather than in product. That is a likely reason local per-unit rates read low against national figures, and a reason not to assume the gap holds in the most expensive corridors — the listings here do not show rates corridor by corridor."
+      },
+      {
+        "factor": "A city of more than six hundred square miles, with clinics clustered in a handful of corridors",
+        "explanation": "Practices concentrate where income, medical offices and retail parking overlap: Nichols Hills and Classen Curve, the Northwest Expressway and Memorial Road run, Quail Springs, Edmond, and the Yukon and Mustang side to the west, with a thinner scattering downtown and in Midtown. Because the municipal footprint is enormous, the corridor you shop in carries its own rent level, and a fifteen-minute detour along the Kilpatrick or the Broadway Extension can put you in a different one. Distance here is measured in highway minutes, not miles."
+      },
+      {
+        "factor": "Five brands competing for the same face on different dosing scales",
+        "explanation": "Botox holds the middle and top of the local listings, Dysport anchors the absolute floor on its smaller unit and shows the widest internal spread, Daxxify runs a close second from a weekday promotion up, and Xeomin and Jeuveau track just under the Botox band. Manufacturer loyalty programmes — Allergan's Allē, Galderma's Aspire for Dysport, Merz's programme for Xeomin, Evolus Rewards for Jeuveau, Revance's programme for Daxxify — move real money without touching the rate on the wall, and which one a clinic enrols you in can matter more over a year than a dollar of per-unit difference."
+      },
+      {
+        "factor": "Tulsa close, Dallas–Fort Worth reachable",
+        "explanation": "Tulsa is roughly an hour and three-quarters up the Turner Turnpike, Wichita around two and a half hours, and Dallas–Fort Worth about three to three and a half depending on destination and traffic. DFW is the deep market that theoretically caps what an Oklahoma City practice can charge for a large initial course — but toxin is a three-or-four-times-a-year purchase, and a six-hour-plus round trip rarely pencils out for it. In practice the competitive pressure that matters is between corridors inside the metro."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Very little of this is coupon hunting. In a market where several dosing scales circulate and not every clinic publishes a rate, the savings are made before you book, by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Cost a whole appointment in each brand, not the two per-unit rates",
+        "detail": "Ask any clinic that stocks more than one neurotoxin how many units your areas take in each product, and what the finished visit costs in each. Then set the totals side by side. Comparing advertised per-unit rates across brands is the most expensive mistake available here, because the lowest figure in the city is quoted on Dysport's smaller unit."
+      },
+      {
+        "tip": "Ask whether the advertised rate is a first-visit rate",
+        "detail": "Some brands in this market show a wide internal spread that owes more to weekday promotions and one low-priced clinic than to the product. Ask what the same product costs on your second visit, whether the promotional figure requires a minimum unit purchase, and whether it is tied to a package you have to buy in advance."
+      },
+      {
+        "tip": "Get the full visit costed in writing before the day",
+        "detail": "A per-unit rate says nothing about a consultation fee, a minimum spend that props up a small appointment, or whether a two-week review and any top-up is included or billed separately. Ask for the whole visit costed against your planned count by email, so the number you were quoted matches the number on the card reader."
+      },
+      {
+        "tip": "Collect one quote from a different corridor",
+        "detail": "Yukon, Mustang, Moore, Midwest City and parts of south Oklahoma City sit in a cheaper occupancy bracket than Nichols Hills, Classen Curve or the Memorial Road stretch, and on a clear run the drive is twenty to thirty minutes. Two extra quotes cost you an afternoon and move the number more than haggling will. If you stay near home anyway, the outside quote is still useful in the conversation."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms ahead of spring weddings and graduations, the December party stretch and summer travel, and January brings its own promotional push tied to new-year budgets. Toxin needs roughly two weeks to settle before a fixed date, so quiet stretches are when a first-visit rate or a prepaid course is genuinely negotiable. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 10.1,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with Dysport's smaller unit and starting-at prices left out of the local median rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and $13, near the middle of that published band, is the national marker. The median of the priced offers in Oklahoma City is $10.10 per unit — about 22 percent below that marker, which is roughly what a metro with composite household costs near 81 against a national baseline of 100 would lead you to expect."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Oklahoma City?",
+      "answer": "No honest page gives one number. Toxin is sold by the unit here, so the bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices publish, split by product; the branded Botox listings sit in a fairly tight band just into double digits, and the low outliers are explained by which product is being measured and whether the rate is a promotion. Settle two things before comparing quotes: which product the figure belongs to, and what else the visit carries."
+    },
+    {
+      "question": "Why does one Oklahoma City clinic's advertised Botox cost per unit look like a third of another's?",
+      "answer": "Because it is almost certainly not Botox. The floor of this market is a Dysport rate, and a Dysport unit is a finer division — published work puts the conversion near 2.5 to 3 to 1 and treats it as indication-specific rather than a fixed rate of exchange. Converted onto the Botox scale, that floor lands back inside the ordinary local band, which is exactly where most of the other Dysport listings here already sit. Ask for your planned unit count in each product and the finished cost of each visit."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician, not to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask as well how the practice handles a plan that grows once you are in the chair, and whether a two-week check is billed."
+    },
+    {
+      "question": "Does Botox cost less in Edmond, Yukon or Moore than it does in Nichols Hills?",
+      "answer": "It can, and the mechanism would be rent rather than product — the vial costs the same on either side of the Kilpatrick. The listings behind this page are Oklahoma City's own, so they cannot show that gap. Because the metro is spread out but not congested by big-city standards, an outer-suburb clinic is genuinely repeatable three or four times a year, which is rarely true of an out-of-town option. Get one quote outside the Nichols Hills and Memorial Road corridors for your planned count, and compare finished visit totals rather than per-unit rates."
+    },
+    {
+      "question": "Is Botox cheaper in Tulsa or Dallas than what it costs in Oklahoma City?",
+      "answer": "Tulsa is a smaller market with a similar cost base and is unlikely to be worth the turnpike run for a routine visit; Dallas–Fort Worth is far deeper and more competitive, but it is also three-plus hours each way and a higher-rent metro overall. Price the trip honestly against a purchase you repeat several times a year. For most buyers here the useful comparison is between corridors inside the Oklahoma City metro, not between metros."
+    },
+    {
+      "question": "Why does Daxxify cost so much less at one Oklahoma City clinic than another?",
+      "answer": "Daxxify's spread is second only to Dysport's in this feed: its cheapest local listing, a one-day-a-week promotion, sits below where the Botox-scale offers live, and the same listing names a regular rate only slightly higher, while the other Daxxify listings sit right alongside the Botox-scale offers. So most of the gap is that one clinic's rate card, not the promotion. Ask what rate applies on an ordinary visit, and ask for a costed twelve-month comparison against Botox — Daxxify is sold on duration, so the only fair comparison is how many visits you would actually drop in a year, multiplied out."
+    },
+    {
+      "question": "Who can legally inject Botox in Oklahoma, and does that change what it costs?",
+      "answer": "Guidance from the Oklahoma State Board of Medical Licensure and Supervision and the Oklahoma State Board of Osteopathic Examiners treats neuromodulator injection as medical practice. Physicians may inject; nurse practitioners and physician assistants act within their authorised scope and required physician relationships; registered nurses may inject under proper delegation and supervision. The supervision requirement is a live overhead line inside every compliant med spa, and local rates have to carry it. Ask for your injector's licence type, the name of the supervising or collaborating physician, and how that relationship is documented."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a smaller dosing unit, a new-patient offer or a slow-week promotion — but the question is reasonable. In April 2024 the FDA and CDC warned about counterfeit botulinum toxin turning up in several states and causing harmful reactions; the FDA advised patients to confirm the product came from an authorised source and flagged packaging tells, including a 150-unit vial strength not sold in the US and cartons whose wording differs from the approved labelling. Asking to see the sealed, labelled vial before it is drawn up is a normal request at any clinic."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 81.2,
+    "medspaDensity": "Substantial but strung out rather than concentrated, which follows from a municipal footprint of roughly 606 square miles. Aesthetic practices cluster where higher-income households, medical office space and easy parking overlap: Nichols Hills and Classen Curve, the Northwest Expressway and Memorial Road corridor, Quail Springs, Edmond, and the Yukon–Mustang side to the west, with a thinner presence downtown and in Midtown. No public registry counts Oklahoma City med spas or licensed injectors, and directory listings are not the same thing, so treat any density figure you see with suspicion. What matters more to a buyer is that only a modest number of local practices publish a per-unit figure at all.",
+    "demographicNotes": "The Census Bureau's QuickFacts puts the city near 713,000 residents in 2024 with median household income around $66,700 for 2019–2023, while the metro runs to roughly 1.46 million at about $72,100. Median age sits in the mid-thirties both in the city and across the metro, a younger profile than the classic maintenance-injectable patient, which shows up locally as a larger share of first-timers and preventative dosing alongside established repeat patients. Incomes are unevenly distributed across that large footprint, so the corridors where clinics cluster are noticeably better off than the metro median suggests.",
+    "competitionNotes": "Competition here is mostly internal and mostly geographic: the Nichols Hills and north-side corridors compete on positioning and injector reputation, while the western and southern suburbs compete on rate, and the metro is drivable enough that a patient can realistically shop across that divide. The practices that publish a per-unit figure — most of those in this feed, but a small share of the metro — exert pressure beyond their size, because they set the number every other clinic gets asked about on the phone. Outside the metro, Tulsa at under two hours and Dallas–Fort Worth at three-plus mainly bound what a local practice could charge for a large initial course; routine maintenance is priced by purely local forces."
+  }
+}

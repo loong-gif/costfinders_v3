@@ -3,17 +3,17 @@
 import {
   CheckCircle,
   DotsThreeVertical,
-  Eye,
   Prohibit,
   User,
 } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
-import type { Profile } from '@/lib/actions/profile'
+import type { AdminConsumer } from '@/lib/actions/admin-user-actions'
 
 interface ConsumerTableProps {
-  consumers: Profile[]
+  consumers: AdminConsumer[]
+  /** Asks for the change; the page confirms it before anything is written. */
   onStatusChange: (consumerId: string, status: 'active' | 'suspended') => void
 }
 
@@ -53,10 +53,18 @@ function ActionsDropdown({
   consumer,
   onStatusChange,
 }: {
-  consumer: Profile
+  consumer: AdminConsumer
   onStatusChange: (consumerId: string, status: 'active' | 'suspended') => void
 }) {
-  const [isOpen, setIsOpen] = useState(false)
+  // Where the open menu sits, in viewport coordinates; null = closed. The menu is `fixed`, not
+  // `absolute`: the table's overflow-x-auto wrapper and the card's overflow-hidden clipped an
+  // absolute menu, so on a one-row table "Suspend user" was cut off.
+  // ponytail: closes on scroll rather than tracking the button.
+  const [menuPos, setMenuPos] = useState<{
+    top: number
+    right: number
+  } | null>(null)
+  const isOpen = menuPos !== null
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown when clicking outside
@@ -66,60 +74,75 @@ function ActionsDropdown({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setMenuPos(null)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    if (!isOpen) return
+    const close = () => setMenuPos(null)
+    window.addEventListener('scroll', close, { capture: true, passive: true })
+    window.addEventListener('resize', close)
+    return () => {
+      window.removeEventListener('scroll', close, { capture: true })
+      window.removeEventListener('resize', close)
+    }
+  }, [isOpen])
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-[#faf5ee] transition-colors"
+        onClick={(e) => {
+          if (isOpen) return setMenuPos(null)
+          const rect = e.currentTarget.getBoundingClientRect()
+          setMenuPos({
+            top: rect.bottom + 4,
+            right: document.documentElement.clientWidth - rect.right,
+          })
+        }}
+        aria-expanded={isOpen}
+        className="p-2 rounded-lg hover:bg-bg-elevated transition-colors"
         aria-label="Actions"
       >
-        <DotsThreeVertical size={20} weight="bold" className="text-[#78350f]" />
+        <DotsThreeVertical
+          size={20}
+          weight="bold"
+          className="text-text-secondary"
+        />
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl shadow-elevated z-50 overflow-hidden">
-          <button
-            type="button"
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#451a03] hover:bg-[#faf5ee] transition-colors text-left"
-            onClick={() => {
-              setIsOpen(false)
-              // View details placeholder
-            }}
-          >
-            <Eye size={18} className="text-[#78350f]" />
-            View Details
-          </button>
+      {menuPos && (
+        <div
+          className="fixed w-48 bg-bg-surface border border-border-default rounded-xl shadow-elevated z-50 overflow-hidden"
+          style={menuPos}
+        >
           {consumer.status === 'active' ? (
             <button
               type="button"
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-[#faf5ee] transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-error hover:bg-bg-elevated transition-colors text-left"
               onClick={() => {
                 onStatusChange(consumer.id, 'suspended')
-                setIsOpen(false)
+                setMenuPos(null)
               }}
             >
               <Prohibit size={18} />
-              Suspend User
+              Suspend user
             </button>
           ) : (
             <button
               type="button"
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-emerald-600 hover:bg-[#faf5ee] transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-success hover:bg-bg-elevated transition-colors text-left"
               onClick={() => {
                 onStatusChange(consumer.id, 'active')
-                setIsOpen(false)
+                setMenuPos(null)
               }}
             >
               <CheckCircle size={18} />
-              Activate User
+              Reinstate user
             </button>
           )}
         </div>
@@ -135,13 +158,13 @@ export function ConsumerTable({
   if (consumers.length === 0) {
     return (
       <Card variant="glass" padding="lg" className="text-center py-12">
-        <div className="w-16 h-16 mx-auto rounded-full bg-amber-800/8 flex items-center justify-center mb-4">
-          <User size={32} weight="light" className="text-amber-800" />
+        <div className="w-16 h-16 mx-auto rounded-full bg-bg-surface flex items-center justify-center mb-4">
+          <User size={32} weight="light" className="text-text-secondary" />
         </div>
-        <h3 className="text-lg font-semibold text-[#451a03] mb-2">
+        <h3 className="font-display text-lg font-semibold text-text-primary mb-2">
           No users found
         </h3>
-        <p className="text-[#78350f]">
+        <p className="text-text-secondary">
           Try adjusting your search or filter criteria
         </p>
       </Card>
@@ -154,49 +177,49 @@ export function ConsumerTable({
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[#d4c4b0]">
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+            <tr className="border-b border-border-default">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Name
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
-                ID
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
+                Email
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Phone
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Verification
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Status
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Location
               </th>
-              <th className="text-left text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-left text-sm font-medium text-text-secondary px-6 py-4">
                 Joined
               </th>
-              <th className="text-right text-sm font-medium text-[#78350f] px-6 py-4">
+              <th className="text-right text-sm font-medium text-text-secondary px-6 py-4">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#d4c4b0]">
+          <tbody className="divide-y divide-border-default">
             {consumers.map((consumer) => (
               <tr
                 key={consumer.id}
-                className="hover:bg-[#faf5ee] transition-colors"
+                className="hover:bg-bg-elevated transition-colors"
               >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-amber-800/8 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-bg-surface flex items-center justify-center">
                       <User
                         size={16}
                         weight="fill"
-                        className="text-amber-800"
+                        className="text-text-secondary"
                       />
                     </div>
-                    <span className="text-sm font-medium text-[#451a03]">
+                    <span className="text-sm font-medium text-text-primary">
                       {consumer.first_name || consumer.last_name
                         ? `${consumer.first_name || ''} ${consumer.last_name || ''}`.trim()
                         : 'No name'}
@@ -204,12 +227,15 @@ export function ConsumerTable({
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f] font-mono text-xs">
+                  <span className="text-sm text-text-primary break-all">
+                    {consumer.email ?? 'No email on file'}
+                  </span>
+                  <span className="block text-xs text-text-muted font-mono">
                     {consumer.id.slice(0, 8)}
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f]">
+                  <span className="text-sm text-text-secondary">
                     {consumer.phone || '-'}
                   </span>
                 </td>
@@ -218,7 +244,7 @@ export function ConsumerTable({
                 </td>
                 <td className="px-6 py-4">{getStatusBadge(consumer.status)}</td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f]">
+                  <span className="text-sm text-text-secondary">
                     {consumer.location_city && consumer.location_state
                       ? `${consumer.location_city}, ${consumer.location_state}`
                       : consumer.location_city ||
@@ -227,7 +253,7 @@ export function ConsumerTable({
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="text-sm text-[#78350f]">
+                  <span className="text-sm text-text-secondary">
                     {formatDate(consumer.created_at)}
                   </span>
                 </td>
@@ -244,21 +270,28 @@ export function ConsumerTable({
       </div>
 
       {/* Mobile Card List */}
-      <div className="lg:hidden divide-y divide-[#d4c4b0]">
+      <div className="lg:hidden divide-y divide-border-default">
         {consumers.map((consumer) => (
           <div key={consumer.id} className="p-4 space-y-3">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-amber-800/8 flex items-center justify-center">
-                  <User size={20} weight="fill" className="text-amber-800" />
+                <div className="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center">
+                  <User
+                    size={20}
+                    weight="fill"
+                    className="text-text-secondary"
+                  />
                 </div>
                 <div>
-                  <p className="font-medium text-[#451a03]">
+                  <p className="font-medium text-text-primary">
                     {consumer.first_name || consumer.last_name
                       ? `${consumer.first_name || ''} ${consumer.last_name || ''}`.trim()
                       : 'No name'}
                   </p>
-                  <p className="text-sm text-[#78350f] font-mono text-xs">
+                  <p className="text-sm text-text-secondary break-all">
+                    {consumer.email ?? 'No email on file'}
+                  </p>
+                  <p className="text-xs text-text-muted font-mono">
                     {consumer.id.slice(0, 8)}
                   </p>
                 </div>
@@ -276,16 +309,16 @@ export function ConsumerTable({
 
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-[#92400e]">Location: </span>
-                <span className="text-[#451a03]">
+                <span className="text-text-muted">Location: </span>
+                <span className="text-text-primary">
                   {consumer.location_city && consumer.location_state
                     ? `${consumer.location_city}, ${consumer.location_state}`
                     : consumer.location_city || consumer.location_state || '-'}
                 </span>
               </div>
               <div>
-                <span className="text-[#92400e]">Joined: </span>
-                <span className="text-[#78350f]">
+                <span className="text-text-muted">Joined: </span>
+                <span className="text-text-secondary">
                   {formatDate(consumer.created_at)}
                 </span>
               </div>

@@ -1,7 +1,11 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { logger } from '@/lib/logger'
+import { after } from 'next/server'
+import { PUBLIC_OFFERS, resolveOfferTitle } from '@/lib/data/offers'
+import { notifyOwnerOfNewMessage } from '@/lib/email/ownerNotifications'
+import { publicErrorMessage } from '@/lib/errors/publicMessage'
+import { logger, logSupabaseError } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type {
   ConversationRow,
@@ -49,8 +53,18 @@ interface MutationResult {
 /** Maximum allowed message content length in characters. */
 const MAX_CONTENT_LENGTH = 2000
 
+/**
+ * Returned when a claim's business has no owner account, so no second party exists to hold a
+ * conversation. A module with 'use server' may only export async functions, so this is a
+ * literal rather than an exported constant; keep the two in step.
+ */
+const NO_BUSINESS_OWNER_ERROR = 'This business has not joined CostFinders yet.'
+
 /** Default number of messages to fetch per conversation. */
 const DEFAULT_MESSAGE_LIMIT = 100
+
+/** The owner gets at most one new-message email per conversation in this window. */
+const OWNER_EMAIL_THROTTLE_MS = 60 * 60 * 1000
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -65,11 +79,17 @@ function stripHtml(input: string): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Get or create a conversation for a given claim.
+ * Get or create the conversation for a claim.
  *
- * If a conversation already exists for the claim, it is returned directly.
- * Otherwise, a new conversation is created by resolving the business owner
- * from the claim's business_id via business_profiles.
+ * Delegates to `get_or_create_claim_conversation` (migration 20260910040002) because neither
+ * party can resolve the other from the client's own privileges: a consumer cannot read
+ * `business_profiles` (its only non-admin SELECT policy is `auth.uid() = id`), which is why
+ * this action used to fail on every call with 'Business owner profile not found for this
+ * claim.' and `conversations` sat at 0 rows. The function refuses anyone who is not a party.
+ *
+ * Returns `success: false` with NO_BUSINESS_OWNER_ERROR when the business has no owner
+ * account — the honest answer for 418 of 419 businesses, and not an error to alarm anyone
+ * with.
  */
 export async function getOrCreateConversationAction(
   claimId: string,
@@ -84,81 +104,35 @@ export async function getOrCreateConversationAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    // Check if conversation already exists for this claim
-    const { data: existing, error: existingError } = await supabase
-      .from('conversations')
-      .select('*')
-      .eq('claim_id', claimId)
-      .maybeSingle()
+    const { data, error } = await supabase.rpc(
+      'get_or_create_claim_conversation',
+      { p_claim_id: claimId },
+    )
 
-    if (existingError) {
-      return { success: false, error: existingError.message }
-    }
-
-    if (existing) {
-      return { success: true, conversation: existing as ConversationRow }
-    }
-
-    // Get claim details to resolve participants
-    const { data: claim, error: claimError } = await supabase
-      .from('claims')
-      .select('consumer_id, business_id')
-      .eq('id', claimId)
-      .single()
-
-    if (claimError || !claim) {
-      return { success: false, error: 'Claim not found.' }
-    }
-
-    // Resolve business_owner_id from business_profiles
-    const { data: profile, error: profileError } = await supabase
-      .from('business_profiles')
-      .select('id')
-      .eq('business_id', claim.business_id)
-      .single()
-
-    if (profileError || !profile) {
+    if (error) {
+      logSupabaseError('getOrCreateConversationAction', error, {
+        userId: user.id,
+        claimId,
+      })
       return {
         success: false,
-        error: 'Business owner profile not found for this claim.',
+        error: publicErrorMessage(
+          error,
+          "We couldn't open this conversation. Please try again.",
+        ),
       }
     }
 
-    // Verify the current user is a participant (consumer or business owner)
-    if (user.id !== claim.consumer_id && user.id !== profile.id) {
-      return { success: false, error: 'Not authorized for this claim.' }
+    // A composite-returning function that returns SQL NULL comes back from PostgREST as an
+    // object with every field null — `{"id":null,"claim_id":null,…}` — not as `null`. Verified
+    // live. So the emptiness test is the id, not the object; `if (!data)` would have handed
+    // the UI a conversation with a null id and reopened the dead-thread bug from the other end.
+    const conversation = data as ConversationRow | null
+    if (!conversation?.id) {
+      return { success: false, error: NO_BUSINESS_OWNER_ERROR }
     }
 
-    // Create the conversation
-    const { data: conversation, error: insertError } = await supabase
-      .from('conversations')
-      .insert({
-        claim_id: claimId,
-        consumer_id: claim.consumer_id,
-        business_owner_id: profile.id,
-      })
-      .select()
-      .single()
-
-    if (insertError) {
-      // Handle race condition: conversation created between check and insert
-      if (insertError.code === '23505') {
-        const { data: raced, error: racedError } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('claim_id', claimId)
-          .single()
-
-        if (racedError || !raced) {
-          return { success: false, error: 'Failed to create conversation.' }
-        }
-
-        return { success: true, conversation: raced as ConversationRow }
-      }
-      return { success: false, error: insertError.message }
-    }
-
-    return { success: true, conversation: conversation as ConversationRow }
+    return { success: true, conversation }
   } catch (error) {
     logger.error('getOrCreateConversationAction failed', {
       action: 'getOrCreateConversationAction',
@@ -197,7 +171,16 @@ export async function getConversationsAction(
       .order('last_message_at', { ascending: false, nullsFirst: false })
 
     if (convError) {
-      return { success: false, error: convError.message }
+      logSupabaseError('getConversationsAction', convError, {
+        userId: user.id,
+      })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          convError,
+          "We couldn't load your messages. Please try again.",
+        ),
+      }
     }
 
     if (!conversations || conversations.length === 0) {
@@ -225,22 +208,26 @@ export async function getConversationsAction(
           .eq('sender_type', otherSenderType)
           .is('read_at', null)
 
-        // Get deal title via claim -> promo_offer_master
+        // The deal title: the claim's own snapshot (every claim since 20260924010001 has one),
+        // else the live offer through the public catalogue. A customer has no read on
+        // promo_offer_master since 20260924050002.
         let dealTitle: string | null = null
         const { data: claim } = await supabase
           .from('claims')
-          .select('deal_id')
+          .select('deal_id, deal_title')
           .eq('id', conv.claim_id)
           .single()
 
-        if (claim) {
+        if (claim?.deal_title) {
+          dealTitle = claim.deal_title
+        } else if (claim) {
           const { data: offer } = await supabase
-            .from('promo_offer_master')
-            .select('offer_raw_text')
+            .from(PUBLIC_OFFERS)
+            .select('offer_raw_text, promo_offer_items')
             .eq('id', claim.deal_id)
-            .single()
+            .maybeSingle()
 
-          dealTitle = offer?.offer_raw_text?.trim().slice(0, 60) ?? null
+          dealTitle = offer ? resolveOfferTitle(offer) : null
         }
 
         return {
@@ -296,7 +283,17 @@ export async function getMessagesAction(
       .limit(limit ?? DEFAULT_MESSAGE_LIMIT)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getMessagesAction', error, {
+        userId: user.id,
+        conversationId,
+      })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't load this conversation. Please try again.",
+        ),
+      }
     }
 
     return { success: true, messages: (data ?? []) as MessageRow[] }
@@ -344,10 +341,17 @@ export async function sendMessageAction(
     // Get conversation to determine sender_type
     const { data: conv, error: convError } = await supabase
       .from('conversations')
-      .select('consumer_id, business_owner_id, status')
+      .select(
+        'claim_id, consumer_id, business_owner_id, status, last_message_at',
+      )
       .eq('id', conversationId)
       .single()
 
+    if (convError)
+      logSupabaseError('sendMessageAction', convError, {
+        userId: user.id,
+        conversationId,
+      })
     if (convError || !conv) {
       return { success: false, error: 'Conversation not found.' }
     }
@@ -379,7 +383,17 @@ export async function sendMessageAction(
       .single()
 
     if (insertError) {
-      return { success: false, error: insertError.message }
+      logSupabaseError('sendMessageAction', insertError, {
+        userId: user.id,
+        conversationId,
+      })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          insertError,
+          "We couldn't send your message. Please try again.",
+        ),
+      }
     }
 
     // Update conversation's last_message_at
@@ -390,6 +404,22 @@ export async function sendMessageAction(
         updated_at: new Date().toISOString(),
       })
       .eq('id', conversationId)
+
+    // Email the owner about a customer's message, read before this insert moved it.
+    // ponytail: last_message_at moves on either party's message, so an owner already replying
+    // within the hour gets no email, and a customer's follow-ups inside the hour ride on the
+    // first one. A per-conversation "last emailed at" column is the upgrade if that misses mail.
+    // Today this is a no-op: the owner's address is answered only to an admin or service_role,
+    // never to the consumer sending this (see src/lib/email/ownerNotifications.ts).
+    const lastActivity = conv.last_message_at
+      ? new Date(conv.last_message_at).getTime()
+      : 0
+    if (
+      senderType === 'consumer' &&
+      Date.now() - lastActivity > OWNER_EMAIL_THROTTLE_MS
+    ) {
+      after(() => notifyOwnerOfNewMessage(conv.claim_id))
+    }
 
     revalidatePath('/dashboard/messages')
     revalidatePath('/business/dashboard/messages')
@@ -430,6 +460,11 @@ export async function markMessagesReadAction(
       .eq('id', conversationId)
       .single()
 
+    if (convError)
+      logSupabaseError('markMessagesReadAction', convError, {
+        userId: user.id,
+        conversationId,
+      })
     if (convError || !conv) {
       return { success: false, error: 'Conversation not found.' }
     }
@@ -453,7 +488,17 @@ export async function markMessagesReadAction(
       .is('read_at', null)
 
     if (updateError) {
-      return { success: false, error: updateError.message }
+      logSupabaseError('markMessagesReadAction', updateError, {
+        userId: user.id,
+        conversationId,
+      })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          updateError,
+          "We couldn't mark these messages as read.",
+        ),
+      }
     }
 
     return { success: true }
@@ -494,13 +539,23 @@ export async function archiveConversationAction(
       .single()
 
     if (error) {
+      logSupabaseError('archiveConversationAction', error, {
+        userId: user.id,
+        conversationId,
+      })
       if (error.code === 'PGRST116') {
         return {
           success: false,
           error: 'Conversation not found or not authorized.',
         }
       }
-      return { success: false, error: error.message }
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't archive this conversation. Please try again.",
+        ),
+      }
     }
 
     if (!data) {

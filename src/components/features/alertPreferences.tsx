@@ -1,6 +1,7 @@
 'use client'
 
 import { DeviceMobile, EnvelopeSimple, Warning } from '@phosphor-icons/react'
+import { useId } from 'react'
 import { useAuth } from '@/lib/context/authContext'
 
 interface ToggleSwitchProps {
@@ -20,28 +21,37 @@ function ToggleSwitch({
   description,
   icon,
 }: ToggleSwitchProps) {
+  // Rendered more than once per page, so the id must be instance-scoped
+  const labelId = useId()
+
   return (
     <div className="flex items-start gap-4 py-3">
-      <div className="flex-shrink-0 p-2 rounded-lg bg-[#f2ebe2] text-amber-800">
+      <div className="flex-shrink-0 p-2 rounded-lg bg-bg-surface text-accent">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-4">
-          <label className="text-sm font-medium text-[#451a03] cursor-pointer">
+          {/* Not a <label>: the control is a button, so it is named with
+              aria-labelledby instead */}
+          <span
+            id={labelId}
+            className="text-sm font-medium text-text-primary cursor-pointer"
+          >
             {label}
-          </label>
+          </span>
           <button
             type="button"
             role="switch"
             aria-checked={checked}
+            aria-labelledby={labelId}
             disabled={disabled}
             onClick={() => onChange(!checked)}
             className={`
               relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full
               border-2 border-transparent transition-colors duration-200 ease-in-out
-              focus:outline-none focus:ring-2 focus:ring-amber-800 focus:ring-offset-2 focus:ring-offset-[#e8ddd0]
+              focus:outline-none focus:ring-2 focus:ring-border-accent focus:ring-offset-2 focus:ring-offset-bg-base
               ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-              ${checked ? 'bg-amber-800' : 'bg-[#faf5ee]'}
+              ${checked ? 'bg-accent' : 'bg-bg-elevated'}
             `}
           >
             <span
@@ -54,7 +64,7 @@ function ToggleSwitch({
             />
           </button>
         </div>
-        <p className="mt-1 text-sm text-[#78350f]">{description}</p>
+        <p className="mt-1 text-sm text-text-secondary">{description}</p>
       </div>
     </div>
   )
@@ -66,45 +76,40 @@ export function AlertPreferences() {
 
   if (!user) return null
 
+  // Always send SMS = false, never user.alertsSms. The server rejects any request that
+  // asks for SMS, so echoing a stored `true` back — which a user could have set directly
+  // through PostgREST — would make the email toggle permanently un-saveable.
   const handleEmailToggle = (checked: boolean) => {
-    updateAlertPreferences(checked, user.alertsSms)
+    updateAlertPreferences(checked, false)
   }
-
-  const handleSmsToggle = (checked: boolean) => {
-    updateAlertPreferences(user.alertsEmail, checked)
-  }
-
-  const isPhoneVerified = !!user.phoneVerifiedAt
 
   return (
-    <div className="space-y-2 divide-y divide-[#d4c4b0]">
+    <div className="space-y-2 divide-y divide-border-default">
       <ToggleSwitch
         checked={user.alertsEmail}
         onChange={handleEmailToggle}
         label="Email notifications"
-        description="Receive deal alerts and claim updates via email"
+        description="Receive claim updates by email"
         icon={<EnvelopeSimple size={20} weight="duotone" />}
       />
 
       <div className="pt-2">
         <ToggleSwitch
-          checked={user.alertsSms}
-          onChange={handleSmsToggle}
-          disabled={!isPhoneVerified}
+          checked={false}
+          onChange={() => {
+            /* SMS alerts are not available; the toggle is disabled. */
+          }}
+          disabled
           label="SMS notifications"
-          description={
-            isPhoneVerified
-              ? 'Receive deal alerts via text message'
-              : 'Add and verify your phone to enable SMS notifications'
-          }
+          description="SMS notifications aren't available"
           icon={<DeviceMobile size={20} weight="duotone" />}
         />
-        {!isPhoneVerified && (
-          <div className="ml-12 mt-1 flex items-center gap-2 text-amber-500">
-            <Warning size={16} weight="fill" />
-            <span className="text-xs">Phone verification required</span>
-          </div>
-        )}
+        {/* "Coming soon" was a commitment nobody has made — there is no SMS
+            provider anywhere in src/. State the fact instead. */}
+        <div className="ml-12 mt-1 flex items-center gap-2 text-warning">
+          <Warning size={16} weight="fill" aria-hidden="true" />
+          <span className="text-xs">Not available</span>
+        </div>
       </div>
     </div>
   )

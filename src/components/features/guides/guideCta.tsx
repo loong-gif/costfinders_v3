@@ -1,117 +1,109 @@
 import { ArrowRight, BookOpen } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
-import type { GuideEntry } from '@/types/guide'
+import type { GuideSummary } from '@/types/guide'
 
 interface GuideCtaProps {
   treatmentLabel: string
   cityLabel: string
+  citySlug: string
   dealCount: number
   dealsLink: string
-  relatedGuides: GuideEntry[]
+  relatedGuides: GuideSummary[]
   treatmentSlug: string
 }
+
+const MAX_RELATED_PER_GROUP = 4
 
 export function GuideCta({
   treatmentLabel,
   cityLabel,
+  citySlug,
   dealCount,
   dealsLink,
   relatedGuides,
   treatmentSlug,
 }: GuideCtaProps) {
-  // Separate same-treatment (other cities) and same-city (other treatments)
+  // Same treatment, elsewhere: "where else can I get this, and is it cheaper?"
   const otherCities = relatedGuides
-    .filter(
-      (g) =>
-        g.treatment === treatmentSlug && g.city !== dealsLink.split('/').pop(),
-    )
-    .slice(0, 4)
+    .filter((g) => g.treatment === treatmentSlug && g.city !== citySlug)
+    .slice(0, MAX_RELATED_PER_GROUP)
+
+  // Same city, other treatments. This used to filter on treatment alone, with no city
+  // predicate, so a Tucson guide's "related" list was mostly other cities' treatments —
+  // links that were irrelevant to the reader and diluted the city's internal link graph.
   const otherTreatments = relatedGuides
-    .filter((g) => g.treatment !== treatmentSlug)
-    .slice(0, 4)
+    .filter((g) => g.city === citySlug && g.treatment !== treatmentSlug)
+    .slice(0, MAX_RELATED_PER_GROUP)
 
   return (
-    <section className="mb-10">
-      {/* Primary CTA */}
-      <div className="bg-amber-800 rounded-2xl p-8 text-center mb-8">
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Compare {dealCount} {treatmentLabel} deal
-          {dealCount !== 1 ? 's' : ''} in {cityLabel}
+    <section aria-labelledby="guide-cta-heading" className="mb-10">
+      <div className="bg-bg-surface rounded-2xl p-6 sm:p-8 mb-10">
+        <h2
+          className="font-display text-2xl font-bold tracking-tight text-text-primary mb-2"
+          id="guide-cta-heading"
+        >
+          {dealCount > 0
+            ? `Compare ${dealCount} ${treatmentLabel.toLowerCase()} ${dealCount === 1 ? 'deal' : 'deals'} in ${cityLabel}`
+            : `Browse medspa deals in ${cityLabel}`}
         </h2>
-        <p className="text-amber-100/80 mb-6">
-          See real pricing from verified providers. Claim a deal to get started.
+        <p className="text-text-secondary mb-6">
+          Real costs, as local providers advertise them. Claim a deal to see who
+          is offering it.
         </p>
         <Link
-          href={dealsLink}
-          className="inline-flex items-center gap-2 bg-white text-amber-900 font-semibold px-6 py-3 rounded-xl hover:bg-amber-50 transition-colors"
+          className="inline-flex items-center gap-2 min-h-[44px] rounded-full bg-accent px-6 text-center text-balance font-semibold text-white hover:bg-accent-hover transition-colors"
+          href={dealCount > 0 ? dealsLink : `/deals/${citySlug}`}
         >
-          Browse deals
+          {dealCount > 0
+            ? `See ${treatmentLabel} deals in ${cityLabel}`
+            : `See all ${cityLabel} deals`}
           <ArrowRight size={18} weight="bold" />
         </Link>
       </div>
 
-      {/* Related guides */}
       {(otherCities.length > 0 || otherTreatments.length > 0) && (
         <div>
-          <h3 className="text-lg font-bold text-[#451a03] mb-4">
-            Related pricing guides
-          </h3>
+          <h2 className="font-display text-xl font-bold tracking-tight text-text-primary mb-4">
+            Related cost guides
+          </h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {otherCities.map((guide) => (
-              <Link
-                key={guide.slug}
-                href={`/guides/${guide.slug}`}
-                className="flex items-center gap-3 bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-4 hover:bg-[#f2ebe2] transition-colors"
-              >
-                <BookOpen
-                  size={18}
-                  weight="fill"
-                  className="text-amber-800 shrink-0"
-                />
-                <span className="text-sm font-medium text-[#451a03]">
-                  {treatmentLabel} pricing in {formatCitySlug(guide.city)}
-                </span>
-              </Link>
-            ))}
             {otherTreatments.map((guide) => (
-              <Link
+              <RelatedGuideLink
                 key={guide.slug}
-                href={`/guides/${guide.slug}`}
-                className="flex items-center gap-3 bg-[#faf5ee] border border-[#d4c4b0] rounded-xl p-4 hover:bg-[#f2ebe2] transition-colors"
-              >
-                <BookOpen
-                  size={18}
-                  weight="fill"
-                  className="text-amber-800 shrink-0"
-                />
-                <span className="text-sm font-medium text-[#451a03]">
-                  {formatTreatment(guide.treatment)} pricing in{' '}
-                  {formatCitySlug(guide.city)}
-                </span>
-              </Link>
+                label={`${guide.treatmentLabel} cost in ${guide.cityLabel}`}
+                slug={guide.slug}
+              />
+            ))}
+            {otherCities.map((guide) => (
+              <RelatedGuideLink
+                key={guide.slug}
+                label={`${guide.treatmentLabel} cost in ${guide.cityLabel}, ${guide.stateCode}`}
+                slug={guide.slug}
+              />
             ))}
           </div>
+          <Link
+            className="inline-flex min-h-[44px] items-center mt-2 text-sm font-medium text-accent hover:text-accent-hover underline underline-offset-4"
+            href="/guides"
+          >
+            All medspa treatment cost guides
+          </Link>
         </div>
       )}
     </section>
   )
 }
 
-function formatCitySlug(slug: string): string {
-  return slug
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ')
-}
-
-function formatTreatment(slug: string): string {
-  const labels: Record<string, string> = {
-    botox: 'Botox',
-    fillers: 'Dermal Fillers',
-    facials: 'Facials',
-    laser: 'Laser',
-    body: 'Body',
-    skincare: 'Skincare',
-  }
-  return labels[slug] ?? slug
+function RelatedGuideLink({ label, slug }: { label: string; slug: string }) {
+  return (
+    <Link
+      className="group flex items-center gap-3 bg-bg-elevated border border-border-default rounded-xl p-4 hover:border-border-hover hover:shadow-md transition-all"
+      href={`/guides/${slug}`}
+    >
+      <BookOpen className="text-text-muted shrink-0" size={18} weight="fill" />
+      <span className="text-sm font-medium text-text-primary group-hover:text-accent transition-colors">
+        {label}
+      </span>
+    </Link>
+  )
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { type ButtonHTMLAttributes, forwardRef } from 'react'
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
@@ -9,19 +11,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
 }
 
+// MASTER.md: primary is the coral pill; secondary is the header's hairline pill.
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    'bg-amber-800 hover:bg-amber-700 hover:shadow-[0_0_16px_rgba(146,64,14,0.25)] text-white font-semibold',
+  primary: 'bg-accent hover:bg-accent-hover text-white font-semibold',
   secondary:
-    'bg-[#faf5ee] hover:bg-[#d4c4b0] border border-[#c4b09a] text-[#451a03]',
-  ghost: 'hover:bg-[#d4c4b0]/30 text-[#78350f] hover:text-[#451a03]',
-  danger: 'bg-red-600/10 hover:bg-red-600/15 text-red-600',
+    'bg-bg-elevated hover:bg-bg-surface border border-border-default hover:border-border-hover text-text-primary',
+  ghost: 'hover:bg-bg-surface text-text-secondary hover:text-text-primary',
+  danger: 'bg-error-bg hover:bg-error/15 text-error',
 }
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-sm min-h-[44px]',
-  md: 'px-4 py-2.5 text-sm min-h-[44px]',
-  lg: 'px-6 py-3 text-base min-h-[44px]',
+  sm: 'px-4 text-sm min-h-[44px]',
+  md: 'px-5 text-sm min-h-[44px]',
+  lg: 'px-6 text-base min-h-[48px]',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -37,15 +39,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    // text-balance + text-center: a label that wraps at 320px splits evenly instead of leaving
+    // "account" alone on line two (device matrix, 2026-09-28). A one-line label is untouched:
+    // balance only acts on text that already wraps.
     return (
       <button
         ref={ref}
         disabled={disabled || isLoading}
         className={`
           inline-flex items-center justify-center gap-2
-          font-medium rounded-md cursor-pointer
-          transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-amber-800/40 focus:ring-offset-2 focus:ring-offset-[#e8ddd0]
+          text-center text-balance
+          font-medium rounded-full cursor-pointer
+          transition-colors duration-200
           disabled:opacity-50 disabled:cursor-not-allowed
           ${variants[variant]}
           ${sizes[size]}
@@ -54,7 +59,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isLoading && (
-          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+          <svg
+            className="animate-spin h-4 w-4"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <circle
               className="opacity-25"
               cx="12"

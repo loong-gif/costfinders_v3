@@ -1,3 +1,4 @@
+import { US_STATE_NAMES } from '@/lib/data/adapters'
 import {
   getBusinessCountForCity,
   getCities,
@@ -11,14 +12,29 @@ export interface StateInfo {
   code: string
 }
 
-// Supported states for SEO landing pages
-// Updated to match real Supabase data (cities from CITY_STATE_MAP in adapters.ts)
-export const SUPPORTED_STATES: StateInfo[] = [
-  { name: 'Arizona', slug: 'arizona', code: 'AZ' },
-  { name: 'California', slug: 'california', code: 'CA' },
-  { name: 'Colorado', slug: 'colorado', code: 'CO' },
-  { name: 'Oklahoma', slug: 'oklahoma', code: 'OK' },
-]
+/**
+ * The state VOCABULARY — every code a business address can resolve to, not the set of states that
+ * have pages.
+ *
+ * This was a hand-written four (AZ, CA, CO, OK) and that was the second half of a silent failure.
+ * `generateStaticParams` for `/[state]/[city]` does `states.find(s => s.code === city.stateCode)`
+ * and pushes nothing when that returns undefined, so on 2026-09-16 there were 104 visible deals
+ * across 14 states — PA 22, GA 23, TX 22, TN 8, FL 7, OR, KS, VA, IL, OH, LA, NE, ND, NY — that
+ * could not be reached from any URL on the site. A curated list plus a silent `find` is a page that
+ * vanishes without an error, twice over: once in CITY_STATE_MAP and once here.
+ *
+ * Derived from `US_STATE_NAMES` so it cannot fall behind the data again. It does NOT mean 51 state
+ * pages ship: `/[state]`'s generateStaticParams and `sitemap.ts` both intersect this with the
+ * states that actually have cities, so an empty state gets no page and 404s under
+ * `dynamicParams = false`.
+ */
+export const SUPPORTED_STATES: StateInfo[] = Object.entries(US_STATE_NAMES)
+  .map(([code, name]) => ({
+    name,
+    slug: name.toLowerCase().replace(/\s+/g, '-'),
+    code,
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name))
 
 /**
  * Get all supported states

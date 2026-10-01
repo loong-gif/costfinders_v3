@@ -1,51 +1,38 @@
-import { Calculator } from '@phosphor-icons/react/dist/ssr'
-import { Badge } from '@/components/ui/badge'
+import { TIER_ICONS } from '@/components/patterns/treatmentIcons'
 import { Card } from '@/components/ui/card'
+import { dealPricing } from '@/lib/data/adapters'
+import { TIER_LABELS } from '@/lib/data/interpretation'
 import type { AnonymousDeal } from '@/types/deal'
 
 interface PricingBreakdownProps {
   deal: AnonymousDeal
 }
 
-function formatSavings(originalPrice: number, dealPrice: number): string {
-  const raw = originalPrice - dealPrice
-  return (Math.round(raw * 100) / 100).toFixed(2).replace(/\.00$/, '')
-}
-
-function getEffectiveDiscount(deal: AnonymousDeal): number {
-  if (deal.discountPercent > 0) return deal.discountPercent
-  if (
-    deal.originalPrice > 0 &&
-    deal.dealPrice > 0 &&
-    deal.originalPrice > deal.dealPrice
-  ) {
-    return Math.round((1 - deal.dealPrice / deal.originalPrice) * 100)
-  }
-  return 0
-}
-
+/**
+ * A validity date carries no time and no zone — `clinic_promotions.campaign_end_date` is a
+ * Postgres `date`. `new Date('2026-12-31')` parses that as UTC midnight, so
+ * toLocaleDateString() in any zone behind UTC printed "12/30/2026": the deal appeared to
+ * expire a day early. Format the parts directly instead. Absent for most offers (68/1000
+ * resolve a start date, 104 an end date), so null is the ordinary answer.
+ */
 function formatValidityDate(dateStr: string): string | null {
   if (!dateStr) return null
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr)
+  if (dateOnly) {
+    const [, y, m, d] = dateOnly
+    return `${Number(m)}/${Number(d)}/${y}`
+  }
   const d = new Date(dateStr)
   if (Number.isNaN(d.getTime())) return null
   return d.toLocaleDateString()
 }
 
 export function PricingBreakdown({ deal }: PricingBreakdownProps) {
-  const hasDealPrice = deal.dealPrice > 0
-  const hasOriginalPrice = deal.originalPrice > 0
-  const hasSavings =
-    hasOriginalPrice && hasDealPrice && deal.originalPrice > deal.dealPrice
-  const savings = hasSavings
-    ? formatSavings(deal.originalPrice, deal.dealPrice)
-    : null
-  const effectiveDiscount = getEffectiveDiscount(deal)
-  const hasUnitRange = deal.minUnits || deal.maxUnits
-  const exampleUnits = deal.minUnits ?? 20
-  const exampleTotal = hasDealPrice ? deal.dealPrice * exampleUnits : 0
-  const exampleSavings = hasSavings
-    ? (deal.originalPrice - deal.dealPrice) * exampleUnits
-    : 0
+  // Same decision as the card that led the user here — one implementation, in adapters.ts.
+  // This page had its own copy of it, which is how the two drifted apart.
+  const pricing = dealPricing(deal)
+  const tier = deal.interpretation.tier
+  const TierIcon = TIER_ICONS[tier]
 
   const validFromFormatted = formatValidityDate(deal.validFrom)
   const validUntilFormatted = formatValidityDate(deal.validUntil)
@@ -54,105 +41,81 @@ export function PricingBreakdown({ deal }: PricingBreakdownProps) {
     <Card variant="glass" padding="lg">
       {/* Main Pricing */}
       <div className="space-y-3">
-        <div className="flex items-baseline gap-3">
-          {hasDealPrice ? (
-            <span className="text-3xl sm:text-4xl font-bold text-amber-800 font-mono">
-              ${deal.dealPrice}
-            </span>
-          ) : (
-            <span className="text-xl sm:text-2xl font-semibold text-amber-800">
-              Contact for pricing
-            </span>
+        <div className="flex items-baseline gap-x-3 flex-wrap">
+          {/* Display + 4xl is for a money figure. 'free' leads with words now ("Free with
+              membership") and styles like the other word leads. Ink, like every card. */}
+          <span
+            className={
+              pricing.kind === 'price'
+                ? 'text-4xl font-display font-bold tabular-nums text-text-primary'
+                : 'text-xl sm:text-2xl font-display font-semibold text-text-primary'
+            }
+          >
+            {pricing.strikeThrough && (
+              <span className="sr-only">Deal price </span>
+            )}
+            {pricing.lead}
+          </span>
+          {/* What the figure buys: "per unit", "for 40 units". Null for a flat price and for
+              every word lead. This printed the service's unit_type, which made "40 Units Botox
+              $299" read "$299 unit" — the screenshot that started the price-basis fix. */}
+          {pricing.basis && (
+            <span className="text-text-muted">{pricing.basis}</span>
           )}
-          <span className="text-[#78350f]">{deal.unit}</span>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          {effectiveDiscount > 0 && (
-            <Badge variant="brand" size="md">
-              {effectiveDiscount}% OFF
-            </Badge>
+          {/* The badge is our subtraction, so it exists only with both prices behind it. */}
+          {pricing.savings && (
+            <span className="rounded-full bg-savings-bg px-2.5 py-1 text-sm font-semibold text-savings">
+              Save {pricing.savings.percent}%
+            </span>
           )}
-          {hasSavings && (
-            <>
-              <span className="text-[#92400e] line-through">
-                ${deal.originalPrice}
-              </span>
-              <span className="text-emerald-600">Save ${savings}</span>
-            </>
+          {/* <s>, not a styled <span>: line-through is CSS and is not exposed to assistive
+              tech, so this announced as two bare prices in a row with nothing saying which one
+              you pay. Same fix as dealCard.tsx. */}
+          {pricing.strikeThrough && (
+            <s className="text-text-muted tabular-nums">
+              <span className="sr-only">Regular price </span>
+              {pricing.strikeThrough}
+            </s>
+          )}
+          {pricing.savings && (
+            <span className="text-savings font-medium">
+              Save {pricing.savings.amount}
+            </span>
+          )}
+          {pricing.note && (
+            <span className="text-text-secondary">{pricing.note}</span>
           )}
         </div>
+
+        {/* A package divided out: "$7.48 per unit" under "$299 for 40 units". Last, so it never
+            sits between the price and the regular price that is struck through against it. */}
+        {pricing.unitPrice && (
+          <p className="text-sm text-text-secondary">{pricing.unitPrice}</p>
+        )}
+
+        {/* The tier beside the price it qualifies. On a phone How we read this deal sits below
+            the claim button, and "Confirm when booking" matters before a claim, not after. */}
+        <a
+          href="#how-we-read"
+          className={`inline-flex min-h-[44px] items-center gap-1.5 text-sm font-medium ${
+            tier === 'check'
+              ? 'text-warning'
+              : 'text-text-secondary hover:text-text-primary'
+          }`}
+        >
+          <TierIcon size={16} weight="bold" className="shrink-0" />
+          {TIER_LABELS[tier].label}
+          <span className="sr-only">: how we read this deal</span>
+        </a>
       </div>
-
-      {/* Unit Range */}
-      {hasUnitRange && (
-        <div className="border-t border-[#d4c4b0] pt-4 mt-4 space-y-3">
-          <div className="flex items-center gap-2 text-sm font-medium text-[#78350f]">
-            <Calculator size={18} weight="regular" />
-            <span>Unit Requirements</span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            {deal.minUnits && (
-              <div className="bg-[#faf5ee] rounded-lg p-3">
-                <p className="text-xs text-[#92400e]">Minimum</p>
-                <p className="text-lg font-semibold text-[#451a03]">
-                  {deal.minUnits} units
-                </p>
-              </div>
-            )}
-            {deal.maxUnits && (
-              <div className="bg-[#faf5ee] rounded-lg p-3">
-                <p className="text-xs text-[#92400e]">Maximum</p>
-                <p className="text-lg font-semibold text-[#451a03]">
-                  {deal.maxUnits} units
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Example Calculation */}
-      {hasUnitRange && hasDealPrice && (
-        <div className="border-t border-[#d4c4b0] pt-4 mt-4 space-y-2">
-          <p className="text-sm font-medium text-[#78350f]">
-            Example: {exampleUnits} units
-          </p>
-          <div className="space-y-1">
-            {hasOriginalPrice && (
-              <div className="flex justify-between text-sm">
-                <span className="text-[#92400e]">Regular price</span>
-                <span className="text-[#92400e] line-through">
-                  $
-                  {(
-                    Math.round(deal.originalPrice * exampleUnits * 100) / 100
-                  ).toLocaleString()}
-                </span>
-              </div>
-            )}
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78350f]">Deal price</span>
-              <span className="text-[#451a03] font-medium">
-                ${(Math.round(exampleTotal * 100) / 100).toLocaleString()}
-              </span>
-            </div>
-            {hasSavings && (
-              <div className="flex justify-between text-sm">
-                <span className="text-emerald-600">You save</span>
-                <span className="text-emerald-600 font-medium">
-                  ${(Math.round(exampleSavings * 100) / 100).toLocaleString()}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Validity */}
       {(validFromFormatted || validUntilFormatted) && (
-        <div className="border-t border-[#d4c4b0] pt-4 mt-4">
-          <p className="text-sm text-[#92400e]">
+        <div className="border-t border-border-default pt-4 mt-4">
+          <p className="text-sm text-text-muted">
             {validFromFormatted && validUntilFormatted
               ? `Valid: ${validFromFormatted} — ${validUntilFormatted}`
               : validFromFormatted

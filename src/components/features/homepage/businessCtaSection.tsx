@@ -1,66 +1,62 @@
-'use client'
-
-import { ArrowRight, Storefront } from '@phosphor-icons/react'
+import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ScrollReveal } from '@/components/patterns/scrollReveal'
-import { Button } from '@/components/ui/button'
 
+/**
+ * The provider band. The right column is a crop of the real business dashboard's deals list
+ * (captured as the test owner account on 2026-09-18, after the dashboard moved to Price
+ * Engine) — the deals list, never leads, and cropped below the header so no account name
+ * shows. It replaced the anonymous → claimed card pair, which the homepage already shows in
+ * "How it works" and /business uses as its pitch. Re-capture it if the deals table changes.
+ */
 export function BusinessCtaSection() {
   return (
-    <section className="w-full bg-[#451a03] py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal animation="fadeInUp">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Image — shows first on mobile */}
-            <div className="order-1 lg:order-2">
-              <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                <Image
-                  src="/images/homepage/business-cta.webp"
-                  alt="Modern medspa storefront at golden hour"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  loading="lazy"
-                />
-              </div>
-            </div>
+    <section className="w-full bg-bg-inverted py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wider text-text-on-dark-muted">
+              For providers
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-text-on-dark sm:text-4xl">
+              Own a medspa?
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-text-on-dark-muted">
+              Your promotions may already be listed here. Business accounts are
+              not open yet, but you can ask us to add, correct or remove your
+              listing.
+            </p>
 
-            {/* Text content */}
-            <div className="order-2 lg:order-1">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-800/30 border border-amber-700/40 mb-6">
-                <Storefront
-                  size={28}
-                  weight="duotone"
-                  className="text-amber-400"
-                />
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#faf5ee] mb-4">
-                Own a medspa?
-              </h2>
-              <p className="text-[#d4c4b0] text-lg mb-8 max-w-md leading-relaxed">
-                Your promotions are already being discovered by consumers. Claim
-                your profile to manage your listings and connect with new
-                clients.
-              </p>
-
-              <Link href="/business">
-                <Button
-                  size="lg"
-                  className="bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-[0_0_24px_rgba(217,119,6,0.3)] hover:shadow-[0_0_32px_rgba(217,119,6,0.5)] transition-all duration-300"
-                >
-                  List your business
-                  <ArrowRight
-                    size={18}
-                    weight="bold"
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </Button>
-              </Link>
-            </div>
+            {/* Link styled as a button, not a <Button> nested inside a <Link> — <button> inside <a>
+                is invalid HTML and produced two tab stops for one control. */}
+            <Link
+              href="/business"
+              className="group mt-8 inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-bg-base px-6 text-base font-semibold text-text-primary transition-colors hover:bg-bg-surface"
+            >
+              List your business
+              <ArrowRight
+                size={18}
+                weight="bold"
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </Link>
           </div>
-        </ScrollReveal>
+
+          <figure>
+            <Image
+              src="/images/homepage/business-dashboard.webp"
+              alt="The CostFinders business dashboard's deals list: each deal with its category, price, discount and whether it is on the site."
+              width={1168}
+              height={874}
+              sizes="(min-width: 1024px) 560px, 100vw"
+              className="w-full rounded-xl border border-white/10 shadow-lg"
+            />
+            <figcaption className="mt-3 text-sm text-text-on-dark-muted">
+              The deals list in a provider&apos;s dashboard.
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
   )

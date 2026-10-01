@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { signInAction, signOutAction, signUpAction } from '@/lib/actions/auth'
+import { signInAction, signUpAction } from '@/lib/actions/auth'
 import type { Profile } from '@/lib/actions/profile'
 import {
   getProfileAction,
@@ -32,8 +32,23 @@ import type { Consumer, VerificationStatus } from '@/types/consumer'
 interface AuthState {
   user: Consumer | null
   isAuthenticated: boolean
+  /** True on first load AND while a sign-in/sign-up submit is in flight. */
   isLoading: boolean
+  /**
+   * False until the first session check has finished, then true for the life of the tab. Unlike
+   * isLoading it never flips back during a submit, so it is the signal for "we don't know yet
+   * whether this visitor is signed in" — render a neutral placeholder, not "Sign in".
+   */
+  isReady: boolean
   error: string | null
+}
+
+const SIGNED_OUT: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  isLoading: false,
+  isReady: true,
+  error: null,
 }
 
 interface ProfileUpdates {
@@ -49,14 +64,15 @@ interface AuthContextValue {
   signUp: (
     email: string,
     password: string,
-    locationCity: string,
     firstName?: string,
     lastName?: string,
+    /** 18+ attestation. signUpAction re-checks it server-side and refuses without it. */
+    ageAttested?: boolean,
+    /** Where the confirmation link lands, e.g. the deal they signed up from. */
+    next?: string,
   ) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => void
-  updateVerificationStatus: (status: VerificationStatus) => void
-  verifyPhone: (phone: string) => void
   updateProfile: (updates: ProfileUpdates) => void
   updateAlertPreferences: (alertsEmail: boolean, alertsSms: boolean) => void
   savedDeals: string[]
@@ -70,6 +86,13 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+/**
+ * Shown when an action rejects outright instead of returning a result (offline,
+ * Next rejecting the request). There is no server message to show, and silence
+ * reads to the user as a screen that never finishes loading.
+ */
+const UNEXPECTED_ERROR = 'Something went wrong. Please try again.'
 
 /** Map a Supabase profile row + auth email to the Consumer shape. */
 function profileToConsumer(
@@ -106,87 +129,105 @@ function profileToConsumer(
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({
-    user: null,
-    isAuthenticated: false,
+    ...SIGNED_OUT,
     isLoading: true,
-    error: null,
+    isReady: false,
   })
   const [savedDeals, setSavedDeals] = useState<string[]>([])
 
-  // Supabase browser client — stable across renders
+  // Supabase browser client — one per tab (see src/lib/supabase-browser.ts)
   const supabaseRef = useRef(createSupabaseBrowserClient())
+  // The auth user id the current state was hydrated for (null = signed out), and whether the
+  // first hydration has finished. The auth listener reads both to skip events that change
+  // nothing — see the mount effect.
+  const userIdRef = useRef<string | null>(null)
+  const readyRef = useRef(false)
 
   // -------------------------------------------------------------------
   // Fetch profile + saved deals for an authenticated user
   // -------------------------------------------------------------------
-  const hydrateUser = useCallback(async () => {
+  /**
+   * Resolve the current session into app state. Returns whether it ended SIGNED IN.
+   *
+   * It does not throw, because its other two callers are the mount effect and the
+   * onAuthStateChange listener, and a rejection there leaves every consumer rendering skeletons
+   * forever. But "did not throw" is not "worked": every branch below can legitimately end signed
+   * out — no session, no email on the auth user, no profile row yet (the handle_new_user trigger
+   * has not fired), or an outright rejection. signIn/signUp need to tell those apart from success,
+   * so the outcome is the return value rather than an exception.
+   *
+   * Without this, a sign-in whose getProfileAction() failed resolved successfully: signInForm
+   * called onSuccess(), authModal saw user === null with isLoading === false and closed itself,
+   * and the error message unmounted with the only component rendering it. The modal shut as though
+   * the sign-in had worked while the UI stayed signed out — silence on exactly the path the
+   * try/catch was added to fix.
+   */
+  const hydrateUser = useCallback(async (): Promise<boolean> => {
     const supabase = supabaseRef.current
-
-    // Quick check: read session from local storage (no network request).
-    // If no session exists, skip the expensive getUser() call entirely.
-    // This saves 200-400ms for anonymous visitors (95% of traffic).
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    if (!session) {
-      setState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
+    const signedOut = () => {
+      userIdRef.current = null
+      setState(SIGNED_OUT)
       setSavedDeals([])
-      return
+      return false
     }
 
-    // Session exists — validate with server and fetch profile
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser()
+    try {
+      // Quick check: read session from local storage (no network request).
+      // If no session exists, skip the expensive getUser() call entirely.
+      // This saves 200-400ms for anonymous visitors (95% of traffic).
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (!session) return signedOut()
 
-    if (!authUser?.email) {
-      setState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
-      setSavedDeals([])
-      return
-    }
+      // Session exists — validate with server and fetch profile
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser()
 
-    const [profileResult, dealsResult] = await Promise.all([
-      getProfileAction(),
-      getSavedDealsAction(),
-    ])
+      if (!authUser?.email) return signedOut()
 
-    if (!profileResult.success || !profileResult.profile) {
+      // Fetch profile from server action
+      const profileResult = await getProfileAction()
+
       // User exists in auth but has no profile row yet (e.g. trigger hasn't fired)
+      if (!profileResult.success || !profileResult.profile) return signedOut()
+
+      const consumer = profileToConsumer(
+        authUser.id,
+        authUser.email,
+        authUser.email_confirmed_at,
+        profileResult.profile,
+      )
+
+      userIdRef.current = authUser.id
       setState({
-        user: null,
-        isAuthenticated: false,
+        user: consumer,
+        isAuthenticated: true,
         isLoading: false,
+        isReady: true,
         error: null,
       })
-      return
-    }
 
-    const consumer = profileToConsumer(
-      authUser.id,
-      authUser.email,
-      authUser.email_confirmed_at,
-      profileResult.profile,
-    )
-
-    setState({
-      user: consumer,
-      isAuthenticated: true,
-      isLoading: false,
-      error: null,
-    })
-
-    if (dealsResult.success && dealsResult.deals) {
-      setSavedDeals(dealsResult.deals.map((d) => String(d.deal_id)))
+      // Fetch saved deals
+      const dealsResult = await getSavedDealsAction()
+      if (dealsResult.success && dealsResult.deals) {
+        setSavedDeals(dealsResult.deals.map((d) => String(d.deal_id)))
+      }
+      return true
+    } catch {
+      // isLoading starts true on mount, so a rejection here leaves every
+      // consumer rendering skeletons forever. Keep whatever user we already
+      // had — a failed refresh is not a sign-out — and say something.
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        isReady: true,
+        error: UNEXPECTED_ERROR,
+      }))
+      return false
+    } finally {
+      readyRef.current = true
     }
   }, [])
 
@@ -197,18 +238,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Initial hydration
     hydrateUser()
 
-    // Listen for auth state changes (sign in, sign out, token refresh)
+    // Listen for auth state changes from outside this provider: another tab signing in or out,
+    // a session expiring, another context on the shared client calling signOut().
+    //
+    // Only an event that changes WHO is signed in re-hydrates. auth-js re-emits SIGNED_IN every
+    // time the tab regains focus and TOKEN_REFRESHED about hourly; each used to cost a getUser()
+    // (holding the auth lock over a network call), a profile fetch and a saved-deals fetch, and
+    // re-rendered every consumer of this context. Events before the first hydration finishes are
+    // ignored too — that hydration awaits auth-js's own initialisation, so it already sees them.
+    //
+    // Deferred with setTimeout because the callback runs while auth-js may hold its lock, and
+    // Supabase warns against calling back into the client from inside it.
     const supabase = supabaseRef.current
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (
-        event === 'SIGNED_IN' ||
-        event === 'TOKEN_REFRESHED' ||
-        event === 'SIGNED_OUT'
+        event !== 'SIGNED_IN' &&
+        event !== 'TOKEN_REFRESHED' &&
+        event !== 'SIGNED_OUT'
       ) {
-        hydrateUser()
+        return
       }
+      const eventUserId =
+        event === 'SIGNED_OUT' ? null : (session?.user.id ?? null)
+      setTimeout(() => {
+        if (readyRef.current && eventUserId !== userIdRef.current) {
+          hydrateUser()
+        }
+      }, 0)
     })
 
     return () => {
@@ -223,42 +281,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (
       email: string,
       password: string,
-      locationCity: string,
       firstName?: string,
       lastName?: string,
+      ageAttested?: boolean,
+      next?: string,
     ): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      const result = await signUpAction(
-        email,
-        password,
-        locationCity,
-        firstName,
-        lastName,
-      )
+      try {
+        const result = await signUpAction(
+          email,
+          password,
+          firstName,
+          lastName,
+          ageAttested,
+          next,
+        )
 
-      if (!result.success) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: result.error ?? 'Sign up failed',
-        }))
-        throw new Error(result.error ?? 'Sign up failed')
+        if (!result.success) {
+          setState((prev) => ({
+            ...prev,
+            error: result.error ?? 'Sign up failed',
+          }))
+          throw new Error(result.error ?? 'Sign up failed')
+        }
+
+        // If email verification is needed, don't sign in yet
+        if (result.needsEmailVerification) return
+
+        // If auto-confirmed, hydrate user. hydrateUser() sets the signed-in
+        // state itself and the finally below only flips isLoading after it has
+        // resolved, so there is no flash of signed-out UI.
+        //
+        // It resolves rather than throws even when it ends signed out, so the boolean is the only
+        // failure signal. Without this check the account is created, hydration fails, and
+        // signUpForm still calls onSuccess() and shows the Verify Email view over a signed-out app.
+        trackEvent('auth_signup')
+        if (!(await hydrateUser())) {
+          throw new Error(UNEXPECTED_ERROR)
+        }
+      } catch (err) {
+        // Keep the message the failure branch above already set; only an
+        // outright rejection reaches here with error still null.
+        setState((prev) => ({ ...prev, error: prev.error || UNEXPECTED_ERROR }))
+        throw err // signUpForm relies on this to skip onSuccess
+      } finally {
+        setState((prev) => ({ ...prev, isLoading: false }))
       }
-
-      // If email verification is needed, don't sign in yet
-      if (result.needsEmailVerification) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: null,
-        }))
-        return
-      }
-
-      // If auto-confirmed, hydrate user
-      trackEvent('auth_signup')
-      await hydrateUser()
     },
     [hydrateUser],
   )
@@ -270,57 +339,64 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (email: string, password: string): Promise<void> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
-      const result = await signInAction(email, password)
+      try {
+        const result = await signInAction(email, password)
 
-      if (!result.success) {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: result.error ?? 'Sign in failed',
-        }))
-        throw new Error(result.error ?? 'Sign in failed')
+        if (!result.success) {
+          setState((prev) => ({
+            ...prev,
+            error: result.error ?? 'Sign in failed',
+          }))
+          throw new Error(result.error ?? 'Sign in failed')
+        }
+
+        // The onAuthStateChange listener will fire and hydrate the user,
+        // but we also call hydrateUser explicitly for immediate feedback.
+        // The finally below flips isLoading only after it resolves, so the
+        // signed-in UI never flashes signed out.
+        //
+        // The boolean matters: signInAction can succeed while hydration ends signed out (no profile
+        // row yet, or getProfileAction rejects). Resolving there made signInForm call onSuccess()
+        // and authModal close itself over a signed-out app, taking the error message with it.
+        trackEvent('auth_signin')
+        if (!(await hydrateUser())) {
+          throw new Error(UNEXPECTED_ERROR)
+        }
+      } catch (err) {
+        setState((prev) => ({ ...prev, error: prev.error || UNEXPECTED_ERROR }))
+        throw err // signInForm reads err.message to detect an unconfirmed email
+      } finally {
+        setState((prev) => ({ ...prev, isLoading: false }))
       }
-
-      // The onAuthStateChange listener will fire and hydrate the user,
-      // but we also call hydrateUser explicitly for immediate feedback.
-      trackEvent('auth_signin')
-      await hydrateUser()
     },
     [hydrateUser],
   )
 
   // -------------------------------------------------------------------
-  // signOut — calls server action, clears state
+  // signOut — through the shared browser client, then clears state
   // -------------------------------------------------------------------
-  const signOut = useCallback(() => {
-    signOutAction().then(() => {
-      setState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      })
+  const signOut = useCallback(async () => {
+    try {
+      // The shared browser client does the whole sign-out in one call: it revokes the session
+      // (global scope, as the old server action did), clears the auth cookies (they are not
+      // httpOnly) and emits SIGNED_OUT to every listener on it, so the header and the business
+      // context drop "Dashboard" at once. Through a server action the first press often looked
+      // like it did nothing, and a failed action left the cookie live. An error here means the
+      // session may still be live, so the UI stays signed in and says so.
+      const { error } = await supabaseRef.current.auth.signOut()
+      if (error) throw error
+      userIdRef.current = null
+      setState(SIGNED_OUT)
       setSavedDeals([])
-    })
-  }, [])
-
-  // -------------------------------------------------------------------
-  // updateVerificationStatus — no-op (DB triggers handle this)
-  // Kept for interface compatibility; refetches profile if called.
-  // -------------------------------------------------------------------
-  const updateVerificationStatus = useCallback(
-    (_status: VerificationStatus) => {
-      // Re-fetch profile to pick up any trigger-driven status changes
-      hydrateUser()
-    },
-    [hydrateUser],
-  )
-
-  // -------------------------------------------------------------------
-  // verifyPhone — no-op for now (Twilio deferred)
-  // -------------------------------------------------------------------
-  const verifyPhone = useCallback((_phone: string) => {
-    // No-op: phone verification via Twilio is deferred
+    } catch {
+      // The session may still be live, so don't render signed-out UI —
+      // just stop loading and tell the user the sign-out didn't land.
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: UNEXPECTED_ERROR,
+      }))
+    }
   }, [])
 
   // -------------------------------------------------------------------
@@ -355,12 +431,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
 
       // Fire server action (no await needed since interface is void)
-      updateProfileAction(payload).then((result) => {
-        if (!result.success) {
-          // Revert on failure by re-fetching
-          hydrateUser()
-        }
-      })
+      updateProfileAction(payload)
+        .then((result) => {
+          if (!result.success) {
+            // Revert on failure by re-fetching
+            hydrateUser()
+          }
+        })
+        // Rejected outright — the optimistic edit above is unproven, so take
+        // the same revert path rather than leaving it on screen as fact.
+        .catch(() => hydrateUser())
     },
     [state.user, hydrateUser],
   )
@@ -386,11 +466,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       })
 
-      updateAlertPrefsAction(alertsEmail, alertsSms).then((result) => {
-        if (!result.success) {
-          hydrateUser()
-        }
-      })
+      updateAlertPrefsAction(alertsEmail, alertsSms)
+        .then((result) => {
+          if (!result.success) {
+            hydrateUser()
+          }
+        })
+        .catch(() => hydrateUser())
     },
     [state.user, hydrateUser],
   )
@@ -406,24 +488,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
 
     // Fire server action — deal_id is bigint in DB
-    saveDealAction(Number(dealId)).then((result) => {
-      if (!result.success) {
-        // Revert on failure
-        setSavedDeals((prev) => prev.filter((id) => id !== dealId))
-      }
-    })
+    const revert = () =>
+      setSavedDeals((prev) => prev.filter((id) => id !== dealId))
+    saveDealAction(Number(dealId))
+      .then((result) => {
+        if (!result.success) {
+          // Revert on failure
+          revert()
+        }
+      })
+      // Rejected outright — same revert, or the heart stays filled on a save
+      // that never happened.
+      .catch(revert)
   }, [])
 
   const unsaveDeal = useCallback((dealId: string) => {
     // Optimistic update
     setSavedDeals((prev) => prev.filter((id) => id !== dealId))
 
-    unsaveDealAction(Number(dealId)).then((result) => {
-      if (!result.success) {
-        // Revert on failure
-        setSavedDeals((prev) => [...prev, dealId])
-      }
-    })
+    const revert = () => setSavedDeals((prev) => [...prev, dealId])
+    unsaveDealAction(Number(dealId))
+      .then((result) => {
+        if (!result.success) {
+          // Revert on failure
+          revert()
+        }
+      })
+      .catch(revert)
   }, [])
 
   const isDealSaved = useCallback(
@@ -440,8 +531,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signUp,
       signIn,
       signOut,
-      updateVerificationStatus,
-      verifyPhone,
       updateProfile,
       updateAlertPreferences,
       savedDeals,
@@ -454,8 +543,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signUp,
       signIn,
       signOut,
-      updateVerificationStatus,
-      verifyPhone,
       updateProfile,
       updateAlertPreferences,
       savedDeals,
@@ -474,9 +561,4 @@ export function useAuth(): AuthContextValue {
     throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
-}
-
-/** Returns null when rendered outside AuthProvider (e.g. public SEO pages). */
-export function useOptionalAuth(): AuthContextValue | null {
-  return useContext(AuthContext)
 }

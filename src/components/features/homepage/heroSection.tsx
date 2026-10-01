@@ -1,96 +1,83 @@
-import { TrendUp } from '@phosphor-icons/react/dist/ssr'
-import Image from 'next/image'
-import Link from 'next/link'
-import { HeroSearch } from '@/components/features/homepage/heroSearch'
+import { offerTreatmentRoute } from '@/lib/data/adapters'
+import type { PairStat } from '@/lib/data/homepage'
+import { cityToSlug } from '@/lib/data/unified'
+import type { OfferView } from '@/types/supabase'
+import { HeroPriceCheck } from './heroPriceCheck'
+import type { SearchOption } from './heroSearch'
 
 interface HeroSectionProps {
-  categories: { slug: string; label: string; count: number }[]
-  totalOffers: number
-  totalBusinesses: number
+  counts: { deals: number; providers: number; cities: number }
+  treatments: SearchOption[]
+  cities: SearchOption[]
+  pairs: string[]
+  pairStats: PairStat[]
+  defaultTreatment: string
+  defaultCity: string
 }
 
-function categorySearchTreatment(slug: string): string {
-  const treatmentByCategory: Record<string, string> = {
-    neurotoxins: 'botox',
-    fillers: 'fillers',
-    'facials-lasers': 'facials',
-    wellness: 'skincare',
-    consultations: 'body',
-    other: 'other',
+/**
+ * Every `${treatment}:${citySlug}` pair with at least one visible offer. This is what the
+ * search filters on. getAllTreatmentCityCombos() is NOT this — it is the full cross product
+ * (every treatment × every city) that generateStaticParams prebuilds, ~250 of which are empty.
+ */
+export function treatmentCityPairs(offers: OfferView[]): string[] {
+  const pairs = new Set<string>()
+  for (const offer of offers) {
+    const treatment = offerTreatmentRoute(offer.service_category)
+    const city = offer.master_business_info?.city?.trim()
+    if (treatment && city) pairs.add(`${treatment}:${cityToSlug(city)}`)
   }
-  return treatmentByCategory[slug] ?? ''
+  return [...pairs]
 }
 
 export function HeroSection({
-  categories,
-  totalOffers,
-  totalBusinesses,
+  counts,
+  treatments,
+  cities,
+  pairs,
+  pairStats,
+  defaultTreatment,
+  defaultCity,
 }: HeroSectionProps) {
   return (
-    <section className="relative w-full min-h-[70vh] sm:min-h-[80vh] flex items-center overflow-hidden">
-      {/* Background image */}
-      <Image
-        src="/images/homepage/hero-bg.webp"
-        alt=""
-        fill
-        className="object-cover"
-        sizes="100vw"
-        priority
-      />
+    <section className="w-full bg-bg-base">
+      <HeroPriceCheck
+        treatments={treatments}
+        cities={cities}
+        pairs={pairs}
+        pairStats={pairStats}
+        defaultValue={{ treatment: defaultTreatment, city: defaultCity }}
+        counts={counts}
+      >
+        <h1 className="animate-hero-fade-in font-display text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-text-primary sm:text-6xl lg:text-7xl">
+          Medspa prices,
+          <br />
+          <span className="relative inline-block">
+            compared.
+            {/* The one coral mark in the hero. Decorative, so it is aria-hidden and drawn in
+                --color-accent-graphic, the bright coral reserved for non-text marks on white. */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 300 14"
+              preserveAspectRatio="none"
+              className="absolute -bottom-2 left-0 h-3 w-full text-accent-graphic sm:-bottom-3"
+            >
+              <path
+                d="M3 10 C 60 2, 150 2, 297 8"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
+        </h1>
 
-      {/* Gradient overlay */}
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-[#451a03]/75 via-[#451a03]/50 to-[#e8ddd0]"
-        aria-hidden="true"
-      />
-
-      {/* Content — CSS animations replace JS mounted state (M16) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 sm:py-28">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Stats badge — frosted glass */}
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-hero-fade-in [animation-delay:0ms]">
-            <TrendUp size={16} weight="bold" className="text-amber-300" />
-            <span className="text-sm text-white/90 font-medium">
-              {totalOffers} deals from {totalBusinesses}{' '}
-              {totalBusinesses === 1 ? 'provider' : 'providers'}
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight animate-hero-fade-in [animation-delay:200ms]">
-            Don&apos;t overpay for medspa.{' '}
-            <span className="text-amber-300">Compare listed prices</span> from
-            local providers.
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg text-white/80 mb-10 max-w-xl mx-auto animate-hero-fade-in [animation-delay:400ms]">
-            See listed prices, provider ratings, and clear savings with no
-            hidden platform fees.
-          </p>
-
-          {/* Primary task */}
-          <div className="animate-hero-fade-in [animation-delay:500ms]">
-            <HeroSearch />
-          </div>
-
-          {/* Category chips — frosted glass */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-10 animate-hero-fade-in [animation-delay:700ms]">
-            {categories
-              .filter((cat) => cat.count >= 2)
-              .map((cat) => (
-                <Link
-                  key={cat.slug}
-                  href={`/deals?treatment=${categorySearchTreatment(cat.slug)}`}
-                  className="bg-white/10 backdrop-blur-sm border border-white/15 text-white/90 hover:bg-white/20 hover:text-white hover:border-white/30 hover:-translate-y-0.5 rounded-full px-4 py-2 min-h-[44px] flex items-center text-sm transition-all duration-200 cursor-pointer"
-                >
-                  {cat.label}
-                  <span className="ml-1.5 text-amber-300/80">{cat.count}</span>
-                </Link>
-              ))}
-          </div>
-        </div>
-      </div>
+        <p className="mt-7 max-w-xl text-lg text-text-secondary sm:text-xl animate-hero-fade-in [animation-delay:150ms]">
+          See what providers near you actually advertise for Botox, fillers,
+          facials and laser, before you book.
+        </p>
+      </HeroPriceCheck>
     </section>
   )
 }

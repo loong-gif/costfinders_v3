@@ -1,6 +1,9 @@
 import type { AnonymousDeal, Deal, ModerationStatus } from '@/types/deal'
 import { businesses } from './businesses'
 
+// `priceBasis` replaced the old `unit` strings one for one: "per unit/syringe/session" became a
+// rate, and "per package" / "per treatment" became `total` — a package or a single treatment is a
+// flat price with nothing to divide by (see PriceBasis in src/types/deal.ts).
 export const deals: Deal[] = [
   // Botox deals
   {
@@ -13,9 +16,7 @@ export const deals: Deal[] = [
     originalPrice: 14,
     dealPrice: 10,
     discountPercent: 29,
-    unit: 'per unit',
-    minUnits: 20,
-    maxUnits: 60,
+    priceBasis: { kind: 'rate', unit: 'unit' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions:
@@ -38,8 +39,7 @@ export const deals: Deal[] = [
     originalPrice: 16,
     dealPrice: 12,
     discountPercent: 25,
-    unit: 'per unit',
-    minUnits: 15,
+    priceBasis: { kind: 'rate', unit: 'unit' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions:
@@ -62,7 +62,7 @@ export const deals: Deal[] = [
     originalPrice: 650,
     dealPrice: 499,
     discountPercent: 23,
-    unit: 'per syringe',
+    priceBasis: { kind: 'rate', unit: 'syringe' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'First syringe only at discounted rate.',
@@ -83,7 +83,7 @@ export const deals: Deal[] = [
     originalPrice: 800,
     dealPrice: 599,
     discountPercent: 25,
-    unit: 'per syringe',
+    priceBasis: { kind: 'rate', unit: 'syringe' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Includes follow-up appointment.',
@@ -106,7 +106,7 @@ export const deals: Deal[] = [
     originalPrice: 199,
     dealPrice: 149,
     discountPercent: 25,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Includes LED light therapy add-on.',
@@ -127,7 +127,7 @@ export const deals: Deal[] = [
     originalPrice: 275,
     dealPrice: 199,
     discountPercent: 28,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Includes take-home skincare sample set.',
@@ -150,7 +150,7 @@ export const deals: Deal[] = [
     originalPrice: 150,
     dealPrice: 99,
     discountPercent: 34,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Package of 6 sessions recommended. Price per session.',
@@ -172,7 +172,7 @@ export const deals: Deal[] = [
     originalPrice: 350,
     dealPrice: 249,
     discountPercent: 29,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Series of 3 treatments recommended.',
@@ -194,8 +194,7 @@ export const deals: Deal[] = [
     originalPrice: 5,
     dealPrice: 3.5,
     discountPercent: 30,
-    unit: 'per unit',
-    minUnits: 50,
+    priceBasis: { kind: 'rate', unit: 'unit' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Minimum 50 units required.',
@@ -216,7 +215,7 @@ export const deals: Deal[] = [
     originalPrice: 450,
     dealPrice: 299,
     discountPercent: 34,
-    unit: 'per package',
+    priceBasis: { kind: 'total' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: '3 sessions, scheduled 4 weeks apart.',
@@ -238,7 +237,7 @@ export const deals: Deal[] = [
     originalPrice: 2400,
     dealPrice: 1799,
     discountPercent: 25,
-    unit: 'per package',
+    priceBasis: { kind: 'total' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions:
@@ -260,7 +259,7 @@ export const deals: Deal[] = [
     originalPrice: 1200,
     dealPrice: 899,
     discountPercent: 25,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-01-01T00:00:00Z',
     validUntil: '2024-12-31T23:59:59Z',
     termsAndConditions: 'Requires 1 week downtime. Consultation required.',
@@ -283,8 +282,7 @@ export const deals: Deal[] = [
     originalPrice: 15,
     dealPrice: 11,
     discountPercent: 27,
-    unit: 'per unit',
-    minUnits: 20,
+    priceBasis: { kind: 'rate', unit: 'unit' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-05-31T23:59:59Z',
     termsAndConditions: 'Spring promotion. New and existing clients welcome.',
@@ -307,7 +305,7 @@ export const deals: Deal[] = [
     originalPrice: 700,
     dealPrice: 549,
     discountPercent: 22,
-    unit: 'per syringe',
+    priceBasis: { kind: 'rate', unit: 'syringe' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-06-30T23:59:59Z',
     termsAndConditions: 'VIP package includes numbing and post-care kit.',
@@ -330,7 +328,7 @@ export const deals: Deal[] = [
     originalPrice: 525,
     dealPrice: 399,
     discountPercent: 24,
-    unit: 'per package',
+    priceBasis: { kind: 'total' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-06-30T23:59:59Z',
     termsAndConditions: 'Package of 3 sessions. Must be used within 90 days.',
@@ -353,7 +351,7 @@ export const deals: Deal[] = [
     originalPrice: 2500,
     dealPrice: 1799,
     discountPercent: 28,
-    unit: 'per package',
+    priceBasis: { kind: 'total' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-08-31T23:59:59Z',
     termsAndConditions: '6 sessions included. Sessions spaced 6-8 weeks apart.',
@@ -376,7 +374,7 @@ export const deals: Deal[] = [
     originalPrice: 800,
     dealPrice: 599,
     discountPercent: 25,
-    unit: 'per session',
+    priceBasis: { kind: 'rate', unit: 'session' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-06-30T23:59:59Z',
     termsAndConditions:
@@ -400,7 +398,7 @@ export const deals: Deal[] = [
     originalPrice: 1400,
     dealPrice: 999,
     discountPercent: 29,
-    unit: 'per treatment',
+    priceBasis: { kind: 'total' },
     validFrom: '2024-03-01T00:00:00Z',
     validUntil: '2024-06-30T23:59:59Z',
     termsAndConditions: 'Includes 2 syringes of premium filler.',
@@ -435,10 +433,11 @@ export function toAnonymousDeal(deal: Deal): AnonymousDeal {
   return {
     ...rest,
     locationArea: business.locationArea,
-    businessRating: business.rating,
-    businessReviewCount: business.reviewCount,
     businessTier: business.tier,
     templateType: 'FIXED_PRICE' as const,
+    // Fixture prices are typed into fields, like an owner's, so there is nothing to interpret.
+    interpretation: { tier: 'as-advertised', reasons: [], notes: [] },
+    clinicConfirmedAt: null,
   }
 }
 

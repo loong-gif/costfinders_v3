@@ -1,6 +1,7 @@
 'use server'
 
-import { logger } from '@/lib/logger'
+import { publicErrorMessage } from '@/lib/errors/publicMessage'
+import { logger, logSupabaseError } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { AdminRole } from '@/types/admin'
 
@@ -50,10 +51,17 @@ export async function getAdminProfileAction(): Promise<AdminProfileResult> {
       .single()
 
     if (error) {
+      logSupabaseError('getAdminProfileAction', error, { userId: user.id })
       if (error.code === 'PGRST116') {
         return { success: true, profile: undefined }
       }
-      return { success: false, error: error.message }
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't load your admin profile.",
+        ),
+      }
     }
 
     return { success: true, profile: data as AdminProfile }

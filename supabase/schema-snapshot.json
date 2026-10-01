@@ -1,0 +1,939 @@
+{
+  "capturedAt": "2026-09-30T14:47:50.362Z",
+  "project": "kdlpkjzcnbkjcvwsvlwn",
+  "note": "The anon-observable schema contract. Regenerate deliberately with `npm run schema:snapshot` so an intended change is a reviewable diff. See scripts/check-schema-drift.ts for what each field means and what it cannot see.",
+  "tables": {
+    "admin_audit_log": {
+      "access": "denied",
+      "columns": [
+        "action",
+        "admin_email",
+        "admin_id",
+        "created_at",
+        "details",
+        "id",
+        "target_id",
+        "target_type"
+      ],
+      "types": {}
+    },
+    "admin_profiles": {
+      "access": "denied",
+      "columns": [
+        "created_at",
+        "email",
+        "first_name",
+        "id",
+        "last_name",
+        "permissions",
+        "role",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "business_claims": {
+      "access": "denied",
+      "columns": [
+        "admin_notes",
+        "business_id",
+        "created_at",
+        "evidence_document_url",
+        "id",
+        "profile_id",
+        "reviewed_at",
+        "reviewed_by",
+        "status",
+        "updated_at",
+        "verification_attempts",
+        "verification_code",
+        "verification_code_expires_at",
+        "verification_method"
+      ],
+      "types": {}
+    },
+    "business_profiles": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "claim_status",
+        "created_at",
+        "email",
+        "first_name",
+        "id",
+        "last_name",
+        "tier",
+        "tier_note",
+        "tier_source",
+        "updated_at",
+        "verification_status"
+      ],
+      "types": {}
+    },
+    "business_reviews": {
+      "access": "empty",
+      "columns": [
+        "author_name",
+        "author_profile_picture",
+        "author_url",
+        "business_id",
+        "created_at",
+        "google_review_id",
+        "id",
+        "images",
+        "published_at",
+        "rating",
+        "review_text",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "claims": {
+      "access": "denied",
+      "columns": [
+        "admin_close_reason",
+        "admin_closed_at",
+        "booked_date",
+        "booked_time",
+        "business_id",
+        "business_response",
+        "business_snapshot",
+        "consumer_id",
+        "created_at",
+        "deal_id",
+        "deal_title",
+        "expires_at",
+        "id",
+        "notes",
+        "preferred_date",
+        "preferred_time",
+        "price_label",
+        "relay_method",
+        "relay_note",
+        "relay_outcome",
+        "relayed_at",
+        "relayed_by",
+        "responded_at",
+        "status",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "clinic_memberships": {
+      "access": "denied",
+      "columns": [
+        "benefits",
+        "billing_period",
+        "business_id",
+        "created_at",
+        "is_ocr_required",
+        "is_offer_extracted",
+        "membership_name",
+        "membership_price",
+        "minimum_commitment_months",
+        "need_browser",
+        "plan_id",
+        "source_url",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "clinic_promotions": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "campaign_end_date",
+        "campaign_start_date",
+        "created_at",
+        "is_active",
+        "is_ocr_required",
+        "is_offer_extracted",
+        "promotion_content",
+        "promotion_id",
+        "promotion_title",
+        "requires_cf_verification",
+        "screenshot",
+        "source_url",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "clinic_services": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "created_at",
+        "regular_price",
+        "service_area",
+        "service_category",
+        "service_id",
+        "service_name",
+        "source_url",
+        "unit_type",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "content_categories": {
+      "access": "empty",
+      "columns": [
+        "created_at",
+        "display_order",
+        "id",
+        "is_active",
+        "name",
+        "slug",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "content_locations": {
+      "access": "empty",
+      "columns": [
+        "city",
+        "created_at",
+        "id",
+        "is_active",
+        "state",
+        "state_code",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "conversations": {
+      "access": "empty",
+      "columns": [
+        "business_owner_id",
+        "claim_id",
+        "consumer_id",
+        "created_at",
+        "id",
+        "last_message_at",
+        "status",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "deal_reports": {
+      "access": "denied",
+      "columns": [
+        "admin_note",
+        "claim_id",
+        "created_at",
+        "id",
+        "note",
+        "offer_id",
+        "reason",
+        "reporter_id",
+        "resolved_at",
+        "resolved_by",
+        "source",
+        "status",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "listing_requests": {
+      "access": "denied",
+      "columns": [
+        "admin_notes",
+        "business_id",
+        "business_name",
+        "contact_email",
+        "contact_name",
+        "contact_role",
+        "created_at",
+        "details",
+        "id",
+        "offer_id",
+        "page_url",
+        "request_type",
+        "status",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "master_business_info": {
+      "access": "denied",
+      "columns": [
+        "address",
+        "business_id",
+        "category",
+        "city",
+        "created_at",
+        "facebook_url",
+        "google_place_id",
+        "instagram_url",
+        "logo",
+        "name",
+        "phone",
+        "phone_source",
+        "review_count",
+        "score",
+        "updated_at",
+        "website"
+      ],
+      "types": {}
+    },
+    "messages": {
+      "access": "empty",
+      "columns": [
+        "content",
+        "conversation_id",
+        "created_at",
+        "id",
+        "read_at",
+        "sender_id",
+        "sender_type"
+      ],
+      "types": {}
+    },
+    "monitor_state": {
+      "access": "empty",
+      "columns": [
+        "domain_name",
+        "last_change_at",
+        "last_check_id",
+        "last_processed_at",
+        "monitor_id",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "notifications": {
+      "access": "empty",
+      "columns": [
+        "body",
+        "created_at",
+        "id",
+        "is_read",
+        "link",
+        "title",
+        "type",
+        "user_id"
+      ],
+      "types": {}
+    },
+    "offer_confirmations": {
+      "access": "denied",
+      "columns": [
+        "admin_note",
+        "business_id",
+        "created_at",
+        "id",
+        "kind",
+        "note",
+        "offer_id",
+        "owner_id",
+        "resolved_at",
+        "resolved_by",
+        "snapshot",
+        "status"
+      ],
+      "types": {}
+    },
+    "profiles": {
+      "access": "denied",
+      "columns": [
+        "alerts_email",
+        "alerts_sms",
+        "avatar_url",
+        "created_at",
+        "deletion_requested_at",
+        "favorite_categories",
+        "first_name",
+        "id",
+        "last_login_at",
+        "last_name",
+        "location_city",
+        "location_state",
+        "phone",
+        "phone_verified_at",
+        "status",
+        "unsubscribe_token",
+        "updated_at",
+        "verification_status"
+      ],
+      "types": {}
+    },
+    "promo_email_staging": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "created_at",
+        "email_content",
+        "email_date",
+        "email_sender",
+        "promo_email_id"
+      ],
+      "types": {}
+    },
+    "promo_offer_items": {
+      "access": "denied",
+      "columns": [
+        "created_at",
+        "delivered_units",
+        "item_name",
+        "offer_id",
+        "offer_item_id",
+        "service_id",
+        "unit_price",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "promo_offer_master": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "conditions",
+        "created_at",
+        "discount_amount",
+        "discount_percent",
+        "discount_price",
+        "id",
+        "is_active",
+        "is_membership_required",
+        "is_new_customer_required",
+        "is_package",
+        "membership_plan_id",
+        "offer_fingerprint",
+        "offer_raw_text",
+        "price_model",
+        "promotion_id",
+        "regular_price",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "promo_offer_price_history": {
+      "access": "denied",
+      "columns": [
+        "changed_at",
+        "id",
+        "new_discount_amount",
+        "new_discount_percent",
+        "new_discount_price",
+        "new_regular_price",
+        "offer_id",
+        "old_discount_amount",
+        "old_discount_percent",
+        "old_discount_price",
+        "old_regular_price"
+      ],
+      "types": {}
+    },
+    "promo_offer_terms": {
+      "access": "denied",
+      "columns": [
+        "created_at",
+        "is_membership_required",
+        "is_new_customer_required",
+        "is_not_combinable",
+        "is_one_per_patient",
+        "is_returning_customer_required",
+        "membership_plan_id",
+        "min_quantity",
+        "min_unit",
+        "offer_id",
+        "promo_code",
+        "raw_terms",
+        "redemption_frequency",
+        "requires_consultation",
+        "updated_at"
+      ],
+      "types": {}
+    },
+    "promo_social_staging": {
+      "access": "denied",
+      "columns": [
+        "business_id",
+        "created_at",
+        "input_url",
+        "post_url",
+        "promo_social_id",
+        "promo_text_raw",
+        "timestamp"
+      ],
+      "types": {}
+    },
+    "promotion_content_guardrail_queue": {
+      "access": "denied",
+      "columns": [
+        "details",
+        "detected_at",
+        "guardrail_code",
+        "id",
+        "last_seen_at",
+        "promotion_id",
+        "resolved_at",
+        "status"
+      ],
+      "types": {}
+    },
+    "public_business_directory": {
+      "access": "public",
+      "columns": [
+        "address",
+        "business_state",
+        "category",
+        "city",
+        "name",
+        "review_count",
+        "score",
+        "slug"
+      ],
+      "types": {
+        "address": "string",
+        "business_state": "string",
+        "category": "string",
+        "city": "string",
+        "name": "string",
+        "review_count": "number",
+        "score": "number",
+        "slug": "string"
+      }
+    },
+    "public_offer_confirmations": {
+      "access": "empty",
+      "columns": [
+        "confirmed_at",
+        "offer_id"
+      ],
+      "types": {}
+    },
+    "public_offers": {
+      "access": "public",
+      "columns": [
+        "billing_period",
+        "business_city",
+        "business_id",
+        "business_state",
+        "campaign_end_date",
+        "campaign_start_date",
+        "clinic_memberships",
+        "clinic_promotions",
+        "conditions",
+        "created_at",
+        "discount_amount",
+        "discount_percent",
+        "discount_price",
+        "id",
+        "is_active",
+        "is_membership_required",
+        "is_new_customer_required",
+        "is_package",
+        "master_business_info",
+        "membership_name",
+        "membership_plan_id",
+        "membership_price",
+        "minimum_commitment_months",
+        "offer_fingerprint",
+        "offer_raw_text",
+        "price_model",
+        "promo_offer_items",
+        "promotion_id",
+        "promotion_title",
+        "regular_price",
+        "updated_at"
+      ],
+      "types": {
+        "billing_period": "string",
+        "business_city": "string",
+        "business_id": "number",
+        "business_state": "string",
+        "campaign_end_date": "string",
+        "campaign_start_date": "string",
+        "clinic_memberships": "object",
+        "clinic_promotions": "object",
+        "created_at": "string",
+        "discount_amount": "number",
+        "discount_percent": "number",
+        "discount_price": "number",
+        "id": "number",
+        "is_active": "boolean",
+        "is_membership_required": "boolean",
+        "is_new_customer_required": "boolean",
+        "is_package": "boolean",
+        "master_business_info": "object",
+        "membership_price": "number",
+        "minimum_commitment_months": "number",
+        "offer_raw_text": "string",
+        "price_model": "string",
+        "promo_offer_items": "array",
+        "regular_price": "number",
+        "updated_at": "string"
+      }
+    },
+    "saved_deals": {
+      "access": "empty",
+      "columns": [
+        "consumer_id",
+        "deal_id",
+        "id",
+        "saved_at"
+      ],
+      "types": {}
+    },
+    "social_data_production": {
+      "access": "empty",
+      "columns": [
+        "business_id",
+        "created_at",
+        "facebook_url",
+        "instagram_url",
+        "process_flag",
+        "updated_at",
+        "website_clean"
+      ],
+      "types": {}
+    },
+    "v_promotion_content_guardrail_violations": {
+      "access": "denied",
+      "columns": [
+        "classification",
+        "element_index",
+        "element_text",
+        "is_active",
+        "promotion_id",
+        "source_url"
+      ],
+      "types": {}
+    }
+  },
+  "functions": {
+    "address_state_code": {
+      "args": [
+        "p_address"
+      ],
+      "access": "callable"
+    },
+    "admin_feedback_notes": {
+      "args": [
+        "p_ids"
+      ],
+      "access": "denied"
+    },
+    "admin_set_user_status": {
+      "args": [
+        "new_status",
+        "target_user_id"
+      ],
+      "access": "denied"
+    },
+    "admin_user_emails": {
+      "args": [
+        "p_user_ids"
+      ],
+      "access": "denied"
+    },
+    "approve_business_claim": {
+      "args": [
+        "p_admin_notes",
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "claim_consumer_contact": {
+      "args": [
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "claim_owner_notice_email": {
+      "args": [
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "claimed_membership_name": {
+      "args": [
+        "p_offer_id"
+      ],
+      "access": "denied"
+    },
+    "classify_promotion_content_element": {
+      "args": [
+        "p_text"
+      ],
+      "access": "callable"
+    },
+    "clear_package_item_unit_prices_for_offer": {
+      "args": [
+        "p_offer_id"
+      ],
+      "access": "denied"
+    },
+    "clinic_service_category_for_name": {
+      "args": [
+        "p_service"
+      ],
+      "access": "callable"
+    },
+    "create_notification": {
+      "args": [
+        "notification_body",
+        "notification_link",
+        "notification_title",
+        "notification_type",
+        "target_user_id"
+      ],
+      "access": "denied"
+    },
+    "delete_own_account": {
+      "args": [],
+      "access": "denied"
+    },
+    "email_preferences_for_user": {
+      "args": [
+        "p_user_id"
+      ],
+      "access": "callable"
+    },
+    "fn_build_offer_fingerprint": {
+      "args": [
+        "p_discount_amount",
+        "p_discount_percent",
+        "p_discount_price",
+        "p_items",
+        "p_source"
+      ],
+      "access": "callable"
+    },
+    "fn_normalize_fingerprint_segment": {
+      "args": [
+        "p_raw"
+      ],
+      "access": "callable"
+    },
+    "fn_offer_items_signature": {
+      "args": [
+        "p_offer_id"
+      ],
+      "access": "callable"
+    },
+    "fn_offer_source_key": {
+      "args": [
+        "p_business_id",
+        "p_membership_plan_id",
+        "p_promotion_id"
+      ],
+      "access": "callable"
+    },
+    "get_business_category_counts": {
+      "args": [],
+      "access": "callable"
+    },
+    "get_business_cities": {
+      "args": [],
+      "access": "callable"
+    },
+    "get_business_count_for_city": {
+      "args": [
+        "city_name"
+      ],
+      "access": "callable"
+    },
+    "get_city_deal_counts": {
+      "args": [],
+      "access": "callable"
+    },
+    "get_offer_category_counts": {
+      "args": [],
+      "access": "callable"
+    },
+    "get_or_create_claim_conversation": {
+      "args": [
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "identity_compact": {
+      "args": [
+        "p_text"
+      ],
+      "access": "callable"
+    },
+    "is_admin": {
+      "args": [],
+      "access": "denied"
+    },
+    "issue_business_claim_code": {
+      "args": [
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "latest_offer_confirmations": {
+      "args": [],
+      "access": "denied"
+    },
+    "offer_confirmation_snapshot": {
+      "args": [
+        "p_discount_amount",
+        "p_discount_percent",
+        "p_discount_price",
+        "p_offer_raw_text",
+        "p_price_model",
+        "p_regular_price"
+      ],
+      "access": "callable"
+    },
+    "provider_generic_terms": {
+      "args": [],
+      "access": "callable"
+    },
+    "provider_identity_terms": {
+      "args": [
+        "p_city",
+        "p_name",
+        "p_website"
+      ],
+      "access": "callable"
+    },
+    "provider_site_label": {
+      "args": [
+        "p_website"
+      ],
+      "access": "callable"
+    },
+    "reject_business_claim": {
+      "args": [
+        "p_admin_notes",
+        "p_claim_id"
+      ],
+      "access": "denied"
+    },
+    "scrub_identity_terms": {
+      "args": [
+        "p_label",
+        "p_terms",
+        "p_text"
+      ],
+      "access": "callable"
+    },
+    "scrub_provider_identity": {
+      "args": [
+        "p_city",
+        "p_name",
+        "p_text",
+        "p_website"
+      ],
+      "access": "callable"
+    },
+    "sync_non_package_offer_prices": {
+      "args": [
+        "p_offer_id"
+      ],
+      "access": "denied"
+    },
+    "unsubscribe_by_token": {
+      "args": [
+        "p_token"
+      ],
+      "access": "callable"
+    },
+    "verify_business_claim_code": {
+      "args": [
+        "p_claim_id",
+        "p_code"
+      ],
+      "access": "denied"
+    }
+  },
+  "vocabulary": {
+    "clinic_services.service_category": [
+      "Body Contouring",
+      "Dermal Filler",
+      "Facial",
+      "Laser & Light",
+      "Laser Hair Removal",
+      "Microneedling",
+      "Neurotoxin",
+      "Regenerative Injectable",
+      "Skin Tightening",
+      "Wellness"
+    ],
+    "clinic_services.unit_type": [
+      "area",
+      "session",
+      "shot",
+      "syringe",
+      "treatment",
+      "unit",
+      "vial"
+    ]
+  },
+  "migrations": [
+    "add_business_phone",
+    "admin_contact_and_deal_corrections",
+    "admin_lead_contact_access",
+    "admin_lead_workflow",
+    "admin_read_offer_items_and_price_history",
+    "alerts_email_opt_in_by_default",
+    "bound_admin_user_emails_input",
+    "business_deal_write_policies",
+    "business_owner_lead_access",
+    "business_profile_tier",
+    "category_counts_count_stated_discounts",
+    "claim_conversation_rpc",
+    "claim_owner_notice_email",
+    "claims_keep_revealed_details",
+    "clinic_catalogue_public_read_policies",
+    "close_direct_business_signup",
+    "close_public_catalogue_reads",
+    "close_stale_claims_on_next_claim",
+    "create_business_profiles_and_claims",
+    "create_get_business_cities_rpc",
+    "data_rights_plumbing",
+    "deal_reports",
+    "delete_own_account",
+    "drop_broken_match_documents",
+    "email_preferences_by_user",
+    "enforce_active_claim_limit",
+    "extend_service_taxonomy_enums",
+    "feedback_admin_note_column_grants",
+    "fix_ineffective_function_revokes",
+    "fix_profiles_update_grants",
+    "fix_rpc_regular_price",
+    "harden_claim_verification_and_approval",
+    "harden_direct_writes",
+    "harden_legacy_tables_and_secdef_search_path",
+    "link_unlinked_offer_items",
+    "listing_request_add_type",
+    "moderation_default_approved_for_ingest",
+    "offer_category_provider_ids",
+    "offer_confirmations",
+    "owner_deals_start_inactive",
+    "owner_lead_consumer_contact",
+    "owner_read_own_offer_items",
+    "owners_cannot_delete_deals",
+    "price_history_trigger_security_definer",
+    "public_catalogue_views",
+    "public_offers_scrub_plan_names",
+    "public_offers_withhold_membership_name",
+    "public_offers_withhold_unread_text",
+    "publish_messages_realtime",
+    "regrant_public_is_admin_execute",
+    "reinstate_deal_moderation",
+    "remove_admin_signup_escalation",
+    "repair_get_offer_category_counts",
+    "repair_split_blankets_and_unstated_prices",
+    "restore_price_predicate_in_category_counts",
+    "restore_public_is_admin_accessor",
+    "resync_promo_offer_master_id_sequence",
+    "retire_leaked_admin_account",
+    "revoke_admin_table_write_grants",
+    "revoke_business_profiles_client_write_grants",
+    "revoke_offer_table_write_grants",
+    "revoke_promo_offer_terms_writes",
+    "revoke_remaining_anon_write_grants",
+    "revoke_self_service_privilege_columns",
+    "revoke_staging_client_grants",
+    "rls_policies_for_admin_tables",
+    "scope_deal_image_storage_policies",
+    "service_rename_keeps_scraped_titles",
+    "single_admin_role",
+    "sync_item_unit_prices_security_definer",
+    "tighten_permissive_rls"
+  ]
+}

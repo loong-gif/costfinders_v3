@@ -1,0 +1,128 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "superior",
+  "cityLabel": "Superior",
+  "state": "Colorado",
+  "stateCode": "CO",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Superior clinics sell toxin by the unit, which means the figure on a menu is a measuring stick rather than a bill. Your total is that rate multiplied by a dose no injector fixes until they have watched your face move. Two features make the local lists unusual. First, almost nobody publishes a rate: every per-unit figure in this feed comes from one practice's member menu, so the figures sit close together because they are one clinic's rate card, not because the market has converged. Second, the cheapest advertised figure here is quoted on Botox rather than on Dysport's smaller unit, which is the opposite of what most feeds look like, and it changes how you should read the bottom of the list.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit on the Botox Scale",
+        "description": "The structure behind every priced offer visible in this market. A practice posts what one unit costs and multiplies by the count in your plan, so a single published figure has to cover a first-timer's frown lines and a full upper-face maintenance visit alike. Xeomin, Jeuveau and Daxxify are dosed at counts close to Botox's, so their rates read across reasonably well; Dysport's do not. What the published rate leaves out — consultation fee, minimum unit purchase, injection or facility charge, the two-week touch-up — is the part worth settling on the phone.",
+        "typicalRange": "the published Botox rates sit in the low double digits per unit, all on one practice's member menu"
+      },
+      {
+        "name": "One Per-Unit Rate Quoted Across Two Toxins",
+        "description": "In this feed the same figures appear against both Botox and Dysport, and the practice's own wording prices the Dysport side per 'equivalent dosing' rather than per Dysport unit — which reads as a dose matched to one Botox unit. That distinction is the whole question, because a Dysport unit is a finer division of the same kind of product — published clinical work puts the conversion near 2.5 to 3 Dysport units for each Botox unit, and treats it as indication-specific rather than a fixed exchange rate. Charged per matched dose, a visit should cost about the same in either product; charged per Dysport unit at the same figure, a Dysport visit would need far more units and cost far more. Ask directly whether the posted rate is per Botox unit, per Botox-equivalent dose or per unit of whatever is drawn up, which conversion the practice uses, and get the planned count in the product you will actually receive.",
+        "typicalRange": "the same low-double-digit figures listed against both brands, the Dysport ones per 'equivalent dosing'; the finished visit cost turns on which conversion the practice applies"
+      },
+      {
+        "name": "Member Rate Below a Stated Regular Rate",
+        "description": "Every per-unit rate published in this feed is labelled a member rate, and the practice's own wording sets each one beside a higher regular per-unit rate. That is a pricing structure, not a trick, but the member figure only means something once you know what the plan costs and what you would pay without it. Ask what the membership costs and how it is billed, whether it carries a minimum term, what the walk-in rate is, and whether prepaid or banked units expire or transfer to another toxin if the clinic switches its preferred brand.",
+        "typicalRange": "the low double digits per unit, for members only; the stated regular rate sits higher"
+      },
+      {
+        "name": "A Dollar Amount Off a First Visit, No Rate Stated",
+        "description": "The other practices in this feed publish no rate at all. They advertise a fixed dollar amount off instead — for new patients or a first Botox treatment, and in one case only when a minimum number of units of Botox or Dysport is bought. A discount off an unstated rate tells you nothing about the finished cost, and a minimum-unit condition can push a small first treatment above what you planned. When you call, ask for the per-unit rate and a planned unit count in the same sentence, whether the discount applies at your plan's size, and whether a consultation fee is credited against treatment on the day.",
+        "typicalRange": "no rate stated; a fixed amount off a first or new-patient treatment, in one case with a minimum unit purchase"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A short list of forces sets a rate card in a town this size, and they do not all push the same way. Superior is small, affluent and hemmed in by three larger aesthetic markets within half an hour, in a state that keeps injection firmly inside medicine.",
+    "factors": [
+      {
+        "factor": "Colorado treats injection as a delegated medical act",
+        "explanation": "The Colorado Board of Nursing has said botulinum toxin injection can fall within an RN's or advanced practice nurse's delegated medical scope where the clinician has the required knowledge, judgment and ability, and that it is outside an LPN's scope. Physicians and appropriately authorized APRNs may prescribe and inject; physician assistants work within Colorado's collaboration framework, which carries extra requirements early in practice under SB23-083. An esthetician or cosmetology licence alone authorizes none of it. Standing medical oversight is a real overhead line inside every compliant practice, and it sits underneath what Botox costs here. Ask your injector's licence type and who the delegating or supervising physician is."
+      },
+      {
+        "factor": "A very high household income in a very small town",
+        "explanation": "Census figures put Superior's median household income near $158,000 with a median age around 37 — roughly half again the Boulder metro median income, in a town of about 13,000 people. That supports discretionary spending and premium positioning, but 13,000 residents cannot sustain many dedicated injectable practices on their own, so local clinics are competing for a catchment that stretches well past the town line and price accordingly."
+      },
+      {
+        "factor": "Occupancy cost across the Boulder–Louisville–Broomfield corridor",
+        "explanation": "Aesthetic practices in this area concentrate along commercial corridors in Louisville, north Broomfield, and central and southeast Boulder rather than inside Superior itself. C2ER's Cost of Living Index puts the Boulder area well above the national baseline, driven mostly by property, and central Boulder retail space costs a practice considerably more per square foot than a Broomfield suite while the vial costs the same in both. The corridor you shop in tends to move the number more than the brand you pick."
+      },
+      {
+        "factor": "A thin publishing pool inside a dense regional market",
+        "explanation": "Public directories list many injectors across the corridor, but no authoritative registry publishes a current count, and in this feed a single practice posts a per-unit figure at all. What is visible is therefore not a survey of the market — it is one practice that treats transparency as a marketing position, usually because its rate competes. Treat what is published as a floor-finding tool and assume unpublished quotes can land on either side of it."
+      },
+      {
+        "factor": "Boulder, Broomfield and Denver all within a short drive",
+        "explanation": "Boulder is typically 10 to 15 minutes from Superior, Broomfield 15 to 20, and Denver roughly 25 to 35 depending on destination and traffic on the Northwest Parkway and US 36. Toxin is a three- or four-times-a-year purchase, so unlike a cross-country trip, a Denver or Broomfield clinic is genuinely repeatable. That accessibility restrains what a Superior-adjacent practice can charge, particularly for a large first course."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Little of this is coupon hunting. In a market where only one clinic publishes a per-unit rate and applies it to two differently scaled products, the money is saved before you book, by forcing every quote onto a basis you can compare.",
+    "tips": [
+      {
+        "tip": "Price a whole appointment, not a per-unit rate",
+        "detail": "Ask each clinic how many units your areas take and what the finished visit costs, then set the totals side by side. A rate per unit tells you nothing until it is multiplied by a count, and the count is where clinics differ most. Get both numbers in the same message so you can hold one quote against another."
+      },
+      {
+        "tip": "Ask which toxin the published rate belongs to",
+        "detail": "Where the same figure is advertised for Botox and Dysport, find out what the unit means on the Dysport side: the menu here words it as 'equivalent dosing', which reads as a Botox-matched dose rather than a Dysport unit. Ask what your plan costs in each product as a completed visit and which conversion the practice uses. If it turns out the same figure is charged per Dysport unit, Dysport is the more expensive choice for you, not the cheaper one."
+      },
+      {
+        "tip": "Take one quote from a different rent band",
+        "detail": "Louisville and north Broomfield are minutes away and sit in a cheaper occupancy bracket than central Boulder. Two comparison calls cost you an afternoon and can move the number more than negotiating does — and because you will be back in three or four months, the saving repeats. If you stay local anyway, an outside quote is a useful reference point in the conversation."
+      },
+      {
+        "tip": "Enroll in the manufacturer programme before your first injection, not after",
+        "detail": "Allergan's Allē, Merz's Xperience/Aspire and Evolus Rewards accrue on treatments you were having regardless, and claiming retroactively usually forfeits the credit. Ask whether the clinic applies points at checkout or banks them, and what happens to your balance if the practice changes its preferred brand mid-year."
+      },
+      {
+        "tip": "Book away from the event crush",
+        "detail": "Demand firms ahead of weddings, graduations, reunions, summer travel, the December holidays and the January reset, and toxin needs roughly two weeks to settle before a fixed date. Quiet stretches are when introductory rates and prepaid courses are actually negotiable; in the crush the useful ask is a slot. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "comparisonText": "Both figures stand on the same footing: one unit measured on the Botox scale, with quotes on a smaller dosing unit such as Dysport left out rather than converted. RealSelf reports member-provided costs of roughly $10 to $15 per unit at most US practices, and the middle of that published band, rounded up, supplies the national marker of $13. Superior gets no local figure beside it: every per-unit rate published here is a member rate on a single practice's menu, set below its own higher regular rate, and one clinic's rate card is not a market, so we draw no gap."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Superior, CO?",
+      "answer": "There is no single number, and any page that gives you one is guessing at your dose. Toxin is sold by the unit here, so your bill is an advertised rate multiplied by a count nobody fixes until you are in the chair. Every per-unit rate published locally comes from one practice's member menu, so the figures cluster tightly by construction rather than because the market agrees, and too few clinics publish a rate for this page to set a typical one. Before comparing quotes, settle which product the rate belongs to and what else the visit carries."
+    },
+    {
+      "question": "Why do so few Superior clinics publish what Botox costs?",
+      "answer": "Because it is a prescription medical treatment whose dose is set at assessment, and because most of the practices serving Superior sit in Louisville, Broomfield or Boulder rather than in town. In this feed only one practice states a per-unit figure; the others advertise a fixed amount off a first or new-patient treatment instead. That is normal, but it means the published figures are a self-selected slice. Call two or three unpriced practices and ask for a per-unit rate plus a planned count for your areas; most will give both."
+    },
+    {
+      "question": "Why does the Dysport cost per unit look the same as Botox at a clinic here?",
+      "answer": "Because the practice applies one rate to both and words the Dysport side per 'equivalent dosing' — a dose matched to a Botox unit — rather than per Dysport unit. A Dysport unit is a finer division of product — clinical literature puts the conversion near 2.5 to 3 Dysport units per Botox unit, indication-dependent — so the same figure charged per Dysport unit would make a Dysport visit cost substantially more, while charged per matched dose it should cost about the same. Ask which of the two the clinic means, your planned count in each product and the finished cost of each visit. That is the only comparison that survives contact with an invoice."
+    },
+    {
+      "question": "How many units will I need, and what does that make a full appointment cost?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate. Ask as well how the practice handles a plan that grows once you are in the chair, and whether a two-week review and any touch-up are included or billed separately."
+    },
+    {
+      "question": "Does Botox cost less in Boulder, Louisville or Broomfield than in Superior?",
+      "answer": "Not clearly, on what this site's feed shows. Boulder's published Botox-scale rates sit in the same low-double-digit band as the Superior member rates, and the feed carries too few Louisville or Broomfield listings to compare. Where a gap does open, the mechanism is occupancy cost and clinic format rather than product — the vial costs the same in a Broomfield suite as it does on Pearl Street. Boulder is generally 10 to 15 minutes away and Broomfield 15 to 20, which makes an outside clinic genuinely repeatable four times a year. Get one comparison quote for your planned count, compare finished visit totals rather than per-unit rates, and check the injector's licence and supervision arrangement match."
+    },
+    {
+      "question": "Is Botox cheaper in Denver, and does the drive change what it costs you?",
+      "answer": "Denver is a deeper market with far more internal competition, and it is roughly 25 to 35 minutes away depending on your destination and traffic. That is close enough that the trip can be worth it for a large initial course and arguably for maintenance too, which is unusual — most metros are far enough apart that only the first visit justifies travel. Price it honestly: add parking and the hour you lose, then compare against a local finished-visit total."
+    },
+    {
+      "question": "Who can legally inject Botox in Colorado, and does that affect what it costs?",
+      "answer": "Injection is a medical function in Colorado. The Board of Nursing has indicated it can fall within an RN's or advanced practice nurse's delegated scope where the clinician meets the standard of knowledge and ability, and that it is outside an LPN's scope; physicians and authorized APRNs may prescribe and inject, and PAs work under the state's collaboration framework set out in SB23-083. An esthetician licence alone does not authorize it. That oversight is an overhead line inside every compliant clinic, which is part of why rates here do not fall to the levels advertised in looser states. Ask for your injector's licence, the delegating physician's name, and confirm current board guidance if anything sounds off."
+    },
+    {
+      "question": "Does an unusually low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a starting rate with conditions, a smaller dosing unit, or an introductory offer — but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in several states and caused harmful reactions, and the FDA advised confirming the product came from an authorized source, flagging packaging tells such as a 150-unit strength not sold in the US. Asking to see the sealed, labelled vial before it is drawn up is reasonable at any clinic, including a well-reviewed one."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 142,
+    "medspaDensity": "Superior itself supports only a small number of dedicated aesthetic practices, which is what a town of roughly 13,000 people would predict; the density a Superior buyer actually shops is the Boulder–Louisville–Broomfield corridor around it. Practices cluster along commercial strips in Louisville, north Broomfield, and central and southeast Boulder, with dermatology and plastic surgery offices injecting alongside the medspa formats. Public directories list plenty of providers across that corridor, but no authoritative registry publishes a complete current count, so treat any specific density claim with suspicion. What matters more to a buyer is how few of them post a per-unit figure publicly.",
+    "demographicNotes": "Census-derived profiles put Superior's population near 13,300 with a median age around 37 and a median household income close to $158,000 in 2023 dollars — materially higher than the Boulder metro median of roughly $104,000 and Boulder County's figure near $100,000. That is a household base with clear discretionary capacity and an age profile that mixes early preventative dosing with established maintenance patients. It is also small, so local clinics price for a regional catchment rather than for Superior alone, and the town's affluence does not translate directly into a local premium.",
+    "competitionNotes": "Competition here runs outward in every direction, and the distances are short enough that it bites. Boulder sits 10 to 15 minutes away with the corridor's highest occupancy costs and strongest brand positioning, Louisville and Broomfield sit 15 to 20 minutes away in a cheaper rent band, and Denver is roughly 25 to 35 minutes down US 36 with a far deeper field of injectors. Because toxin is a quarterly purchase rather than a one-off, all three are realistic repeat options rather than special-occasion trips, which compresses what any single practice can charge. Inside that, the one practice in this feed willing to publish a rate exerts influence well beyond its size, since it sets the figure every other practice gets asked about on the phone."
+  }
+}

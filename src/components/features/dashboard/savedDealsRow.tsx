@@ -1,13 +1,20 @@
 'use client'
 
-import { ArrowRight, Heart, MapPin } from '@phosphor-icons/react'
+import { ArrowRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { DealList } from '@/components/features/dealCard'
 import { useAuth } from '@/lib/context/authContext'
 import { getDealById } from '@/lib/data/unified'
 import type { AnonymousDeal } from '@/types/deal'
-import { formatItemDetailLine } from '@/types/supabase'
+
+/**
+ * The dashboard's newest saved deals, as the same rows as everywhere else. They were bespoke
+ * mini cards that printed the raw category slug ("botox") and none of a row's price context.
+ * Three, not the six that side-scrolled: a summary above "Deals for you", with the full list a
+ * click away.
+ */
+const SHOWN = 3
 
 export function SavedDealsRow() {
   const { savedDeals } = useAuth()
@@ -25,7 +32,7 @@ export function SavedDealsRow() {
 
     async function fetchDeals() {
       const results = await Promise.all(
-        savedDeals.slice(0, 6).map((id) => getDealById(id)),
+        savedDeals.slice(0, SHOWN).map((id) => getDealById(id)),
       )
       if (cancelled) return
       setDeals(results.filter((d): d is AnonymousDeal => d !== null))
@@ -38,91 +45,26 @@ export function SavedDealsRow() {
     }
   }, [savedDeals])
 
-  if (isLoading || savedDeals.length === 0) return null
+  // Bail while loading, with nothing saved, or when every saved deal has since
+  // been removed — otherwise the header renders above an empty list.
+  if (isLoading || deals.length === 0) return null
 
   return (
     <section className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-[#451a03]">Saved deals</h2>
+        <h2 className="font-display text-lg font-semibold text-text-primary tracking-tight">
+          Saved deals
+        </h2>
         <Link
           href="/dashboard/favorites"
-          className="text-sm text-amber-800 hover:text-amber-700 font-medium flex items-center gap-1 transition-colors"
+          className="text-sm text-accent hover:text-accent-hover font-medium flex items-center gap-1 transition-colors"
         >
-          View all {savedDeals.length}
+          View all
           <ArrowRight size={14} weight="bold" />
         </Link>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
-        {deals.map((deal) => (
-          <MiniDealCard key={deal.id} deal={deal} />
-        ))}
-      </div>
+      <DealList deals={deals} />
     </section>
-  )
-}
-
-function MiniDealCard({ deal }: { deal: AnonymousDeal }) {
-  const hasDealPrice = deal.dealPrice > 0
-  const itemDetailLine = formatItemDetailLine(
-    deal.itemQuantity,
-    deal.itemUnitPrice,
-    deal.unit,
-  )
-
-  return (
-    <Link href={`/deals/${deal.id}`} className="shrink-0 w-56">
-      <Card
-        variant="glass"
-        padding="none"
-        className="overflow-hidden hover:border-[#c4b09a] hover:-translate-y-0.5 transition-all duration-200"
-      >
-        {/* Compact header with heart + category */}
-        <div className="px-3 pt-3 pb-2 flex items-center justify-between">
-          <span className="text-xs font-medium text-[#92400e] bg-amber-800/8 px-2 py-0.5 rounded-full">
-            {deal.category}
-          </span>
-          <Heart size={16} weight="fill" className="text-amber-800" />
-        </div>
-
-        {/* Content */}
-        <div className="px-3 pb-3 space-y-1.5">
-          <p className="text-sm font-medium text-[#451a03] line-clamp-2 leading-snug">
-            {deal.title}
-          </p>
-
-          {/* Price */}
-          <div className="flex items-baseline gap-1.5">
-            {hasDealPrice ? (
-              <span className="text-lg font-bold font-mono text-amber-800">
-                ${deal.dealPrice}
-              </span>
-            ) : (
-              <span className="text-sm font-medium text-amber-800">
-                Contact for pricing
-              </span>
-            )}
-            {deal.originalPrice > 0 &&
-              hasDealPrice &&
-              deal.originalPrice > deal.dealPrice && (
-                <span className="text-xs text-[#92400e] line-through">
-                  ${deal.originalPrice}
-                </span>
-              )}
-          </div>
-          {itemDetailLine && (
-            <p className="text-[11px] text-[#92400e] font-mono leading-tight">
-              {itemDetailLine}
-            </p>
-          )}
-
-          {/* Location */}
-          <div className="flex items-center gap-1 text-xs text-[#78350f]">
-            <MapPin size={12} weight="light" className="text-[#92400e]" />
-            <span className="truncate">{deal.locationArea}</span>
-          </div>
-        </div>
-      </Card>
-    </Link>
   )
 }

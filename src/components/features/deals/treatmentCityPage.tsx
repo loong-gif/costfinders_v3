@@ -1,25 +1,26 @@
 'use client'
 
-import {
-  ArrowLeft,
-  BookOpen,
-  Buildings,
-  CaretRight,
-  MapPin,
-  Tag,
-} from '@phosphor-icons/react'
+import { ArrowLeft, BookOpen, CaretRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
+import {
+  DEFAULT_SORT,
+  treatmentLink,
+} from '@/components/features/deals/cityDealsPage'
 import { DealsGrid } from '@/components/features/dealsGrid'
 import { FilterPanel } from '@/components/features/filterPanel'
-import { Card } from '@/components/ui/card'
+import { CategoryFilter } from '@/components/patterns/categoryFilter'
 import { Faq } from '@/components/ui/faq'
+import { getTreatmentLabel } from '@/lib/data/adapters'
+import type { TypicalPrice } from '@/lib/data/typicalPrice'
 import { getTreatmentCityFaqs } from '@/lib/seo/faq-content'
 import {
   type DealFilters,
   type SortOption,
   sortDeals,
+  TREATMENT_SLUGS,
+  withinPriceRange,
 } from '@/lib/utils/deal-sorting'
 import type { AnonymousDeal, TreatmentCategory } from '@/types/deal'
 
@@ -30,7 +31,40 @@ interface TreatmentCityPageProps {
   cityName: string
   initialDeals: AnonymousDeal[]
   dealCount: number
-  businessCount: number
+  /**
+   * Whether a cost guide exists for this treatment+city. The guide link used to render
+   * unconditionally, so every treatment/city page without a guide — most of them — shipped
+   * an internal link straight into a 404.
+   */
+  hasGuide: boolean
+  /** Deals per treatment in this city: the "other treatments" links go only where there are some. */
+  treatmentCounts: Record<string, number>
+  /**
+   * This treatment's typical price in this city; null outside TYPICAL_TREATMENTS (neurotoxins
+   * only) or below the floor.
+   */
+  typical?: TypicalPrice | null
+}
+
+/**
+ * The discount a reader can check against the two prices on the card: `$149` struck through
+ * from `$399`. Deliberately NOT the scraped `discountPercent`, which contradicts those prices
+ * on 12 of the 65 treatment-city pages — 4 offers carry discount_percent = 100 with
+ * regular_price === discount_price, and 1 carries 63.7 on `$49 -> $49`. A hero sentence built
+ * on that field would announce "100% off" over a card showing no price cut at all.
+ *
+ * The cards' "Save N%" chip goes through dealPricing(), which needs both prices too, so the
+ * sentence and the chips agree.
+ */
+function priceCutPercent(deal: AnonymousDeal): number {
+  if (
+    deal.originalPrice > 0 &&
+    deal.dealPrice > 0 &&
+    deal.originalPrice > deal.dealPrice
+  ) {
+    return (1 - deal.dealPrice / deal.originalPrice) * 100
+  }
+  return 0
 }
 
 export function TreatmentCityPage({
@@ -40,14 +74,35 @@ export function TreatmentCityPage({
   cityName,
   initialDeals,
   dealCount,
-  businessCount,
+  hasGuide,
+  treatmentCounts,
+  typical,
 }: TreatmentCityPageProps) {
   const router = useRouter()
   const [filters, setFilters] = useState<DealFilters>({})
-  const [sortBy, setSortBy] = useState<SortOption>('popular')
+  const [sortBy, setSortBy] = useState<SortOption>(DEFAULT_SORT)
 
   // Get data
   const faqs = getTreatmentCityFaqs(treatmentName, cityName)
+  const otherTreatments = TREATMENT_SLUGS.filter(
+    (slug) => slug !== treatmentSlug && (treatmentCounts[slug] ?? 0) > 0,
+  )
+
+  /**
+   * The largest price cut actually listed on this page, or 0 when nothing here is discounted.
+   *
+   * Replaces a hardcoded "save up to 50%" that shipped into all 65 treatment-city heroes
+   * regardless of city or treatment. Measured against the live corpus: only 7 of those 65
+   * pages contain a deal that reaches 50%, the median page tops out at 27%, and 30 pages
+   * carry no discounted deal at all — so those omit the sentence rather than soften it.
+   *
+   * Read from initialDeals, not filteredDeals: the sentence describes the page, and a reader
+   * narrowing the price filter has not changed what the page lists.
+   */
+  const maxPriceCut = useMemo(
+    () => Math.round(Math.max(0, ...initialDeals.map(priceCutPercent))),
+    [initialDeals],
+  )
 
   // Calculate active filter count
   const activeFilterCount = useMemo(() => {
@@ -59,135 +114,116 @@ export function TreatmentCityPage({
 
   // Filter and sort deals
   const filteredDeals = useMemo(() => {
-    let deals = [...initialDeals]
-
-    // Apply price filters
-    if (filters.minPrice !== undefined) {
-      deals = deals.filter((d) => d.dealPrice >= filters.minPrice!)
-    }
-    if (filters.maxPrice !== undefined) {
-      deals = deals.filter((d) => d.dealPrice <= filters.maxPrice!)
-    }
+    const { minPrice, maxPrice } = filters
+    const deals = initialDeals.filter((d) =>
+      withinPriceRange(d, minPrice, maxPrice),
+    )
 
     // Apply sorting
     return sortDeals(deals, sortBy)
   }, [initialDeals, filters, sortBy])
 
-  const handleDealClick = (dealId: string) => {
-    router.push(`/deals/${dealId}`)
+  const handleResetFilters = () => {
+    setFilters({})
+    setSortBy(DEFAULT_SORT)
+  }
+
+  // The city page's chips, with this treatment selected: a shopper who tapped "Fillers" there
+  // lands here and can still switch treatment, or go back to all of the city's deals.
+  const handleCategoryChange = (category: TreatmentCategory | 'all') => {
+    if (category === treatmentSlug) return
+    router.push(
+      category === 'all'
+        ? `/deals/${citySlug}`
+        : `/deals/${category}/${citySlug}`,
+    )
   }
 
   return (
-    <main className="pt-20 pb-20 md:pb-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Back Link */}
+    <main className="pt-20 pb-20 md:pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           href={`/deals/${citySlug}`}
-          className="inline-flex items-center gap-2 text-sm text-[#78350f] hover:text-[#451a03] transition-colors mb-6"
+          className="inline-flex items-center gap-1.5 min-h-[44px] mb-4 text-sm text-text-secondary hover:text-text-primary transition-colors"
         >
           <ArrowLeft size={16} weight="bold" />
-          All {cityName} Deals
+          All {cityName} deals
         </Link>
 
-        {/* Hero Section */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#451a03]">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
             {treatmentName} in {cityName}
           </h1>
-          <p className="mt-2 text-[#78350f] max-w-2xl">
-            Compare {dealCount} {treatmentName.toLowerCase()} deals from
-            verified {cityName} providers. Find the best prices and save up to
-            50%.
+          <p className="mt-3 text-text-secondary max-w-2xl">
+            Compare {dealCount} {treatmentName.toLowerCase()} deals from{' '}
+            {cityName} providers, at the prices they advertise publicly.
+            {maxPriceCut > 0 &&
+              ` The biggest price cut listed on this page is ${maxPriceCut}% off.`}
           </p>
-
-          {/* Stats Row */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#78350f]">
-            <div className="flex items-center gap-1.5">
-              <MapPin size={16} weight="fill" className="text-amber-800" />
-              <span>{cityName}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Tag size={16} weight="fill" className="text-green-400" />
-              <span>
-                {dealCount} {treatmentName.toLowerCase()} deals
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Buildings size={16} weight="fill" className="text-blue-600" />
-              <span>{businessCount} providers</span>
-            </div>
+          {hasGuide && (
             <Link
-              href={`/guides/${treatmentSlug}-pricing-${citySlug}`}
-              className="flex items-center gap-1.5 text-amber-800 hover:text-amber-900 transition-colors"
+              href={`/guides/${treatmentSlug}-cost-${citySlug}`}
+              className="mt-3 inline-flex items-center gap-1.5 min-h-[44px] text-sm font-medium text-accent hover:text-accent-hover transition-colors"
             >
-              <BookOpen size={16} weight="fill" />
-              <span>Pricing guide</span>
+              <BookOpen size={16} weight="bold" />
+              {treatmentName} cost guide for {cityName}
               <CaretRight size={12} weight="bold" />
             </Link>
-          </div>
+          )}
         </div>
 
-        {/* Filter Panel */}
-        <div className="mb-6">
-          <FilterPanel
-            filters={filters}
-            sortBy={sortBy}
-            onFiltersChange={setFilters}
-            onSortChange={setSortBy}
-            onReset={() => {
-              setFilters({})
-              setSortBy('popular')
-            }}
-            activeFilterCount={activeFilterCount}
-          />
-        </div>
+        <FilterPanel
+          filters={filters}
+          sortBy={sortBy}
+          onFiltersChange={setFilters}
+          onSortChange={setSortBy}
+          onReset={handleResetFilters}
+          activeFilterCount={activeFilterCount}
+          // On /deals/botox/* a deal compares per unit or not at all (comparablePrice): flat
+          // prices, bundles and unpriced rows have no per-unit figure (10 of 21 on Tucson) and
+          // drop out while a bound is set. The bounds are dollars per unit; the legend says so.
+          priceLabel={treatmentSlug === 'botox' ? 'Price per unit' : undefined}
+          chips={
+            <CategoryFilter
+              selected={treatmentSlug}
+              onChange={handleCategoryChange}
+              available={TREATMENT_SLUGS.filter(
+                (slug) =>
+                  slug === treatmentSlug || (treatmentCounts[slug] ?? 0) > 0,
+              )}
+            />
+          }
+        />
 
-        {/* Deals Grid */}
-        <DealsGrid deals={filteredDeals} onDealClick={handleDealClick} />
+        <DealsGrid
+          deals={filteredDeals}
+          totalCount={initialDeals.length}
+          onClearFilters={
+            activeFilterCount > 0 ? handleResetFilters : undefined
+          }
+          typical={typical}
+        />
 
-        {/* Other Treatments in Same City */}
-        <section className="mt-12">
-          <h2 className="text-lg font-semibold text-[#451a03] mb-4">
-            Other Treatments in {cityName}
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {(
-              [
-                'botox',
-                'fillers',
-                'facials',
-                'laser',
-                'body',
-                'skincare',
-              ] as const
-            )
-              .filter((slug) => slug !== treatmentSlug)
-              .map((slug) => (
+        {/* Other Treatments in Same City — only pages that list something */}
+        {otherTreatments.length > 0 && (
+          <section className="mt-14">
+            <h2 className="font-display text-xl font-bold tracking-tight text-text-primary mb-4">
+              Other treatments in {cityName}
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {otherTreatments.map((slug) => (
                 <Link
                   key={slug}
                   href={`/deals/${slug}/${citySlug}`}
-                  className="group"
+                  className={treatmentLink}
                 >
-                  <Card
-                    variant="glass"
-                    padding="md"
-                    className="bg-[#f2ebe2] border-[#d4c4b0] hover:bg-[#faf5ee] transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-[#451a03] group-hover:text-amber-800 transition-colors">
-                        {slug.charAt(0).toUpperCase() + slug.slice(1)}
-                      </span>
-                      <CaretRight
-                        size={14}
-                        weight="bold"
-                        className="text-[#92400e] group-hover:text-amber-800 transition-colors"
-                      />
-                    </div>
-                  </Card>
+                  {getTreatmentLabel(slug)}
+                  <CaretRight size={12} weight="bold" />
                 </Link>
               ))}
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
 
         {/* FAQ Section */}
         <Faq items={faqs} className="mt-12" />

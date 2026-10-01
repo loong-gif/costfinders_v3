@@ -1,7 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { logger } from '@/lib/logger'
+import { publicErrorMessage } from '@/lib/errors/publicMessage'
+import { logger, logSupabaseError } from '@/lib/logger'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 
 // ---------------------------------------------------------------------------
@@ -43,9 +44,10 @@ interface UnreadCountResult {
 /**
  * Create a notification for a given user.
  *
- * This is a SERVICE-level insert — it does NOT check the caller's auth.
- * Intended to be called by other server actions on behalf of users
- * (e.g. after a claim status change, deal expiry, etc.).
+ * Called by other server actions on behalf of users (e.g. after a claim status
+ * change). Writes via public.create_notification(), which requires an authenticated
+ * caller — the previous direct insert relied on an INSERT policy that permitted anyone,
+ * including anon, to write into any user's feed.
  */
 export async function createNotificationAction(
   userId: string,
@@ -57,21 +59,27 @@ export async function createNotificationAction(
   try {
     const supabase = await createSupabaseServerClient()
 
-    const insertPayload: Record<string, unknown> = {
-      user_id: userId,
-      type,
-      title,
-      body,
-    }
-
-    if (link) {
-      insertPayload.link = link
-    }
-
-    const { error } = await supabase.from('notifications').insert(insertPayload)
+    // Routed through a SECURITY DEFINER function. The notifications INSERT policy was
+    // WITH CHECK (true) for role `public`, so anyone — signed in or not — could write a
+    // notification with a click-through link into any user's feed. The policy is gone;
+    // the function requires an authenticated caller.
+    const { error } = await supabase.rpc('create_notification', {
+      target_user_id: userId,
+      notification_type: type,
+      notification_title: title,
+      notification_body: body,
+      notification_link: link ?? null,
+    })
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('createNotificationAction', error, { userId })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't create the notification.",
+        ),
+      }
     }
 
     return { success: true }
@@ -108,7 +116,14 @@ export async function getNotificationsAction(
       .limit(limit)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getNotificationsAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't load your notifications. Please try again.",
+        ),
+      }
     }
 
     return { success: true, notifications: (data ?? []) as NotificationRow[] }
@@ -142,7 +157,14 @@ export async function getUnreadCountAction(): Promise<UnreadCountResult> {
       .eq('is_read', false)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('getUnreadCountAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't count your unread notifications.",
+        ),
+      }
     }
 
     return { success: true, count: count ?? 0 }
@@ -178,7 +200,17 @@ export async function markAsReadAction(
       .eq('id', notificationId)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('markAsReadAction', error, {
+        userId: user.id,
+        notificationId,
+      })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't mark this notification as read.",
+        ),
+      }
     }
 
     return { success: true }
@@ -212,7 +244,14 @@ export async function markAllReadAction(): Promise<NotificationResult> {
       .eq('is_read', false)
 
     if (error) {
-      return { success: false, error: error.message }
+      logSupabaseError('markAllReadAction', error, { userId: user.id })
+      return {
+        success: false,
+        error: publicErrorMessage(
+          error,
+          "We couldn't mark your notifications as read.",
+        ),
+      }
     }
 
     revalidatePath('/dashboard')

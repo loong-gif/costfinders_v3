@@ -1,9 +1,4 @@
-import {
-  ArrowRight,
-  MapPin,
-  Storefront,
-  Tag,
-} from '@phosphor-icons/react/dist/ssr'
+import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 interface CityCardProps {
@@ -16,8 +11,12 @@ interface CityCardProps {
 }
 
 /**
- * CityCard - Server Component for displaying city listings on state pages
- * Features Bold & Warm styling with hover effects and navigation link
+ * A city on its state page: name, then the two counts, linking to the city's provider hub.
+ *
+ * The provider figure is the directory's (every listed clinic, as the hub prints it), not the
+ * clinics with deals, so it says "listed": "156 deals · 67 providers" read as a contradiction of
+ * the deals page's "156 deals from 21 providers". A city with no deal says so in words; "0 deals"
+ * looked broken, and the card stays because the hub still lists its providers (2026-09-28).
  */
 export function CityCard({
   name,
@@ -30,38 +29,31 @@ export function CityCard({
   return (
     <Link
       href={`/${stateSlug}/${slug}`}
-      className="group bg-[#f2ebe2] border border-[#d4c4b0] rounded-xl p-5 shadow-md transition-all duration-200 hover:border-[#c4b09a] hover:shadow-lg"
+      className="group flex h-full items-center justify-between gap-4 rounded-xl border border-border-default bg-bg-elevated px-5 py-4 transition-all duration-200 hover:border-border-hover hover:shadow-md"
     >
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-800/8 flex items-center justify-center">
-            <MapPin size={20} weight="light" className="text-amber-800" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-lg text-[#451a03] group-hover:text-amber-800 transition-colors">
-              {name}
-            </h3>
-            <p className="text-sm text-[#92400e]">{stateName}</p>
-          </div>
-        </div>
-        <ArrowRight
-          size={20}
-          weight="light"
-          className="text-[#92400e] group-hover:text-amber-800 group-hover:translate-x-1 transition-all"
-        />
+      <div className="min-w-0">
+        <h3 className="font-display text-base font-semibold text-text-primary group-hover:text-accent transition-colors">
+          {name}
+          <span className="sr-only">, {stateName}</span>
+        </h3>
+        <p className="mt-0.5 text-sm text-text-muted tabular-nums">
+          {/* Each half unbroken, so a narrow card wraps at the dot. */}
+          <span className="whitespace-nowrap">
+            {dealCount === 0
+              ? 'No deals listed yet ·'
+              : `${dealCount} ${dealCount === 1 ? 'deal' : 'deals'} ·`}
+          </span>{' '}
+          <span className="whitespace-nowrap">
+            {businessCount}{' '}
+            {businessCount === 1 ? 'provider listed' : 'providers listed'}
+          </span>
+        </p>
       </div>
-
-      {/* Stats */}
-      <div className="mt-4 pt-4 border-t border-[#d4c4b0] flex items-center gap-4 text-sm">
-        <div className="flex items-center gap-1.5 text-[#78350f]">
-          <Tag size={16} weight="light" className="text-amber-800" />
-          <span>{dealCount} deals</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[#78350f]">
-          <Storefront size={16} weight="light" className="text-amber-800" />
-          <span>{businessCount} providers</span>
-        </div>
-      </div>
+      <ArrowRight
+        size={16}
+        weight="bold"
+        className="shrink-0 text-text-muted group-hover:text-accent transition-colors"
+      />
     </Link>
   )
 }

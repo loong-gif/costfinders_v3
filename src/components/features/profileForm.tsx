@@ -18,7 +18,6 @@ export function ProfileForm() {
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [phoneError, setPhoneError] = useState<string | null>(null)
-  const [cityError, setCityError] = useState<string | null>(null)
 
   const validatePhone = (value: string): boolean => {
     if (!value.trim()) {
@@ -39,11 +38,6 @@ export function ProfileForm() {
     e.preventDefault()
 
     if (!validatePhone(phone)) return
-    if (!city.trim()) {
-      setCityError('City is required')
-      return
-    }
-    setCityError(null)
 
     setIsSaving(true)
     setSaveMessage(null)
@@ -52,7 +46,7 @@ export function ProfileForm() {
       firstName: firstName.trim() || undefined,
       lastName: lastName.trim() || undefined,
       phone: phone.trim() || undefined,
-      locationCity: city.trim(),
+      locationCity: city.trim() || undefined,
       locationState: locationState.trim() || undefined,
     })
 
@@ -73,7 +67,7 @@ export function ProfileForm() {
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          placeholder="John"
+          placeholder="First name"
           disabled={isSaving}
         />
         <Input
@@ -81,7 +75,7 @@ export function ProfileForm() {
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          placeholder="Doe"
+          placeholder="Last name"
           disabled={isSaving}
         />
       </div>
@@ -95,7 +89,7 @@ export function ProfileForm() {
           className="pr-24"
         />
         {user.emailVerifiedAt && (
-          <div className="absolute right-3 top-8 flex items-center gap-1 text-green-500 text-sm">
+          <div className="absolute right-3 top-8 flex items-center gap-1 text-success text-sm">
             <CheckCircle size={16} weight="fill" />
             <span>Verified</span>
           </div>
@@ -111,13 +105,13 @@ export function ProfileForm() {
             setPhone(e.target.value)
             if (phoneError) validatePhone(e.target.value)
           }}
-          placeholder="(555) 123-4567"
+          placeholder="Phone number"
           error={phoneError || undefined}
           disabled={isSaving}
           className="pr-24"
         />
         {user.phoneVerifiedAt && (
-          <div className="absolute right-3 top-8 flex items-center gap-1 text-green-500 text-sm">
+          <div className="absolute right-3 top-8 flex items-center gap-1 text-success text-sm">
             <CheckCircle size={16} weight="fill" />
             <span>Verified</span>
           </div>
@@ -129,21 +123,16 @@ export function ProfileForm() {
           label="City"
           type="text"
           value={city}
-          onChange={(e) => {
-            setCity(e.target.value)
-            if (cityError) setCityError(null)
-          }}
-          placeholder="Miami"
+          onChange={(e) => setCity(e.target.value)}
+          placeholder="City"
           disabled={isSaving}
-          error={cityError || undefined}
-          required
         />
         <Input
           label="State"
           type="text"
           value={locationState}
           onChange={(e) => setLocationState(e.target.value)}
-          placeholder="FL"
+          placeholder="State"
           disabled={isSaving}
         />
       </div>
@@ -153,7 +142,7 @@ export function ProfileForm() {
           Save changes
         </Button>
         {saveMessage && (
-          <span className="text-sm text-green-500 flex items-center gap-1">
+          <span className="text-sm text-success flex items-center gap-1">
             <CheckCircle size={16} weight="fill" />
             {saveMessage}
           </span>

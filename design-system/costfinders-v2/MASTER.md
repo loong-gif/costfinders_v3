@@ -1,229 +1,121 @@
-# CostFinders v2 Design System — Warm Sand
+# CostFinders v2 Design System — "Price Engine"
 
-> Master design reference. Direction: Light premium + deep amber accents + spa-lobby warmth.
+> Master design reference. Direction: white ground, ink-navy text, one coral accent; the data
+> (prices, ranges, bars) is the visual. Chosen 2026-09-18, replacing Warm Sand, and rolled out to
+> every page the same day.
 > Stack: Next.js 16 + Tailwind CSS v4 + Phosphor Icons
 >
-> **LOGIC:** When building a page, check `design-system/pages/[page].md` first.
-> If that file exists, its rules **override** this Master file.
+> Tokens live in `src/app/globals.css` (`@theme inline`) and are used as utilities
+> (`bg-bg-base`, `text-text-primary`, `border-border-default`…). Never write a hex in a className.
+> `tests/unit/tokenContrast.test.ts` measures every pair below; change a value and it tells you.
 
 ---
 
 ## Color Palette
 
-### Backgrounds (Warm Sand)
+### Grounds
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-bg-base` | `#e8ddd0` | Page background |
-| `--color-bg-surface` | `#f2ebe2` | Cards, panels |
-| `--color-bg-elevated` | `#faf5ee` | Hover states, active surfaces |
-| `--color-bg-overlay` | `rgba(69, 26, 3, 0.4)` | Modal backdrop |
+| `--color-bg-base` | `#ffffff` | Page |
+| `--color-bg-surface` | `#f4f5f7` | Grey bands, tinted panels, pills |
+| `--color-bg-elevated` | `#ffffff` | Cards sitting on a band |
+| `--color-bg-inverted` | `#0b1220` | The business CTA band |
+| `--color-bg-overlay` | `rgba(11, 18, 32, 0.5)` | Modal backdrop |
 
-### Accent (Deep Amber Brown)
-
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `--color-accent` | `#92400e` | Primary CTA, active links |
-| `--color-accent-hover` | `#b45309` | CTA hover |
-| `--color-accent-muted` | `rgba(146, 64, 14, 0.08)` | Badge/chip bg tint |
-| `--color-accent-text` | `#ffffff` | Text on accent buttons |
-
-### Text (Dark Browns)
+### Accent (coral)
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-text-primary` | `#451a03` | Headings, primary |
-| `--color-text-secondary` | `#78350f` | Descriptions, labels |
-| `--color-text-muted` | `#92400e` | Timestamps, metadata |
-| `--color-text-inverse` | `#ffffff` | Text on dark surfaces |
+| `--color-accent` | `#cc3714` | Solid buttons with white text (5.09:1), link text (4.67:1 on the band) |
+| `--color-accent-hover` | `#a82c0f` | Hover — darker, never lighter |
+| `--color-accent-graphic` | `#ff5a36` | **Non-text marks on white only**: the headline underline, range-bar fills, the wordmark dot, the rating star. 3.1:1 on white clears the 3:1 graphics floor; it fails on the band and fails as text everywhere |
+| `--color-accent-muted` | `rgba(204, 55, 20, 0.08)` | Tint. Text on it is `text-accent-hover`, never `text-accent` (4.16:1 over the band; `tokenContrast.test.ts` scans for the pair) |
 
-### Semantic
+### Text
 
-| Token | Hex | Usage |
+| Token | Hex | On white / on band |
 |-------|-----|-------|
-| `--color-savings` | `#059669` | "Save X%", discount badges |
-| `--color-savings-bg` | `rgba(5, 150, 105, 0.1)` | Savings badge bg |
-| `--color-error` | `#dc2626` | Error states |
-| `--color-error-bg` | `rgba(220, 38, 38, 0.1)` | Error bg tint |
-| `--color-warning` | `#ea580c` | Warnings, expiring |
-| `--color-warning-bg` | `rgba(234, 88, 12, 0.1)` | Warning bg tint |
-| `--color-info` | `#2563eb` | Info, secondary links |
-| `--color-info-bg` | `rgba(37, 99, 235, 0.1)` | Info bg tint |
+| `--color-text-primary` | `#0b1220` | 18.7:1 / 17.2:1 |
+| `--color-text-secondary` | `#4b5563` | 7.6:1 / 6.9:1 |
+| `--color-text-muted` | `#5f6979` | 5.6:1 / 5.1:1 (gray-500 fails on the band) |
+| `--color-text-on-dark` / `-muted` | `#f9fafb` / `#a1a8b3` | on `bg-inverted` |
 
-### Borders
+### Semantic (verified as text on their own 10% tint; success and error also carry white text)
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `--color-border-default` | `#d4c4b0` | Dividers, card borders |
-| `--color-border-hover` | `#c4b09a` | Hover emphasis |
-| `--color-border-accent` | `rgba(146, 64, 14, 0.3)` | Focused inputs |
+`--color-savings` `#065f46` · `--color-error` `#991b1b` · `--color-warning` `#9a3412` ·
+`--color-info` `#1e40af` · `--color-success` `#065f46`, each with a `-bg` at alpha 0.1.
+
+### Borders and shadows
+
+`--color-border-default` `#e5e7eb` hairlines, `--color-border-hover` `#d1d5db`. One soft card shadow
+(`shadow-md`), no glows. Focus ring: solid `#c23310`, 2px, offset 2px, site-wide from `globals.css`.
 
 ---
 
 ## Typography
 
-### Font
+- **Inter Tight** (`font-display`, weights 500–700) for the wordmark, headlines, card titles and prices.
+  Tight tracking: `tracking-tight` on h2, `tracking-[-0.03em]` on the hero.
+- **Inter** (`font-sans`, the body) for everything else.
+- Prices: `font-display font-bold tabular-nums`. Not monospace.
 
-**Sora** — geometric, modern, warm. Loaded via `next/font/google`. Manrope as fallback.
-
-```
---font-sans: 'Sora', 'Manrope', system-ui, sans-serif;
---font-mono: ui-monospace, 'SFMono-Regular', monospace;
-```
-
-### Scale
-
-| Name | Size | Weight | Example |
-|------|------|--------|---------|
-| `display` | 48px / 3rem | 700 | Hero headlines |
-| `h1` | 36px / 2.25rem | 700 | Page titles |
-| `h2` | 24px / 1.5rem | 600 | Section titles |
-| `h3` | 20px / 1.25rem | 600 | Card titles |
-| `body` | 16px / 1rem | 400 | Default text |
-| `body-sm` | 14px / 0.875rem | 400 | Labels, secondary |
-| `caption` | 12px / 0.75rem | 500 | Badges, metadata |
-
-### Pricing Pattern
-
-```
-Original:  text-[var(--color-text-muted)] line-through font-mono text-base
-Current:   text-[var(--color-accent)] font-bold font-mono text-2xl
-Savings:   text-[var(--color-savings)] font-semibold text-sm (badge)
-```
+| Name | Classes |
+|------|---------|
+| hero | `text-5xl sm:text-6xl lg:text-7xl font-bold leading-[0.95]` |
+| h2 | `text-2xl sm:text-3xl font-bold tracking-tight` + a one-line `text-text-secondary` sub |
+| card title | `text-base font-semibold` |
+| price lead | `text-2xl font-bold tabular-nums` (row cards `text-lg sm:text-xl`) |
+| eyebrow | `text-xs font-semibold uppercase tracking-wider text-text-muted` |
 
 ---
 
-## Shadows
+## Components
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.04)` | Subtle elements |
-| `--shadow-md` | `0 2px 8px rgba(0,0,0,0.06)` | Cards |
-| `--shadow-lg` | `0 4px 16px rgba(0,0,0,0.08)` | Modals |
-| `--shadow-glow` | `0 0 16px rgba(146,64,14,0.1)` | Featured/promoted items |
-| `--shadow-card-hover` | `0 4px 16px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(146,64,14,0.15)` | Card hover |
-
----
-
-## Radius
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `sm` | 6px | Buttons, inputs |
-| `md` | 10px | Cards |
-| `lg` | 16px | Large containers, hero |
-| `full` | 9999px | Pills, badges, avatars |
-
----
-
-## Component Specs
-
-### Buttons
-
-| Variant | Classes |
-|---------|---------|
-| **Primary** | `bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] rounded-md px-4 py-2.5` |
-| **Secondary** | `bg-[var(--color-bg-surface)] text-[var(--color-text-primary)] border border-[var(--color-border-default)] hover:bg-[var(--color-bg-elevated)] rounded-md px-4 py-2.5` |
-| **Ghost** | `text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-accent-muted)] rounded-md px-4 py-2.5` |
-| **Danger** | `bg-[var(--color-error-bg)] text-[var(--color-error)] hover:bg-red-100 rounded-md px-4 py-2.5` |
-| **All** | Add `transition-colors duration-200 cursor-pointer` |
-
-### Cards
-
-```
-bg-[var(--color-bg-surface)] border border-[var(--color-border-default)] rounded-[10px]
-hover:border-[var(--color-border-hover)] hover:shadow-[var(--shadow-card-hover)]
-transition-all duration-200 cursor-pointer
-```
-
-### Deal Cards
-
-- **Image**: 4:3 aspect ratio, `rounded-t-[10px]`
-- **Savings badge**: Top-right, `bg-[var(--color-savings-bg)] text-[var(--color-savings)] rounded-full px-3 py-1 text-xs font-semibold`
-- **Category pill**: `bg-[var(--color-accent-muted)] text-[var(--color-accent)] rounded-full px-3 py-1 text-xs`
-- **Price**: Original strikethrough + bold accent current
-- **CTA**: `[Claim Deal]` primary button
-
-### Inputs
-
-```
-bg-[var(--color-bg-elevated)] border border-[var(--color-border-default)] text-[var(--color-text-primary)]
-placeholder:text-[var(--color-text-muted)]
-focus:border-[var(--color-border-accent)] focus:ring-1 focus:ring-[var(--color-border-accent)]
-rounded-md px-3 py-2.5 transition-colors duration-200
-```
-
-### Navigation (Header)
-
-```
-bg-[var(--color-bg-base)]/95 backdrop-blur-sm border-b border-[var(--color-border-default)]
-sticky top-0 z-50 h-16
-```
-
-- Logo: `text-[var(--color-accent)] font-bold text-xl`
-- Links: `text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]`
-- Active: `text-[var(--color-accent)]`
-- CTA button: primary
-
-### Sidebar (Dashboards)
-
-```
-bg-[var(--color-bg-surface)] border-r border-[var(--color-border-default)] w-64
-```
-
-- Nav items: `text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-accent-muted)] rounded-md px-3 py-2`
-- Active: `text-[var(--color-accent)] bg-[var(--color-accent-muted)]`
-- Active indicator: `border-l-2 border-[var(--color-accent)]`
+| Component | Spec |
+|-----------|------|
+| Primary button | `bg-accent text-white font-semibold rounded-full min-h-[44px] px-6 hover:bg-accent-hover` |
+| Outline pill | `border border-text-primary text-text-primary rounded-full hover:bg-bg-surface` |
+| Button on the dark band | `bg-bg-base text-text-primary rounded-full` |
+| Card | `bg-bg-elevated border border-border-default rounded-xl hover:border-border-hover hover:shadow-md` — colour and shadow only, no translate |
+| Deal row (B) | `OfferRow` (`src/components/features/offerRow.tsx`), used by every deal list. A 32px (36px from `sm`) `bg-bg-surface rounded-lg` square with the treatment icon; the headline is the offer's own words (`subtitle ?? title`, `font-display font-semibold`, 2-line clamp); under it in `text-xs text-text-secondary`: the product line (`productLine()`), a bordered "Members" tag, "Provider in {city}" only where the list spans cities, and the tier label. Price column on the right: bold lead (`text-lg sm:text-xl`), basis and `<s>` regular price in `text-text-muted`, Save pill, vs-typical (`text-savings` only when below). Below `sm` the price drops to its own line, indented past the icon. Rows sit flush in one `DealList` frame (`rounded-2xl`, a rule between rows); `DealCard` adds the heart and the stretched link. "Provider names are revealed when you claim a deal" is said once above a list (`ProviderNamesNote`), never per row. No rating (it named the clinic). Price block always via `dealPricing()` |
+| Grouped view (C) | The city page's "All deals" (`src/components/features/deals/dealGroups.tsx`): one `DealList` per treatment in `TREATMENT_SLUGS` order. Header on `bg-bg-surface`: icon, h2, "N deals · typical $X per unit" and a `TypicalBar` for neurotoxins, "N deals · from $X" for the rest (the floor's brand named when it isn't Botox), "See all N" to the treatment page. The 4 cheapest rows. No-treatment offers last as "Other offers", expanding in place. A single treatment (`/deals/{treatment}/{city}`) is one flat `DealList` under one `TypicalBar`, or "Prices from $X" |
+| Compact tile (A) | `OfferTile` (`offerCard.tsx`), homepage showcases only: icon square and heart, 2-line headline, the product line under it (wraps, never truncates), bold price, basis and Save pill, then the Members tag, tier label and city. 4 per row on desktop, 2 on phones |
+| PriceRangeBar | `src/components/patterns/priceRangeBar.tsx`: 6px `bg-border-default` track, `bg-accent-graphic` fill from the left end to the median, optional 4px ink tick for one deal. Median label above, the deal's label below, min and max printed at the ends; one `role="img"` whose label reads every number. White ground only: the coral fill fails on the band. Group headers, the treatment page and the deal page's Price in context |
+| Treatment icons | `TREATMENT_ICONS` in `src/components/patterns/treatmentIcons.ts` (the `/ssr` entry): Syringe neurotoxins, Drop fillers, Sparkle facials, Sun laser, Eyedropper skincare, Heartbeat wellness, PersonSimple body; Tag for a deal with no treatment. Keyed on every treatment, so a new one is a compile error. They replace photos on every deal surface (owner decision, 2026-09-28) |
+| Tier labels | `TIER_ICONS` beside the `TIER_LABELS` text everywhere: Quotes As advertised, Calculator Our math, WarningCircle Confirm when booking. SealCheck (`CONFIRMED_ICON`) with "Confirmed by the clinic" in `text-success` replaces the tier. Rows and tiles label Our math and Confirm when booking only (`text-text-muted`, 12px bold icon); the deal page always shows the tier as a pill, `bg-warning-bg text-warning` for Confirm when booking. Labels, never a numeric score |
+| Category pill | `bg-bg-surface text-text-secondary text-xs rounded-full px-2.5 py-1` |
+| Savings chip | `bg-savings-bg text-savings` on white |
+| Search pill | white, `rounded-full` from `sm`, `shadow-lg`, two native `<select>`s + the primary button — `heroSearch.tsx` |
+| Header | `bg-bg-base/95 backdrop-blur-sm border-b border-border-default`, wordmark + coral dot, four links (Deals, Treatments, Guides, For providers; hidden below `md`), outline "Request a listing" to `/business/listing-request?type=add` (signed out, from `sm`). Below `md` a Menu button opens a full-screen native `<dialog>` with the same links — `globalHeader.tsx` |
+| Range bar (homepage tiles) | `priceRangeStrip.tsx`: 6px track `bg-border-default`, fill `bg-accent-graphic` from min to median, 2px ink marker at the median; every number printed in text beside it |
+| City bar chart | one series, bars from zero, `bg-accent-graphic` fill on a `bg-bg-surface` track, value in ink text on the right, each row a link; treatment tabs (`aria-pressed` pills: active `bg-text-primary text-white`) — `cityPriceChart.tsx` |
+| Answer panel | the hero's right column: `rounded-2xl` white card, `shadow-lg`, `aria-live="polite"`; range + basis, median line, a dot strip (`bg-accent-graphic` dots at 75%, ink median marker), the cheapest rows, one link — `heroPriceCheck.tsx` |
+| Docked search | the compact `HeroSearch` fixed at `top-16` once the hero's form scrolls off (IntersectionObserver on a sentinel); labels `sr-only`, icon-only button below `sm` |
+| Strip plot | one dot per priced offer, r = 6 in a 1000-wide viewBox, stacks capped at 9 rows per side and spilling one pitch right; IQR band `fill-bg-surface`, ink median rule, hairline axis; every dot is a link with a full `aria-label`; hover/focus tooltip — `priceStripPlot.tsx` |
+| Histogram card | four bins on a `bg-bg-surface` card, bars from zero, counts in ink — `discountHistogram.tsx` |
+| Flow diagram | white cards with fixed heights, inline-SVG connectors (`stroke: var(--color-text-primary)`), one ink node, coral only on the result figure and the fact numerals (`text-accent`); stacks with `ArrowDown` below `lg` — `priceBasisDiagram.tsx` |
+| Claim-flow cards | `AnonymousCard` = OfferRow + a grey lock footer "Provider name hidden until you claim"; `RevealedCard` = OfferRow + a `border-accent` box with a green "Claimed" chip and "Provider name, address, phone and website revealed". Never a fabricated provider name — `claimRevealCards.tsx` |
 
 ---
 
-## Page Patterns
+## Page rhythm (homepage)
 
-### Homepage (Marketplace)
-
-1. **Hero** — Warm gradient, bold headline, search bar, category chips
-2. **Trending Deals** — Horizontal scroll / 3-col grid, savings-forward cards
-3. **Categories** — Icon + label grid
-4. **How It Works** — 3 steps: Browse → Claim → Save
-5. **Trust** — Stats or social proof
-6. **Business CTA** — Contrasting section "List your medspa"
-
-### Deals Browse
-
-1. **Filter bar** — Sticky, category pills + location + price range
-2. **Results grid** — 2-3 column responsive cards
-3. **Deal cards** — Image, treatment, savings badge, price comparison, CTA
-
-### Dashboards
-
-1. **Sidebar** — Surface bg, accent active states
-2. **Main content** — Base bg, surface cards
-3. **Metric cards** — Large number, label, subtle trend indicator
+white hero (search + answer panel) → grey range tiles → white strip plot → white city chart with
+tabs (hairline top) → grey "How we make prices comparable" diagram → white "How it works" with
+real card states → grey guides row → white discounts grid with the histogram card → ink business
+band with a crop of the real business dashboard's deals list. Sections are `py-14 sm:py-20`; the container
+is `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`.
 
 ---
 
-## Anti-Patterns
+## Anti-patterns
 
-- No dark backgrounds (stone-800/900/950) — this is a light theme
-- No `amber-300`/`amber-400` for text/accents (too bright on beige — use CSS variables)
-- No emojis as icons (Phosphor Icons only)
-- No layout-shifting hover transforms (color/shadow only)
-- No pink/magenta (deprecated brand color)
-- No blue-slate backgrounds (deprecated `#4c5578`)
-- No zinc-based neutrals (too cold — warm sand only)
-- Amber is accent only — don't make everything amber
-
----
-
-## Pre-Delivery Checklist
-
-- [ ] Phosphor Icons only (no Heroicons, Lucide, or emojis)
-- [ ] `cursor-pointer` on all clickable elements
-- [ ] Smooth transitions (150-300ms) on hover/focus
-- [ ] Text contrast 4.5:1 minimum (`#451a03` on `#e8ddd0` = 9.8:1 ✓)
-- [ ] Visible focus states for keyboard nav
-- [ ] `prefers-reduced-motion` respected
-- [ ] Responsive: 375px, 768px, 1024px, 1440px
-- [ ] No content behind fixed header (h-16 clearance)
-- [ ] No horizontal scroll on mobile
-- [ ] Use CSS variables (`var(--color-*)`) not hardcoded hex in Tailwind classes
+- No hex in classNames and no raw Tailwind palette colours (`amber-*`, `red-*`, `emerald-*`…) — use
+  the semantic tokens; `tokenContrast.test.ts` fails the build on either.
+- No `text-<colour>/<alpha>` — opacity is not a text step (the contrast test fails the build).
+- `--color-accent-graphic` never carries text and never sits on the grey band.
+- No dark backgrounds except `bg-bg-inverted` for the one provider band.
+- No photograph on any deal surface: no stock spa imagery, and no clinic photo (we hold none, and before a claim one would name the clinic). A treatment icon stands in.
+- No hover transforms that shift layout; no glows; no glassmorphism.
+- No literal counts or prices in copy — derive them.

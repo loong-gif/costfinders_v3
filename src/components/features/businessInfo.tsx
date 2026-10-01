@@ -1,128 +1,72 @@
 'use client'
 
-import { CheckCircle, Clock, Globe, MapPin, Star } from '@phosphor-icons/react'
-import { Button } from '@/components/ui/button'
+import { CheckCircle } from '@phosphor-icons/react'
+import Link from 'next/link'
+import { ClinicDetails } from '@/components/features/clinicDetails'
 import { Card } from '@/components/ui/card'
-import type { RevealedBusiness } from '@/lib/actions/claims'
-import { useClaims } from '@/lib/context/claimsContext'
-import type { Deal } from '@/types/deal'
+import type { ClaimClinic } from '@/types/claim'
 
 interface BusinessInfoProps {
-  business: RevealedBusiness
-  deal: Deal
+  clinic: ClaimClinic
+  /** False when the details come from the visitor's claim on another deal from this clinic. */
+  claimedThisDeal: boolean
+  /** This deal's membership plan, withheld until a claim (it identifies the clinic). */
+  membershipPlan?: string | null
 }
 
-export function BusinessInfo({ business, deal }: BusinessInfoProps) {
-  const { getClaimByDealId } = useClaims()
-
-  const existingClaim = getClaimByDealId(deal.id)
-
-  // Build display values from Supabase shape
-  const rating = business.score
-  const reviewCount = business.review_count ?? 0
-  const websiteUrl = business.website ?? business.website_clean
-  const websiteDisplay = business.website_clean ?? business.website
-
+/**
+ * The deal page after a claim. At launch no clinic has an account and nothing reaches a clinic
+ * automatically — our team relays each claim by hand — so this never says the clinic will get in
+ * touch. It tells the customer to call or book, with the number right there.
+ */
+export function BusinessInfo({
+  clinic,
+  claimedThisDeal,
+  membershipPlan,
+}: BusinessInfoProps) {
   return (
     <Card variant="glass" padding="lg">
       <div className="space-y-4">
-        {/* Business Name */}
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="text-xl font-semibold text-[#451a03]">
-            {business.name}
-          </h3>
-        </div>
-
-        {/* Rating */}
-        {rating != null && (
-          <div className="flex items-center gap-1.5">
-            <Star size={16} weight="fill" className="text-amber-800" />
-            <span className="text-sm text-[#78350f]">
-              {rating.toFixed(1)} ({reviewCount} reviews)
-            </span>
+        {claimedThisDeal ? (
+          <div className="flex items-start gap-2 rounded-xl bg-success-bg p-3">
+            <CheckCircle
+              size={20}
+              weight="fill"
+              className="mt-0.5 shrink-0 text-success"
+            />
+            <div className="space-y-1 text-sm">
+              <p className="font-medium text-success">You claimed this deal</p>
+              <p className="text-text-secondary">
+                Call or book with the clinic directly. Mention the CostFinders
+                price when you book. Our team also passes your request on to the
+                clinic.
+              </p>
+            </div>
           </div>
+        ) : (
+          <p className="text-sm text-text-secondary">
+            You claimed another deal from this clinic, so its details are shown
+            here too.
+          </p>
         )}
 
-        {/* Contact Info */}
-        <div className="space-y-3 pt-2 border-t border-[#d4c4b0]">
-          {/* Address */}
-          {business.address && (
-            <div className="flex items-start gap-2">
-              <MapPin size={18} className="text-[#92400e] mt-0.5 shrink-0" />
-              <span className="text-sm text-[#78350f]">
-                {business.address}
-                {business.city && (
-                  <>
-                    <br />
-                    {business.city}
-                  </>
-                )}
-              </span>
-            </div>
-          )}
+        <ClinicDetails clinic={clinic} />
 
-          {/* Website */}
-          {websiteUrl ? (
-            <div className="flex items-center gap-2">
-              <Globe size={18} className="text-[#92400e] shrink-0" />
-              <a
-                href={
-                  websiteUrl.startsWith('http')
-                    ? websiteUrl
-                    : `https://${websiteUrl}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-amber-800 hover:text-[var(--color-accent-hover)] transition-colors truncate"
-              >
-                {websiteDisplay
-                  ? websiteDisplay.replace(/^https?:\/\//, '')
-                  : websiteUrl.replace(/^https?:\/\//, '')}
-              </a>
-            </div>
-          ) : (
-            <p className="text-sm text-[#92400e] italic">
-              Contact via deal details
-            </p>
-          )}
-        </div>
-
-        {/* Claim Status */}
-        {existingClaim && (
-          <div className="mt-2 space-y-3">
-            <div className="p-3 bg-emerald-600/10 rounded-xl">
-              <div className="flex items-center gap-2">
-                <CheckCircle
-                  size={20}
-                  weight="fill"
-                  className="text-emerald-600"
-                />
-                <span className="text-sm font-medium text-emerald-600">
-                  Deal Claimed
-                </span>
-              </div>
-            </div>
-            <div className="p-3 bg-[#faf5ee] rounded-xl">
-              <div className="flex items-center gap-2 text-sm">
-                <Clock size={16} weight="regular" className="text-[#92400e]" />
-                <span className="text-[#78350f]">
-                  Status:{' '}
-                  <span className="text-[#451a03] capitalize">
-                    {existingClaim.status}
-                  </span>
-                </span>
-              </div>
-            </div>
-            <Button
-              variant="secondary"
-              size="md"
-              className="w-full"
-              onClick={() => (window.location.href = '/dashboard/claims')}
-            >
-              View My Claims
-            </Button>
-          </div>
+        {membershipPlan && (
+          <dl className="rounded-xl border border-border-default px-4 py-3 text-sm">
+            <dt className="text-text-muted">Membership plan</dt>
+            <dd className="mt-0.5 font-medium text-text-primary">
+              {membershipPlan}
+            </dd>
+          </dl>
         )}
+
+        <Link
+          href="/dashboard/claims"
+          className="flex min-h-[44px] items-center justify-center text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+        >
+          View my claims
+        </Link>
       </div>
     </Card>
   )

@@ -1,0 +1,103 @@
+-- Drop public.match_documents(jsonb, integer, extensions.vector).
+--
+-- It is 100% broken, has no caller, and is EXECUTE-granted to anon with an unpinned
+-- search_path. Every one of those four facts was verified, not assumed:
+--
+-- 1. BROKEN ON EVERY CALL. LANGUAGE sql, so the body is parsed at function startup:
+--
+--      SELECT public.match_documents('{}'::jsonb, 1, '[1]'::extensions.vector) LIMIT 1;
+--      -- ERROR: 42703: column "embedding" does not exist
+--      -- CONTEXT: SQL function "match_documents" during startup
+--
+--    It selects 23 columns that no longer exist on promo_offer_master -- embedding,
+--    promo_offer_name, source_url, source_name, page_title, scrape_timestamp_utc,
+--    promotion_title, template_type, service_category, service_name, service_name_raw,
+--    start_date, end_date, is_limited_time, eligibility, redemption_channel, promo_code,
+--    stackable, limit_per_customer, location_scope, terms_raw, exclusions, currency. The table
+--    has 16 columns and not one of those 23 is among them, so this is not repairable by
+--    re-pointing a join the way get_offer_category_counts() was: the embedding column it
+--    ranks by, and the vector index behind it, are gone. There is nothing left to search.
+--
+-- 2. NO CALLER. grep over src/ and scripts/ for `match_documents` returns nothing. It has no
+--    file anywhere in supabase/migrations/ either -- the CRLF line endings and Chinese comments
+--    below identify it as n8n/LangChain-generated, created through the dashboard by the
+--    scraping stack rather than by this repo.
+--
+-- 3. UNPINNED search_path (proconfig null) while EXECUTE-granted to anon: a role that can call
+--    a function whose schema resolution it may be able to influence. Pre-existing, and moot
+--    once the function is gone.
+--
+-- DROPPING AN ALREADY-100%-BROKEN FUNCTION BREAKS NOTHING. Every possible call today ends in
+-- 42703. After this migration every possible call ends in 42883 (undefined function). No
+-- caller's behaviour changes, because no caller exists and no call ever succeeded after
+-- 2026-09-05. The only thing lost is the misleading appearance of a working semantic-search RPC
+-- in the function list.
+--
+-- ---------------------------------------------------------------------------------------------
+-- RECOVERABILITY: the exact definition being removed, captured verbatim from
+-- pg_get_functiondef() before the drop. Line endings in the original were CRLF; they are LF
+-- here. Owner postgres. ACL was
+--   {=X/postgres,postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+-- i.e. EXECUTE to PUBLIC, postgres, anon, authenticated and service_role.
+--
+--   CREATE OR REPLACE FUNCTION public.match_documents(filter jsonb, match_count integer, query_embedding vector)
+--    RETURNS TABLE(offer_raw_text text, embedding vector, similarity double precision, metadata jsonb)
+--    LANGUAGE sql
+--   AS $function$
+--     SELECT
+--
+--       offer_raw_text AS content,
+--
+--
+--       embedding,
+--
+--
+--       1 - (embedding <=> query_embedding) AS similarity,
+--
+--       -- 4. 将你要求的所有列构建为 JSON 对象
+--       jsonb_build_object(
+--         'promo_offer_name', promo_offer_name,
+--         'source_url', source_url,
+--         'source_name', source_name,
+--         'page_title', page_title,
+--         'scrape_timestamp_utc', scrape_timestamp_utc,
+--         -- 'offer_raw_text', content,
+--         'promotion_title', promotion_title,
+--         'template_type', template_type,
+--         'service_category', service_category,
+--         'service_name', service_name,
+--         'service_name_raw', service_name_raw,
+--         'start_date', start_date,
+--         'end_date', end_date,
+--         'is_limited_time', is_limited_time,
+--         'eligibility', eligibility,
+--         'redemption_channel', redemption_channel,
+--         'promo_code', promo_code,
+--         'stackable', stackable,
+--         'limit_per_customer', limit_per_customer,
+--         'location_scope', location_scope,
+--         'terms_raw', terms_raw,
+--         'exclusions', exclusions,
+--         'currency', currency
+--       ) AS metadata
+--     FROM public.promo_offer_master
+--
+--     -- 如果 filter 参数不为空，则应用过滤逻辑（假设 metadata 是存储在表里的列，或者针对特定列过滤）
+--     -- 示例：WHERE (filter IS NULL OR metadata @> filter)
+--     WHERE true
+--
+--     ORDER BY embedding <=> query_embedding
+--     LIMIT match_count;
+--   $function$
+--
+-- Restoring that text verbatim would recreate the function AND its 42703 -- it cannot be made
+-- to work again without the dropped embedding column. If semantic search is wanted later, it
+-- is a new feature against the normalized schema, not a revert of this migration.
+-- ---------------------------------------------------------------------------------------------
+
+-- `vector` is schema-qualified because the type lives in `extensions`, not `public`; an
+-- unqualified `vector` would not resolve under this session's search_path and the DROP would
+-- silently match nothing.
+drop function if exists public.match_documents(jsonb, integer, extensions.vector);
+
+notify pgrst, 'reload schema';

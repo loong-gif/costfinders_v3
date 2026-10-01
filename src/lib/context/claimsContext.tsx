@@ -43,18 +43,29 @@ const ClaimsContext = createContext<ClaimsContextValue | null>(null)
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Map a Supabase claims row (snake_case, numeric IDs) to the Claim type. */
-function claimRowToClaim(row: ClaimRow): Claim {
+/**
+ * Map a Supabase claims row (snake_case, numeric IDs) to the Claim type.
+ *
+ * A 'pending' claim past its expires_at reads as 'expired'. The database only writes 'expired'
+ * on the consumer's next claim (enforce_active_claim_limit, 20260924010002), so until then the
+ * row still says pending while it no longer counts toward the limit.
+ */
+export function claimRowToClaim(row: ClaimRow): Claim {
+  const stale =
+    row.status === 'pending' && new Date(row.expires_at).getTime() < Date.now()
   return {
     id: row.id,
     dealId: String(row.deal_id),
     businessId: String(row.business_id),
     consumerId: row.consumer_id,
-    status: row.status,
+    status: stale ? 'expired' : row.status,
+    dealTitle: row.deal_title ?? undefined,
+    priceLabel: row.price_label ?? undefined,
+    clinic: row.business_snapshot ?? undefined,
+    dealVisible: row.deal_visible,
     preferredDate: row.preferred_date ?? undefined,
     preferredTime: row.preferred_time ?? undefined,
     notes: row.notes ?? undefined,
-    businessResponse: row.business_response ?? undefined,
     respondedAt: row.responded_at ?? undefined,
     bookedDate: row.booked_date ?? undefined,
     bookedTime: row.booked_time ?? undefined,

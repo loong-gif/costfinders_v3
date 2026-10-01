@@ -1,0 +1,129 @@
+{
+  "treatment": "botox",
+  "treatmentLabel": "Botox",
+  "city": "tucson",
+  "cityLabel": "Tucson",
+  "state": "Arizona",
+  "stateCode": "AZ",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Tucson menus sell a measuring stick, not a bill. What a practice usually publishes is a rate for one unit of toxin, and your total is that rate multiplied by a dose no injector settles until your face is in front of them. Two things make the local lists harder to read than they look. Most of the priced Tucson listings do not name a brand at all — they say \"neurotoxin\" or \"TOX\" and quote a figure — so you often cannot tell from the page which product, and therefore which dosing scale, the number belongs to. And the per-unit rates come from a small group of practices, one of which also lists flat prices by treatment area, so the published spread is a self-selected slice of a market that runs from Green Valley up through Oro Valley and Marana.",
+    "pricingModels": [
+      {
+        "name": "Charged Per Unit",
+        "description": "The structure every Tucson practice that publishes a rate uses, though one also lists flat prices by area (below). A clinic posts what one unit costs and multiplies it by the count in your plan, so a single published figure has to cover a first-timer's frown lines and a full upper-face maintenance visit alike. Botox, Jeuveau and Xeomin are planned at broadly comparable unit counts, so rates quoted on those products read across reasonably well; Dysport is divided more finely and would not, though no Tucson listing in this feed states a Dysport rate. Nearly every posted rate here carries a condition — a membership, new-patient status or a minimum unit count — so ask which applies to you. What the per-unit figure leaves out — consultation fee, minimum unit purchase, injection or facility charge — is what to settle before you book.",
+        "typicalRange": "the priced listings sit in single digits per unit through most of the band and cross only just into double figures at the top"
+      },
+      {
+        "name": "Quoted as \"Neurotoxin\" Without Naming the Brand",
+        "description": "The most common shape in the priced Tucson slice, and the one that costs buyers money. The listing gives a per-unit rate for an unspecified toxin, which lets a clinic switch stock without reprinting the page but leaves you comparing a number to a number rather than a product to a product. These generic listings also carry the widest spread in the local feed — both the floor and the ceiling of the whole priced band belong to them. Ask which product the advertised rate applies to today, and whether the same rate holds if the clinic is injecting something else on your appointment day.",
+        "typicalRange": "the widest band on the page, from the feed's floor in single digits per unit to its ceiling just above ten dollars"
+      },
+      {
+        "name": "Quoted by Named Brand at a Per-Unit Rate",
+        "description": "A smaller group of Tucson listings names the product — Jeuveau is the one that recurs here — and quotes per unit in the ordinary way. Those branded rates cluster tightly around the middle of the local band rather than undercutting it, which is worth knowing if you assumed the newer toxins are advertised as the budget option in this market. Unit counts for Jeuveau are planned close to Botox's, so a finished-visit comparison against a Botox quote is a fair one.",
+        "typicalRange": "a narrow band in the high single digits per unit, sitting inside the wider unlabelled spread"
+      },
+      {
+        "name": "Flat Price per Treatment Area",
+        "description": "One Tucson practice lists toxin by treatment area rather than by the unit — forehead, frown lines, crow's feet, a brow lift, small areas such as a gummy smile or chin dimpling, and larger jobs such as neck bands, the shoulders or underarm sweating — mostly as sale prices set against a stated regular price. Those area prices outnumber the per-unit rates in this feed, though they all come from one menu. An area price hides the dose, so ask how many units it includes, which product is used, and what a top-up costs if the area needs more. The few offers that name no price at all are discounts off a rate you have to ask for.",
+        "typicalRange": "under a hundred dollars on sale for a small area, one to two hundred for frown lines or crow's feet, and the high hundreds for shoulders or underarms"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "A short list of forces sets a rate card in Tucson, and they mostly push the same way. This is a mid-sized, relatively young market with modest household incomes, general living costs close to the national baseline, a state that keeps injection inside medicine, and one far deeper metro roughly two hours up Interstate 10.",
+    "factors": [
+      {
+        "factor": "Household income, not rent, is the binding constraint",
+        "explanation": "Private-market compilations put Tucson's overall cost of living only marginally above the national baseline, and a regional price-parity measure puts it slightly below — so commercial space and wages are not what holds local rates down. Census figures put median household income near $57,000 in the city and around $70,000 across the metro, well under what comparable Sun Belt aesthetic markets support. A clinic here is pricing to disposable income in a city where the median age is in the mid-thirties, which produces volume-led rate cards and membership structures rather than premium positioning."
+      },
+      {
+        "factor": "Arizona treats injection as the practice of medicine",
+        "explanation": "Botulinum toxin injection in Arizona must be performed by an appropriately licensed health professional acting within training, competence and delegated authority, with oversight from the Arizona Medical Board, the Arizona Board of Osteopathic Examiners and the Arizona State Board of Nursing. There is no clear blanket allowance for estheticians or unlicensed medspa staff to inject. That supervising-clinician arrangement is real overhead inside every compliant practice, and it sits underneath what Botox costs here. Ask your injector's licence type, who the supervising or delegating clinician is, and whether they are on site."
+      },
+      {
+        "factor": "Where the clinics actually are",
+        "explanation": "Tucson's aesthetic practices cluster along high-traffic retail and medical corridors rather than spreading evenly — East Broadway Boulevard, East Sunrise Drive, East Pima Street and North Swan Road on the east side, plus the Catalina Foothills, central Tucson, Oro Valley, Marana, Vail and Green Valley. Foothills and Oro Valley addresses serve a wealthier catchment than central or south-side ones, while the vial costs a practice the same in all of them. The corridor you shop in may move your quote as much as the brand you choose, though too few Tucson practices publish a rate to show it."
+      },
+      {
+        "factor": "Phoenix is close enough to compare, too far to commute quarterly",
+        "explanation": "Phoenix is roughly an hour and three-quarters to two hours by car and is a far deeper aesthetic market with more internal competition; Las Vegas is around six and a half hours and Albuquerque around seven and a half, which removes them from the conversation entirely. Practically, Phoenix restrains what a Tucson practice can charge for a large first course while leaving routine top-ups — a three- or four-times-a-year purchase — governed by purely local forces."
+      },
+      {
+        "factor": "Winter visitors and a thin publishing pool",
+        "explanation": "Tucson's snowbird season expands the customer base through the cooler months, and demand also firms ahead of weddings, graduations and the holidays. Against that, only a few practices publish a per-unit rate, so the spread you can see is the subset that chose transparency as a marketing position — usually because their rate competes. Treat published figures as a floor-finding tool and assume unpublished quotes can land outside the band in either direction."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Almost none of this is coupon hunting. In a market where most advertised rates do not name a product and many clinics publish no rate, the money is saved before you book — by forcing every quote onto a basis you can actually compare.",
+    "tips": [
+      {
+        "tip": "Make every quote name the product",
+        "detail": "Because so many Tucson listings say only \"neurotoxin,\" the first question on the phone is which toxin the advertised rate buys. If the clinic stocks more than one, ask how many units your areas take in each and what the finished visit costs in each. Rates quoted on Dysport's smaller unit are not comparable to Botox-scale rates anywhere, so confirm the scale before you compare figures."
+      },
+      {
+        "tip": "Compare finished visits, not per-unit rates",
+        "detail": "Get the proposed unit count written next to the rate, then ask what else lands on the invoice: consultation fee, minimum unit purchase, injection or facility charge, and whether a two-week touch-up review is included or billed. A low unit rate with a high minimum can finish above a higher rate with none."
+      },
+      {
+        "tip": "Get one quote from a different corridor",
+        "detail": "A Catalina Foothills or Oro Valley practice and a central or east-side one off Broadway or Pima are fifteen to thirty minutes apart and serve different catchments. Two comparison quotes cost you an afternoon and are repeatable every quarter, which a Phoenix trip is not. Use the outside quote as a reference point if you intend to stay close to home anyway."
+      },
+      {
+        "tip": "Enrol in the manufacturer programme before you are injected, not after",
+        "detail": "Allergan's Allē, Galderma's Aspire for Dysport, Merz's programme for Xeomin, Evolus Rewards for Jeuveau and Revance's programme for Daxxify accrue credit on treatments you were having regardless, and signing up afterwards usually forfeits it. Ask whether points are applied at checkout or banked, and what happens to your balance if the clinic changes its preferred brand mid-year."
+      },
+      {
+        "tip": "Book away from the winter crush",
+        "detail": "Demand firms when seasonal residents arrive and again around graduation and the December holidays, and toxin needs roughly two weeks to settle before a fixed date. The quiet stretches are when an introductory rate or a prepaid course is genuinely negotiable; in the crush, the useful ask is a slot. Ask the clinic for its own recommended lead time rather than guessing."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerUnit": 13,
+    "localAvgPerUnit": 9,
+    "comparisonText": "Both figures stand on the same footing: one unit on the Botox scale, with Dysport's smaller unit and starting-at prices left out of the local median rather than converted. RealSelf reports $10 to $15 per unit at most US practices, and $13, near the middle of that published band, is the national marker. The median of the priced Tucson offers is $9 per unit — about 31 percent below that marker, which is roughly what a market with this income profile and near-baseline living costs would suggest, though it also reflects which practices choose to publish a rate at all."
+  },
+  "faqs": [
+    {
+      "question": "How much does Botox cost in Tucson?",
+      "answer": "No honest page gives one number. Toxin is mostly sold by the unit here, so your bill is an advertised rate multiplied by a dose nobody fixes until you are in the chair. The live breakdown beside this text shows what local practices actually publish; the per-unit band runs about half again from floor to ceiling rather than doubling, though it comes from only a few practices. Before comparing quotes, settle which product the rate belongs to and what else the visit carries."
+    },
+    {
+      "question": "Why does Botox cost different amounts at Tucson clinics that both advertise per unit?",
+      "answer": "Partly overhead and injector seniority, partly volume, and partly conditions attached to the headline figure — new-patient only, a membership tier or a minimum unit purchase, all of which appear in this feed. In this feed the widest spread sits among listings that do not name a brand, which means part of the gap may simply be different products. Ask what the rate becomes on your second visit and whether prepaid units expire."
+    },
+    {
+      "question": "How many units will I need, and what does a full appointment cost in Tucson?",
+      "answer": "The count follows an in-person assessment and the areas in your plan, so it belongs to the clinician rather than to a published average. What you can settle in advance is the commercial half: get the proposed count written next to the per-unit rate, because only that pair turns an advertised figure into a quote you can hold against another clinic's. Ask as well how the practice handles a plan that grows once you are in the chair."
+    },
+    {
+      "question": "Does Botox cost less in Phoenix than in Tucson?",
+      "answer": "Phoenix is a deeper market with more clinics competing, but the listings behind this page are Tucson's alone, so they cannot say whether its quotes run lower. Price the trip honestly: at roughly two hours each way it can be worth it once for a large initial course, and rarely worth it three or four times a year for maintenance. For routine top-ups, two quotes from different Tucson corridors are a cheaper comparison than the drive."
+    },
+    {
+      "question": "Does Botox cost more in the Catalina Foothills or Oro Valley than in central Tucson?",
+      "answer": "It can, and the mechanism would be catchment and occupancy rather than product — the vial costs the same on Sunrise Drive as it does on Broadway — though too few Tucson practices publish a rate to show the split. Clinics in the Foothills, Oro Valley and Marana serve a wealthier and older customer base than central and south-side practices. Get one quote from each side of town for the same planned unit count and compare visit totals, not unit rates, then check that the injector and supervision arrangement meet the same standard in both."
+    },
+    {
+      "question": "Who can legally inject Botox in Arizona, and does that change what it costs?",
+      "answer": "Arizona generally treats botulinum toxin injection as the practice of medicine, performed by an appropriately licensed professional within their training, competence and delegated authority. The Arizona Medical Board, the Arizona Board of Osteopathic Examiners and the Arizona State Board of Nursing provide oversight alongside the state's Medical Practice Act and nursing statutes, and the available guidance does not establish a blanket rule letting estheticians or unlicensed staff inject. Ask for your injector's licence type, the name of the supervising or delegating clinician and how that arrangement is documented, and verify anything that sounds unusual with the relevant board."
+    },
+    {
+      "question": "Does Botox cost more during snowbird season in Tucson?",
+      "answer": "Published rates rarely move by season, but availability does: winter visitors expand the local customer base through the cooler months, and demand also firms around graduations, weddings and the December holidays. In busy stretches the negotiable thing is usually a slot rather than a rate, while quiet months are when introductory offers and prepaid courses are genuinely on the table. Book at least two weeks ahead of any fixed date so the result has time to settle."
+    },
+    {
+      "question": "Does a very low advertised Botox cost mean the product might not be genuine?",
+      "answer": "Usually it means a first-visit rate, a membership condition or a different toxin measured on a different unit — but the question is fair. In April 2024 the FDA and CDC issued alerts after counterfeit botulinum toxin appeared in several states and caused harmful reactions, and the FDA advised confirming with the practice that the product came from an authorised source, flagging packaging tells such as a 150-unit strength not sold in the US and cartons printed in another language. Asking to see the sealed, labelled vial before it is drawn up is reasonable at any clinic in the city."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 102,
+    "medspaDensity": "Established but fragmented, and clustered rather than evenly spread. One directory lists more than forty Tucson medspas offering Botox alongside fillers and microneedling, with locations concentrated on east-side corridors including East Broadway Boulevard, East Sunrise Drive, East Pima Street and North Swan Road, plus the Catalina Foothills, central Tucson, Oro Valley, Marana, Vail and Green Valley. A directory entry is not a licensing census, and it does not capture the dermatology and plastic-surgery offices that also inject. What matters more to a buyer is that only a small group of local practices publish a per-unit figure at all.",
+    "demographicNotes": "The Census Bureau put Tucson's population near 547,000 in 2024, with roughly 1.1 million across the metro, a city median age of about 34.6 against 39.7 metro-wide, and median household income around $57,000 in the city and $70,000 in the metro. That is a younger, lower-income profile than most markets where injectables are heavily advertised, and it produces a rate card built for volume and repeat visits rather than premium positioning. Overall living costs sit close to the national baseline by private-market estimates, so it is disposable income rather than rent or wages that most constrains what Tucson clinics can charge. The seasonal influx of winter residents adds an older, higher-spending cohort for part of the year.",
+    "competitionNotes": "Competition here is mostly internal. Phoenix, at roughly an hour and three-quarters to two hours by car, is the only deeper market within realistic reach, and it mainly caps what a Tucson practice can ask for a large initial course rather than for quarterly maintenance; Las Vegas at around six and a half hours and Albuquerque at around seven and a half are effectively out of play. Within the metro, the real pressure comes from the contrast between Foothills and Oro Valley addresses and the central, east-side and south-side clinics a short drive away. The handful of practices willing to publish a per-unit figure exert influence well beyond their number, because theirs are the rates every other clinic gets asked about on the phone."
+  }
+}

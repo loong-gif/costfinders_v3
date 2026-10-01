@@ -1,0 +1,123 @@
+{
+  "treatment": "fillers",
+  "treatmentLabel": "Dermal Fillers",
+  "city": "oklahoma-city",
+  "cityLabel": "Oklahoma City",
+  "state": "Oklahoma",
+  "stateCode": "OK",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Two different units share one page on an Oklahoma City filler menu, and they do not convert into each other. Hyaluronic acid gels are sold by the syringe, and so is Radiesse where a local bundle names it. Sculptra is sold by the vial, and a course takes several. What no Oklahoma City listing states is the price of any of them: every filler offer in the feed is a discount off a figure it leaves out — money or a percentage off (often for members only), a discount that deepens with each extra syringe, a bundle advertised by its saving. Before comparing two OKC quotes, establish which unit each one counts and what the undiscounted price is.",
+    "pricingModels": [
+      {
+        "name": "Per-Syringe Hyaluronic Acid Filler",
+        "description": "The default unit wherever an Oklahoma City listing names one. One syringe of an HA gel — Juvederm, Restylane, RHA and their variants — carries one price, and your bill is that price multiplied by the number of syringes used. The figure moves with the specific product, so ask which one the quote names rather than accepting the word filler as the description.",
+        "typicalRange": "one price per syringe, times the syringes used; Oklahoma City listings advertise discounts off it rather than the price itself, so there is no local range to give"
+      },
+      {
+        "name": "Per-Vial Biostimulators",
+        "description": "Sculptra is counted by the vial instead, and Oklahoma City listings sell it that way: in bundles of several vials, sometimes paired with Radiesse syringes or a neurotoxin, advertised by the dollar saving rather than the price. This is the trap in the local list: a vial is not a syringe, and Sculptra is ordinarily sold as a counted course spread over months, not a single visit. Find out the vial count in the proposed plan and the total it comes to before you set that figure beside an HA quote.",
+        "typicalRange": "one price per vial; a course runs several vials, so the series total is the number that matters"
+      },
+      {
+        "name": "Member Discount Off Each Syringe",
+        "description": "The commonest thing an Oklahoma City filler listing advertises is not a price but a membership discount: a fixed amount off each syringe, or a percentage off filler, for as long as the plan runs. The plans are billed monthly and some carry a minimum term, so the discount has to earn back the membership before it saves anything. Ask for the non-member price, the member price and the plan's monthly fee and term, then do the sum for the syringes you actually expect to use.",
+        "typicalRange": "a fixed amount or percentage off each syringe for members; the price it comes off is not stated, and the monthly plan is extra"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Several of the forces below are regulatory, geographic or social rather than commercial, which is unusual for a market this competitive. Operating costs here are among the lowest of any large US metro and the injectable field is crowded, but neither fact translates cleanly into a cheaper syringe. Here is what pulls in each direction.",
+    "factors": [
+      {
+        "factor": "Oklahoma decides who injects, and who has to write the order",
+        "explanation": "Injecting filler is a medical or nursing act in Oklahoma, not a cosmetology one — state rules at OAC 175:10-7-29 place every injection, needle-free included, outside an esthetician's license. The Board of Nursing's 2026 cosmetic-procedure guideline lets an RN inject on a patient-specific order from an authorized prescriber who has completed a history and physical; a standing order does not satisfy it. Staffing to that standard reaches the price list."
+      },
+      {
+        "factor": "A cost index built on housing, not on treatment rooms",
+        "explanation": "C2ER's 2026 first-quarter release scores this metro 81 where the national norm is 100, the cheapest reading among large US cities that quarter. Look at what carries it: the housing line lands near 60, while the BEA's 2024 regional price parity for the metro, which spans everything households buy, sits closer to 90. Rent and wages really are cheaper here. The gel, the disposables and the liability cover behind an injector are not."
+      },
+      {
+        "factor": "A field spread across a whole metro, not one district",
+        "explanation": "Providers here do not cluster in a single high-rent strip. The Nichols Hills and Western Avenue end carries the premium positioning, Memorial Road carries a second concentration, Edmond keeps adding practices, and Norman, Moore, Yukon, Mustang and Midwest City hold the lower-overhead end. Most of that is inside a half-hour drive, so a quote competes with the next suburb rather than with the clinic next door."
+      },
+      {
+        "factor": "The calendar this market books around",
+        "explanation": "Filler demand in Oklahoma City stacks against the local social calendar more than the weather. September brings the state fair and the opening of a college football season the whole state organizes around; Thanksgiving through New Year is the heaviest stretch; then a spring run of weddings and graduations overlapping the late-April marathon weekend downtown. Midsummer sits between those runs with little on it. In the busy windows what tightens first is the appointment book."
+      },
+      {
+        "factor": "Who an Oklahoma City filler menu has to serve",
+        "explanation": "This is a metro of roughly 1.5 million built on steady payrolls rather than concentrated wealth — the air base at Tinker, state government, the large hospital systems — with a thinner energy-linked layer spending above them. Median household income sits below the national figure but not dramatically so. What local listings aim at that base is membership rather than a low headline: many Oklahoma City filler offers are member discounts on a monthly plan, and multi-vial bundles cover the larger commitment."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Nothing below depends on catching a promotion. The leverage in this market comes from forcing every quote onto the same unit, then finding out what that unit does not include.",
+    "tips": [
+      {
+        "tip": "Get the unit price and the plan total from the same clinic",
+        "detail": "Ask what one syringe costs and what the whole proposed plan costs, in the same call. The unit price is how you rank clinics against each other; the plan total is what you actually pay. Quotes stop being comparable the moment one clinic is describing a single appointment and the next is describing a course."
+      },
+      {
+        "tip": "Price the whole per-vial course, not the first vial",
+        "detail": "Sculptra is quoted per vial, and the vial count is the whole budget. Ask how many the plan assumes, the interval between them, whether the quoted vial price is held for the entire series or only for today, and what an additional vial costs if the plan is extended. Get that in writing before the first payment."
+      },
+      {
+        "tip": "Ask what the quoted figure leaves off",
+        "detail": "Injection fees, consultation charges and post-treatment reviews can be handled differently from one OKC practice to the next, and a per-syringe number hides all three. Ask each clinic for an all-in figure covering the appointment you actually want, and ask specifically whether a follow-up review is included or billed. Two matching headline prices can settle at different totals."
+      },
+      {
+        "tip": "Count the membership fee before the member discount",
+        "detail": "Many Oklahoma City filler offers are money off each syringe for members, and the plans behind them are billed monthly, some with a minimum term. A discount per syringe only saves money once it has covered the fee for every month you are signed up, so multiply the monthly fee by the term, set that against the discount on the syringes you actually expect in that time, and ask what the non-member price would have been."
+      },
+      {
+        "tip": "Quote the suburbs before you consider quoting another metro",
+        "detail": "Edmond, Norman, Moore, Yukon, Mustang and Midwest City all carry injectors on cheaper commercial rent than the Nichols Hills and Western Avenue corridor, and most are a half hour or less from anywhere in the metro. Three quotes from that ring cost you an afternoon. Confirm the license and the ordering prescriber wherever you land."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSyringe": 715,
+    "comparisonText": "The national marker describes one syringe: the American Society of Plastic Surgeons' 2023 average surgeon and physician fee for hyaluronic acid filler, $715, itself down from $794 the year before. Plenty of Oklahoma City clinics list filler, but none advertises a per-syringe price, only discounts off one, so we have no local figure to set beside it and draw no gap. Per-vial biostimulator listings would sit outside this comparison in any case. And do not borrow a local figure from the metro's cost-of-living ranking: an index prices housing and groceries, not a syringe of gel."
+  },
+  "faqs": [
+    {
+      "question": "How much does dermal filler cost in Oklahoma City?",
+      "answer": "One figure cannot carry it, because a local menu counts two separate things: syringes of hyaluronic acid gel and vials of a biostimulator such as Sculptra. No Oklahoma City listing in the feed states a filler price at all — each advertises a discount off one, often for members only — so put three questions to each clinic about the same named product: the price of one unit before any discount, whether the discount needs a membership, and the total for the plan your consultation actually produces."
+    },
+    {
+      "question": "How much does discounted filler cost in Oklahoma City?",
+      "answer": "No listing here says. Oklahoma City filler offers advertise the discount rather than the price: money or a percentage off each syringe for members, a stepped offer that takes more off each additional syringe, bundles of Sculptra vials billed by their saving, and a referral discount. A discount off an unstated price tells you nothing about the price, and a member discount rides on a monthly fee. Before booking, ask for the undiscounted figure, which product and how much of it, who is injecting and under whose order, and what the all-in total comes to with any membership included."
+    },
+    {
+      "question": "Why is Sculptra priced per vial instead of per syringe here?",
+      "answer": "Because it is supplied and billed that way, and because it is sold as a course rather than a single appointment — local bundles count out several vials at once. That makes a vial price a poor thing to set against an HA syringe price: the vial figure is one installment, while the syringe figure is often the whole purchase. Ask an Oklahoma City clinic quoting per vial how many vials the plan assumes, what the series totals, and whether that total is fixed or revisited as the plan goes on."
+    },
+    {
+      "question": "In Oklahoma, which license lets someone inject filler, and who has to order it?",
+      "answer": "Oklahoma has not adopted blanket full practice authority for nurse practitioners. HB 2298, effective November 2025, created a route to independent prescriptive authority at 59 O.S. § 567.4c after 6,240 hours of physician-supervised prescriptive practice; an APRN without that approval still works under a written supervision agreement. The Board of Nursing's 2026 guideline permits an RN to inject on a patient-specific order once a prescriber has completed a history and physical. Cosmetology and esthetician licenses do not authorize injections at all. Ask who is injecting, and who ordered it."
+    },
+    {
+      "question": "Does a filler membership lower the cost in Oklahoma City?",
+      "answer": "Only once it has paid for itself. Many Oklahoma City filler offers are discounts for members — a fixed amount or a percentage off each syringe — and the plans behind them are billed monthly, some with a minimum term of several months. None of those listings states the non-member price, so the saving cannot be read off the page. Ask for the non-member price, the member price, the monthly fee and the minimum term, then set the fees you would pay over that term against the discount on the syringes you actually expect to buy in it."
+    },
+    {
+      "question": "Is filler cheaper in Tulsa or Dallas than in Oklahoma City?",
+      "answer": "This page tracks Oklahoma City listings, so it cannot tell you what either of those markets charges, and any guide quoting a Tulsa or Dallas figure without a source is guessing. What it can tell you is the geography. Tulsa sits about a hundred miles northeast on the turnpike, Dallas–Fort Worth some two hundred down I-35, so both are day trips rather than errands. Filler is rarely a one-off purchase, so price out a full year of appointments, travel included, before a drive decides anything."
+    },
+    {
+      "question": "Under-eye and nose filler in Oklahoma City: what should I check first?",
+      "answer": "Tear-trough and non-surgical nose work are the areas where injector experience matters most, and they often sit at the top of a price list for that reason. Do not treat the price as the answer. Ask how often this injector does that particular procedure, what product is planned and the reasoning behind it, what happens if the result needs adjusting, and how an adjustment is billed. Ask who else is on site during the appointment, and who you contact afterwards."
+    },
+    {
+      "question": "Does Oklahoma City's low cost of living make filler cheap here?",
+      "answer": "Less than the headline suggests. The C2ER composite that ranks this metro cheapest among large cities is pulled down mostly by a housing line near 60; the BEA's regional price parity, which measures what households here actually pay across every category, sits closer to 90. Rent and staffing are genuinely cheaper. The gel in the syringe, the equipment and the malpractice cover are bought on a national market. So a low cost-of-living score says little about what a syringe costs here, and too few local clinics publish a syringe price for us to measure the difference directly."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 81,
+    "medspaDensity": "Dense for a metro this size and still taking entrants. The heaviest concentration sits in Oklahoma City proper and Edmond, with premium positioning around Nichols Hills and Western Avenue and a second run of clinics out Memorial Road; coverage thins toward Norman, Moore, Yukon, Mustang and Midwest City.",
+    "demographicNotes": "Census estimates place the city near 719,849 residents at a median age in the mid-thirties, median household income reported at $68,656 in the 2020–2024 American Community Survey, inside a still-growing metro of roughly 1.5 million. Employment leans on the base at Tinker, state government and the large hospital systems, which produces a wide middle-income client base rather than a concentrated luxury one. That mix is why local filler offers run from member discounts on a monthly plan to prepaid multi-vial bundles.",
+    "competitionNotes": "No single brand sets the local price. The field runs from single-room independents through small multi-site med spas to plastic surgery and dermatology practices that inject as a sideline to clinical work, distributed across the metro instead of stacked into one district, so a clinic's nearest rival is usually in the next suburb and a half-hour drive at most. Beyond that ring, the Tulsa market is a hundred miles or so northeast on the turnpike and Dallas–Fort Worth roughly twice that distance south down I-35: near enough to weigh for a high-ticket decision, too far to build routine maintenance around."
+  }
+}

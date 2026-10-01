@@ -1,20 +1,25 @@
 @import "tailwindcss";
 
 /* ============================================
-   CostFinders v2 — Warm Sand Design System
-   Beige/sand backgrounds + deep amber accents
-   Spa lobby warmth for the beauty industry
+   CostFinders v2 — "Price Engine" design system
+   White ground, ink-navy text, one coral accent.
+   The data is the visual: prices, ranges, bars.
+   Replaced Warm Sand on 2026-09-18; the spec is
+   design-system/costfinders-v2/MASTER.md. Token NAMES are
+   unchanged on purpose so the other pages move
+   over by codemod, not by rename.
    ============================================ */
 
 :root {
   /* Non-Tailwind tokens (used directly in CSS, not duplicated in @theme) */
-  /* Local-first font stack keeps the demo buildable without Google Fonts access. */
-  --font-sora: 'Sora';
-  --font-manrope: 'Manrope';
   --font-mono: ui-monospace, 'SFMono-Regular', monospace;
-  --color-bg-overlay: rgba(69, 26, 3, 0.4);
+  --color-bg-overlay: rgba(11, 18, 32, 0.5);
   --color-accent-text: #ffffff;
   --color-text-inverse: #ffffff;
+  /* Focus ring. Solid, not alpha: an alpha ring composites toward the ground
+     it is meant to stand out from. WCAG 1.4.11 needs 3:1; this is the accent,
+     5.56:1 on white and 5.10:1 on the grey band. */
+  --color-focus-ring: #c23310;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -25,107 +30,177 @@
 }
 
 @theme inline {
-  /* Backgrounds */
-  --color-bg-base: #e8ddd0;
-  --color-bg-surface: #f2ebe2;
-  --color-bg-elevated: #faf5ee;
+  /* Backgrounds. base = page, surface = the grey band and tinted panels,
+     elevated = a white card sitting on the band. */
+  --color-bg-base: #ffffff;
+  --color-bg-surface: #f4f5f7;
+  --color-bg-elevated: #ffffff;
 
-  /* Accent */
-  --color-accent: #92400e;
-  --color-accent-hover: #b45309;
-  --color-accent-muted: rgba(146, 64, 14, 0.08);
+  /* Accent. One coral, and it has to work as BOTH a solid button carrying
+     white text and as link text on the grey band, so it is the darkest
+     coral that still reads as coral: #cc3714 is 5.09:1 with white text and
+     4.67:1 as text on --color-bg-surface. The mockup's #ff5a36 is 3.10:1 with
+     white text — it fails AA for a 16px label — so it survives only as
+     --color-accent-graphic, for non-text marks on WHITE (3.1:1 clears the
+     3:1 graphics floor there and nowhere darker). Hover goes darker. */
+  --color-accent: #cc3714;
+  --color-accent-hover: #a82c0f;
+  --color-accent-graphic: #ff5a36;
+  --color-accent-muted: rgba(204, 55, 20, 0.08);
 
-  /* Text */
-  --color-text-primary: #451a03;
-  --color-text-secondary: #78350f;
-  --color-text-muted: #92400e;
+  /* Text. Muted has to clear 4.5:1 on the band as well as on white, which
+     Tailwind's gray-500 (#6b7280, 4.43:1 on #f4f5f7) does not. */
+  --color-text-primary: #0b1220;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #5f6979;
 
-  /* Semantic */
-  --color-savings: #059669;
-  --color-savings-bg: rgba(5, 150, 105, 0.1);
-  --color-error: #dc2626;
-  --color-error-bg: rgba(220, 38, 38, 0.1);
-  --color-warning: #ea580c;
-  --color-warning-bg: rgba(234, 88, 12, 0.1);
-  --color-info: #2563eb;
-  --color-info-bg: rgba(37, 99, 235, 0.1);
-  --color-success: #059669;
-  --color-success-bg: rgba(5, 150, 105, 0.1);
+  /* Semantic.
+     Each value clears 4.5:1 as TEXT on its own 10% tint over the darkest
+     ground — the "Save $X" badge shape used across deal cards, status badges
+     and inline form errors. tests/unit/tokenContrast.test.ts measures them. */
+  --color-savings: #065f46;
+  --color-savings-bg: rgba(6, 95, 70, 0.1);
+  --color-error: #991b1b;
+  --color-error-bg: rgba(153, 27, 27, 0.1);
+  --color-warning: #9a3412;
+  --color-warning-bg: rgba(154, 52, 18, 0.1);
+  --color-info: #1e40af;
+  --color-info-bg: rgba(30, 64, 175, 0.1);
+  --color-success: #065f46;
+  --color-success-bg: rgba(6, 95, 70, 0.1);
 
-  /* Borders */
-  --color-border-default: #d4c4b0;
-  --color-border-hover: #c4b09a;
-  --color-border-accent: rgba(146, 64, 14, 0.3);
+  /* Borders — hairlines, not tinted */
+  --color-border-default: #e5e7eb;
+  --color-border-hover: #d1d5db;
+  --color-border-accent: rgba(204, 55, 20, 0.35);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 16px rgba(146, 64, 14, 0.1);
-  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(146, 64, 14, 0.15);
+  /* Shadows. One soft card shadow; no glows. */
+  --shadow-sm: 0 1px 2px rgba(11, 18, 32, 0.04);
+  --shadow-md: 0 1px 2px rgba(11, 18, 32, 0.04), 0 8px 24px rgba(11, 18, 32, 0.06);
+  --shadow-lg: 0 4px 16px rgba(11, 18, 32, 0.08), 0 16px 40px rgba(11, 18, 32, 0.08);
+  --shadow-glow: 0 8px 24px rgba(11, 18, 32, 0.06);
+  --shadow-card-hover: 0 1px 2px rgba(11, 18, 32, 0.04), 0 8px 24px rgba(11, 18, 32, 0.08);
 
-  /* Legacy compat */
-  --color-brand-primary: #92400e;
-  --color-brand-secondary: #b45309;
-  --color-glass-bg: #f2ebe2;
-  --color-glass-border: #d4c4b0;
-  --color-glass-bg-hover: #faf5ee;
-  --color-glass-border-hover: #c4b09a;
-  --color-bg-primary: #e8ddd0;
-  --color-bg-secondary: #f2ebe2;
-  --color-bg-tertiary: #faf5ee;
+  /* Legacy compat — still referenced by the pages not yet moved over */
+  --color-brand-primary: #cc3714;
+  --color-brand-secondary: #ff5a36;
+  --color-glass-bg: #ffffff;
+  --color-glass-border: #e5e7eb;
+  --color-glass-bg-hover: #f4f5f7;
+  --color-glass-border-hover: #d1d5db;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f5f7;
+  --color-bg-tertiary: #ffffff;
 
   /* Inverted / Dark section */
-  --color-bg-inverted: #451a03;
-  --color-text-on-dark: #faf5ee;
-  --color-text-on-dark-muted: #d4c4b0;
+  --color-bg-inverted: #0b1220;
+  --color-text-on-dark: #f9fafb;
+  --color-text-on-dark-muted: #a1a8b3;
 
-  --font-sans: var(--font-sora), var(--font-manrope), system-ui, sans-serif;
+  /* Inter for UI and body, Inter Tight for display — both from next/font in
+     layout.tsx. `font-display` is the utility this emits. */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/* No `font-family` here, deliberately. This rule is unlayered, so it beats the
+   `.font-sans` utility on <body>, and `@theme inline` emits no `--font-sans`
+   custom property — a `font-family: var(--font-sans)` declaration is invalid at
+   computed-value time and the whole site fell back to the system font. The
+   `font-sans` class on <body> in layout.tsx is what applies the font. */
 body {
   background: var(--color-bg-base);
   color: var(--color-text-primary);
-  font-family: var(--font-sans);
+}
+
+/* iOS Safari zooms into any focused field under 16px and never zooms back out;
+   the docked homepage search was 14px. On touch screens, form controls get 16px.
+   `text-xs`/`text-sm` compile to `font-size: var(--text-xs|sm)`, so redefining
+   those two tokens on the control lifts them without touching larger sizes; the
+   `font-size` line catches controls that inherit a small size from a parent.
+   `@layer base`, so a `text-lg` utility on the control still wins. */
+@layer base {
+  @media (hover: none) {
+    input,
+    select,
+    textarea {
+      font-size: max(1rem, 1em);
+      --text-xs: 1rem;
+      --text-sm: 1rem;
+    }
+  }
 }
 
 /* ============================================
-   Scroll Reveal & Animation Keyframes
+   Focus indicator (WCAG 1.4.11)
    ============================================ */
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+/* One ring for every control on the site. 53 `focus:outline-none` utilities
+   are still scattered through the app, each replacing the native outline with
+   an amber ring that composited to 1.2-1.9:1 against sand — below the 3:1 a
+   focus indicator needs, and in forced-colors mode the box-shadow ring is
+   dropped entirely, leaving nothing at all.
+   Two cascade details make this work, and it breaks if either is dropped:
+   1. `@layer base`, not the top level. Unlayered CSS outranks every Tailwind
+      layer, which would also make `outline-offset` below beat a component's own
+      `focus-visible:-outline-offset-2` — the escape hatch for controls inside an
+      `overflow-hidden` parent, where an outside ring gets clipped.
+   2. `!important` on the outline. `focus:outline-none` compiles into
+      `@layer utilities`, which wins over base for normal declarations; an
+      important declaration in an earlier layer wins instead.
+   The offset is deliberately NOT important, so the escape hatch still works.
+   An inset ring everywhere would have avoided all of this, but the primary
+   Button's background IS #92400e, so an inset amber ring would be invisible on
+   exactly the controls that take money.
+   ponytail: drop the !important once those 53 utilities are gone. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring) !important;
+    outline-offset: 2px;
+  }
+
+  /* Programmatic focus targets — the modal dialog, the skip link's <main> — are
+     containers, not controls. Ringing a whole panel reads as a rendering bug. */
+  [tabindex='-1']:focus-visible,
+  main:focus-visible {
+    outline: none !important;
+  }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Skip link (WCAG 2.4.1). Parked above the viewport until focused.
+   Written as CSS rather than `sr-only focus:not-sr-only focus:absolute`
+   because both of those utilities set `position` and which one wins depends on
+   Tailwind's emit order — not something to leave to chance for the first
+   control on every page. */
+.skip-link {
+  position: absolute;
+  top: 0.625rem;
+  left: 1rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 1px solid var(--color-border-hover, #c4b09a);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated, #faf5ee);
+  color: var(--color-text-primary, #451a03);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
 }
 
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.skip-link:focus {
+  transform: translateY(0);
 }
 
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes drawLine {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@keyframes drawLineVertical {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
-}
+/* ============================================
+   Animation
+   ============================================ */
 
 /* Hero entrance animation — CSS-only, no JS hydration needed (M16) */
 @keyframes heroFadeIn {
@@ -138,38 +213,19 @@ body {
   animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Scroll reveal base — hidden until visible */
-[data-scroll-reveal] {
-  opacity: 0;
-}
-
-[data-scroll-reveal][data-visible="true"] {
-  animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-scroll-reveal="fadeInUp"][data-visible="true"] {
-  animation-name: fadeInUp;
-}
-
-[data-scroll-reveal="fadeIn"][data-visible="true"] {
-  animation-name: fadeIn;
-}
-
-[data-scroll-reveal="scaleIn"][data-visible="true"] {
-  animation-name: scaleIn;
-}
-
-[data-scroll-reveal="slideInLeft"][data-visible="true"] {
-  animation-name: slideInLeft;
-}
-
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  [data-scroll-reveal] {
+  /* The hero starts at opacity: 0 and is revealed by the animation, so this has
+     to restore opacity as well as cancel the animation — otherwise reduced
+     motion would hide the headline instead of just holding it still. */
+  .animate-hero-fade-in {
     opacity: 1;
     animation: none !important;
   }
+
+  /* Loading spinners and skeleton pulses are deliberately left running: they
+     carry the "still working" signal, and small in-place rotation is not the
+     vestibular trigger this preference is about. */
 
   html {
     scroll-behavior: auto;
@@ -188,10 +244,4 @@ button, a, [role="button"], input, select, textarea {
 /* Safe area padding for notched devices (iPhone X+) */
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/* Q13: Skip rendering of off-screen content */
-.content-visibility-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
 }

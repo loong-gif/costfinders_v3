@@ -178,15 +178,18 @@ export function filterDeals(filters: DealFilters): AnonymousDeal[] {
   }
 
   if (filters.minPrice !== undefined) {
-    result = result.filter((d) => d.dealPrice >= filters.minPrice!)
+    const minPrice = filters.minPrice
+    result = result.filter((d) => d.dealPrice >= minPrice)
   }
 
   if (filters.maxPrice !== undefined) {
-    result = result.filter((d) => d.dealPrice <= filters.maxPrice!)
+    const maxPrice = filters.maxPrice
+    result = result.filter((d) => d.dealPrice <= maxPrice)
   }
 
   if (filters.minDiscount !== undefined) {
-    result = result.filter((d) => d.discountPercent >= filters.minDiscount!)
+    const minDiscount = filters.minDiscount
+    result = result.filter((d) => d.discountPercent >= minDiscount)
   }
 
   return result

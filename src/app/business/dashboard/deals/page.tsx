@@ -1,31 +1,15 @@
 'use client'
 
-import nextDynamic from 'next/dynamic'
+import { DealList } from '@/components/features/dealManagement/dealList'
 import { useBusinessAuth } from '@/lib/context/businessAuthContext'
-
-const DealList = nextDynamic(
-  () =>
-    import('@/components/features/dealManagement/dealList').then(
-      (m) => m.DealList,
-    ),
-  {
-    loading: () => (
-      <div className="h-96 animate-pulse rounded-2xl bg-[#faf5ee]" />
-    ),
-  },
-)
 
 export default function DealsPage() {
   const { state } = useBusinessAuth()
   const businessId = state.owner?.businessId
 
-  if (!businessId) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#78350f]">No business linked to your account.</p>
-      </div>
-    )
-  }
+  // The dashboard layout renders its own screen for an account with no approved business, so
+  // this only covers the render before the owner loads.
+  if (!businessId) return null
 
   return <DealList businessId={businessId} />
 }

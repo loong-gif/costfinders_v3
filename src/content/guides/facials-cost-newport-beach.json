@@ -1,0 +1,128 @@
+{
+  "treatment": "facials",
+  "treatmentLabel": "Facials",
+  "city": "newport-beach",
+  "cityLabel": "Newport Beach",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-25",
+  "howPricingWorks": {
+    "intro": "A facial in Newport Beach is bought as a named appointment at a single number — nothing is metered, so the label on the menu carries all of the information about what you are actually purchasing. The complication here is that most listings in this city publish the name and withhold the figure, so the visible market is far larger than the priced one. Where figures do appear they bunch tightly around branded device treatments, then jump to a long-form signature appointment several times higher. That shape means two Newport Beach menus can look comparable and describe very different hours.",
+    "pricingModels": [
+      {
+        "name": "Flat Menu Price Per Appointment",
+        "description": "The default structure across this market: one named service, one number, one visit. Because nothing is counted, the same treatment name can mean forty-five minutes of cleanse, steam and extraction at one address and ninety minutes with a device, a peel step and LED at the next. Establish stated length, whether extractions are included, and which steps are billed separately before setting two local menus side by side.",
+        "typicalRange": "one figure per visit; published single-visit figures here mostly sit between roughly $150 and $200"
+      },
+      {
+        "name": "Tiered by Branded Device",
+        "description": "Hydradermabrasion treatments are the most consistently priced thing in the Newport Beach feed, and they are sold in tiers — a base protocol, then upgraded versions layering in boosters, lymphatic work or LED. The brand name alone does not tell you which tier you are being quoted. Ask which tier the figure covers, which boosters sit inside it, and whether the machine on site is the branded system or a comparable device.",
+        "typicalRange": "base tier near the floor of the local spread, upgraded tiers roughly $50 above it"
+      },
+      {
+        "name": "Long-Form Signature Treatment",
+        "description": "The top of the published spread in this city is not a different technology so much as a longer, stacked appointment — multiple modalities in one room, often with a medical-grade peel or device step and premium product. It is still one flat figure, but it buys substantially more time and more staff qualification. Worth asking what the equivalent looks like at half the length, because that comparison is rarely offered.",
+        "typicalRange": "the ceiling of the local spread, in the mid-hundreds, several times the entry rate"
+      },
+      {
+        "name": "Quoted Only After Consultation",
+        "description": "Most Newport Beach facial listings name the treatment and stop, directing you to call or book an assessment. That is a pricing structure, not an oversight: it lets a clinic quote against your skin, your calendar and whatever package it would rather sell. Ask for the full list price of the single appointment by email before the consultation, and ask whether the assessment carries its own fee or is credited against treatment.",
+        "typicalRange": "no figure published; the majority of local listings sit here"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Five things set the number on a Newport Beach menu, and the facial protocol is the least of them: what a treatment room costs on this stretch of coast, which California licence may legally perform the service, who the clinic built its menu for, how many substitutes sit inside a short drive, and which month you walk in.",
+    "factors": [
+      {
+        "factor": "What a treatment room costs on the coast",
+        "explanation": "AreaVibes, using the C2ER Cost of Living Index, puts Newport Beach's overall cost of living at 325 against a national baseline of 100, with housing at 825 and goods and services at 112. The gap between those components is the whole story: the premium here is real estate and the labour that real estate implies, not consumables. A facial is an hour of a room plus an hour of a licensed person, and neither input shrinks to absorb rent near Fashion Island or on Pacific Coast Highway."
+      },
+      {
+        "factor": "Where California draws the line on depth",
+        "explanation": "California ties who may treat you to what is being done. The Board of Barbering and Cosmetology regulates estheticians under the Barbering and Cosmetology Act, and a basic facial — cleansing, exfoliation, massage, non-invasive skincare — sits inside that licence when it falls within the licensee's training. Prescription products, injections, lasers and deeper medical peels fall under the Medical Practice Act and the Medical Board of California, and require medical qualification or a delegation arrangement with oversight. Menus price that staffing difference in, which is much of why a 'medical' facial and a spa facial diverge."
+      },
+      {
+        "factor": "An older, higher-income catchment",
+        "explanation": "American Community Survey figures put Newport Beach's median age near 46 and median household income above $150,000, well clear of the roughly $113,000 Orange County median. Clinics build menus for corrective and anti-ageing work aimed at that buyer — peel steps, device add-ons, medical-grade take-home skincare — rather than for a fast maintenance cleanse. It also explains the reluctance to publish figures: this market is comfortable quoting after an assessment."
+      },
+      {
+        "factor": "Substitutes in every direction",
+        "explanation": "Costa Mesa, Irvine and Huntington Beach all sit within a short drive, and the inland Orange County commercial centres are generally twenty-five to forty minutes out depending on traffic. Los Angeles runs roughly fifty to seventy-five minutes and San Diego between about an hour and a quarter and an hour and three quarters. No Newport Beach clinic prices as though it holds you, but it does price as though you value not driving — the coastal addresses charge for the address."
+      },
+      {
+        "factor": "A calendar built around weddings, boats and sun",
+        "explanation": "Demand lifts through spring and summer with weddings, tourism and beach and boating season, and again before the Newport Beach Christmas Boat Parade and the holiday party run. Resurfacing and peel courses are conventionally sequenced toward cooler months and away from heavy sun exposure — a clinical question for your provider, not a cost guide — which is why skin-reset promotions in this part of the coast tend to surface ahead of that season rather than during it."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "In a market where most listings do not publish a figure, the saving comes from making the menu legible before you sit down. Five decisions do the work: extracting a written list price, pinning the length, checking the device tier, using the surrounding cities, and timing a course rather than a single visit.",
+    "tips": [
+      {
+        "tip": "Ask for the written list price before the consultation",
+        "detail": "Most local listings name the treatment and not the number, and a paid assessment is a poor place to first learn what something costs. Email and ask for the single-appointment figure, the stated length, and whether the consultation fee is credited against treatment. A clinic unwilling to put a single-visit figure in writing has told you how the conversation in the room will go."
+      },
+      {
+        "tip": "Pin the minutes, then the inclusions",
+        "detail": "The clearest cost difference between two Newport Beach facials with the same name is time in the room. Ask for stated length, then ask which steps — extractions, dermaplaning, LED, boosters, a mask, a peel step — are inside that number and which are charged on top. Two menus that look a few tens of dollars apart can finish a long way apart once the add-on list is applied."
+      },
+      {
+        "tip": "Confirm which device tier you are being quoted",
+        "detail": "Branded hydradermabrasion treatments are sold in tiers, and the published figures for them in this city span a meaningful gap between base and upgraded versions. Ask which tier the quote covers, which boosters that tier includes, and what the same treatment costs on a second visit if the first is an introductory rate. Also ask whether the machine is the branded system or a comparable one, because listings rarely say."
+      },
+      {
+        "tip": "Make Costa Mesa, Irvine and Huntington Beach bid",
+        "detail": "Those markets sit minutes away and carry none of the coastal positioning. Gather quotes across that corridor for one identically named treatment at one stated length, then decide what the shorter drive is worth to you. Presenting a written competing quote is unremarkable in a catchment with this many alternatives, and it tends to surface package terms that were not on the menu."
+      },
+      {
+        "tip": "Price the course, not the visit, if you intend to return",
+        "detail": "If a clinic proposes a series, ask it to state the per-visit figure itself, then ask what happens to unused visits when the window closes and how much notice a cancellation requires. Prepayment is a discount only if you finish inside the term the clinic drafted. Booking a resurfacing series ahead of its season rather than during it also tends to catch both a promotional rate and an open calendar."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSession": 245,
+    "comparisonText": "RealSelf's member-reported national average for a facial is about $245 per session. The Newport Beach feed does not currently state a price on a single-session basis, so there is no local figure to set against that benchmark — the figures that are published here attach to specific named treatments and tiers rather than to a generic session. Qualitatively, the branded device treatments that dominate the priced end of this market advertise below the national benchmark, while the long-form signature appointments sit well above it. That spread, not an average, is the honest picture: what you pay in this city depends almost entirely on how many minutes and how many steps the name on the menu covers."
+  },
+  "faqs": [
+    {
+      "question": "How much do facials cost in Newport Beach, CA?",
+      "answer": "There is no unit to multiply — a facial here is one named appointment at one number, which is why two menus can share a treatment name and describe different purchases. Most local listings publish the name without a figure; among those that do publish, single appointments cluster between roughly one-fifty and two hundred dollars, and the top of the local spread is more than twice that for a long-form signature treatment. Read your own figure off the cost table on this page, which rebuilds daily from live local listings. Then pin down stated length, included steps, and which licence performs the service before comparing anything."
+    },
+    {
+      "question": "Why do so few Newport Beach medspas say what a facial costs online?",
+      "answer": "Because quoting after an assessment suits both the clinic and the clientele this market serves — it allows the treatment to be matched to your skin, and it allows a package or membership to be introduced before a number is. It is a legitimate pricing structure, but it puts you at a disadvantage if you first hear the figure in the treatment room. Ask by email for the list price of the single appointment, the length, and whether the consultation carries a fee. If the answer only comes in person, treat that as information about how the clinic sells."
+    },
+    {
+      "question": "What is the cheapest facial cost in Newport Beach, and what is the catch?",
+      "answer": "The lowest published lines here are generally base-tier branded device treatments or short express appointments, and neither is concealed. An express facial is less time in the room rather than a discount on the same service; a base device tier omits the boosters the upgraded tiers include; and an introductory rate reverts on the second booking. Ask which of those you are looking at, what the identical appointment costs on a return visit, and what the full add-on list costs in writing."
+    },
+    {
+      "question": "Does a HydraFacial cost more than a regular facial here?",
+      "answer": "Usually, because the clinic pays a per-treatment consumable cost — a branded tip and serums — on every appointment that a manual cleanse-and-extract protocol does not carry. In the Newport Beach feed these branded treatments are also the most consistently priced items, sold in tiers that sit a meaningful step apart. Establish which tier is quoted, which boosters that tier includes, and whether the device on site is the branded system or a comparable hydradermabrasion machine."
+    },
+    {
+      "question": "Do facials cost less in Costa Mesa, Irvine or Huntington Beach?",
+      "answer": "Often, and the difference is mostly overhead and positioning rather than protocol. Newport Beach carries coastal retail rent and markets a destination experience; the inland Orange County centres, generally twenty-five to forty minutes away depending on traffic, run leaner and compete more openly. Los Angeles is roughly fifty to seventy-five minutes and San Diego over an hour, so neither is a routine substitute for a maintenance facial. Compare one identically named treatment at one stated length across the nearby corridor before deciding what the shorter drive is worth."
+    },
+    {
+      "question": "Why does a medical facial cost more than a spa facial in California?",
+      "answer": "Because scope of practice determines staffing. The California Board of Barbering and Cosmetology regulates estheticians under the Barbering and Cosmetology Act, and a basic facial falls within that licence when performed inside the licensee's training. Anything involving prescription products, injections, lasers or deeper medical peels falls under the Medical Practice Act and the Medical Board of California and requires medical qualification or a supervised delegation arrangement. Ask which licence will perform your specific booking and confirm the service sits inside it, since the word 'facial' on a menu settles nothing."
+    },
+    {
+      "question": "Do memberships and packages actually lower what facials cost here?",
+      "answer": "Only where your real booking habit matches the billing cycle, because a recurring charge bills whether you attend or not. Run the charge across the full minimum term and divide by the number of facials you genuinely booked in the last twelve months, not the number you intended to. Then read three clauses: rollover of unused visits or cycles, the minimum term, and the notice required to cancel. With this many alternatives inside a short drive, a long lock-in is worth much less than the advertised discount suggests."
+    },
+    {
+      "question": "Does the time of year change what a facial costs in Newport Beach?",
+      "answer": "Headline figures move less than availability does. Demand lifts through spring and summer with weddings, tourism and boating season, and again ahead of the Christmas Boat Parade and holiday party run, which tightens calendars at the clinics near Newport Center and along Pacific Coast Highway. Peel and resurfacing courses are conventionally sequenced toward cooler months and away from heavy sun exposure, so promotions on those tend to appear before that season rather than during it. Ask whether weekday and weekend appointments are charged differently — in a market this scheduled, some clinics do."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 325,
+    "medspaDensity": "Dense, though no authoritative government count of Newport Beach medspas exists. Provider listings and practice websites show medspas, cosmetic dermatology offices, plastic surgery practices and independent facial providers concentrated in Newport Center and the Fashion Island area and along the Pacific Coast Highway corridor, with more in Costa Mesa, Huntington Beach and the Irvine medical-office districts. For facials specifically, the number of local listings comfortably exceeds the number that publish a figure, so the visible menu is much wider than the priced one.",
+    "demographicNotes": "The 2020 Census recorded 85,239 residents, while the 2020–2024 American Community Survey estimate is 83,845, with a median age of 45.9 and median household income of $156,867. Orange County as a whole holds roughly 3.2 million people at a median household income near $113,000, so Newport Beach sits well above its own county on income and skews older. That combination pushes menus toward corrective and anti-ageing protocols, device add-ons and medical-grade retail rather than fast maintenance cleanses.",
+    "competitionNotes": "Because substitutes sit minutes away in Costa Mesa, Irvine and Huntington Beach, and the inland Orange County centres are generally twenty-five to forty minutes out in traffic, competition here runs on convenience, physician oversight, brand reputation, membership terms and add-ons such as peels, LED or medical-grade skincare rather than on published figures. Los Angeles is roughly fifty to seventy-five minutes and San Diego between about an hour and a quarter and an hour and three quarters, which makes them plausible destinations for a course but not for routine visits. All of those drive times are traffic-sensitive rather than fixed."
+  }
+}

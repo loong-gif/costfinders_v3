@@ -1,0 +1,123 @@
+{
+  "treatment": "facials",
+  "treatmentLabel": "Facials",
+  "city": "boulder",
+  "cityLabel": "Boulder",
+  "state": "Colorado",
+  "stateCode": "CO",
+  "generatedAt": "2026-09-28",
+  "howPricingWorks": {
+    "intro": "Boulder sells a facial by the appointment — nothing in the room is counted or billed by the unit — yet almost nothing local listings advertise is a walk-in figure. The prices they do state are all for a prepaid block of three chemical peels, and what separates the cheapest of them from the dearest is membership rather than tier: the same block carries one figure for members and a higher one for everyone else. The rest are member discounts off single facials whose base price goes unstated, so prepaid courses and memberships, not the single visit, are what the local feed actually prices.",
+    "pricingModels": [
+      {
+        "name": "Single-Visit Tier",
+        "description": "One figure covers one appointment, and facial menus are usually stacked in tiers. The base is a straightforward cleanse, exfoliate and extract; each step up folds in a device pass, booster serums, LED or lymphatic drainage. Boulder listings name single facials — a signature facial, a dermaplaning facial, a HydraFacial — but advertise only a member discount off them, without the walk-in figure, so the tier you select decides what you pay and you have to ask the clinic what that is.",
+        "typicalRange": "one figure per visit; Boulder listings state a member discount off it rather than the figure itself, so there is no local range to give"
+      },
+      {
+        "name": "Prepaid Course of Three",
+        "description": "Three appointments of the same service bought in advance, at a per-visit rate the listing says sits under the walk-up figure. It is the only multi-visit structure Boulder listings price, and what they price is a block of chemical peels — resurfacing sold as a course, not one booking at a time — at one figure for members and a higher one for everyone else. A prepaid block can carry an expiry window, which is the clause worth reading before you pay.",
+        "typicalRange": "one payment for three visits; the per-session figure on this page is that block divided by three, at the member and non-member rate, not a walk-up price"
+      },
+      {
+        "name": "Recurring Monthly Plan",
+        "description": "A recurring monthly charge that unlocks member rates across the menu; on some plans the payment also banks as credit toward treatment. Most Boulder facial listings are conditional on a membership, so the plan is often the price of reaching the advertised figure at all. The trade is a recurring commitment for a lower effective rate, which only pays off at a genuinely monthly cadence. Term length, whether an unused month rolls forward, and the cancellation notice all vary by provider and are rarely printed on a menu, so ask for those three in writing.",
+        "typicalRange": "a monthly charge for member rates; whether a session or a treatment credit comes with it varies by plan"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Five things move the number on a Boulder skincare menu, and none of them is the treatment. Where the room sits, what Colorado permits the person in it to do, who the menu was written for, and which weeks the diary fills do most of the work.",
+    "factors": [
+      {
+        "factor": "Two published cost readings that disagree",
+        "explanation": "The measures of Boulder's cost base do not agree, and both are worth knowing. BestPlaces puts the composite at 141.3 where 100 is the national baseline. The federal regional price parities put all items at 99.9, housing at 148.7 and goods at 94.3. The premium here is concentrated in real estate rather than spread across everything, and real estate is the line item that reaches a session price."
+      },
+      {
+        "factor": "Storefront supply the city capped on purpose",
+        "explanation": "A 55-foot height limit sits in the city charter, a ring of voter-funded open space bounds the city, and new commercial square footage is approved slowly. The effect on a skincare studio is direct: ground-floor suites near Pearl Street or Twenty Ninth Street rarely sit vacant, landlords keep pricing power, and rent recovered per treatment room becomes the largest fixed cost most local operators carry."
+      },
+      {
+        "factor": "Where Colorado draws the line at the epidermis",
+        "explanation": "Colorado's cosmetology rules stop a licensed esthetician at the epidermis: no service may penetrate or alter skin below it. Facials, extractions and dermaplaning sit inside that boundary, as does what the state calls chemical resurfacing exfoliation — but only after 24 hours of cosmeceutical coursework. Anything deeper, including medium-depth peels, IPL and Class IIIb lasers, is a medical-aesthetic service reached through Colorado Medical Board Rule 1.17 delegation. That staffing shows up in the price."
+      },
+      {
+        "factor": "A menu written for two different buyers",
+        "explanation": "The median age here is under 29 and the typical city household earns in the mid-$80,000s, both pulled down by a large University of Colorado student population, yet the median family figure runs past $160,000 and the county median household clears $100,000. That is two buyers inside one market. What Boulder listings aim at that split is membership: most of them are member rates, and where a listing states a price it quotes members less than everyone else for the same block of treatments."
+      },
+      {
+        "factor": "A dry, high-UV setting and a two-peak calendar",
+        "explanation": "The city's 5,430-foot elevation leaves a mile less atmosphere to filter ultraviolet light than sea level has, and winter downslope winds can pull relative humidity into single figures. Providers schedule around that. Hydration and barrier-focused bookings cluster through the dry months, while resurfacing is conventionally scheduled away from the summer stretch, when the local UV index reaches into double digits. Two demand crests rather than one, with the quiet weeks in between."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "Facial pricing hands you more leverage than most aesthetic categories: the unit is a single visit, the discount structures are published rather than negotiated, and cheaper commercial rent starts a short drive outside the city. Working out which structure matches your real booking habits is worth more than waiting for a promotion.",
+    "tips": [
+      {
+        "tip": "Test the course against your honest return rate",
+        "detail": "A prepaid block of three is the discount lever Boulder listings actually price, and its listing says it lowers the per-visit figure, further again for members. It only pays if you finish it. Before handing over a card, get the expiry window, whether an unused visit can be moved to a different service, and whether the balance refunds if you leave town — a live question in a place with heavy student and postdoc turnover."
+      },
+      {
+        "tip": "Do the subscription arithmetic before the first month",
+        "detail": "Multiply the monthly rate by the term the provider is asking for, then set that total against what you would spend booking individually at the frequency you actually keep. A member rate is only a saving once the membership itself is paid for, so the gap between a Boulder listing's member and non-member figures has to cover the plan's cost first. Three or four visits a year usually favours paying per visit; near-monthly attendance is where a plan can win. Ask what happens to a month you skip before you decide."
+      },
+      {
+        "tip": "Price the same tier outside the city limits",
+        "detail": "Longmont, Lafayette, Louisville, Superior and Erie are all short drives from central Boulder, on commercial rent nowhere near Pearl Street's, and Denver's aesthetics corridor sits at the far end of US-36. Two or three quotes from outside the city give you something real to negotiate against, and providers here are well aware how short that drive is."
+      },
+      {
+        "tip": "Ask which weeks are actually quiet",
+        "detail": "Resurfacing is conventionally booked outside the high-UV months, which makes late autumn through early spring the busy stretch for peels here rather than the soft one. Instead of assuming a national promotional calendar applies, ask a provider where their own diary is thin and whether anything is discounted into it. The university calendar moves local demand too."
+      },
+      {
+        "tip": "Separate the base price from what gets added to it",
+        "detail": "Boosters, dermaplaning, LED and lymphatic work are usually billed as separate lines, and stacking two of them turns one tier into the next. Ask for the all-in figure including any first-visit skin consultation, then ask whether what you booked is esthetician-scope surface work or a delegated medical-aesthetic service. That answer often accounts for a gap that otherwise looks arbitrary."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSession": 245,
+    "comparisonText": "RealSelf publishes an average facial cost of $245 from patient-reported member data, which is the closest national benchmark for one appointment at one price, at a skin clinic rather than a chain day spa. No Boulder listing states a single-visit facial price: the per-session figure on this page is a prepaid block of chemical peels divided by three, from too few clinics to stand for the city, so we draw no gap. What the city's cost data does show is a premium concentrated in real estate, and rent is the overhead a session price has to carry — ask for the all-in figure and hold it against the national marker yourself."
+  },
+  "faqs": [
+    {
+      "question": "How much does a facial cost in Boulder, CO?",
+      "answer": "Per session, and one menu can span a wide band because it is tiered rather than flat. A short esthetician-led cleanse sits at one end and a device session loaded with boosters, LED and lymphatic work at the other. Boulder listings state no walk-in figure for any of it: the \"Starting at\" figure on this page is a members' price for a prepaid block of three chemical peels, not one facial, and the membership is a separate charge. Ask for the all-in figure for the tier you want; any figure printed on this page comes from a provider listing as it currently stands, not from an article."
+    },
+    {
+      "question": "Does a facial cost less in Longmont or Lafayette than in Boulder?",
+      "answer": "Too few Boulder providers publish a price for us to compare the towns, but the overhead case is real. Federal price-parity data reads Boulder's housing far above the national line while its goods sit slightly below it, so the local premium is a real-estate premium rather than a general one. Add a charter height limit, an open-space ring and slow commercial approvals, and storefront supply stays tight. Providers a few towns east lease for considerably less, and some of that can reach the menu. The treatment and the device can be identical; the overhead behind the room is not."
+    },
+    {
+      "question": "Does Boulder's altitude change which facial I should book?",
+      "answer": "It changes the conversation, not the price list. Boulder is a mile up: less atmosphere stands between skin and ultraviolet light, winter downslope winds strip moisture out of the air, and snow throws additional UV back upward on ski days. What any of that means for you personally is for a provider to judge in person, and no amount of published cost data speaks to it. Tell them how much time you spend outdoors, at what elevation and in which season, then let the recommendation follow from that."
+    },
+    {
+      "question": "Who may perform a chemical peel in Colorado?",
+      "answer": "Depth decides it. A licensed esthetician may perform what Colorado calls chemical resurfacing exfoliation — removal of the dead cell layer only — after completing 24 hours of cosmeceutical coursework, and Rule 1.8 of 4 CCR 731-1 bars any service reaching below the epidermis on that licence. Peels that go deeper are medical-aesthetic services under Colorado Medical Board Rule 1.17, performed by a physician or APRN or delegated by one under written protocol and monitoring. Ask which category a quoted peel falls into before you book it."
+    },
+    {
+      "question": "Is a monthly facial plan worth it in Boulder?",
+      "answer": "That turns on cadence rather than on the advertised saving. A Boulder plan buys member rates across the menu, and on some plans the monthly payment banks as credit toward treatment, so if you attend most of those months the effective cost per visit can fall below booking individually. Attend three or four times a year and you may be funding months you never use; a prepaid block plus off-peak scheduling can cost less. Get the term length, the rollover rule and the cancellation notice in writing before you sign anything."
+    },
+    {
+      "question": "How many visits are usually in a facial course here?",
+      "answer": "Three is the only block size Boulder listings price, on a course of chemical peels. Too few local listings publish courses to say whether longer blocks are common here; where a clinic sells four to six visits, it is generally for device-led or resurfacing work, as one larger payment spread across more visits. How many visits your skin actually calls for is for the provider examining it to decide, and a cost guide is not in a position to weigh in. Treat the block size as a commercial structure, and settle the clinical question separately with whoever will be treating you."
+    },
+    {
+      "question": "Which questions make two Boulder quotes comparable?",
+      "answer": "Start with the all-in total, including boosters, dermaplaning or LED, and whether a first-visit skin consultation is billed on top of it. Then ask who performs the service, and whether it sits inside esthetician scope or arrives as a delegated medical-aesthetic service. Then the expiry window on any prepaid block, and the term length on any monthly plan. Answers to those four in writing are what make two Boulder quotes genuinely comparable — a headline price on its own rarely does."
+    },
+    {
+      "question": "When is a facial cheapest to book in Boulder?",
+      "answer": "The local calendar has two crests rather than one. Peel and resurfacing demand concentrates from late autumn into early spring, because the summer UV index here climbs into double digits. Hydration-focused bookings rise across the same dry winter stretch. That leaves the shoulder weeks on either side as the softer window for resurfacing, with the university calendar layered on top of it. The only reliable way to locate a trough is to ask each provider directly which weeks they are trying to fill."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 141,
+    "medspaDensity": "Moderate. For a city of about 106,000, skincare and wellness storefronts are well represented, but the number of providers offering clinical facial services specifically is modest, and the Denver metro's field is many times larger.",
+    "demographicNotes": "About 106,000 people live in Boulder proper, and CU's enrolment is large enough against that base to hold the median age under 29. Household and family income diverge sharply here: the former sits in the mid-$80,000s, dragged down by non-family student households, the latter well into six figures. County-wide the median household clears $100,000, roughly two-thirds of adults aged 25 and over have a bachelor's or more, and within the city that share is closer to three-quarters.",
+    "competitionNotes": "The competitive set runs well past the city boundary. Longmont, Lafayette, Louisville, Superior and Erie sit a short drive out at materially lower commercial rent, and Denver's aesthetics corridor is at the other end of US-36. Boulder providers price against that drive as much as against each other, which pushes against a high-rent market simply passing its rent on."
+  }
+}

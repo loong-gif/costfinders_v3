@@ -1,8 +1,64 @@
 // Platform-wide pricing and monetization settings mock data
 
-import { type CreditPackage, getCreditPackages } from './leadPricing'
-
 export type BillingStatus = 'active' | 'suspended' | 'comped'
+
+/**
+ * Proposed bulk lead-credit packages. NOT a balance, NOT a purchase path, NOT anything a
+ * business is charged.
+ *
+ * Inlined from the deleted ./leadPricing, which existed only for this. Everything else that
+ * file held is gone with the commerce removal: a module-level `businessCredits` object and a
+ * `purchaseCredits()` that incremented it in the browser tab so leadPurchaseModal could say
+ * "Purchase complete!" over a Stripe trust mark, plus a per-tier price list and four helpers
+ * nothing outside the barrel ever called. No processor exists and nothing was ever charged.
+ *
+ * The one reader is the admin monetization screen, which labels these as proposals and writes
+ * nowhere. Whatever the real prices turn out to be, they belong in the database with the rest
+ * of the pricing, not here.
+ */
+export interface CreditPackage {
+  id: string
+  credits: number
+  price: number
+  pricePerLead: number
+  savingsPercent: number
+  isBestValue: boolean
+}
+
+const creditPackages: CreditPackage[] = [
+  {
+    id: 'pkg_10',
+    credits: 10,
+    price: 45,
+    pricePerLead: 4.5,
+    savingsPercent: 10,
+    isBestValue: false,
+  },
+  {
+    id: 'pkg_25',
+    credits: 25,
+    price: 100,
+    pricePerLead: 4.0,
+    savingsPercent: 20,
+    isBestValue: false,
+  },
+  {
+    id: 'pkg_50',
+    credits: 50,
+    price: 175,
+    pricePerLead: 3.5,
+    savingsPercent: 30,
+    isBestValue: false,
+  },
+  {
+    id: 'pkg_100',
+    credits: 100,
+    price: 300,
+    pricePerLead: 3.0,
+    savingsPercent: 40,
+    isBestValue: true,
+  },
+]
 
 export interface TierPricing {
   free: number
@@ -130,7 +186,7 @@ let platformSettings: PlatformSettings = {
     free: 5,
     paid: 3,
   },
-  creditPackages: getCreditPackages(),
+  creditPackages: creditPackages.map((pkg) => ({ ...pkg })),
   sponsorshipPricing: {
     sevenDay: 29,
     fourteenDay: 49,

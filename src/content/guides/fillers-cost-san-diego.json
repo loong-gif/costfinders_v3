@@ -1,0 +1,128 @@
+{
+  "treatment": "fillers",
+  "treatmentLabel": "Dermal Fillers",
+  "city": "san-diego",
+  "cityLabel": "San Diego",
+  "state": "California",
+  "stateCode": "CA",
+  "generatedAt": "2026-09-25",
+  "howPricingWorks": {
+    "intro": "A San Diego filler quote is only readable once you know what the figure is attached to, and in this market most listings never say. The majority of visible offers name a treatment and route you to a consultation. Among the handful that do publish something, no listing states a per-syringe rate at all — the published units are vials and branded courses, which is why the top of the local range runs to several times the bottom. That spread is mostly a statement about how much product a figure covers, not about the skill of the injector.",
+    "pricingModels": [
+      {
+        "name": "Quoted by the Branded Product Line",
+        "description": "The most common way a San Diego listing puts a number on the page is to name a product family and attach one figure to it. Restylane is the name that surfaces most often at the lower end, in the mid hundreds, with no unit stated beside it — so you cannot tell from the listing whether it buys one filled syringe, a partial syringe, or a first-visit rate. Ask which formulation in the line is planned, how much product the figure assumes, and what an additional syringe costs on the day.",
+        "typicalRange": "Low-to-mid hundreds for the hyaluronic acid brand names that publish at all"
+      },
+      {
+        "name": "Charged by the Vial",
+        "description": "Collagen stimulators such as Sculptra are supplied and reconstituted by the vial rather than the syringe, and a small number of local listings charge that way. A per-vial figure in the mid-to-high hundreds is not comparable to a hyaluronic acid syringe rate: one vial is a fraction of a course, and most plans run several vials across sessions spaced weeks apart. Ask how many vials the injector expects and what the whole course totals.",
+        "typicalRange": "Mid-to-high hundreds per vial; a course multiplies it"
+      },
+      {
+        "name": "Flat Fee for a Staged Course",
+        "description": "The four-figure end of this feed is almost entirely stimulator plans sold as one package — a set number of sessions, sometimes with a review visit folded in. These produce the highest figures in San Diego by a wide margin, and they are the listings most likely to represent a real all-in total rather than a multiplier. The thing to confirm is what happens if the injector wants an extra session: whether it is inside the package or billed again.",
+        "typicalRange": "From the low four figures to roughly three thousand dollars for a full plan"
+      },
+      {
+        "name": "Quoted Only After Consultation",
+        "description": "The default structure here is no published figure. Most San Diego filler listings describe the product and point you at a booking form, partly because California treats the injection as a medical act requiring an examination first, and partly because clinics in an affluent coastal market prefer to sell a plan rather than a rate. Treat it as a phone call you have to make, and ask for a written estimate range before you accept an appointment slot.",
+        "typicalRange": "No figure published; the quote arrives as a plan total"
+      }
+    ]
+  },
+  "whatAffectsPricing": {
+    "intro": "Four things are largely settled before you call anyone: who California lets hold the syringe, what the lease costs in the corridor you picked, how far the nearest genuinely different market is, and which products the menu is built around. The calendar is the one variable you can work around.",
+    "factors": [
+      {
+        "factor": "California treats filler injection as the practice of medicine",
+        "explanation": "Under the Medical Practice Act, injecting filler is not an esthetic service. Physicians and osteopathic physicians may inject within their competence; physician assistants work under the supervision and practice arrangements set out in Business and Professions Code section 3502; nurse practitioners fall under the Board of Registered Nursing and section 2836.1. A registered nurse may inject only under physician direction with a patient-specific order or written standardized procedure. Estheticians, medical assistants and licensed vocational nurses are not authorized independent injectors, and dentists are limited to their dental and oral-maxillofacial scope. Maintaining lawful supervision costs money, and it sits inside every quote."
+      },
+      {
+        "factor": "A high-cost region, but the pressure is housing rather than medicine",
+        "explanation": "Cost-of-living compilations put San Diego well above the national baseline — HomeSnacks published an overall index of 175 against 100 for 2026, and Apartments.com has described the city as roughly 47 percent above average, using a different method. Neither measures what a clinic pays. What reaches your quote is commercial rent, and a suite in La Jolla, Del Mar or the UTC area is a different lease from one in Mission Valley, Kearny Mesa or the South Bay. The gel itself costs every practice about the same."
+      },
+      {
+        "factor": "The product mix, not the neighborhood, sets the top of the range",
+        "explanation": "Hyaluronic acid gels and collagen stimulators are sold on different units and different timescales, and San Diego's published figures split cleanly along that line. Stimulator courses put four-figure numbers into the feed; the branded hyaluronic acid listings sit in the hundreds. A category page that averages the two produces a number describing nobody's appointment. Work out which product you are actually being quoted before you compare anything."
+      },
+      {
+        "factor": "The nearest alternative market is a real drive away",
+        "explanation": "Unlike coastal Orange County, where a competing rent base is minutes off, San Diego is a self-contained market. Orange County runs roughly an hour and a half to two and a half hours depending on where you start and when you leave, Los Angeles two to three, Riverside and Palm Springs comparable or longer. That insulates local practices from cross-metro undercutting, so the meaningful comparison shopping happens inside the county — between the coastal corridors and the inland and South Bay clinics."
+      },
+      {
+        "factor": "Dates rather than a season",
+        "explanation": "Demand bends around weddings, graduations, holiday parties and travel, with the familiar spring, early-summer and November–December peaks, and San Diego's convention and tourism calendar adds short bursts on top. No published series isolates filler bookings here by month, so treat it as an availability problem rather than a discount problem: ask how far out the specific injector is booked, and whether a quoted promotion is tied to a date."
+      }
+    ]
+  },
+  "howToSave": {
+    "intro": "In a feed where most listings publish nothing and the published ones use three different units, savings come from forcing the quotes you collect to describe the same purchase. Take these in the order a first phone call runs.",
+    "tips": [
+      {
+        "tip": "Pin the unit before you compare a single figure",
+        "detail": "Ask whether the number buys one filled syringe, a vial, or a course of sessions, and whether the syringe is full or partial. A mid-hundreds hyaluronic acid figure and a mid-hundreds vial figure look identical on a listing and buy completely different amounts of treatment. Until the unit is written down, you are not comparing anything."
+      },
+      {
+        "tip": "Ask for one written all-in total",
+        "detail": "Consultation fees, the good-faith examination California requires, injection charges and a two-week review can each sit inside or outside a headline figure. Ask each practice to put a single total against the plan it proposes and to say what is included. Rankings frequently reorder once the extras surface."
+      },
+      {
+        "tip": "Name the formulation, not just the brand",
+        "detail": "The Restylane family alone spans several gels built for different depths and areas, and they do not cost a clinic the same. Ask which specific product is planned, how many syringes or vials, and the cost of an extra one on the day — then take that exact specification to the next clinic."
+      },
+      {
+        "tip": "Price the whole course, then annualise it",
+        "detail": "Hyaluronic acid results fade over months and stimulators are given as a series, so a single figure is a step, not an answer. Ask what the full plan costs from first visit to last, how long the practice expects the result to hold, and what maintenance costs in a year. That yearly number is the real purchase."
+      },
+      {
+        "tip": "Shop across the county before you consider a drive",
+        "detail": "Clinics in Mission Valley, Kearny Mesa, the South Bay and inland North County operate on a different rent base from La Jolla, Del Mar and Carmel Valley, and they are twenty to forty minutes apart, not two hours. Collect one written quote from outside your usual corridor on the identical product and unit before you think about Orange County."
+      }
+    ]
+  },
+  "nationalComparison": {
+    "nationalAvgPerSyringe": 715,
+    "comparisonText": "The American Society of Plastic Surgeons publishes roughly $715 as an average physician charge for one syringe of hyaluronic acid filler nationally. San Diego's feed states no price on that unit at all — not one visible local listing quotes per syringe, so there is no honest local number to set beside it. What can be said qualitatively: the branded hyaluronic acid figures published here sit below that national average, but they carry no stated volume, so some of them are almost certainly partial syringes or introductory rates rather than like-for-like. The four-figure end of the local feed is stimulator courses, which the ASPS syringe figure does not describe. Ask any San Diego clinic to quote you per full syringe of a named gel, and you will have something comparable."
+  },
+  "faqs": [
+    {
+      "question": "How much do dermal fillers cost in San Diego?",
+      "answer": "There is no single number, and any page offering one has quietly chosen a unit for you. Local practices quote by brand, by vial, as a staged course, or not at all until you are in the room. Too few San Diego clinics publish a filler price for this page to set a local range, so start from the offer in front of you and get three things on the phone: the specific product, the amount the figure covers, and one written all-in total."
+    },
+    {
+      "question": "Why do so few San Diego listings state what filler costs?",
+      "answer": "Most of the visible feed publishes nothing. Part of that is the legal framing — California treats injection as the practice of medicine, and clinics argue a figure is meaningless before an examination. Part is commercial: in a market that sells plans, a published unit rate invites exactly the comparison shopping practices would rather avoid. You can still ask for a written estimate range for the plan discussed before you take the slot."
+    },
+    {
+      "question": "What does the cheapest filler cost here actually buy?",
+      "answer": "The floor of this feed is a branded hyaluronic acid listing in the mid hundreds with no volume stated beside it. That usually means one syringe, a partial syringe, or a new-patient rate that does not repeat — and the listing will not tell you which. Get the volume written down, ask what the same appointment costs on a return visit, and confirm whether the consultation fee is inside or outside the figure."
+    },
+    {
+      "question": "Why does Sculptra cost several times more than Restylane in San Diego?",
+      "answer": "Because they are sold differently. Sculptra is a collagen stimulator supplied by the vial and given as a course of sessions over months, so a published figure often covers the whole plan rather than one appointment. Restylane is a hyaluronic acid gel usually quoted per syringe. Ask how many vials and how many sessions a stimulator quote assumes, and whether a further session is inside the package."
+    },
+    {
+      "question": "Who can legally inject filler in California, and does that change what it costs?",
+      "answer": "Only certain licensed medical roles. Physicians inject within their competence; physician assistants under the arrangements in Business and Professions Code section 3502; nurse practitioners under Board of Registered Nursing rules and section 2836.1; registered nurses only under physician direction with a patient-specific order or standardized procedure. Estheticians, medical assistants and LVNs are not authorized independent injectors. Supervision has a real cost, so ask which license your injector holds and who carries prescribing responsibility."
+    },
+    {
+      "question": "Is it worth driving to Orange County or Los Angeles to cut what fillers cost?",
+      "answer": "Rarely. Orange County is roughly an hour and a half to two and a half hours each way depending on traffic, and Los Angeles two to three — and filler needs follow-up, sometimes unscheduled. The productive comparison is inside the county, between the coastal corridors and inland or South Bay clinics on a lower rent base. Take one written quote from each on the same named product."
+    },
+    {
+      "question": "Does getting filler in Tijuana cost less, and what should I weigh against that?",
+      "answer": "Prices across the border are typically lower, which is why the question comes up here more than in most U.S. markets. The trade-offs are product provenance, licensure you cannot verify against a California board, and who manages a complication a week later. The FDA advises patients to confirm the product being injected and warns against fillers bought outside licensed channels. If you go, ask to see the sealed carton and lot number and have it opened in front of you — and ask the same of any San Diego clinic."
+    },
+    {
+      "question": "Do lip fillers cost less than cheek or midface filler in San Diego?",
+      "answer": "Usually, because lips take less product and are quoted as one area, while midface, temple and jawline work is planned across multiple syringes or vials. Under-eye treatment is generally booked and quoted separately and sits in higher-risk territory; the FDA identifies accidental injection into a blood vessel as the most serious filler risk, including tissue damage and vision problems. Whether it suits you is a clinical judgement — what you can settle first is who injects and whether review is included."
+    }
+  ],
+  "cityContext": {
+    "costOfLivingIndex": 175,
+    "medspaDensity": "Dense but formally uncounted — no public register of San Diego medical spas or aesthetic injectors exists, so any provider figure in circulation reflects somebody's undisclosed inclusion rule. The observable pattern is geographic clustering in La Jolla, Del Mar, Carmel Valley and the UTC area, along the North County coast, and around downtown and Mission Valley, with additional concentration near the large medical campuses. A meaningful share of those practices are dermatology and plastic surgery offices where filler is one line on a broader clinical menu rather than the core business, which is part of why so few of them publish a rate.",
+    "demographicNotes": "Census Reporter figures for 2026 put the city at roughly 1.40 million residents with a median household income near $111,000 and a median age of about 36.6, inside a San Diego–Chula Vista–Carlsbad metro of about 3.29 million. That is a younger buyer than the wealthy coastal Orange County towns, which tilts local demand toward hyaluronic acid work and lip and midface volume rather than pure structural restoration, while the affluent northern and coastal corridors sustain the four-figure stimulator courses at the top of the feed. Cost-of-living compilations rate the region well above the national baseline — HomeSnacks published an index of 175 against 100 for 2026 — but that is driven by housing, not by what clinics pay for product.",
+    "competitionNotes": "The comparison problem here begins with publication rather than geography: most local listings name no figure, so the few that do are not a representative sample of what San Diego clinics charge. Among those that publish, branded hyaluronic acid quotes, per-vial stimulator rates and full-course packages all sit under one category heading, which is how the top of the local range ends up several times the bottom without either being the better buy. Because the nearest genuinely different metro is a one-and-a-half to three-hour drive, local practices face less cross-metro pressure than coastal Orange County does, and the real competition runs between neighborhoods on very different leases. What is left to compare is verifiable before booking: the injector's license, the specific product stocked, what the written quote includes, and the wait for a first consultation."
+  }
+}
